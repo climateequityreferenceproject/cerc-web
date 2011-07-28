@@ -1,8 +1,0 @@
-c.svn.url=url for subversion repository for C code
-ftp.server=web hosting service
-ftp.dev.usr=ftp user for access below webroot
-ftp.dev.pwd=password for dev user
-c.remote.dir=location of the GDRs engine code
-ssh.host=secureshell host for compiling GDRs engine code
-ssh.usr=secureshell user
-ssh.pwd=secureshell password
