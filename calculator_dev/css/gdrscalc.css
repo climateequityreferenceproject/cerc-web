@@ -1,0 +1,367 @@
+@charset "UTF-8";
+/* CSS Document */
+
+/* @override 
+	http://127.0.0.1/wp-content/themes/custom_GDR/style.css
+	http://ars-humana.net/blog/wp-content/themes/custom_GDR/style.css
+*/
+
+/*
+Theme Name: GDR
+Theme URI: http://gdr.dev/
+Description: Custom theme for Greenhouse Development Rights
+Version: 1.0
+Author: Jeffrey Radcliffe
+
+*/
+/*	adapted for GDRs calculator page by Tyler Kemp-Benedict */
+
+/*
+stylesheet organization:
+	reset
+	layout
+		header layout
+		form layout
+		spinoff window layout
+	typography
+	color
+	misc classes
+*/
+
+
+/*** reset ****************************************************/
+html, body, div, h1, h2, h3, h4, ul, ol, li, p, form, fieldset, legend, img,
+input, textarea, table, caption, tbody, tfoot, thead, tr, td, th, dl, dd, dt {
+    font-size:100%;
+    margin:0;
+    padding:0;
+	vertical-align:baseline;
+}
+img {
+	border:none;
+	outline:none;
+}
+ul { list-style:inside; }
+#calc_container ul { list-style:none; }
+table { /* cellspacing and cellpadding are not valid CSS - these attributes must be added to the html */
+	border-collapse:collapse;
+	border-spacing:0;
+	width:100%;
+}
+
+
+/*** layout  **************************************************/
+#container, #footer {
+	margin:0 auto;
+	width:950px;
+}
+/* IE6 treats width as min-width, but does not recognize CSS child selectors */
+body>#container, body>#footer {
+	min-width:950px;
+	width:95%;
+}
+#container {
+	border:1px solid;
+	/*
+	border-bottom:0;
+	border-top:0; 
+	*/
+	overflow:visible;
+}
+#footer {
+	/*
+	border-top:1px solid;
+	*/
+	height:5em;
+}
+#calc_container {
+	padding:1em;
+}
+#intro, #data {
+	float:left;
+	margin-left:15px;
+	width:65%;
+}
+#input_values { 
+	margin-bottom:0.5em;
+	padding-bottom:1em; 
+	padding-top:1em; 
+}
+#input_values ul { 
+	float:left; 
+	list-style:none; 
+	padding-right:3%; 
+	width:30%; 
+}
+td, th {
+	border:1px solid;
+	border-left:0;
+	border-right:0;
+	padding:0.2em 0.5em;
+}
+#loading { 
+	margin:300px 50% auto;
+	position:fixed;
+}
+#save {
+	margin:0.5em 0;
+	padding:0.5em;
+}
+#save p { 
+	float:left;
+	margin-right:1em;
+	padding-top:0;
+	width:auto;
+}
+
+/*** header layout ***/
+#header {
+	background:#fff url('../img/GDRheadercalculator.png') no-repeat;
+	height:78px;
+	width:100%;
+}
+#headerlinks {
+	height:1.5em;
+	width:100%;
+}
+#partners {
+	float:right;
+	margin-top:0px;
+}
+#partners ul li {
+	float:left;
+	list-style:none;
+}
+#partners a {
+	border:0;
+	display:block;
+	height:78px;
+	overflow:hidden;
+	text-indent:-9999px;
+}
+#partners ul li a#ecoequity {
+	background:#fff url('../img/GDR-EE-headercalculator.png') no-repeat;
+    width:148px;
+}
+#partners ul li a#seius {
+	background:#fff url('../img/GDR-SEI-headercalculator.png') no-repeat;
+    width:167px;
+}
+
+/*** form layout ***/
+form { padding:0.5em 0.5em 1.0em 0.5em; }
+#form1 {
+    float:left;
+    width:23em;
+}
+/* min form height to prevent table from dropping below when form content is less tall than intro */
+#calc_container>form1 { 
+	min-height:300px; 
+	height:auto!important; 
+	height:300px; 
+}
+fieldset {
+    border:1px solid;
+	border-top-width:2.0em;
+	margin-bottom:1em;
+    margin-top:0.5em;
+    padding:0 1em;
+}
+fieldset fieldset { 
+	margin-bottom:0;
+	margin-top:0; 
+	padding-right:0;
+}
+fieldset, fieldset li {
+	margin-left:auto;
+	margin-right:auto;
+	width:19em;
+}
+fieldset li { 
+	float:left;
+    margin-top:0.6em; 
+}
+form li p { margin-top:0; }
+fieldset fieldset, fieldset fieldset li { width:17em; }
+label { width:12em; }
+fieldset fieldset label { width:10.5em; }
+label {
+    display:block;
+    float:left;
+    margin-right:0.5em;
+}
+label.radio { margin-right:1.5em; }
+label.select { 
+	float:none; 
+	margin-bottom:0.2em; 
+}
+label.click, label.select { width:auto; }
+select { width:auto; }
+input, select.short { width:6em; }
+fieldset fieldset input { width:5em; }
+input.click {
+    display:block;
+    float:left;
+    margin-right:0.5em;
+	width:auto;
+}
+legend, legend span { height:2.0em; }
+legend span {  
+	background: url('../img/arrows3.png') no-repeat left center;
+	display:block;
+	float:left;
+	margin-right:4px;
+	width:10px;
+}
+legend.closed span { background-position:left center; }
+legend.open span { background-position:-16px center; }
+fieldset fieldset legend.closed span { background-position:-32px center; }
+fieldset fieldset legend.open span { background-position:-48px center; }
+.pretty-hover { cursor:pointer; }
+#submit, #reset { margin-left:1em; }
+
+
+/*** spinoff window layout ***/
+#spinoff #data, #spinoff #footer { 
+	margin:0; 
+	width:665px; 
+}
+body#spinoff>#calc_container #data, body#spinoff>#footer { 
+	min-width:665px; 
+	width:95%; 
+}
+
+
+/*** typography ***********************************************/
+body {
+    font-family:Arial, Helvetica, Verdana, sans-serif;
+    font-size:medium;
+    text-align:center
+}
+em { font-style:italic; }
+strong { font-weight:bold; }
+h1 {
+	font-size:2em;
+	font-weight:bold;
+}
+h2 {
+	font-size:1.8em;
+	font-weight:bold;
+    padding-top:1.5em;
+}
+h3 {
+	font-size:1.5em;
+	font-weight:bold;
+}
+p { 
+	line-height:1.6;
+	padding-top:0.8em;
+}
+a, a:link, a:visited, a:hover, a:active { 
+	border-bottom:1px dotted;
+	font-weight:bold;
+	text-decoration:none;
+}
+a:hover, a:active { border-bottom-style:solid; }
+table {
+	font-size:0.95em;
+	line-height:1.2;
+}
+thead { font-size:0.9em; }
+#container { text-align:left; }
+#footer {
+	font-size:smaller;
+	text-align:center;
+}
+#calc_container {
+	font-family:Arial, Helvetica, Verdana, sans-serif;
+	font-size:0.7em;
+	line-height:1.8;
+	text-align:left;
+}
+#intro { font-size:1.2em; }
+#form1 { line-height:1.2; }
+#input_values { 
+	font-size:0.9em; 
+	line-height:1.4; 
+}
+legend { 
+	font-weight:bold; 
+	line-height:2.0em; 
+	vertical-align:middle;
+}
+select, input, select.short { font-size:95%; }
+#data td, #data th { text-align:right; }
+#input_values td, #input_values th, #data td.lj, #data th.lj { text-align:left; }
+
+
+/*** color ****************************************************/
+body {
+	background:#f7f6f6;
+	color:#333;
+}
+#container { background:#fff; }
+#footer { background:transparent; }
+#container, footer { border-color:#8b8b8b; }
+#headerlinks {
+	background-color:#4d59a4;
+	border-top:0px solid #063;
+	border-bottom:0px solid #5b6eb4;
+}
+h1, h2 { color:#221e6b; } /* blue */
+h3 { color:#40822e; } /* green */
+a, a:link, a:visited, a:hover, a:active {
+	border-bottom-color:#050556;
+	color:#40822e;
+}
+form { background:#e6ebe6; }
+fieldset { 
+	background:#fff;
+	border-color:#40822e;
+}
+fieldset fieldset { 
+	background-color:#e6ebe6;
+	border-color:#e6ebe6; 
+}
+legend { 
+	background-color:#40822e;
+	color:#fff;
+}
+fieldset fieldset legend { 
+	background-color:#e6ebe6;
+	color:#666; 
+}
+label.disabled { color:#999; }
+select { background:#efefef; }
+
+td, th { border-color:#ccc; }
+img.float-left, img.float-right { border:1px solid #000; }
+#save { 
+	background:#e6ebe6; 
+	/*
+	border:1px solid #40822e; 
+	*/
+}
+
+/*** misc classes *********************************************/
+.clear {
+	clear: both; 
+	/* next 2 rules are browser correction, not really typography */
+	font-size: 1px; 
+	line-height: 0;
+}
+.group:after {
+	clear:both;
+	content:".";
+	display:block;
+	height:0;
+	visibility:hidden;
+}
+img.float-left {
+	float:left;
+	margin:0 15px 5px 0;
+}
+img.float-right {
+	float:right;
+	margin:0 0 5px 15px;
+}
