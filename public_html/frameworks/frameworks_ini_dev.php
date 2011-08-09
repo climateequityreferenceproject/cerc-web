@@ -35,4 +35,4 @@
     //
     // -------------------------------------------------------------------
     // For GDRs, set path to the calculator
-    GreenhouseDevRights::$exec_path = "/***REMOVED***/gdrscode/gdrsengine/bin/gdrsengine";
+    GreenhouseDevRights::$exec_path = "/***REMOVED***/gdrscode/gdrsengine/bin/gdrsengine-dev";
