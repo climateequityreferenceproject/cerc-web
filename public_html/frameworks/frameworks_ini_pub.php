@@ -5,9 +5,9 @@
     //
     // -------------------------------------------------------------------
     // Point to master database
-    Framework::$master_db = "/***REMOVED***/databases/gdrs_core.sql3";
+    Framework::$master_db = "/***REMOVED***/databases/gdrs_core_pub.sql3";
     
-    // Point to folder where use databases are stored
+    // Point to folder where user databases are stored
     Framework::$user_db_path = "/***REMOVED***/sessions/gdrs-db";
     
     
