@@ -70,8 +70,6 @@ include("form_functions.php");
                     <legend class="open"><span>&nbsp;</span>Display settings</legend>
                     <div>
                         <ul>
-                            <?php echo select_options_list('framework', $display_params, "Select framework: ", $advanced); ?>
-
                             <?php echo select_options_list('table_view', $display_params, "Table view: ", $advanced); ?>
                             <?php echo select_num('display_yr', $display_params, "Year to display:", $advanced); ?>
                             <?php echo select_num('decimal_pl', $display_params, "Decimal places:", $advanced); ?>
