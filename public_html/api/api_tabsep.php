@@ -1,5 +1,5 @@
 <?php
-include("table_common.php");
+include("api_common.php");
 
 $database = 'sqlite:'.$_GET["db"];
 
