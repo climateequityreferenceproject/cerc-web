@@ -17,7 +17,7 @@
     //
     // -------------------------------------------------------------------
     $fw_file = "framework.php";
-    $dhandle = opendir('frameworks');
+    $dhandle = opendir(dirname(__FILE__));
     if ($dhandle) {
         while (($dirname = readdir($dhandle)) !== false) {
             if (is_dir('frameworks/' . $dirname ) && $dirname != '.' && $dirname != '..') {
