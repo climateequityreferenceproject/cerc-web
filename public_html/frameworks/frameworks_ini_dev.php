@@ -17,17 +17,22 @@
     //
     // -------------------------------------------------------------------
     $fw_file = "framework.php";
-    $dhandle = opendir(dirname(__FILE__));
-    if ($dhandle) {
-        while (($dirname = readdir($dhandle)) !== false) {
-            if (is_dir('frameworks/' . $dirname ) && $dirname != '.' && $dirname != '..') {
-                $fname = "frameworks/$dirname/$fw_file";
-                if (file_exists($fname)) {
-                    include($fname);
+    $scriptdir = dirname(__FILE__);
+    $currdir = getcwd();
+    if (chdir($scriptdir)) {
+        $dhandle = opendir($scriptdir);
+        if ($dhandle) {
+            while (($dirname = readdir($dhandle)) !== false) {
+                if (is_dir($dirname) && $dirname != '.' && $dirname != '..') {
+                    $fname = "$dirname/$fw_file";
+                    if (file_exists($fname)) {
+                        include($fname);
+                    }
                 }
             }
         }
     }
+    chdir($currdir);
     
     // -------------------------------------------------------------------
     //
