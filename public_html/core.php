@@ -1,7 +1,7 @@
 <?php
     include("frameworks/frameworks.php");
     /*** Databases ************************************************************/
-	// Create database filename if doesn't already exist
+    // Create database filename if doesn't already exist
     if ($_POST['user_db']) {
         $user_db = $_POST['user_db'];
     } else {
@@ -16,47 +16,47 @@
 
     include("tables/table_generator.php");
 
-	// Update parameters array with last user values, if any
-	function get_usr_vals(&$array) {
-		foreach($array as $key => $val) {
-			if (isset($_POST[$key])) {
-				$array[$key]['value'] = $_POST[$key];
-			}
-		}
+    // Update parameters array with last user values, if any
+    function get_usr_vals(&$array) {
+        foreach($array as $key => $val) {
+            if (isset($_POST[$key])) {
+                $array[$key]['value'] = $_POST[$key];
+            }
+        }
         // Checkboxes are special - if not checked, they do not exist in $_POST, so check to make sure the form has been submitted
-		if (isset($_POST['submit'])) {
-			if ($array['use_sequencing'] && !$_POST['use_sequencing']) {
-				$array['use_sequencing']['value'] = 0;
-			}
-			if ($array['use_lulucf'] && !$_POST['use_lulucf']) {
-				$array['use_lulucf']['value'] = 0;
-			}
-			if ($array['use_nonco2'] && !$_POST['use_nonco2']) {
-				$array['use_nonco2']['value'] = 0;
-			}
-			if ($array['do_luxcap'] && !$_POST['do_luxcap']) {
-				$array['do_luxcap']['value'] = 0;
-			}
-		}
-	}
+        if (isset($_POST['submit'])) {
+            if ($array['use_sequencing'] && !$_POST['use_sequencing']) {
+                $array['use_sequencing']['value'] = 0;
+            }
+            if ($array['use_lulucf'] && !$_POST['use_lulucf']) {
+                $array['use_lulucf']['value'] = 0;
+            }
+            if ($array['use_nonco2'] && !$_POST['use_nonco2']) {
+                $array['use_nonco2']['value'] = 0;
+            }
+            if ($array['do_luxcap'] && !$_POST['do_luxcap']) {
+                $array['do_luxcap']['value'] = 0;
+            }
+        }
+    }
     
     /*** Display parameters ****************************************************/
 
-	$basic_adv = array (
-		basic => 'Basic',
-		adv => 'Advanced');
-	
-	$advanced = false;
+    $basic_adv = array (
+        basic => 'Basic',
+        adv => 'Advanced');
+    
+    $advanced = false;
 
-	// TODO: implement output of $basic_adv inputs from multi-dim array
-	//$basic_adv = array ('basic' => array('display_name'=>'Basic', 'checked'=>false), 
-	//				    'adv' => array('display_name'=>'Advanced', 'checked'=>true));
-	
-	// TODO: implement function to replace this literal array of option names, to get pathway names from master database
-	$emergency_paths = array( array('display_name'=>"750 GtCO2 cumulative"), array('display_name'=>"1000 GtCO2 cumulative") );
-	
-	// TODO: replace country_grp w JS to show/hide rows and columns, or HTML table filter
-	$display_params = array ('basic_adv' => array(
+    // TODO: implement output of $basic_adv inputs from multi-dim array
+    //$basic_adv = array ('basic' => array('display_name'=>'Basic', 'checked'=>false), 
+    //                    'adv' => array('display_name'=>'Advanced', 'checked'=>true));
+    
+    // TODO: implement function to replace this literal array of option names, to get pathway names from master database
+    $emergency_paths = array( array('display_name'=>"750 GtCO2 cumulative"), array('display_name'=>"1000 GtCO2 cumulative") );
+    
+    // TODO: replace country_grp w JS to show/hide rows and columns, or HTML table filter
+    $display_params = array ('basic_adv' => array(
                                 'value'=>'basic',
                                 'advanced'=>false,
                                 'min'=>NULL,
@@ -67,7 +67,7 @@
                                     adv=>array('display_name'=>'Advanced')
                                 )    
                             ),
-							 'display_yr' => array(
+                             'display_yr' => array(
                                 'value'=>2020,
                                 'advanced'=>false,
                                 'min'=>1990,
@@ -75,7 +75,7 @@
                                 'step'=>1,
                                 'list'=>NULL
                             ),
-							 'decimal_pl' => array(
+                             'decimal_pl' => array(
                                 'value'=>2,
                                 'advanced'=>false,
                                 'min'=>0,
@@ -83,7 +83,7 @@
                                 'step'=>1,
                                 'list'=>NULL
                             ),
-							 'country_grp' => array(
+                             'country_grp' => array(
                                 'value'=>'--All--',
                                 'advanced'=>false,
                                 'min'=>NULL,
@@ -99,7 +99,7 @@
                                 'step'=>NULL,
                                 'list'=>NULL
                             ),
-							 'table_view' => array(
+                             'table_view' => array(
                                 'value'=> null,
                                 'advanced'=>false,
                                 'min'=>NULL,
@@ -108,24 +108,24 @@
                                 'list'=>NULL
                             )
                         );
-	
-	if (!$_POST['reset']) {
-		if (isset($_COOKIE['display_params'])) {
-			$display_params = unserialize(stripslashes($_COOKIE['display_params']));	
-		}
-		get_usr_vals($display_params);
-	}
-	setcookie('display_params',serialize($display_params),time()+60*60*24*365);
+    
+    if (!$_POST['reset']) {
+        if (isset($_COOKIE['display_params'])) {
+            $display_params = unserialize(stripslashes($_COOKIE['display_params']));    
+        }
+        get_usr_vals($display_params);
+    }
+    setcookie('display_params',serialize($display_params),time()+60*60*24*365);
     
     /*** Calculator parameters *************************************************/
     // TODO: implement mid_rate - marginal nominal tax rate b/n dev and lux - as slider 0-100
-    // TODO: implement tax_income_level - income level for nominal personal tax - as separate script?	
+    // TODO: implement tax_income_level - income level for nominal personal tax - as separate script?    
 
     $shared_params = Framework::get_shared_params();
     // Redundant but convenient to have both
     $frameworks = Framework::get_frameworks();
     $display_params['framework']['list'] = Framework::get_frameworks();
-	
+    
     // Access array of frameworks
     //   $frameworks['id'] = array('name'=> '...', 'class' => '...')
     $fw = new Framework::$frameworks[$display_params['framework']['value']]['class'];
@@ -141,27 +141,27 @@
             $display_params['table_view']['value'] = $key;
             break;
         }
-	    setcookie('display_params',serialize($display_params),time()+60*60*24*365);
+        setcookie('display_params',serialize($display_params),time()+60*60*24*365);
     }
     
-	if (!$_POST['reset']) {
-		if (isset($_COOKIE['shared_params'])) {
-			$shared_params = unserialize(stripslashes($_COOKIE['shared_params']));	
-		}
-		get_usr_vals($shared_params);
-		
-		if (isset($_COOKIE['fw_params'])) {
-			$fw_params = unserialize(stripslashes($_COOKIE['fw_params']));	
-		}
-		get_usr_vals($fw_params);
-	}
-	setcookie('shared_params',serialize($shared_params),time()+60*60*24*365);
-	setcookie('fw_params',serialize($fw_params),time()+60*60*24*365);
-	
-	$fw->calculate($user_db, $shared_params, $fw_params);
+    if (!$_POST['reset']) {
+        if (isset($_COOKIE['shared_params'])) {
+            $shared_params = unserialize(stripslashes($_COOKIE['shared_params']));    
+        }
+        get_usr_vals($shared_params);
+        
+        if (isset($_COOKIE['fw_params'])) {
+            $fw_params = unserialize(stripslashes($_COOKIE['fw_params']));    
+        }
+        get_usr_vals($fw_params);
+    }
+    setcookie('shared_params',serialize($shared_params),time()+60*60*24*365);
+    setcookie('fw_params',serialize($fw_params),time()+60*60*24*365);
+    
+    $fw->calculate($user_db, $shared_params, $fw_params);
 
     /*** Cleanup ************************************************************/
-	// Just to be sure, explicitly delete the object
+    // Just to be sure, explicitly delete the object
     unset($fw);
     
     if ($_POST['ajax']) {

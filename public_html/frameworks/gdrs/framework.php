@@ -76,15 +76,15 @@
                                 'display_name' => 'GDRs default',
                                 'time_series' => false
                             ),
-						    'gdrs_tax' => array(
+                            'gdrs_tax' => array(
                                 'display_name' => 'GDRs tax',
                                 'time_series' => false
                             ),
-						    'gdrs_RCI' => array(
+                            'gdrs_RCI' => array(
                                 'display_name' => 'GDRs RCI time series',
                                 'time_series' => true
                             ),
-						    'gdrs_alloc' => array(
+                            'gdrs_alloc' => array(
                                 'display_name' => 'GDRs allocations',
                                 'time_series' => true
                             )
@@ -115,8 +115,8 @@
             $t[1] = $fw_params['lux_thresh']['value'];
             $rate[0] = 0.01 * $fw_params['mid_rate']['value'];
             $rate[1] = 1.0;
-			$name[0] = 'development';
-			$name[1] = 'luxury';
+            $name[0] = 'development';
+            $name[1] = 'luxury';
             $i = 0;
             foreach ($this->get_db()->query("SELECT * FROM thresholds") as $record) {
                 if ($record["income"] != $t[$i] or $record["rate"] != $rate[$i]) {
