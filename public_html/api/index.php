@@ -77,7 +77,6 @@
                     $status = $msg['gone'];
                     $data = 'The database ' . $user_db . 'does not exist. Use GET db=new to request a new database or use PUT without specifying a database.';
                 }
-                $yearquery = '';
                 if ($_POST['years']) {
                     $yearquery = '(';
                     foreach (explode(',', $_POST['years']) as $year) {
@@ -92,6 +91,17 @@
                     $yearquery .= '0)'; // A literal "false" to end the sequence of "ORs"
                 } else {
                     $yearquery = '1'; // If no years, then return a true value
+                }
+                $countries = array();
+                if ($_POST['countries']) {
+                    $countryquery = '(';
+                    foreach (explode(',', $_POST['countries']) as $country) {
+                        $countries[] = $country;
+                        $countryquery .= 'code = "' . $country . '" OR ';
+                    }
+                    $countryquery .= '0)';
+                } else {
+                    $countryquery = '1';
                 }
                 if ($_POST['reset']) {
                     $shared_params = $shared_params_default;
