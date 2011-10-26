@@ -2,7 +2,7 @@
     
 $viewquery = <<< EOSQL
     CREATE TEMPORARY VIEW disp_temp AS
-        SELECT country.iso3 AS iso3, country.name AS country,
+        SELECT country.iso3 AS code, country.name AS name,
             core.year AS year, 1e-6 * pop_person AS pop_mln, gdp_blnUSDMER,
             ppp2mer * gdp_blnUSDMER AS gdp_blnUSDPPP,
             (11.0/3.0) * fossil_CO2_MtC AS fossil_CO2_MtCO2,

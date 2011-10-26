@@ -108,8 +108,8 @@
                 include('api_tabsep.php');
                 unset($fw);
                 
-                # These files are created in api_tabsep_php
-                $data = array('tsfile' => $tsfile, 'dlfile' => $dlfile);
+                # The data_array is created in 'api_tabsep.php'
+                $data = json_encode($data_array);
                 $status = $msg['OK'];
                 break;
             default:
@@ -132,30 +132,11 @@
     ################################################
     $result = process_request();
     
-    header("Cache-Control: no-cache, must-revalidate");
-    header("Pragma: no-cache");
-    if ($result['status'] != $msg['OK']) {
+    if ($result['status'] != $msg['OK'] || $_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
         header("Content-type: text/plain");
-        echo $result['data'];
     } else {
-        switch ($_SERVER['REQUEST_METHOD']) {
-            case 'OPTIONS':
-               header("Content-type: text/plain");
-               echo $result['data'];
-               break;
-            case 'GET':
-                header("Content-type: application/json");
-                echo $result['data'];
-                break;
-            case 'POST':
-                $tsfile = $result['data']['tsfile'];
-                header("Content-type: text/tab-separated-values");
-                header("Content-Length: " . filesize($tsfile));
-                header("Content-Disposition: attachment; filename=\"" . $dlfile . "\"" );
-                header("Content-Description: PHP/INTERBASE Generated Data" );
-                readfile($tsfile);
-                break;
-        }
+        header("Content-type: application/json");
     }
+    echo $result['data'];
     
     

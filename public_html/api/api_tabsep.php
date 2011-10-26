@@ -7,20 +7,13 @@ $db = new PDO($database) OR die("<p>Can't open database</p>");
 // Start with the core SQL view
 $db->query($viewquery);
 
-$dlfile = "gdrs_all_output.xls";
-$tsfile = tempnam("/***REMOVED***/sessions/gdrs-db", "gdrs-tabsep-");
+$data_array = array();
 
-$fp = fopen($tsfile, "w");
-if (!is_resource($fp))
-{
-    die("Cannot open $tsfile");
-}
-
-$query = $db->query("SELECT * FROM disp_temp WHERE " . $yearquery . " ORDER BY country;");
+$query = $db->query("SELECT * FROM disp_temp WHERE " . $yearquery . " ORDER BY name;");
 if ($record = $query->fetch(PDO::FETCH_ASSOC)) {
-    fwrite($fp, implode("\t", array_keys($record)) . "\n");
+    $data_array[] = $record;
     do {
-        fwrite($fp, implode("\t", $record) . "\n");
+        $data_array[] = $record;
     } while ($record = $query->fetch(PDO::FETCH_ASSOC));
 }
 
@@ -33,24 +26,26 @@ foreach (array_slice($db->query("PRAGMA table_info(disp_temp)")->fetchAll(PDO::F
     $region_sql .= ", sum($col) AS $col";
 }
 $global_sql = $region_sql . " FROM disp_temp WHERE " . $yearquery . " GROUP BY year;";
-$region_sql .= " FROM disp_temp, flags WHERE flags.iso3 = disp_temp.iso3 AND ";
+$region_sql .= " FROM disp_temp, flags WHERE flags.iso3 = disp_temp.code AND ";
 $region_sql .= "flags.value = 1 AND flags.flag = ? AND " . $yearquery . " GROUP BY year;";
 
 // Global
-$row_start = "\tWorld\t";
-foreach ($db->query($global_sql, PDO::FETCH_NUM) as $record) {
-    fwrite($fp, $row_start . implode("\t", $record) . "\n");
+$row_start = array('code' => "World", 'name' => "World");
+foreach ($db->query($global_sql, PDO::FETCH_ASSOC) as $record) {
+    $data_array[] = array_merge($row_start, $record);
 }
 
 // Regional
 $region_query = $db->prepare($region_sql);
 foreach ($db->query('SELECT * FROM flag_names') as $flags) {
     $longname = $flags["long_name"];
-    $row_start = "\t$longname\t";
-    $region_query->execute(array($flags["flag"]));
-    foreach ($region_query->fetchAll(PDO::FETCH_NUM) as $record) {
-        fwrite($fp, $row_start . implode("\t", $record) . "\n");
+    $shortname = $flags["flag"];
+    $row_start = array('code' => $shortname, 'name' => $longname);
+    $region_query->execute(array($shortname));
+    foreach ($region_query->fetchAll(PDO::FETCH_ASSOC) as $record) {
+        $data_array[] = array_merge($row_start, $record);
     }
+    
 }
 
 fclose($fp);
