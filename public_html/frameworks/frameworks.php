@@ -382,6 +382,10 @@
                     }
                 }
             }
+            
+            // Close down nicely
+            $master_db_cnx = NULL;
+            
             return $retval;
         }
         
