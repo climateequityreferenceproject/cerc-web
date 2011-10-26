@@ -47,5 +47,3 @@ foreach ($db->query('SELECT * FROM flag_names') as $flags) {
     }
     
 }
-
-fclose($fp);
