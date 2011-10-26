@@ -21,7 +21,7 @@
 
         $shared_params_default = Framework::get_shared_params();
         $fw_params_default = $fw->get_fw_params();
-        $params_default = array('shared' => $shared_params_default, 'gdrs' => $fw_params_default);
+        $params_default = array_merge($shared_params_default, $fw_params_default);
         
         if (isset($_COOKIE['api_shared_params'])) {
             $shared_params = unserialize(stripslashes($_COOKIE['api_shared_params']));
@@ -33,7 +33,7 @@
         } else {
             $fw_params = $fw_params_default;
         }
-        $params = array('shared' => $shared_params, 'gdrs' => $fw_params);
+        $params = array_merge($shared_params, $fw_params);
 
         if ($_POST['db']) {
             $user_db = $_POST['db'];
@@ -109,7 +109,7 @@
                 }
                 get_usr_vals($shared_params);
                 get_usr_vals($fw_params);
-                $params = array('shared' => $shared_params, 'gdrs' => $fw_params);
+                $params = array_merge($shared_params, $fw_params);
 
                 setcookie('api_shared_params',serialize($shared_params),time()+60*60*24*365);
                 setcookie('api_fw_params',serialize($fw_params),time()+60*60*24*365);
