@@ -25,14 +25,20 @@
         
         if (isset($_COOKIE['api_shared_params'])) {
             $shared_params = unserialize(stripslashes($_COOKIE['api_shared_params']));
+            if (!is_array($shared_params)) {
+                $shared_params = $shared_params_default;
+            }
         } else {
             $shared_params = $shared_params_default;
         }
         if (isset($_COOKIE['api_fw_params'])) {
-            $fw_params = unserialize(stripslashes($_COOKIE['api_fw_params']));    
+            $fw_params = unserialize(stripslashes($_COOKIE['api_fw_params']));
+            if (!is_array($fw_params)) {
+                $fw_params = $fw_params_default;
+            }
         } else {
             $fw_params = $fw_params_default;
-        }
+        }        
         $params = array_merge($shared_params, $fw_params);
 
         if ($_POST['db']) {
