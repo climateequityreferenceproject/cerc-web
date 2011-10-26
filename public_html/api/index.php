@@ -22,7 +22,7 @@
         $shared_params_default = Framework::get_shared_params();
         $fw_params_default = $fw->get_fw_params();
         $params_default = array('shared' => $shared_params_default, 'gdrs' => $fw_params_default);
-        ;
+        
         if (isset($_COOKIE['api_shared_params'])) {
             $shared_params = unserialize(stripslashes($_COOKIE['api_shared_params']));
         } else {
@@ -141,6 +141,11 @@
     #
     ################################################
     $result = process_request();
+    
+    // Remove the file, if not passed as a parameter
+    if (file_exists($user_db) && !$_POST['db']) {
+        unlink($user_db);
+    }
     
     if ($result['status'] != $msg['OK'] || $_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
         header("Content-type: text/plain");
