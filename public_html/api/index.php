@@ -4,18 +4,19 @@
     $msg['gone'] = '410 Gone';
     $msg['badreq'] = '400 Bad request';
 
+    function get_usr_vals(&$array) {
+        foreach($array as $key => $val) {
+            if (isset($_POST[$key])) {
+                $array[$key]['value'] = $_POST[$key];
+            }
+        }
+    }
+    
     function process_request() {
         global $msg;
 
         /*** Calculator parameters *************************************************/
         // Function to update parameters array with last user values, if any
-        function get_usr_vals(&$array) {
-            foreach($array as $key => $val) {
-                if (isset($_POST[$key])) {
-                    $array[$key]['value'] = $_POST[$key];
-                }
-            }
-        }
 
         $fw = new Framework::$frameworks["gdrs"]['class'];
 
@@ -116,7 +117,7 @@
                 get_usr_vals($shared_params);
                 get_usr_vals($fw_params);
                 $params = array_merge($shared_params, $fw_params);
-
+                
                 setcookie('api_shared_params',serialize($shared_params),time()+60*60*24*365);
                 setcookie('api_fw_params',serialize($fw_params),time()+60*60*24*365);
                 
