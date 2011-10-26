@@ -61,7 +61,6 @@
         // ----------------------------------------------------------------
         public static function get_shared_params() {
             $retval = self::$shared_params_default;
-            // Get the list of emergency pathways
             try {
                 $master_db_cnx = new PDO('sqlite:'.self::$master_db);
             } catch (PDOException $e) {
@@ -85,6 +84,7 @@
                 }
             } 
 
+            // Get the list of emergency pathways
             $pathway_array = array();
             foreach ($master_db_cnx->query('SELECT name_long, pathway_id FROM pathway_names ORDER BY pathway_id') as $pathways) {
                 $pathway_array[] = array('display_name' => $pathways["name_long"]);
@@ -359,7 +359,30 @@
         public $table_views = array();
         
         public function get_fw_params() {
-            return $this->fw_params_default;
+            $retval = $this->fw_params_default;
+            try {
+                $master_db_cnx = new PDO('sqlite:'.self::$master_db);
+            } catch (PDOException $e) {
+                print "Error connecting to database: " . $e->getMessage() . "<br/>";
+                die();
+            }
+            
+            foreach ($master_db_cnx->query('SELECT param_id, int_val, real_val FROM params;') as $param_val) {
+                foreach ($retval as $key=>$value) {
+                    if ($value['db_param'] === $param_val['param_id']) {
+                        switch ($value['type']) {
+                            case 'int':
+                                $retval[$key]['value'] = intval($param_val['int_val']);
+                                break;
+                            case 'real':
+                                $retval[$key]['value'] = floatval($param_val['real_val']);
+                                break;                                
+                        }
+                        break; // Leave inner loop: found it
+                    }
+                }
+            }
+            return $retval;
         }
         
         public function get_table_views() {
