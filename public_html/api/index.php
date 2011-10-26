@@ -77,6 +77,22 @@
                     $status = $msg['gone'];
                     $data = 'The database ' . $user_db . 'does not exist. Use GET db=new to request a new database or use PUT without specifying a database.';
                 }
+                $yearquery = '';
+                if ($_POST['years']) {
+                    $yearquery = '(';
+                    foreach (explode(',', $_POST['years']) as $year) {
+                        // Is this a range?
+                        if (strpos($year,':') === false) {
+                            $yearquery .= 'year = ' . $year . ' OR ';
+                        } else {
+                            $yearrange = explode(':', $year);
+                            $yearquery .= '(year >= ' . $yearrange[0] . ' AND year <=' . $yearrange[1] . ') OR ';
+                        }
+                    }
+                    $yearquery .= '0)'; // A literal "false" to end the sequence of "ORs"
+                } else {
+                    $yearquery = '1'; // If no years, then return a true value
+                }
                 if ($_POST['reset']) {
                     $shared_params = $shared_params_default;
                     $fw_params = $fw_params_default;

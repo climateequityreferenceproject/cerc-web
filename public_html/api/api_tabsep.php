@@ -16,7 +16,7 @@ if (!is_resource($fp))
     die("Cannot open $tsfile");
 }
 
-$query = $db->query("SELECT * FROM disp_temp ORDER BY country;");
+$query = $db->query("SELECT * FROM disp_temp WHERE " . $yearquery . " ORDER BY country;");
 if ($record = $query->fetch(PDO::FETCH_ASSOC)) {
     fwrite($fp, implode("\t", array_keys($record)) . "\n");
     do {
@@ -32,9 +32,9 @@ $region_sql = "SELECT year";
 foreach (array_slice($db->query("PRAGMA table_info(disp_temp)")->fetchAll(PDO::FETCH_COLUMN, 1), 3) as $col) {
     $region_sql .= ", sum($col) AS $col";
 }
-$global_sql = $region_sql . " FROM disp_temp GROUP BY year;";
+$global_sql = $region_sql . " FROM disp_temp WHERE " . $yearquery . " GROUP BY year;";
 $region_sql .= " FROM disp_temp, flags WHERE flags.iso3 = disp_temp.iso3 AND ";
-$region_sql .= "flags.value = 1 AND flags.flag = ? GROUP BY year;";
+$region_sql .= "flags.value = 1 AND flags.flag = ? AND " . $yearquery . " GROUP BY year;";
 
 // Global
 $row_start = "\tWorld\t";
