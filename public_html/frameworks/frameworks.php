@@ -393,6 +393,36 @@
             return $this->table_views;
         }
         
+        public function get_year_range() {
+            try {
+                $master_db_cnx = new PDO('sqlite:'.self::$master_db);
+            } catch (PDOException $e) {
+                print "Error connecting to database: " . $e->getMessage() . "<br/>";
+                die();
+            }
+            
+            // Create the pathway/baseline temporary view
+            $query = self::sql_views_baseline_ep();
+            $master_db_cnx->beginTransaction();
+            $master_db_cnx->exec($query);
+            $master_db_cnx->commit();
+            $query = "SELECT MIN(year) AS min_year FROM temp_base_with_ep WHERE Baseline_MtC IS NOT NULL;";           
+            $stmt = $master_db_cnx->query($query);
+            $result = $stmt->fetchAll();
+            $min_year = $result[0][0];
+            $stmt->closeCursor();
+            $query = "SELECT MAX(year) AS max_year FROM temp_base_with_ep WHERE Baseline_MtC IS NOT NULL AND emerg_path_GtC IS NOT NULL;";
+            $stmt = $master_db_cnx->query($query);
+            $result = $stmt->fetchAll();          
+            $max_year = $result[0][0];
+
+            // Close down nicely
+            $master_db_cnx = NULL;
+            
+            return array('min_year' => $min_year, 'max_year' => $max_year);
+
+        }
+        
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         //
         // SQL helper functions--return a query
