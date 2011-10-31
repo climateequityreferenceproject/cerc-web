@@ -24,29 +24,21 @@
         $fw_params_default = $fw->get_fw_params();
         $params_default = array_merge($shared_params_default, $fw_params_default);
         
-        if (isset($_COOKIE['api_shared_params'])) {
-            $shared_params = unserialize(stripslashes($_COOKIE['api_shared_params']));
-            if (!is_array($shared_params)) {
-                $shared_params = $shared_params_default;
+        if ($_POST['db'] || $_GET['db']) {
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $user_db = Framework::add_user_db_path($_POST['db']);
+            } else {
+                $user_db = Framework::add_user_db_path($_GET['db']);
             }
-        } else {
-            $shared_params = $shared_params_default;
-        }
-        if (isset($_COOKIE['api_fw_params'])) {
-            $fw_params = unserialize(stripslashes($_COOKIE['api_fw_params']));
-            if (!is_array($fw_params)) {
-                $fw_params = $fw_params_default;
-            }
-        } else {
-            $fw_params = $fw_params_default;
-        }        
-        $params = array_merge($shared_params, $fw_params);
-
-        if ($_POST['db']) {
-            $user_db = $_POST['db'];
+            $shared_params = Framework::get_shared_params($user_db);
+            $fw_params = $fw->get_fw_params($user_db);
         } else {
             $user_db = Framework::get_user_db();
+            $shared_params = $shared_params_default;
+            $fw_params = $fw_params_default;
         }
+        
+        $params = array_merge($shared_params, $fw_params);
         
         $data = '';
         $allow = null;
@@ -57,32 +49,25 @@
                 $data = 'Available methods are GET and POST';
                 break;
             case 'GET':
-                if ($_GET['db']) {
-                    $data = json_encode(array('db' => $user_db));
+                if ($_GET['q'] === 'new_db') {
+                    $data = json_encode(array('db' => Framework::get_db_name($user_db)));
                     $status = $msg['OK'];
-                } elseif ($_GET['params']) {
-                    switch ($_GET['params']) {
-                        case 'current':
-                            $data = json_encode($params);
-                            $status = $msg['OK'];
-                            break;
-                        case 'default':
-                            $data = json_encode($params_default);
-                            $status = $msg['OK'];
-                            break;
-                        default:
-                            $data = "GET: params can be either 'current' or 'default'";
-                            $status = $msg['badreq'];
+                } elseif ($_GET['q'] === 'params') {
+                    if ($_GET['db']) {
+                        $data = json_encode($params);
+                    } else {
+                        $data = json_encode($params_default);
                     }
+                    $status = $msg['OK'];
                 } else {
-                    $data = "GET: Must be one of 'db=new', 'params=current', 'params=default'";
+                    $data = "GET: Must be one of 'q=new_db', 'q=params', 'q=params&db=dbname'";
                     $status = $msg['badreq'];
                 }
                 break;
             case 'POST':
                 if (!file_exists($user_db)) {
                     $status = $msg['gone'];
-                    $data = 'The database ' . $user_db . 'does not exist. Use GET db=new to request a new database or use PUT without specifying a database.';
+                    $data = 'The database ' . $user_db . 'does not exist. Use get=new_db to request a new database or use PUT without specifying a database.';
                 }
                 if ($_POST['years']) {
                     $yearquery = '(';
@@ -117,9 +102,6 @@
                 get_usr_vals($shared_params);
                 get_usr_vals($fw_params);
                 $params = array_merge($shared_params, $fw_params);
-                
-                setcookie('api_shared_params',serialize($shared_params),time()+60*60*24*365);
-                setcookie('api_fw_params',serialize($fw_params),time()+60*60*24*365);
                 
                 $fw->calculate($user_db, $shared_params, $fw_params);
                 include('api_tabsep.php');

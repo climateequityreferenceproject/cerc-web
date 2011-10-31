@@ -51,6 +51,15 @@
             return $user_db;
         }
         
+        public static function add_user_db_path($dbname) {
+            return realpath(self::$user_db_path . '/' . $dbname);
+        }
+        
+        // Just a synonym for basename
+        public static function get_db_name($user_db) {
+            return basename($user_db);
+        }
+        
         // ----------------------------------------------------------------
         // Return the full list of parameters that are shared by all
         // frameworks. Each framework might have its own, framework-
@@ -59,16 +68,20 @@
         // pathways from the database to fill into the shared parameters
         // array.
         // ----------------------------------------------------------------
-        public static function get_shared_params() {
+        public static function get_shared_params($user_db = NULL) {
             $retval = self::$shared_params_default;
             try {
-                $master_db_cnx = new PDO('sqlite:'.self::$master_db);
+                if ($user_db) {
+                    $db_cnx = new PDO('sqlite:'.$user_db);
+                } else {
+                    $db_cnx = new PDO('sqlite:'.self::$master_db);
+                }
             } catch (PDOException $e) {
                 print "Error connecting to database: " . $e->getMessage() . "<br/>";
                 die();
             }
             
-            foreach ($master_db_cnx->query('SELECT param_id, int_val, real_val FROM params;') as $param_val) {
+            foreach ($db_cnx->query('SELECT param_id, int_val, real_val FROM params;') as $param_val) {
                 foreach ($retval as $key=>$value) {
                     if ($value['db_param'] === $param_val['param_id']) {
                         switch ($value['type']) {
@@ -86,13 +99,13 @@
 
             // Get the list of emergency pathways
             $pathway_array = array();
-            foreach ($master_db_cnx->query('SELECT name_long, pathway_id FROM pathway_names ORDER BY pathway_id') as $pathways) {
+            foreach ($db_cnx->query('SELECT name_long, pathway_id FROM pathway_names ORDER BY pathway_id') as $pathways) {
                 $pathway_array[] = array('display_name' => $pathways["name_long"]);
             }
             $retval['emergency_path']['list'] = $pathway_array;
             
             // Close down nicely
-            $master_db_cnx = NULL;
+            $db_cnx = NULL;
             
             return $retval;
         }
@@ -358,16 +371,20 @@
         public $fw_params_default = array();
         public $table_views = array();
         
-        public function get_fw_params() {
+        public function get_fw_params($user_db = NULL) {
             $retval = $this->fw_params_default;
             try {
-                $master_db_cnx = new PDO('sqlite:'.self::$master_db);
+                if ($user_db) {
+                    $db_cnx = new PDO('sqlite:'.$user_db);
+                } else {
+                    $db_cnx = new PDO('sqlite:'.self::$master_db);
+                }
             } catch (PDOException $e) {
                 print "Error connecting to database: " . $e->getMessage() . "<br/>";
                 die();
             }
             
-            foreach ($master_db_cnx->query('SELECT param_id, int_val, real_val FROM params;') as $param_val) {
+            foreach ($db_cnx->query('SELECT param_id, int_val, real_val FROM params;') as $param_val) {
                 foreach ($retval as $key=>$value) {
                     if ($value['db_param'] === $param_val['param_id']) {
                         switch ($value['type']) {
@@ -384,7 +401,7 @@
             }
             
             // Close down nicely
-            $master_db_cnx = NULL;
+            $db_cnx = NULL;
             
             return $retval;
         }
