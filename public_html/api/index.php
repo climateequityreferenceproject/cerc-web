@@ -59,6 +59,13 @@
                         $data = json_encode($params_default);
                     }
                     $status = $msg['OK'];
+                } elseif ($_GET['q'] === 'year_range') {
+                    if ($_GET['db']) {
+                        $data = json_encode(Framework::get_year_range($user_db));
+                    } else {
+                        $data = json_encode(Framework::get_year_range());
+                    }
+                    $status = $msg['OK'];
                 } else {
                     $data = "GET: Must be one of 'q=new_db', 'q=params', 'q=params&db=dbname'";
                     $status = $msg['badreq'];
