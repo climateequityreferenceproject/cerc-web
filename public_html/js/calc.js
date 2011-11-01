@@ -96,7 +96,7 @@ $(function() {
     //get region country data
     // show spinner
     $('#loading').show();
-    $.post("./tables/getRegionCoutry.php", {
+    $.post("./tables/get_region_country\n\.php", {
         action:'getData',
         user_db:$('#user_db').val()
     }, function(data){
