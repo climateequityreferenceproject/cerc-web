@@ -66,8 +66,23 @@
                         $data = json_encode(Framework::get_year_range());
                     }
                     $status = $msg['OK'];
+                } elseif ($_GET['q'] === 'data_ver') {
+                    if ($_GET['db']) {
+                        $data = json_encode(Framework::get_data_ver($user_db));
+                    } else {
+                        $data = json_encode(Framework::get_data_ver());
+                    }
+                    $status = $msg['OK'];
+                } elseif ($_GET['q'] === 'calc_ver') {
+                    if ($_GET['db']) {
+                        $data = json_encode(Framework::get_calc_ver($user_db));
+                    } else {
+                        $data = json_encode(Framework::get_calc_ver());
+                    }
+                    $status = $msg['OK'];
                 } else {
-                    $data = "GET: Must be one of 'q=new_db', 'q=params', 'q=params&db=dbname'";
+                    $data = "GET: Must be one of 'q=new_db', 'q=params', 'q=params&db=dbname' ";
+                    $data .= "'q=data_ver', 'q=data_ver&db=dbname', 'q=calc_ver', 'q=calc_ver&db=db_name'";
                     $status = $msg['badreq'];
                 }
                 break;

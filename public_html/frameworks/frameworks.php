@@ -60,6 +60,38 @@
             return basename($user_db);
         }
         
+        public static function get_data_ver($user_db = NULL) {
+            try {
+                if ($user_db) {
+                    $db_cnx = new PDO('sqlite:'.$user_db);
+                } else {
+                    $db_cnx = new PDO('sqlite:'.self::$master_db);
+                }
+            } catch (PDOException $e) {
+                print "Error connecting to database: " . $e->getMessage() . "<br/>";
+                die();
+            }
+            
+            $query_result = $db_cnx->query('SELECT data_version FROM meta;')->fetchAll();
+            return $query_result[0]['data_version'];
+        }
+
+        public static function get_calc_ver($user_db = NULL) {
+            try {
+                if ($user_db) {
+                    $db_cnx = new PDO('sqlite:'.$user_db);
+                } else {
+                    $db_cnx = new PDO('sqlite:'.self::$master_db);
+                }
+            } catch (PDOException $e) {
+                print "Error connecting to database: " . $e->getMessage() . "<br/>";
+                die();
+            }
+            
+            $query_result = $db_cnx->query('SELECT calc_version FROM meta;')->fetchAll();
+            return $query_result[0]['calc_version'];
+        }
+        
         // ----------------------------------------------------------------
         // Return the full list of parameters that are shared by all
         // frameworks. Each framework might have its own, framework-
