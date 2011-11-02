@@ -128,6 +128,41 @@
             return $query_result[0]['calc_version'];
         }
         
+        public static function get_year_range($user_db = NULL) {
+            try {
+                if ($user_db) {
+                    $db_cnx = new PDO('sqlite:'.$user_db);
+                } else {
+                    $db_cnx = new PDO('sqlite:'.self::$master_db);
+                }
+
+            } catch (PDOException $e) {
+                print "Error connecting to database: " . $e->getMessage() . "<br/>";
+                die();
+            }
+            
+            // Create the pathway/baseline temporary view
+            $query = self::sql_views_baseline_ep();
+            $db_cnx->beginTransaction();
+            $db_cnx->exec($query);
+            $db_cnx->commit();
+            $query = "SELECT MIN(year) AS min_year FROM temp_base_with_ep WHERE Baseline_MtC IS NOT NULL;";           
+            $stmt = $db_cnx->query($query);
+            $result = $stmt->fetchAll();
+            $min_year = $result[0][0];
+            $stmt->closeCursor();
+            $query = "SELECT MAX(year) AS max_year FROM temp_base_with_ep WHERE (Baseline_MtC IS NOT NULL) AND (emerg_path_GtC IS NOT NULL);";
+            $stmt = $db_cnx->query($query);
+            $result = $stmt->fetchAll();          
+            $max_year = $result[0][0];
+
+            // Close down nicely
+            $db_cnx = NULL;
+            
+            return array('min_year' => $min_year, 'max_year' => $max_year);
+
+        }
+        
         // ----------------------------------------------------------------
         // Return the full list of parameters that are shared by all
         // frameworks. Each framework might have its own, framework-
@@ -172,6 +207,10 @@
             }
             $retval['emergency_path']['list'] = $pathway_array;
             
+            // Check the year range and apply to 'cum_since_year': Note that this does not update the user's current choice of cum_since_year
+            $year_range = self::get_year_range($user_db);
+            $retval['cum_since_yr']['min'] = $year_range['min_year'];
+            
             // Close down nicely
             $db_cnx = NULL;
             
@@ -191,7 +230,7 @@
                                 'advanced' => false,
                                 'db_param' => 'cumsince',
                                 'value' => NULL,
-                                'min' => 1850,
+                                'min' => NULL,
                                 'max' => 2010,
                                 'step' => 10,
                                 'list' => NULL,
@@ -476,41 +515,6 @@
         
         public function get_table_views() {
             return $this->table_views;
-        }
-        
-        public function get_year_range($user_db = NULL) {
-            try {
-                if ($user_db) {
-                    $db_cnx = new PDO('sqlite:'.$user_db);
-                } else {
-                    $db_cnx = new PDO('sqlite:'.self::$master_db);
-                }
-
-            } catch (PDOException $e) {
-                print "Error connecting to database: " . $e->getMessage() . "<br/>";
-                die();
-            }
-            
-            // Create the pathway/baseline temporary view
-            $query = self::sql_views_baseline_ep();
-            $db_cnx->beginTransaction();
-            $db_cnx->exec($query);
-            $db_cnx->commit();
-            $query = "SELECT MIN(year) AS min_year FROM temp_base_with_ep WHERE Baseline_MtC IS NOT NULL;";           
-            $stmt = $db_cnx->query($query);
-            $result = $stmt->fetchAll();
-            $min_year = $result[0][0];
-            $stmt->closeCursor();
-            $query = "SELECT MAX(year) AS max_year FROM temp_base_with_ep WHERE (Baseline_MtC IS NOT NULL) AND (emerg_path_GtC IS NOT NULL);";
-            $stmt = $db_cnx->query($query);
-            $result = $stmt->fetchAll();          
-            $max_year = $result[0][0];
-
-            // Close down nicely
-            $db_cnx = NULL;
-            
-            return array('min_year' => $min_year, 'max_year' => $max_year);
-
         }
         
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
