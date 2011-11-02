@@ -87,6 +87,7 @@
         }
         
         public static function add_user_db_path($dbname) {
+            // Note that this will return FALSE if the file does not exist
             return realpath(self::$user_db_path . '/' . $dbname);
         }
         
