@@ -33,7 +33,19 @@
             $shared_params = Framework::get_shared_params($user_db);
             $fw_params = $fw->get_fw_params($user_db);
         } else {
-            $user_db = Framework::get_user_db();
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $create = TRUE;
+            } else {
+                $create = FALSE;
+            }
+            $db_array = Framework::dup_master_db('calc', $create);
+            $master_db = $db_array['db'];
+            if ($db_array['did_create']) {
+                // Created a new one, so run it
+                $fw->calculate($master_db, $shared_params_default, $fw_params_default);
+            }
+            // Copy an already calculated database (if it exists)
+            $user_db = Framework::get_user_db($master_db);
             $shared_params = $shared_params_default;
             $fw_params = $fw_params_default;
         }

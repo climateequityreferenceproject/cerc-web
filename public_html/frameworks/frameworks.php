@@ -45,10 +45,45 @@
         // Create a copy of the master database for individual use and
         // return the filename.
         // ----------------------------------------------------------------
-        public static function get_user_db() {
+        // This creates a temporary database that will be deleted either immediately after use or using cron
+        // If $db is specified, will make a copy of that, rather than using the master
+        public static function get_user_db($db = NULL) {
             $user_db = tempnam(self::$user_db_path, "fw-sql3-");
-            copy(self::$master_db, $user_db) or die("Couldn't create '" + $user_db + "'");
+            if ($db) {
+                $db_to_copy = $db;
+            } else {
+                $db_to_copy = self::$master_db;
+            }
+            copy($db_to_copy, $user_db) or die("Couldn't create '" + $user_db + "'");
             return $user_db;
+        }
+        
+        // This creates a permanent copy of the master database, unless it is overwritten using this command
+        //    $modifier: text to add to the master database name, in a standard format
+        //               calls to this function using the same modifier will point to the same copy
+        //    $create:   flag to create the database (if FALSE, this just returns the path)
+        //    $force:    flag to create the database even if a) it exists and b) has the same version number
+        //               as the master. normally this is FALSE
+        //
+        //    Returns: Array('did_create' => TRUE or FALSE, 'db' => full path to db file)
+        public static function dup_master_db($modifier, $create = FALSE, $force = FALSE) {
+            $did_create = FALSE;
+            $dbname = $modifier . "_" . basename(self::$master_db);
+            $db = dirname(self::$master_db) . "/" . $dbname;
+            if ($create) {
+                // Definitely create if a) forcing or b) file doesn't already exist
+                $do_create = $force || !file_exists($db);
+                if (!$do_create) {
+                    // Compare version numbers--maybe no need
+                    $do_create = (self::get_data_ver() !== self::get_data_ver($db)) || (self::get_calc_ver() !== self::get_calc_ver($db));
+                }
+                if ($do_create) {
+                    if (copy(self::$master_db, $db)) {
+                        $did_create = TRUE;
+                    }
+                }
+            }
+            return array('did_create' => $did_create, 'db' => $db);
         }
         
         public static function add_user_db_path($dbname) {
