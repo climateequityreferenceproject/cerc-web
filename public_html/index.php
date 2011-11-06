@@ -23,7 +23,7 @@ include("form_functions.php");
         <script type="text/javascript" src="js/calc.js"></script>
     </head>
     <body id="gdrs_calculator">
-       	<div id="loading"><img src="img/spinner.gif" alt="loading indicator" /></div>
+       	<div id="loading"></div>
         <?php echo get_navigation(); ?>
         <div id="calc_container" class="group">
             <form action="" method="post" name="form1" id="form1" class="group">

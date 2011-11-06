@@ -36,10 +36,14 @@ $(function() {
     $('#form1').append('<input type="submit" name="forcesubmit" id="forcesubmit" value="forcesubmit" />');
     $('#forcesubmit').hide();
     
-    $('#framework').change(function() {
-        $('#forcesubmit').click();
-    });
-
+    // If JS is enabled, hide the submit button
+    $('#submit').hide();
+    
+    $('#loading').html('<img src="img/spinner.gif" alt="loading indicator" />');
+    
+    //--------------------------------------------------
+    // User actions that result in a refresh of the page
+    //--------------------------------------------------
     $('#basic').click(function() {
         $('#reset').click();
     });
@@ -47,7 +51,34 @@ $(function() {
     $('#adv').click(function() {
         $('#forcesubmit').click();
     });
-
+    
+    $('#table_view').change(submit);
+    $('#display_yr').change(submit);
+    $('#decimal_pl').change(submit);
+    $('#emergency_path').change(submit);
+    $('#baseline').change(submit);
+    $('#cum_since_yr').change(submit);
+    $('#use_lulucf').change(submit);
+    $('#use_nonco2').change(submit);
+    $('#use_netexports').change(submit);
+    $('#dev_thresh').change(submit);
+    $('#lux_thresh').change(submit);
+    $('#do_luxcap').change(submit);
+    $('#mid_rate').change(submit);
+    $('#r_wt').change(submit);
+    $('#percent_gwp').change(submit);
+    $('#em_elast').change(submit);
+    $('#use_sequencing').change(submit);
+    // TODO: These should only be run if use sequencing is checked
+    $('#percent_a1_rdxn').change(submit);
+    $('#base_levels_yr').change(submit);
+    $('#end_commitment_period').change(submit);
+    $('#a1_smoothing').change(submit);
+    $('#mit_gap_borne').change(submit);
+    
+    //--------------------------------------------------
+    // Action on form submit
+    //--------------------------------------------------
     $('#submit').click(function() {
 
         // show spinner
@@ -113,6 +144,10 @@ $(function() {
     }, 'json');
 
 });
+
+function submit() {
+    $('#submit').click();
+}
 
 function uniqid()
 {

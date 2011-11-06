@@ -18,7 +18,7 @@
         /*** Calculator parameters *************************************************/
         // Function to update parameters array with last user values, if any
 
-        $fw = new Framework::$frameworks["gdrs"]['class'];
+        $fw = new Framework::$frameworks['gdrs']['class'];
 
         $shared_params_default = Framework::get_shared_params();
         $fw_params_default = $fw->get_fw_params();

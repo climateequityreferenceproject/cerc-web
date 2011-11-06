@@ -1,11 +1,23 @@
 <?php
     include("frameworks/frameworks.php");
+    
+    // Always using GDRs framework now
+    $shared_params = Framework::get_shared_params();
+    $fw = new Framework::$frameworks['gdrs']['class'];
+    $fw_params = $fw->get_fw_params();
+    
     /*** Databases ************************************************************/
     // Create database filename if doesn't already exist
     if ($_POST['user_db']) {
         $user_db = $_POST['user_db'];
     } else {
-        $user_db = Framework::get_user_db();
+        $db_array = Framework::dup_master_db('calc', $create);
+        $master_db = $db_array['db'];
+        if ($db_array['did_create']) {
+            // Created a new one, so run it
+            $fw->calculate($master_db, $shared_params, $fw_params);
+        }
+        $user_db = Framework::get_user_db($master_db);
     }
 
     // If just asking for the db name (or to create a db) then that is all this script does
@@ -121,15 +133,6 @@
     // TODO: implement mid_rate - marginal nominal tax rate b/n dev and lux - as slider 0-100
     // TODO: implement tax_income_level - income level for nominal personal tax - as separate script?    
 
-    $shared_params = Framework::get_shared_params();
-    // Redundant but convenient to have both
-    $frameworks = Framework::get_frameworks();
-    $display_params['framework']['list'] = Framework::get_frameworks();
-    
-    // Access array of frameworks
-    //   $frameworks['id'] = array('name'=> '...', 'class' => '...')
-    $fw = new Framework::$frameworks[$display_params['framework']['value']]['class'];
-    $fw_params = $fw->get_fw_params();
     
     // Redundant but convenient to have both
     $table_views = $fw->get_table_views();
