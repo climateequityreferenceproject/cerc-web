@@ -11,10 +11,10 @@ include("form_functions.php");
         echo get_head("Greenhouse Development Rights online calculator", array(array('href' => "css/gdrscalc.css", 'media' => "all"), array('href' => "css/tablesorter.css", 'media' => "all")));
         ?>
         <!--[if IE 6]>
-        	<link href="css/ie6.css" media="screen, projection" rel="stylesheet" type="text/css" />
+            <link href="css/ie6.css" media="screen, projection" rel="stylesheet" type="text/css" />
         <![endif]-->
         <!--[if IE 7]>
-        	<link href="css/ie7.css" media="screen, projection" rel="stylesheet" type="text/css" />
+            <link href="css/ie7.css" media="screen, projection" rel="stylesheet" type="text/css" />
         <![endif]-->
         <!--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>-->
         <script type="text/javascript" src="js/jquery-1.4.4.min.js"></script>
@@ -23,7 +23,7 @@ include("form_functions.php");
         <script type="text/javascript" src="js/calc.js"></script>
     </head>
     <body id="gdrs_calculator">
-       	<div id="loading"></div>
+           <div id="loading"></div>
         <?php echo get_navigation(); ?>
         <div id="calc_container" class="group">
             <form action="" method="post" name="form1" id="form1" class="group">
@@ -209,6 +209,6 @@ include("form_functions.php");
                 ?>
                                    </div><!-- end #data -->
                                </div><!-- end #calc_container -->
-        <?php echo get_footer(); ?>
+        <?php echo get_footer(Framework::get_data_ver(), Framework::get_calc_ver()); ?>
     </body>
 </html>

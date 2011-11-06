@@ -73,12 +73,14 @@ return <<< EOHTML
 EOHTML;
     }
     
-    function get_footer() {
+    function get_footer($data_ver, $calc_ver) {
+        $year = date("Y");
 return <<< EOHTML
             <br class="clear"/>
         </div><!-- end #container -->
         <div id="footer">
-            <p>| <strong>Greenhouse Development Rights</strong> is a project of <a href="http://www.earthisland.org/">EcoEquity</a> and the <a href="http://www.sei-us.org">Stockholm Environment Institute</a> &#169; 2008 |</p>
+            <p>| <strong>Greenhouse Development Rights</strong> is a project of <a href="http://www.earthisland.org/">EcoEquity</a> and the <a href="http://www.sei-international.org">Stockholm Environment Institute</a> &#169; 2008-$year |</p>
+                <p>data version $data_ver : calculator version $calc_ver</p>
         </div><!-- end #footer -->
         <!--[imcode]*** Infinite Menus Settings / Code - This script reference must appear last. ***
         *Note: This script is required for scripted add on support and IE 6 sub menu functionality.
