@@ -1,5 +1,5 @@
 <?php
-    // This is meant to provide the intended interface, but is not the intended
+    // TODO: This is meant to provide the intended interface, but is not the intended
     // implementation (yet)
     
     function generate_entry($label, $val) {
@@ -7,10 +7,13 @@
     }
     
     function generate_table($display_params, $fw_params, $shared_params, $table_views, $user_db) {
+        $ep_index = $shared_params["emergency_path"]['value'];
+        $ep_name = $shared_params["emergency_path"]['list'][$ep_index]['display_name'];
+        
         $retval = "<h3><!--Table view: -->" . $table_views[$display_params["table_view"]['value']]['display_name'] . "</h3>\n";
         $retval .= '<div id="input_values" class="group"><table cellspacing="0" cellpadding="0">' . "\n";
         $retval .= "<tr>\n";
-        $retval .= generate_entry("Emergency pathway:", $shared_params["emergency_path"]['value']);
+        $retval .= generate_entry("Emergency pathway:", $ep_name);
         $retval .= generate_entry("Baseline:", "Default GDRs<!-- add baseline parameter variable and echo value here -->");
         $retval .= generate_entry("Development threshold:", $fw_params["dev_thresh"]['value']);
         $retval .= "</tr>\n";
