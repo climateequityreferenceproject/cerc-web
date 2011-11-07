@@ -48,9 +48,7 @@ $(function() {
         $('#reset').click();
     });
 
-    $('#adv').click(function() {
-        $('#forcesubmit').click();
-    });
+    $('#adv').click(forcesubmit);
     
     $('#table_view').change(submit);
     $('#display_yr').change(submit);
@@ -147,6 +145,10 @@ $(function() {
 
 function submit() {
     $('#submit').click();
+}
+
+function forcesubmit() {
+    $('#forcesubmit').click();
 }
 
 function uniqid()
