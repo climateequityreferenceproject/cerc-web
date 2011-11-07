@@ -19,8 +19,8 @@
         $retval .= "</tr>\n";
         $retval .= "<tr>\n";
         $retval .= generate_entry("Luxury threshold:", $fw_params["lux_thresh"]['value']);
+        $retval .= generate_entry("Cap baselines at luxury threshold:", $fw_params["do_luxcap"]['value'] ? "yes" : "no");
         $retval .= generate_entry("% between thresholds:", $fw_params["mid_rate"]['value'] . "%");
-        $retval .= "";
         $retval .= "</tr>\n";
         $retval .= "<tr>\n";
         $retval .= generate_entry("Responsibility weight:", $fw_params["r_wt"]['value']);
@@ -32,24 +32,26 @@
         $retval .= generate_entry("Total cost as % GWP:", $shared_params["percent_gwp"]['value']);
         $retval .= generate_entry("Emissions elasticity:", $shared_params["em_elast"]['value']);
         $retval .= "</tr>\n";
-        $retval .= "<tr>\n";
-        $retval .= generate_entry("Use sequencing:", $shared_params["use_sequencing"]['value'] ? "yes" : "no");
-        $retval .= generate_entry("Annex 1 reduction %:", $shared_params["percent_a1_rdxn"]['value'] . "%");
-        $retval .= generate_entry("Sequencing base year:", $shared_params["base_levels_yr"]['value']);
-        $retval .= "</tr>\n";
-        $retval .= "<tr>\n";
-        $retval .= generate_entry("End of sequencing period:", $shared_params["end_commitment_period"]['value']);
-        $retval .= generate_entry("A1 transition smoothing:", $shared_params["a1_smoothing"]['value']);
-        switch ($shared_params["mit_gap_borne"]['value']) {
-            case "1":
-                $val = "Annex 1";
-                break;
-            case "2":
-                $val = "Annex 2";
-                break;
+        if ($shared_params["use_sequencing"]['value']) {
+            $retval .= "<tr>\n";
+            $retval .= generate_entry("Use sequencing:", $shared_params["use_sequencing"]['value'] ? "yes" : "no");
+            $retval .= generate_entry("Annex 1 reduction %:", $shared_params["percent_a1_rdxn"]['value'] . "%");
+            $retval .= generate_entry("Sequencing base year:", $shared_params["base_levels_yr"]['value']);
+            $retval .= "</tr>\n";
+            $retval .= "<tr>\n";
+            $retval .= generate_entry("End of sequencing period:", $shared_params["end_commitment_period"]['value']);
+            $retval .= generate_entry("A1 transition smoothing:", $shared_params["a1_smoothing"]['value']);
+            switch ($shared_params["mit_gap_borne"]['value']) {
+                case "1":
+                    $val = "Annex 1";
+                    break;
+                case "2":
+                    $val = "Annex 2";
+                    break;
+            }
+            $retval .= generate_entry("Mitigation requirement gap borne by:", $val);
+            $retval .= "</tr>\n";
         }
-        $retval .= generate_entry("Mitigation requirement gap borne by:", $val);
-        $retval .= "</tr>\n";
         $retval .= '</table></div><!-- /input_values -->' . "\n";
 
         switch ($display_params["framework"]['value']) {
