@@ -93,8 +93,12 @@ $(function() {
 
                 //filter result
                 filterResult();
+                
+                // Update year list
+                $('#cum_since_yr_wrapper').load('get_year_list.php', $('#form1').serialize());
             }
-            );
+        );
+
         // Short-circuit form submission
         return false;
     });

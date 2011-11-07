@@ -88,7 +88,9 @@ include("form_functions.php");
                                         <option selected="selected" value="default_gdrs">Default GDRs</option>
                                     </select>
                                 </li>
+                                <div id="cum_since_yr_wrapper">
                             <?php echo select_num('cum_since_yr', $shared_params, "Cumulative since:", $advanced); ?>
+                                </div>
                                 <li>
                                     <input type="checkbox" name="use_lulucf" id="use_lulucf" class="click" value="1" <?php if ($shared_params["use_lulucf"]['value'])
                                     echo 'checked="checked"'; ?>  />

@@ -158,6 +158,11 @@
         }
         get_usr_vals($fw_params);
     }
+    
+    if ($shared_params['cum_since_yr']['value'] < $shared_params['cum_since_yr']['min']) {
+        $shared_params['cum_since_yr']['value'] = $shared_params['cum_since_yr']['min'];
+    }
+    
     setcookie('shared_params',serialize($shared_params),time()+60*60*24*365);
     setcookie('fw_params',serialize($fw_params),time()+60*60*24*365);
     
