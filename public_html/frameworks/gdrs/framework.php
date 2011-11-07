@@ -36,17 +36,6 @@
                                 'list' => NULL,
                                 'type' => 'real'
                             ),
-                            'tax_income_level' => array(
-                                'description' => '',
-                                'advanced' => false,
-                                'db_param' => NULL,
-                                'value' => 'not implemented',
-                                'min' => NULL,
-                                'max' => NULL,
-                                'step' => NULL,
-                                'list' => NULL,
-                                'type' => 'real'
-                            ),
                             'r_wt' => array(
                                 'description' => 'The weight given to responsibility for historical emissions vs. capacity to contribute to mitigation and adaptation costs in RCI',
                                 'advanced' => false,

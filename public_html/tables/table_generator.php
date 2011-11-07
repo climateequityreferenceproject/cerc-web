@@ -20,7 +20,7 @@
         $retval .= "<tr>\n";
         $retval .= generate_entry("Luxury threshold:", $fw_params["lux_thresh"]['value']);
         $retval .= generate_entry("% between thresholds:", $fw_params["mid_rate"]['value'] . "%");
-        $retval .= generate_entry("Income level for tax:", $fw_params["tax_income_level"]['value']);
+        $retval .= "";
         $retval .= "</tr>\n";
         $retval .= "<tr>\n";
         $retval .= generate_entry("Responsibility weight:", $fw_params["r_wt"]['value']);
