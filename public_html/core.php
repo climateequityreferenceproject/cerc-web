@@ -162,6 +162,10 @@
     setcookie('fw_params',serialize($fw_params),time()+60*60*24*365);
     
     $fw->calculate($user_db, $shared_params, $fw_params);
+    
+    // Check that we've got the correct years, after calculating
+    $year_range = Framework::get_year_range($user_db);
+    $shared_params['cum_since_yr']['min'] = $year_range['min_year'];
 
     /*** Cleanup ************************************************************/
     // Just to be sure, explicitly delete the object
