@@ -62,7 +62,7 @@
                         
         public $table_views = array(
                             'gdrs_default' => array(
-                                'display_name' => 'GDRs default',
+                                'display_name' => 'Overview',
                                 'time_series' => false
                             ),
                             'gdrs_tax' => array(

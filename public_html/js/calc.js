@@ -88,7 +88,9 @@ $(function() {
             $('#form1').serialize() + "&submit=submit&ajax=ajax",
             function(data) {
                 $('#data').html(data);
-				
+		// Make table sortable
+                $("#data table:eq(1)").addClass('tablesorter').tablesorter();
+                
                 // hide spinner
                 $('#loading').hide();
 
