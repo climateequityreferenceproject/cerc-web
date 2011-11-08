@@ -8,8 +8,8 @@
     
     /*** Databases ************************************************************/
     // Create database filename if doesn't already exist
-    if ($_POST['user_db']) {
-        $user_db = $_POST['user_db'];
+    if ($_POST['user_db'] && realpath($_POST['user_db'])) {
+        $user_db = realpath($_POST['user_db']);
     } else {
         $db_array = Framework::dup_master_db('calc', $create);
         $master_db = $db_array['db'];
@@ -25,15 +25,10 @@
         echo $user_db;
         return;
     }
-    // If not just getting db, then load table_generator
+    // If not just getting db, then load table_generator and define get_usr_vals
     include("tables/table_generator.php");
 
-    // Reload parameters--might be different
-    $shared_params = Framework::get_shared_params($user_db);
-    $fw_params = $fw->get_fw_params($user_db);
-    
-
-    // Update parameters array with last user values, if any
+    // Function to update parameters array with last user values, if any
     function get_usr_vals(&$array) {
         foreach($array as $key => $val) {
             if (isset($_POST[$key])) {
@@ -57,6 +52,12 @@
         }
     }
     
+    // Reload parameters--might be different from defaults
+    if (!$_POST['reset']) {
+        $shared_params = Framework::get_shared_params($user_db);
+        $fw_params = $fw->get_fw_params($user_db);
+    }
+
     /*** Display parameters ****************************************************/
 
     $basic_adv = array (
@@ -68,10 +69,6 @@
     // TODO: implement output of $basic_adv inputs from multi-dim array
     //$basic_adv = array ('basic' => array('display_name'=>'Basic', 'checked'=>false), 
     //                    'adv' => array('display_name'=>'Advanced', 'checked'=>true));
-    
-    // TODO: implement function to replace this literal array of option names, to get pathway names from master database
-    $emergency_paths = array( array('display_name'=>"750 GtCO2 cumulative"), array('display_name'=>"1000 GtCO2 cumulative") );
-    
     // TODO: replace country_grp w JS to show/hide rows and columns, or HTML table filter
     $display_params = array ('basic_adv' => array(
                                 'value'=>'basic',
