@@ -7,7 +7,7 @@ $db = new PDO($database) OR die("<p>Can't open database</p>");
 // Start with the core SQL view
 $db->query($viewquery);
 
-$dlfile = "gdrs_all_output.xls";
+$dlfile = "gdrs_all_output_" . time() . ".xls";
 $tsfile = tempnam("/***REMOVED***/sessions/gdrs-db", "gdrs-tabsep-");
 
 $fp = fopen($tsfile, "w");
