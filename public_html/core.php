@@ -8,9 +8,16 @@
     
     /*** Databases ************************************************************/
     // Create database filename if doesn't already exist
+    $have_db = FALSE;
     if ($_POST['user_db'] && realpath($_POST['user_db'])) {
         $user_db = realpath($_POST['user_db']);
-    } else {
+        $have_db = TRUE;
+    } elseif (isset($_COOKIE['db'])) {
+        $user_db = realpath(unserialize(stripslashes($_COOKIE['db'])));
+        $have_db = $user_db; // realpath returns FALSE on failure
+    }
+    
+    if (!$have_db) {
         $db_array = Framework::dup_master_db('calc', $create);
         $master_db = $db_array['db'];
         if ($db_array['did_create']) {
@@ -19,6 +26,7 @@
         }
         $user_db = Framework::get_user_db($master_db);
     }
+    setcookie('db',serialize($user_db),time()+60*60*24*28);
 
     // If just asking for the db name (or to create a db) then that is all this script does
     if ($_POST['get_db'] || $_GET['get_db']) {
@@ -150,14 +158,7 @@
     }
     
     if (!$_POST['reset']) {
-        if (isset($_COOKIE['shared_params'])) {
-            // $shared_params = unserialize(stripslashes($_COOKIE['shared_params']));    
-        }
         get_usr_vals($shared_params);
-        
-        if (isset($_COOKIE['fw_params'])) {
-            // $fw_params = unserialize(stripslashes($_COOKIE['fw_params']));    
-        }
         get_usr_vals($fw_params);
     }
     
@@ -166,8 +167,6 @@
     // Use the most up-to-date parameter list: years might have changed
     $shared_params = Framework::get_shared_params($user_db);
     $fw_params = $fw->get_fw_params($user_db);
-    setcookie('shared_params',serialize($shared_params),time()+60*60*24*365);
-    setcookie('fw_params',serialize($fw_params),time()+60*60*24*365);
     
     /*** Cleanup ************************************************************/
     // Just to be sure, explicitly delete the object
