@@ -123,11 +123,24 @@
             
             $this->db_close();
             
+            $year_range = $this->get_year_range($user_db);
+            if ($shared_params['cum_since_yr']['value'] < $year_range['min_year']) {
+                $shared_params['cum_since_yr']['value'] = $year_range['min_year'];
+                $this->db_connect($user_db);
+                if ($this->update_param($shared_params['cum_since_yr'])) {
+                    $params_changed = true;
+                }
+                $this->db_close();
+            }
+            
             // Make sure that there's a path to the executable...
-            if ($params_changed && self::$exec_path) {
+            $did_exec = FALSE;
+            if ($params_changed && realpath(self::$exec_path)) {
                 $execstring = self::$exec_path . ' --db "' . $user_db . '"';
                 exec($execstring);
+                $did_exec = TRUE;
             }
+            return $did_exec;
         }
     }
     

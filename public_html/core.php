@@ -25,8 +25,13 @@
         echo $user_db;
         return;
     }
-
+    // If not just getting db, then load table_generator
     include("tables/table_generator.php");
+
+    // Reload parameters--might be different
+    $shared_params = Framework::get_shared_params($user_db);
+    $fw_params = $fw->get_fw_params($user_db);
+    
 
     // Update parameters array with last user values, if any
     function get_usr_vals(&$array) {
@@ -149,29 +154,24 @@
     
     if (!$_POST['reset']) {
         if (isset($_COOKIE['shared_params'])) {
-            $shared_params = unserialize(stripslashes($_COOKIE['shared_params']));    
+            // $shared_params = unserialize(stripslashes($_COOKIE['shared_params']));    
         }
         get_usr_vals($shared_params);
         
         if (isset($_COOKIE['fw_params'])) {
-            $fw_params = unserialize(stripslashes($_COOKIE['fw_params']));    
+            // $fw_params = unserialize(stripslashes($_COOKIE['fw_params']));    
         }
         get_usr_vals($fw_params);
     }
     
-    if ($shared_params['cum_since_yr']['value'] < $shared_params['cum_since_yr']['min']) {
-        $shared_params['cum_since_yr']['value'] = $shared_params['cum_since_yr']['min'];
-    }
+    $fw->calculate($user_db, $shared_params, $fw_params);
     
+    // Use the most up-to-date parameter list: years might have changed
+    $shared_params = Framework::get_shared_params($user_db);
+    $fw_params = $fw->get_fw_params($user_db);
     setcookie('shared_params',serialize($shared_params),time()+60*60*24*365);
     setcookie('fw_params',serialize($fw_params),time()+60*60*24*365);
     
-    $fw->calculate($user_db, $shared_params, $fw_params);
-    
-    // Check that we've got the correct years, after calculating
-    $year_range = Framework::get_year_range($user_db);
-    $shared_params['cum_since_yr']['min'] = $year_range['min_year'];
-
     /*** Cleanup ************************************************************/
     // Just to be sure, explicitly delete the object
     unset($fw);

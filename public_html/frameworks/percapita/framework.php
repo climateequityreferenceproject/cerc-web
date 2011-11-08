@@ -55,6 +55,8 @@ EOSQL;
             }
             
             $this->db_close();
+            
+            return $params_changed;
         }
     }
     
