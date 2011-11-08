@@ -10,27 +10,31 @@
         $ep_index = $shared_params["emergency_path"]['value'];
         $ep_name = $shared_params["emergency_path"]['list'][$ep_index]['display_name'];
         
-        $retval = "<h3><!--Table view: -->" . $table_views[$display_params["table_view"]['value']]['display_name'] . "</h3>\n";
+        $table_name = $table_views[$display_params["table_view"]['value']]['display_name'];
+        if (!$table_views[$display_params["table_view"]['value']]['time_series']) {
+            $table_name .= " in " . $display_params["display_yr"]['value'];
+        }
+        $retval = "<h3><!--Table view: -->" . $table_name . "</h3>\n";
         $retval .= '<div id="input_values" class="group"><table cellspacing="0" cellpadding="0">' . "\n";
         $retval .= "<tr>\n";
         $retval .= generate_entry("Emergency pathway:", $ep_name);
         $retval .= generate_entry("Baseline:", "Default GDRs<!-- add baseline parameter variable and echo value here -->");
-        $retval .= generate_entry("Development threshold:", $fw_params["dev_thresh"]['value']);
+        $retval .= generate_entry("Development threshold:", "\$" . number_format($fw_params["dev_thresh"]['value']));
         $retval .= "</tr>\n";
         $retval .= "<tr>\n";
-        $retval .= generate_entry("Luxury threshold:", $fw_params["lux_thresh"]['value']);
+        $retval .= generate_entry("Luxury threshold:", "\$". number_format($fw_params["lux_thresh"]['value']));
         $retval .= generate_entry("Cap baselines at luxury threshold:", $fw_params["do_luxcap"]['value'] ? "yes" : "no");
         $retval .= generate_entry("% between thresholds:", $fw_params["mid_rate"]['value'] . "%");
         $retval .= "</tr>\n";
         $retval .= "<tr>\n";
-        $retval .= generate_entry("Responsibility weight:", $fw_params["r_wt"]['value']);
+        $retval .= generate_entry("Responsibility weight:", number_format($fw_params["r_wt"]['value'],1));
         $retval .= generate_entry("Include land-use emissions:", $shared_params["use_lulucf"]['value'] ? "yes" : "no");
-        $retval .= generate_entry("Include non-CO2 gases:", $shared_params["use_nonco2"]['value'] ? "yes" : "no");
+        $retval .= generate_entry("Include non-CO<sub>2</sub> gases:", $shared_params["use_nonco2"]['value'] ? "yes" : "no");
         $retval .= "</tr>\n";
         $retval .= "<tr>\n";
         $retval .= generate_entry("Cumulative since:", $shared_params["cum_since_yr"]['value']);
-        $retval .= generate_entry("Total cost as % GWP:", $shared_params["percent_gwp"]['value']);
-        $retval .= generate_entry("Emissions elasticity:", $shared_params["em_elast"]['value']);
+        $retval .= generate_entry("Total cost as % GWP:", number_format($shared_params["percent_gwp"]['value'],1));
+        $retval .= generate_entry("Emissions elasticity:", number_format($shared_params["em_elast"]['value'],1));
         $retval .= "</tr>\n";
         if ($shared_params["use_sequencing"]['value']) {
             $retval .= "<tr>\n";
@@ -58,12 +62,10 @@
             case 'gdrs':
                 switch ($display_params["table_view"]['value']) {
                     case 'gdrs_default':
-                        $retval .= '<p><strong>Values in ' . $display_params["display_yr"]['value'] . '</strong></p>';
                         include("tables/gdrs_table.php");
                         return $retval . gdrs_table($user_db, $display_params["display_yr"]['value'], $display_params["decimal_pl"]['value']);
                         break;
                     case 'gdrs_tax':
-                        $retval .= '<p><strong>Values in ' . $display_params["display_yr"]['value'] . '</strong></p>';
                         include("tables/gdrs_tax.php");
                         return $retval . gdrs_tax($user_db, $display_params["display_yr"]['value'], $display_params["decimal_pl"]['value']);
                         break;
