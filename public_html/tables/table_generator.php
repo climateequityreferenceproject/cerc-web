@@ -33,7 +33,7 @@
         $retval .= "</tr>\n";
         $retval .= "<tr>\n";
         $retval .= generate_entry("Cumulative since:", $shared_params["cum_since_yr"]['value']);
-        $retval .= generate_entry("Total cost as % GWP:", number_format($shared_params["percent_gwp"]['value'],1));
+        $retval .= generate_entry("Total cost as % GWP:", number_format($shared_params["percent_gwp"]['value'],1) . "%");
         $retval .= generate_entry("Emissions elasticity:", number_format($shared_params["em_elast"]['value'],1));
         $retval .= "</tr>\n";
         if ($shared_params["use_sequencing"]['value']) {
