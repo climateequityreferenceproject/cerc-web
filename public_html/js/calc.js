@@ -78,9 +78,10 @@ $(function() {
     // Action on form submit
     //--------------------------------------------------
     $('#submit').click(function() {
-
         // show spinner
         $('#loading').show();
+        // Get current year
+        var curr_year = $('#cum_since_yr').val();
 		
         $.post(
             "core.php",
@@ -95,7 +96,11 @@ $(function() {
                 filterResult();
                 
                 // Update year list
-                $('#cum_since_yr_wrapper').load('get_year_list.php', $('#form1').serialize());
+                $('#cum_since_yr').load('get_year_list.php option', $('#form1').serialize(), function(){
+                    var min_year = $('#cum_since_yr option').attr('value');
+                    var new_year = Math.max(curr_year, min_year);
+                    $('#cum_since_yr').val(new_year);
+                });
             }
         );
 
