@@ -29,7 +29,7 @@
         $retval .= "<tr>\n";
         $retval .= generate_entry("Responsibility weight:", number_format($fw_params["r_wt"]['value'],1));
         $retval .= generate_entry("Include land-use emissions:", $shared_params["use_lulucf"]['value'] ? "yes" : "no");
-        $retval .= generate_entry("Include non-CO<sub>2</sub> gases:", $shared_params["use_nonco2"]['value'] ? "yes" : "no");
+        $retval .= generate_entry("Include non-CO2 gases:", $shared_params["use_nonco2"]['value'] ? "yes" : "no");
         $retval .= "</tr>\n";
         $retval .= "<tr>\n";
         $retval .= generate_entry("Cumulative since:", $shared_params["cum_since_yr"]['value']);

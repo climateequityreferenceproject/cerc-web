@@ -99,7 +99,7 @@ include("form_functions.php");
                             <li>
                                 <input type="checkbox" name="use_nonco2" id="use_nonco2" class="click" value="1" <?php if ($shared_params["use_nonco2"]['value'])
                                            echo 'checked="checked"'; ?>  />
-                                <label for="use_nonco2" class="click"> Include non-CO<sub>2</sub> gases</label>
+                                <label for="use_nonco2" class="click"> Include non-CO2 gases</label>
                             </li>
                             <li>
                                 <input type="checkbox" name="use_netexports" id="use_netexports" class="click" value="1" <?php if ($shared_params["use_netexports"]['value'])

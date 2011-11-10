@@ -11,7 +11,7 @@ $retval = <<< EOHTML
     <thead>
         <tr>
             <th> </th>
-            <th colspan="5">MtCO<sub>2</sub></th>
+            <th colspan="5">MtCO2</th>
         </tr>
         <tr>
             <th class="lj">Country or<br/>Group</th>
