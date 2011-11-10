@@ -66,15 +66,15 @@
                                 'time_series' => false
                             ),
                             'gdrs_tax' => array(
-                                'display_name' => 'GDRs tax',
+                                'display_name' => 'Tax',
                                 'time_series' => false
                             ),
                             'gdrs_RCI' => array(
-                                'display_name' => 'GDRs RCI time series',
+                                'display_name' => 'RCI time series',
                                 'time_series' => true
                             ),
                             'gdrs_alloc' => array(
-                                'display_name' => 'GDRs allocations',
+                                'display_name' => 'Allocations',
                                 'time_series' => true
                             )
                         );

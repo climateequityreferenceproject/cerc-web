@@ -289,7 +289,7 @@
                                 'max' => NULL,
                                 'step' => NULL,
                                 'list' => array(
-                                    'default_gdrs' => array('display_name' => 'Default GDRs')
+                                    'default_gdrs' => array('display_name' => 'Default')
                                 ),
                                 'type' => 'string'
                             ),

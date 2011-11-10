@@ -7,7 +7,7 @@
 	$query .= "name, year, rci, gdrs_alloc, bau_pc, gap from gdrs ";
 	$query .= "where year >= 2010 and rci >= 1 ";
 	$query .= "order by name ";
-	$query .= "label name 'Country', year 'Year', rci 'RCI (%)', gdrs_alloc 'GDRs allocation (tCO2/cap)', bau_pc 'Fossil BAU (tCO2/cap)', gap 'Gap between alloc & BAU (tCO2/cap)' ";
+	$query .= "label name 'Country', year 'Year', rci 'RCI (%)', gdrs_alloc 'Allocation (tCO2/cap)', bau_pc 'Fossil BAU (tCO2/cap)', gap 'Gap between alloc & BAU (tCO2/cap)' ";
 	$query .= "format year '%d', rci '%.1f%%', gdrs_alloc '%.1f', bau_pc '%.1f', gap '%.1f' ";
 	
 	# Create URL from database name

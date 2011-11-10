@@ -85,7 +85,8 @@ include("form_functions.php");
                                 <li>
                                     <label for="baseline" class="select">Baseline: </label>
                                     <select name="baseline" id="baseline">
-                                        <option selected="selected" value="default_gdrs">Default GDRs</option>
+                                        <!-- TODO: Make this dynamic -->
+                                        <option selected="selected" value="default_gdrs">Default</option>
                                     </select>
                                 </li>
                                 <div id="cum_since_yr_wrapper">
