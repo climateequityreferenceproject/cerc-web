@@ -36,6 +36,17 @@
                                 'list' => NULL,
                                 'type' => 'real'
                             ),
+                            'interp_btwn_thresh' => array(
+                                'description' => 'If this is checked, then capacity and responsibility increase steadily between the development and luxury thresholds',
+                                'advanced' => true,
+                                'db_param' => 'interp_between_thresholds',
+                                'value' => NULL,
+                                'min' => 0,
+                                'max' => 1,
+                                'step' => 1,
+                                'list' => NULL,
+                                'type' => 'int'
+                            ),
                             'r_wt' => array(
                                 'description' => 'The weight given to responsibility for historical emissions vs. capacity to contribute to mitigation and adaptation costs in RCI',
                                 'advanced' => false,

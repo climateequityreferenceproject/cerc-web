@@ -74,8 +74,11 @@
                 // Definitely create if a) forcing or b) file doesn't already exist
                 $do_create = $force || !file_exists($db);
                 if (!$do_create) {
-                    // Compare version numbers--maybe no need
-                    $do_create = (self::get_data_ver() !== self::get_data_ver($db)) || (self::get_calc_ver() !== self::get_calc_ver($db));
+                    // Compare time stamps--maybe no need
+                    if (filemtime($db) < filemtime(self::$master_db)) {
+                        $do_create = TRUE;
+                        unlink($db);
+                    }
                 }
                 if ($do_create) {
                     if (copy(self::$master_db, $db)) {

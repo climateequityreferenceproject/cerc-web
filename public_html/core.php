@@ -31,7 +31,7 @@
     }
     
     if (!$have_db) {
-        $db_array = Framework::dup_master_db('calc', $create);
+        $db_array = Framework::dup_master_db('calc', TRUE);
         $master_db = $db_array['db'];
         if ($db_array['did_create']) {
             // Created a new one, so run it
@@ -69,6 +69,9 @@
             }
             if ($array['do_luxcap'] && !$_POST['do_luxcap']) {
                 $array['do_luxcap']['value'] = 0;
+            }
+            if ($array['interp_btwn_thresh'] && !$_POST['interp_btwn_thresh']) {
+                $array['interp_btwn_thresh']['value'] = 0;
             }
         }
     }
