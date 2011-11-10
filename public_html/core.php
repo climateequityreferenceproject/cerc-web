@@ -73,10 +73,6 @@
         adv => 'Advanced');
     
     $advanced = false;
-
-    // TODO: implement output of $basic_adv inputs from multi-dim array
-    //$basic_adv = array ('basic' => array('display_name'=>'Basic', 'checked'=>false), 
-    //                    'adv' => array('display_name'=>'Advanced', 'checked'=>true));
     // TODO: replace country_grp w JS to show/hide rows and columns, or HTML table filter
     $display_params = array ('basic_adv' => array(
                                 'value'=>'basic',
