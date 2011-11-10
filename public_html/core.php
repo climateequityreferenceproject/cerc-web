@@ -1,6 +1,19 @@
 <?php
     include("frameworks/frameworks.php");
     
+    // Check that we're current
+    $up_to_date = FALSE;
+    $ver_info = array();
+    $ver_info['data_ver'] = Framework::get_data_ver();
+    $ver_info['calc_ver'] = Framework::get_calc_ver();
+    if (isset($_COOKIE['ver'])) {
+       $last_ver = unserialize(stripslashes($_COOKIE['ver']));
+       if ($last_ver['data_ver'] === $ver_info['data_ver'] && $last_ver['calc_ver'] === $ver_info['calc_ver']) {
+           $up_to_date = TRUE;
+       }
+    }
+    setcookie('ver',serialize($ver_info),time()+60*60*24*28);
+    
     // Always using GDRs framework now
     $shared_params = Framework::get_shared_params();
     $fw = new Framework::$frameworks['gdrs']['class'];
@@ -12,7 +25,7 @@
     if ($_POST['user_db'] && realpath($_POST['user_db'])) {
         $user_db = realpath($_POST['user_db']);
         $have_db = TRUE;
-    } elseif (isset($_COOKIE['db'])) {
+    } elseif (isset($_COOKIE['db']) && $up_to_date) {
         $user_db = realpath(unserialize(stripslashes($_COOKIE['db'])));
         $have_db = $user_db; // realpath returns FALSE on failure
     }
@@ -128,7 +141,7 @@
                         );
     
     if (!$_POST['reset']) {
-        if (isset($_COOKIE['display_params'])) {
+        if (isset($_COOKIE['display_params']) && $up_to_date) {
             $display_params = unserialize(stripslashes($_COOKIE['display_params']));    
         }
         get_usr_vals($display_params);

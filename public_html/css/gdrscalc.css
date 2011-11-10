@@ -231,6 +231,10 @@ body#spinoff>#calc_container #data, body#spinoff>#footer {
 	width:95%; 
 }
 
+.alert {
+    color: red;
+}
+
 
 /*** typography ***********************************************/
 body {
