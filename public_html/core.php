@@ -22,8 +22,8 @@
     /*** Databases ************************************************************/
     // Create database filename if doesn't already exist
     $have_db = FALSE;
-    if ($_POST['user_db'] && realpath($_POST['user_db'])) {
-        $user_db = realpath($_POST['user_db']);
+    if ($_POST['user_db'] && Framework::add_user_db_path($_POST['user_db'])) {
+        $user_db = Framework::add_user_db_path($_POST['user_db']);
         $have_db = TRUE;
     } elseif (isset($_COOKIE['db']) && $up_to_date) {
         $user_db = realpath(unserialize(stripslashes($_COOKIE['db'])));
@@ -39,7 +39,7 @@
         }
         $user_db = Framework::get_user_db($master_db);
     }
-    setcookie('db',serialize($user_db),time()+60*60*24*28);
+    setcookie('db',serialize(Framework::get_db_name($user_db)),time()+60*60*24*28);
 
     // If just asking for the db name (or to create a db) then that is all this script does
     if ($_POST['get_db'] || $_GET['get_db']) {
