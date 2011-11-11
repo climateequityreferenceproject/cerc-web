@@ -13,9 +13,10 @@ $retval = <<< EOHTML
             <th class="lj">Country or<br/>Group</th>
             <th>Population<br/>(million)</th>
             <th>Population<br/>(% of global)</th>
-            <th>Income<br/>(billion \$US)</th>
-            <th>Income<br/>(% of global)</th>
-            <th>Income<br/>per capita<br/>(\$US PPP/cap)</th>
+            <th>GDP<br/>(billion \$US)</th>
+            <th>GDP<br/>(% of global)</th>
+            <th>Income<br/>(\$US/cap)</th>
+            <th>Income<br/>(\$US PPP/cap)</th>
             <th>Capacity<br/>(billion \$US)</th>
             <th>Capacity<br/>(% of global)</th>
             <th>Responsibility<br/>(% of global)</th>
@@ -47,6 +48,9 @@ EOSQL;
     $retval .= "<td>" . number_format($world_tot["gdp_mer"], $dec) . "</td>";
     // Income percent
     $retval .= "<td>" . number_format(100.00, $dec) . "</td>";
+    // GDP MER per cap
+    $val = 1000 * $world_tot["gdp_mer"]/$world_tot["pop"];
+    $retval .= "<td>" . number_format($val, $dec) . "</td>";
     // GDP PPP per cap
     $val = 1000 * $world_tot["gdp_ppp"]/$world_tot["pop"];
     $retval .= "<td>" . number_format($val, $dec) . "</td>";
@@ -85,6 +89,9 @@ EOSQL;
             // Income percent
             $val = 100.0 * $record["gdp_mer"]/$world_tot["gdp_mer"];
             $retval .= "<td>" . number_format($val, $dec) . "</td>";
+             // GDP MER per cap
+            $val = 1000 * $record["gdp_mer"]/$record["pop"];
+            $retval .= "<td>" . number_format($val, $dec) . "</td>";
              // GDP PPP per cap
             $val = 1000 * $record["gdp_ppp"]/$record["pop"];
             $retval .= "<td>" . number_format($val, $dec) . "</td>";
@@ -115,6 +122,9 @@ EOSQL;
         $retval .= "<td>" . number_format($record["gdp_blnUSDMER"], $dec) . "</td>";
         // Income percent
         $val = 100.0 * $record["gdp_blnUSDMER"]/$world_tot["gdp_mer"];
+        $retval .= "<td>" . number_format($val, $dec) . "</td>";
+        // GDP MER per cap
+        $val = 1000 * $record["gdp_blnUSDMER"]/$record["pop_mln"];
         $retval .= "<td>" . number_format($val, $dec) . "</td>";
         // GDP PPP per cap
         $val = 1000 * $record["gdp_blnUSDPPP"]/$record["pop_mln"];
