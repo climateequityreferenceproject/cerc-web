@@ -11,6 +11,13 @@ function select_num($param, $param_list, $label, $advanced) {
     $low = $param_list[$param]['min'];
     $high = $param_list[$param]['max'];
     $step = $param_list[$param]['step'];
+    if (is_array($step)) {
+        $step_array = $step;
+        $step_ndx = 0;
+        $step = $step_array[$step_ndx]['step'];
+    } else {
+        $step_array = NULL;
+    }
     // Figure out how many decimal places (if any) using "step" as the clue
     if ($decpos = strpos($step, ".")) {
         $prec = strlen($step) - $decpos - 1;
@@ -38,6 +45,10 @@ function select_num($param, $param_list, $label, $advanced) {
             $retval .= "<option value=\"".sprintf($fmt, $val)."\" selected=\"selected\">".sprintf($fmt, $val)."</option>\n";
         } else {
             $retval .= "<option value=\"".sprintf($fmt, $val)."\">".sprintf($fmt, $val)."</option>\n";
+        }
+        if ($step_array && $step_array[$step_ndx]['cutoff'] && $val >= $step_array[$step_ndx]['cutoff']) {
+            $step_ndx++;
+            $step = $step_array[$step_ndx]['step'];
         }
     }
     $retval .= "</select>\n";

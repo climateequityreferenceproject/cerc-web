@@ -18,10 +18,13 @@
                                 'description' => 'Above this income, 100% of individual income (and associated emissions) count toward capacity and responsibility',
                                 'advanced' => true,
                                 'db_param' => NULL,
-                                'value' => 25000.0,
-                                'min' => 0.0,
-                                'max' => 100000.0,
-                                'step' => 500.0,
+                                'value' => 25000,
+                                'min' => 0,
+                                'max' => 1000000,
+                                'step' => array(
+                                    array('cutoff' => 500000, 'step' => 25000),
+                                    array('cutoff' => NULL, 'step' => 100000)
+                                ),
                                 'list' => NULL,
                                 'type' => 'real'
                             ),
