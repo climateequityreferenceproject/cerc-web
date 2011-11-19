@@ -25,7 +25,7 @@
         $retval .= "<tr>\n";
         $retval .= generate_entry("Luxury threshold:", "\$". number_format($fw_params["lux_thresh"]['value']));
         $retval .= generate_entry("Cap baselines at luxury threshold:", $fw_params["do_luxcap"]['value'] ? "yes" : "no");
-        $retval .= generate_entry("% between thresholds:", $fw_params["mid_rate"]['value'] . "%");
+        $retval .= generate_entry("Progressive between thresholds:", $fw_params["interp_btwn_thresh"]['value'] ? "yes" : "no");
         $retval .= "</tr>\n";
         $retval .= "<tr>\n";
         $retval .= generate_entry("Responsibility weight:", number_format($fw_params["r_wt"]['value'],1));
