@@ -9,6 +9,9 @@
     function generate_table($display_params, $fw_params, $shared_params, $table_views, $user_db) {
         $ep_index = $shared_params["emergency_path"]['value'];
         $ep_name = $shared_params["emergency_path"]['list'][$ep_index]['display_name'];
+        $advanced = $display_params['basic_adv']['value'] !== 'basic';
+        $dec = $display_params["decimal_pl"]['value'];
+        $disp_year = $display_params["display_yr"]['value'];
         
         $table_name = $table_views[$display_params["table_view"]['value']]['display_name'];
         if (!$table_views[$display_params["table_view"]['value']]['time_series']) {
@@ -64,19 +67,19 @@
                 switch ($display_params["table_view"]['value']) {
                     case 'gdrs_default':
                         include("tables/gdrs_table.php");
-                        return $retval . gdrs_table($user_db, $display_params["display_yr"]['value'], $display_params["decimal_pl"]['value']);
+                        return $retval . gdrs_table($user_db, $disp_year, $dec, $advanced);
                         break;
                     case 'gdrs_tax':
                         include("tables/gdrs_tax.php");
-                        return $retval . gdrs_tax($user_db, $display_params["display_yr"]['value'], $display_params["decimal_pl"]['value']);
+                        return $retval . gdrs_tax($user_db, $disp_year, $dec);
                         break;
                     case 'gdrs_RCI':
                         include("tables/gdrs_rci_ts.php");
-                        return $retval . gdrs_rci_ts($user_db, $display_params["decimal_pl"]['value']);
+                        return $retval . gdrs_rci_ts($user_db, $dec);
                         break;
                     case 'gdrs_alloc':
                         include("tables/gdrs_alloc.php");
-                        return $retval . gdrs_alloc($user_db, $display_params["decimal_pl"]['value']);
+                        return $retval . gdrs_alloc($user_db,$dec);
                         break;
                 }
                 break;

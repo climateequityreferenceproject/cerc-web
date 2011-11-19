@@ -1,11 +1,12 @@
 <?php
-function gdrs_table($dbfile, $year, $dec) {
+function gdrs_table($dbfile, $year, $dec, $advanced) {
     include("table_common.php");
 
     $database = 'sqlite:'.$dbfile;
 
     $db = new PDO($database) OR die("<p>Can't open database</p>");
-    
+
+    if ($advanced) {
 $retval = <<< EOHTML
 <table cellspacing="0" cellpadding="0">
     <thead>
@@ -25,6 +26,23 @@ $retval = <<< EOHTML
     </thead>
     <tbody>
 EOHTML;
+    } else {
+$retval = <<< EOHTML
+<table cellspacing="0" cellpadding="0">
+    <thead>
+        <tr>
+            <th class="lj">Country or<br/>Group</th>
+            <th>Population<br/>(% of global)</th>
+            <th>GDP<br/>(% of global)</th>
+            <th>Capacity<br/>(% of global)</th>
+            <th>Responsibility<br/>(% of global)</th>
+            <th>RCI</th>
+        </tr>
+    </thead>
+    <tbody>
+EOHTML;
+    }
+    
 
     // Start with the core SQL view
     $db->query($viewquery);
@@ -40,22 +58,28 @@ EOSQL;
     $world_tot = $record[0]; // Only one record, but using "fetchAll" makes sure curser closed
     $retval .= "<tr>";
     $retval .= "<td class=\"lj\">( 1) World</td>";
-    // Pop million
-    $retval .= "<td>" . number_format($world_tot["pop"], $dec) . "</td>";
+    if ($advanced) {
+        // Pop million
+        $retval .= "<td>" . number_format($world_tot["pop"], $dec) . "</td>";
+    }
     // Pop percent
     $retval .= "<td>" . number_format(100.00, $dec) . "</td>";
-    // Total income (GWP/GDP MER)
-    $retval .= "<td>" . number_format($world_tot["gdp_mer"], $dec) . "</td>";
+    if ($advanced) {
+        // Total income (GWP/GDP MER)
+        $retval .= "<td>" . number_format($world_tot["gdp_mer"], $dec) . "</td>";
+    }
     // Income percent
     $retval .= "<td>" . number_format(100.00, $dec) . "</td>";
-    // GDP MER per cap
-    $val = 1000 * $world_tot["gdp_mer"]/$world_tot["pop"];
-    $retval .= "<td>" . number_format($val, $dec) . "</td>";
-    // GDP PPP per cap
-    $val = 1000 * $world_tot["gdp_ppp"]/$world_tot["pop"];
-    $retval .= "<td>" . number_format($val, $dec) . "</td>";
-    // Total capacity (MER)
-    $retval .= "<td>" . number_format($world_tot["c"], $dec) . "</td>";
+    if ($advanced) {
+        // GDP MER per cap
+        $val = 1000 * $world_tot["gdp_mer"]/$world_tot["pop"];
+        $retval .= "<td>" . number_format($val, $dec) . "</td>";
+        // GDP PPP per cap
+        $val = 1000 * $world_tot["gdp_ppp"]/$world_tot["pop"];
+        $retval .= "<td>" . number_format($val, $dec) . "</td>";
+        // Total capacity (MER)
+        $retval .= "<td>" . number_format($world_tot["c"], $dec) . "</td>";
+    }
     // Capacity percent
     $retval .= "<td>" . number_format(100.00, $dec) . "</td>";
     // Resp percent
@@ -79,24 +103,30 @@ EOSQL;
         foreach ($db->query($regionquery) as $record) {
             $retval .= "<tr>";
             $retval .= "<td class=\"lj\">" . $longname . "</td>";
-            // Pop mln
-            $retval .= "<td>" . number_format($record["pop"], $dec) . "</td>";
+            if ($advanced) {
+                // Pop mln
+                $retval .= "<td>" . number_format($record["pop"], $dec) . "</td>";
+            }
             // Pop percent
             $val = 100.0 * $record["pop"]/$world_tot["pop"];
             $retval .= "<td>" . number_format($val, $dec) . "</td>";
-            // Total income (GWP/GDP MER)
-            $retval .= "<td>" . number_format($record["gdp_mer"], $dec) . "</td>";
+            if ($advanced) {
+                // Total income (GWP/GDP MER)
+                $retval .= "<td>" . number_format($record["gdp_mer"], $dec) . "</td>";
+            }
             // Income percent
             $val = 100.0 * $record["gdp_mer"]/$world_tot["gdp_mer"];
             $retval .= "<td>" . number_format($val, $dec) . "</td>";
-             // GDP MER per cap
-            $val = 1000 * $record["gdp_mer"]/$record["pop"];
-            $retval .= "<td>" . number_format($val, $dec) . "</td>";
-             // GDP PPP per cap
-            $val = 1000 * $record["gdp_ppp"]/$record["pop"];
-            $retval .= "<td>" . number_format($val, $dec) . "</td>";
-            // Total capacity (MER)
-            $retval .= "<td>" . number_format($record["c"], $dec) . "</td>";
+            if ($advanced) {
+                 // GDP MER per cap
+                $val = 1000 * $record["gdp_mer"]/$record["pop"];
+                $retval .= "<td>" . number_format($val, $dec) . "</td>";
+                 // GDP PPP per cap
+                $val = 1000 * $record["gdp_ppp"]/$record["pop"];
+                $retval .= "<td>" . number_format($val, $dec) . "</td>";
+                // Total capacity (MER)
+                $retval .= "<td>" . number_format($record["c"], $dec) . "</td>";
+            }
             // Capacity percent
             $val = 100.0 * $record["c"]/$world_tot["c"];
             $retval .= "<td>" . number_format($val, $dec) . "</td>";
@@ -113,24 +143,30 @@ EOSQL;
     foreach ($db->query('SELECT * FROM disp_temp WHERE year=' . $year . ' ORDER BY country') as $record) {
         $retval .= "<tr>";
         $retval .= "<td class=\"lj\">" . $record["country"] . "</td>";
-        // Pop mln
-        $retval .= "<td>" . number_format($record["pop_mln"], $dec) . "</td>";
+        if ($advanced) {
+            // Pop mln
+            $retval .= "<td>" . number_format($record["pop_mln"], $dec) . "</td>";
+        }
         // Pop percent
         $val = 100.0 * $record["pop_mln"]/$world_tot["pop"];
         $retval .= "<td>" . number_format($val, $dec) . "</td>";
-        // Total income (GWP/GDP MER)
-        $retval .= "<td>" . number_format($record["gdp_blnUSDMER"], $dec) . "</td>";
+        if ($advanced) {
+            // Total income (GWP/GDP MER)
+            $retval .= "<td>" . number_format($record["gdp_blnUSDMER"], $dec) . "</td>";
+        }
         // Income percent
         $val = 100.0 * $record["gdp_blnUSDMER"]/$world_tot["gdp_mer"];
         $retval .= "<td>" . number_format($val, $dec) . "</td>";
-        // GDP MER per cap
-        $val = 1000 * $record["gdp_blnUSDMER"]/$record["pop_mln"];
-        $retval .= "<td>" . number_format($val, $dec) . "</td>";
-        // GDP PPP per cap
-        $val = 1000 * $record["gdp_blnUSDPPP"]/$record["pop_mln"];
-        $retval .= "<td>" . number_format($val, $dec) . "</td>";
-        // Total capacity (MER)
-        $retval .= "<td>" . number_format($record["gdrs_c_blnUSDMER"], $dec) . "</td>";
+        if ($advanced) {
+            // GDP MER per cap
+            $val = 1000 * $record["gdp_blnUSDMER"]/$record["pop_mln"];
+            $retval .= "<td>" . number_format($val, $dec) . "</td>";
+            // GDP PPP per cap
+            $val = 1000 * $record["gdp_blnUSDPPP"]/$record["pop_mln"];
+            $retval .= "<td>" . number_format($val, $dec) . "</td>";
+            // Total capacity (MER)
+            $retval .= "<td>" . number_format($record["gdrs_c_blnUSDMER"], $dec) . "</td>";
+        }
         // Capacity percent
         $val = 100.0 * $record["gdrs_c_blnUSDMER"]/$world_tot["c"];
         $retval .= "<td>" . number_format($val, $dec) . "</td>";
