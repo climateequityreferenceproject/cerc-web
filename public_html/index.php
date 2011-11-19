@@ -82,13 +82,12 @@ include("form_functions.php");
                         <div>
                             <ul>
                             <?php echo select_options_list('emergency_path', $shared_params, "Emergency pathway: ", $advanced); ?>
-                                <li>
+                                <!--<li>
                                     <label for="baseline" class="select">Baseline: </label>
                                     <select name="baseline" id="baseline">
-                                        <!-- TODO: Make this dynamic -->
                                         <option selected="selected" value="default_gdrs">Default</option>
                                     </select>
-                                </li>
+                                </li>-->
                                 <div id="cum_since_yr_wrapper">
                             <?php echo select_num('cum_since_yr', $shared_params, "Cumulative since:", $advanced); ?>
                                 </div>
