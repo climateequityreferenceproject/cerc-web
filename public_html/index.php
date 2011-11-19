@@ -116,11 +116,11 @@ include("form_functions.php");
                                                echo '<input type="checkbox" name="do_luxcap" id="do_luxcap" class="click" value="1" ' . ($fw_params["do_luxcap"]['value'] ? 'checked="checked"' : '') . '/>';
                                                echo '<label for="do_luxcap" class="click"> Cap baselines at luxury threshold</label>';
                                                echo "</li>";
-//                                               echo "<li>";
-//                                               echo '<input type="checkbox" name="interp_btwn_thresh" id="use_sequencing" class="click" value="1" ' . ($shared_params["interp_btwn_thresh"]['value'] ? 'checked="checked"' : '') . '/>';
-//                                               echo '<label for="interp_btwn_thresh" class="click"> Progressive between thresholds</label>';
-//                                               echo "</li>";
                                                echo "<li>";
+                                               echo '<input type="checkbox" name="interp_btwn_thresh" id="use_sequencing" class="click" value="1" ' . ($shared_params["interp_btwn_thresh"]['value'] ? 'checked="checked"' : '') . '/>';
+                                               echo '<label for="interp_btwn_thresh" class="click"> Progressive between thresholds</label>';
+                                               echo "</li>";
+                                               /*echo "<li>";
                                                echo '<fieldset><legend class="closed"><span>&nbsp;</span>Income toward capacity</legend>';
                                                echo "<div><ul>";
                                                echo "<li><label>Below devt threshold: </label>0%</li>";
@@ -128,7 +128,7 @@ include("form_functions.php");
                                                echo "<li><label>Above luxury threshold: </label>100%</li>";
                                                echo "</ul>&nbsp;</div>";
                                                echo "</fieldset>";
-                                               echo "</li>";
+                                               echo "</li>";*/
                                            }
                                            // echo select_num('tax_income_level', $fw_params, "Income level for tax:",$advanced);
                                            echo select_num('r_wt', $fw_params, "Responsibility weight:", $advanced);
