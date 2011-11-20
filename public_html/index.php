@@ -116,7 +116,7 @@ include("form_functions.php");
                                                echo '<label for="do_luxcap" class="click"> Cap baselines at luxury threshold</label>';
                                                echo "</li>";
                                                echo "<li>";
-                                               echo '<input type="checkbox" name="interp_btwn_thresh" id="use_sequencing" class="click" value="1" ' . ($shared_params["interp_btwn_thresh"]['value'] ? 'checked="checked"' : '') . '/>';
+                                               echo '<input type="checkbox" name="interp_btwn_thresh" id="interp_btwn_thresh" class="click" value="1" ' . ($shared_params["interp_btwn_thresh"]['value'] ? 'checked="checked"' : '') . '/>';
                                                echo '<label for="interp_btwn_thresh" class="click"> Progressive between thresholds</label>';
                                                echo "</li>";
                                                /*echo "<li>";
