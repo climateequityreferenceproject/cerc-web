@@ -21,10 +21,10 @@ $retval = <<< EOHTML
         <tr>
             <th class="lj">Country or<br/>Group</th>
             <th>Obligation to pay<br/>(% of total)</th>
-            <th>Obligation to pay<br/>(bln US\$ MER)</th>
+            <th>Obligation to pay<br/>(bln US\$)</th>
             <th>Obligation to pay<br/>(% GDP)</th>
-            <th>Obligation per<br/>capita (\$PPP/cap)</th>
-            <th>Obligation per person<br/>above development<br/>threshold (\$PPP/cap)</th>
+            <th>Obligation per<br/>capita (US\$/cap)</th>
+            <th>Obligation per person<br/>above development<br/>threshold (US\$/cap)</th>
         </tr>
     </thead>
     <tbody>
@@ -69,10 +69,10 @@ EOSQL;
     // Obligation to pay % GDP
     $retval .= "<td>" . number_format(100.00 * $billfracgwp, $dec) . "</td>";
     // Obligation per capita
-    $val = 1000.0 * $billfracgwp * $gwp_ppp/$world_tot["pop"];
+    $val = 1000.0 * $billfracgwp * $gwp_mer/$world_tot["pop"];
     $retval .= "<td>" . number_format($val, $dec) . "</td>";
     // Obligation per person above dev threshold
-    $val = 1000.0 * $billfracgwp * $gwp_ppp/$world_tot["pop_above_dl"];
+    $val = 1000.0 * $billfracgwp * $gwp_mer/$world_tot["pop_above_dl"];
     $retval .= "<td>" . number_format($val, $dec) . "</td>";
     $retval .= "</tr>";
     
@@ -102,11 +102,10 @@ EOSQL;
             $val = 100.0 * $obl_mer/$record["gdp_mer"];
             $retval .= "<td>" . number_format($val, $dec) . "</td>";
             // Obligation per capita
-            $ppp2mer = $record["gdp_ppp"]/$record["gdp_mer"];
-            $val = 1000.0 * $ppp2mer * $obl_mer/$record["pop"];
+            $val = 1000.0 * $obl_mer/$record["pop"];
             $retval .= "<td>" . number_format($val, $dec) . "</td>";
             // Obligation per person above dev threshold
-            $val = 1000.0 * $ppp2mer * $obl_mer/$record["pop_above_dl"];
+            $val = 1000.0 * $obl_mer/$record["pop_above_dl"];
             $retval .= "<td>" . number_format($val, $dec) . "</td>";
             $retval .= "</tr>";
         }
@@ -127,11 +126,10 @@ EOSQL;
         $val = 100.0 * $obl_mer/$record["gdp_mer"];
         $retval .= "<td>" . number_format($val, $dec) . "</td>";
         // Obligation per capita
-        $ppp2mer = $record["gdp_ppp"]/$record["gdp_mer"];
-        $val = 1000.0 * $ppp2mer * $obl_mer/$record["pop"];
+        $val = 1000.0 * $obl_mer/$record["pop"];
         $retval .= "<td>" . number_format($val, $dec) . "</td>";
         // Obligation per person above dev threshold
-        $val = 1000.0 * $ppp2mer * $obl_mer/$record["pop_above_dl"];
+        $val = 1000.0 * $obl_mer/$record["pop_above_dl"];
         $retval .= "<td>" . number_format($val, $dec) . "</td>";
         $retval .= "</tr>";
     }

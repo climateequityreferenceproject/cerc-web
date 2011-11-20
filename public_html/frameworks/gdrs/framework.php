@@ -80,7 +80,7 @@
                                 'time_series' => false
                             ),
                             'gdrs_tax' => array(
-                                'display_name' => 'Tax',
+                                'display_name' => 'Obligation to pay',
                                 'time_series' => false
                             ),
                             'gdrs_RCI' => array(
