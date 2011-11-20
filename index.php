@@ -5,10 +5,14 @@ if ($_POST['form']) {
     $db = db_connect();
     switch ($_POST['form']) {
         case 'add':
+            $new_values = array_slice($_POST, 1);
+            if ($new_values['year_or_bau'] == 'bau') {
+                $new_values['rel_to_year'] = NULL;
+            }
             $sql = "INSERT INTO pledge (";
-            $sql .= implode(",", array_slice(array_keys($_POST), 1));
+            $sql .= implode(",", array_keys($new_values));
             $sql .= ") VALUE (";
-            $values = array_slice(array_values($_POST), 1);
+            $values = array_values($new_values);
             $mod_values = array();
             foreach ($values as $value) {
                 if (!is_numeric($value)) {
@@ -18,7 +22,6 @@ if ($_POST['form']) {
             }
             $sql .= implode(",", $mod_values);
             $sql .= ")";
-            echo $sql;
             if (!mysql_query($sql, $db)) {
                 mysql_close($db);
                 die('Invalid query: ' . mysql_error());
@@ -60,7 +63,7 @@ if ($_POST['form']) {
                     mysql_free_result($result);
                 ?>
             </select>
-            <br />.
+            <br />
             <!-- Conditional/unconditional-->
             <input type="checkbox" name="conditional" id="conditional" value="0" />
             <label for="conditional"> Conditional</label>

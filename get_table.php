@@ -44,7 +44,7 @@ SQL;
         $html .= "<td>" . $row['reduction_percent'] . "</td>";
         $html .= "<td>" . $row['rel_to'] . "</td>";
         $html .= "<td>" . $row['year_or_bau'] . "</td>";
-        $html .= "<td>" . $row['rel_to_year'] . "</td>";
+        $html .= "<td>" . ($row['rel_to_year'] ? $row['rel_to_year'] : "") . "</td>";
         $html .= "<td>" . $row['by_year'] . "</td>";
         $html .= '<td><input type="submit" value="Delete" name="' . $row['id'] . '"></td>';
         $html .= "</tr>";
