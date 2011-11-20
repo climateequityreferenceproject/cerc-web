@@ -1,5 +1,43 @@
 <?php
 include("functions.php");
+
+if ($_POST['form']) {
+    $db = db_connect();
+    switch ($_POST['form']) {
+        case 'add':
+            $sql = "INSERT INTO pledge (";
+            $sql .= implode(",", array_slice(array_keys($_POST), 1));
+            $sql .= ") VALUE (";
+            $values = array_slice(array_values($_POST), 1);
+            $mod_values = array();
+            foreach ($values as $value) {
+                if (!is_numeric($value)) {
+                    $value = "'" . $value . "'";
+                }
+                $mod_values[] = $value;
+            }
+            $sql .= implode(",", $mod_values);
+            $sql .= ")";
+            echo $sql;
+            if (!mysql_query($sql, $db)) {
+                mysql_close($db);
+                die('Invalid query: ' . mysql_error());
+            }
+            break;
+        case 'delete':
+            foreach ($_POST as $key => $value) {
+                if ($key !== 'form') {
+                    $sql = "DELETE FROM pledge WHERE id=" . $key;
+                    mysql_query($sql, $db);
+                }
+            }
+            break;
+        default:
+            ;
+    }
+    mysql_close($db);
+}
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US">
@@ -9,10 +47,11 @@ include("functions.php");
     </head>
     <body>
         <h1>GDRs pledges database entry form</h1>
-        <form>
+        <form name="add" method="post">
+            <input type="hidden" name="form" value="add"/>
             <!-- Country list-->
-            <label for="country">Country: </label>
-            <select name="country" id="country">
+            <label for="iso3">Country: </label>
+            <select name="iso3" id="iso3">
                 <?php
                     $result = query_db("SELECT iso3, name FROM country ORDER BY name;");
                     while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
@@ -71,6 +110,11 @@ include("functions.php");
             </table>
             <input type="submit" value ="Add" />
         </form>
-        <div id="table"></div>
+        <div id="table">
+            <form name="table" method="post">
+                <input type="hidden" name="form" value="delete"/>
+                <?php include("get_table.php"); ?>
+            </form>
+        </div>
     </body>
 </html>

@@ -1,10 +1,17 @@
 <?php
-function query_db($query) {
+
+function db_connect() {
     $db = mysql_connect('localhost', 'pledges', '***REMOVED***');
     if (!$db) {
         die('Could not connect: ' . mysql_error());
     }
     mysql_select_db("pledges", $db);
+    
+    return $db;
+}
+
+function query_db($query) {
+    $db = db_connect();
     
     $result = mysql_query($query, $db);
     if (!$result) {
