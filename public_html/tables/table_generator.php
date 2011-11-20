@@ -79,7 +79,11 @@
                         break;
                     case 'gdrs_alloc':
                         include("tables/gdrs_alloc.php");
-                        return $retval . gdrs_alloc($user_db,$dec);
+                        return $retval . gdrs_alloc($user_db,$dec, 'total');
+                        break;
+                    case 'gdrs_alloc_pc':
+                        include("tables/gdrs_alloc.php");
+                        return $retval . gdrs_alloc($user_db,$dec, 'percap');
                         break;
                 }
                 break;

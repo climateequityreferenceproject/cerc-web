@@ -1,17 +1,22 @@
 <?php
-function gdrs_alloc($dbfile, $dec) {
+function gdrs_alloc($dbfile, $dec, $mode) {
     include("table_common.php");
 
     $database = 'sqlite:'.$dbfile;
 
     $db = new PDO($database) OR die("<p>Can't open database</p>");
     
+    $units = "MtCO2";
+    if ($mode === 'percap') {
+        $units = "tCO2/cap";
+    }
+    
 $retval = <<< EOHTML
 <table cellspacing="0" cellpadding="0">
     <thead>
         <tr>
             <th> </th>
-            <th colspan="5">MtCO2</th>
+            <th colspan="5">$units</th>
         </tr>
         <tr>
             <th class="lj">Country or<br/>Group</th>
@@ -29,7 +34,7 @@ EOHTML;
     $db->query($viewquery);
 
 $worldquery = <<< EOSQL
-SELECT year, SUM(gdrs_alloc_MtCO2) AS gdrs_alloc
+SELECT year, SUM(gdrs_alloc_MtCO2) AS gdrs_alloc, SUM(pop_mln) AS pop
     FROM disp_temp WHERE year = 2010 OR year = 2015 OR
     year = 2020 OR year = 2025 OR year = 2030 GROUP BY year ORDER BY year;
 EOSQL;
@@ -37,7 +42,18 @@ EOSQL;
     $retval .= "<tr>";
     $retval .= "<td class=\"lj\">( 1) World</td>";
     foreach ($db->query($worldquery) as $record) {
-        $retval .= "<td>" . number_format($record["gdrs_alloc"], $dec) . "</td>";
+        switch ($mode) {
+            case 'total':
+                $val = $record["gdrs_alloc"];
+                break;
+            case 'percap':
+                $val = $record["gdrs_alloc"]/$record["pop"];
+                break;
+            default:
+                // This should never happen
+                $val = -9999;
+        }
+        $retval .= "<td>" . number_format($val, $dec) . "</td>";
     }
     $retval .= "</tr>";
     
@@ -46,7 +62,7 @@ EOSQL;
         $flagname = $flags["flag"];
         $longname = '(' . sprintf("%2d", $i) . ') ' . $flags["long_name"];
 $regionquery = <<< EOSQL
-SELECT year, SUM(gdrs_alloc_MtCO2) AS gdrs_alloc
+SELECT year, SUM(gdrs_alloc_MtCO2) AS gdrs_alloc, SUM(pop_mln) AS pop
     FROM disp_temp, flags WHERE flags.iso3 = disp_temp.iso3 AND
         flags.value = 1 AND flags.flag = '$flagname' AND
         (year = 2010 OR year = 2015 OR year = 2020
@@ -56,14 +72,25 @@ EOSQL;
         $retval .= "<tr>";
         $retval .= "<td class=\"lj\">" . $longname . "</td>";
         foreach ($db->query($regionquery) as $record) {
-            $retval .= "<td>" . number_format($record["gdrs_alloc"], $dec) . "</td>";
+            switch ($mode) {
+                case 'total':
+                    $val = $record["gdrs_alloc"];
+                    break;
+                case 'percap':
+                    $val = $record["gdrs_alloc"]/$record["pop"];
+                    break;
+                default:
+                    // This should never happen
+                    $val = -9999;
+            }
+            $retval .= "<td>" . number_format($val, $dec) . "</td>";
         }
         $retval .= "</tr>";
         $i++;
     }
 
 $countryquery = <<< EOSQL
-SELECT country, year, gdrs_alloc_MtCO2 as gdrs_alloc
+SELECT country, year, gdrs_alloc_MtCO2 as gdrs_alloc, pop_mln AS pop
     FROM disp_temp WHERE
     year = 2010 OR year = 2015 OR year = 2020
     OR year = 2025 OR year = 2030 ORDER BY country, year;
@@ -74,7 +101,18 @@ EOSQL;
             $retval .= "<tr>";
             $retval .= "<td class=\"lj\">" . $record["country"] . "</td>";
         }
-        $retval .= "<td>" . number_format($record["gdrs_alloc"], $dec) . "</td>";
+        switch ($mode) {
+            case 'total':
+                $val = $record["gdrs_alloc"];
+                break;
+            case 'percap':
+                $val = $record["gdrs_alloc"]/$record["pop"];
+                break;
+            default:
+                // This should never happen
+                $val = -9999;
+        }
+        $retval .= "<td>" . number_format($val, $dec) . "</td>";
         $year += 5;
         if ($year > 2030) {
             $retval .= "</tr>";

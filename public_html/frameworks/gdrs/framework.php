@@ -90,7 +90,12 @@
                             'gdrs_alloc' => array(
                                 'display_name' => 'Allocations',
                                 'time_series' => true
+                            ),
+                            'gdrs_alloc_pc' => array(
+                                'display_name' => 'Allocations per capita',
+                                'time_series' => true
                             )
+
                         );
         
         public function calculate($user_db, $shared_params, $fw_params) {
