@@ -110,11 +110,11 @@ if ($_POST['form']) {
             </table>
             <input type="submit" value ="Add" />
         </form>
-        <div id="table">
-            <form name="table" method="post">
-                <input type="hidden" name="form" value="delete"/>
+        <form name="table" method="post">
+            <input type="hidden" name="form" value="delete"/>
+            <div id="table">
                 <?php include("get_table.php"); ?>
-            </form>
-        </div>
+            </div>
+        </form>
     </body>
 </html>
