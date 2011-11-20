@@ -38,7 +38,7 @@ include("functions.php");
                     <td>
                         <select name="reduction_percent" id="reduction_percent">
                         <?php
-                        option_number(1, 100, 1, $default = NULL);
+                        option_number(1, 100, 1);
                         ?>
                         </select>%
                     </td>
@@ -52,9 +52,21 @@ include("functions.php");
                         <br />
                         <label><input type="radio" name="year_or_bau" value="bau" /> BAU</label>
                     </td>
-                    <td>YEAR</td>
+                    <td>
+                        <select name="rel_to_year" id="rel_to_year">
+                        <?php
+                        option_number(1990, 2010, 1);
+                        ?>
+                        </select>
+                    </td>
                     <td>by</td>
-                    <td>YEAR</td>
+                    <td>
+                        <select name="by_year" id="by_year">
+                        <?php
+                        option_number(2010, 2050, 1, 2020);
+                        ?>
+                        </select>
+                    </td>
                 </tr>
             </table>
             <input type="submit" value ="Add" />
