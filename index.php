@@ -117,7 +117,10 @@ if ($_POST['form']) {
                     </td>
                 </tr>
             </table>
+            <label>Source: <input type="text" name="source" maxlength="255" size="50"/></label>
+            <br /><br />
             <input type="submit" value ="Add" />
+            <br />
         </form>
         <form name="table" method="post">
             <input type="hidden" name="form" value="delete"/>
