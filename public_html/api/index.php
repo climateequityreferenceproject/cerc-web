@@ -110,7 +110,8 @@
                         $status = $msg['OK'];
                     } else {
                         $data = "GET: Must be one of 'q=new_db', 'q=params', 'q=params&db=dbname' ";
-                        $data .= "'q=data_ver', 'q=data_ver&db=dbname', 'q=calc_ver', 'q=calc_ver&db=db_name'";
+                        $data .= "'q=data_ver', 'q=data_ver&db=dbname', 'q=calc_ver', 'q=calc_ver&db=db_name' ";
+                        $data .= "'q=pathways', 'q=pathways&db=dbname'";
                         $status = $msg['badreq'];
                     }
                 } else {
