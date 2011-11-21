@@ -9,6 +9,12 @@ if ($_POST['form']) {
             if ($new_values['year_or_bau'] == 'bau') {
                 $new_values['rel_to_year'] = NULL;
             }
+            // Check boxes are odd--they just don't appear if unchecked
+            if (array_key_exists('conditional', $new_values)) {
+                $new_values['conditional'] = 1;
+            } else {
+                $new_values['conditional'] = 0;
+            }
             $sql = "INSERT INTO pledge (";
             $sql .= implode(",", array_keys($new_values));
             $sql .= ") VALUE (";
