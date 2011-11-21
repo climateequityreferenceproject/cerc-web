@@ -166,6 +166,34 @@
 
         }
         
+        public static function get_emerg_paths($user_db = NULL) {
+            try {
+                if ($user_db) {
+                    $db_cnx = new PDO('sqlite:'.$user_db);
+                } else {
+                    $db_cnx = new PDO('sqlite:'.self::$master_db);
+                }
+
+            } catch (PDOException $e) {
+                print "Error connecting to database: " . $e->getMessage() . "<br/>";
+                die();
+            }
+           
+            $retval = array();
+            foreach ($db_cnx->query('SELECT name_short, name_long, pathway_id FROM pathway_names ORDER BY pathway_id') as $pathways) {
+                $retval[] = array(
+                    'id' => $pathways['pathway_id'],
+                    'short_code' =>  $pathways['name_short'],
+                    'display_name' => $pathways['name_long']
+                );
+            }
+            
+            // Close down nicely
+            $db_cnx = NULL;
+            
+            return $retval;
+        }
+        
         // ----------------------------------------------------------------
         // Return the full list of parameters that are shared by all
         // frameworks. Each framework might have its own, framework-

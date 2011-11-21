@@ -87,6 +87,13 @@
                             $data = json_encode(Framework::get_year_range());
                         }
                         $status = $msg['OK'];
+                    }  elseif ($_GET['q'] === 'pathways') {
+                        if ($_GET['db']) {
+                            $data = json_encode(Framework::get_emerg_paths($user_db));
+                        } else {
+                            $data = json_encode(Framework::get_emerg_paths());
+                        }
+                        $status = $msg['OK'];
                     } elseif ($_GET['q'] === 'data_ver') {
                         if ($_GET['db']) {
                             $data = json_encode(Framework::get_data_ver($user_db));
@@ -108,7 +115,7 @@
                     }
                 } else {
                     $status = $msg['gone'];
-                    $data = 'The database ' . $user_db . ' does not exist. Use get=new_db to request a new database or use PUT without specifying a database.';
+                    $data = 'The database ' . $_GET['db'] . ' does not exist. Use q=new_db to request a new database or use PUT without specifying a database.';
                 }
                 break;
             case 'POST':
