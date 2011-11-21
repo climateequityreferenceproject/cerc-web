@@ -88,11 +88,11 @@
                                 'time_series' => true
                             ),
                             'gdrs_alloc' => array(
-                                'display_name' => 'Allocations',
+                                'display_name' => 'Allocations time series',
                                 'time_series' => true
                             ),
                             'gdrs_alloc_pc' => array(
-                                'display_name' => 'Allocations per capita',
+                                'display_name' => 'Allocations per capita time series',
                                 'time_series' => true
                             )
 
