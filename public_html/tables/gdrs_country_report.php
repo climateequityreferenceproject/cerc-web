@@ -24,7 +24,14 @@ if (isset($_GET['year'])) {
 if (isset($_GET['db'])) {
     $user_db = $_GET['db'];
 } else {
-    $can_run = FALSE;
+    $fw = new Framework::$frameworks['gdrs']['class'];
+    $db_array = Framework::dup_master_db('calc', TRUE);
+    $master_db = $db_array['db'];
+    if ($db_array['did_create']) {
+        // Created a new one, so run it
+        $fw->calculate($master_db, $shared_params, $fw_params);
+    }
+    $user_db = Framework::get_user_db($master_db);
 }
 
 
