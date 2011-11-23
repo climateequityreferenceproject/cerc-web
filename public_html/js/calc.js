@@ -50,7 +50,23 @@ $(function() {
 
     $('#adv').click(forcesubmit);
     
-    $('#table_view').change(submit);
+    $('#table_view').change(function () {
+        country_set = {gdrs_country_report: 1};
+        timeseries_set = {gdrs_RCI: 1, gdrs_alloc: 1, gdrs_alloc_pc: 1};
+        if ($(this).val() in country_set) {
+            $('#display_ctry').parent().show();
+            $('#decimal_pl').parent().hide();
+        } else {
+            $('#display_ctry').parent().hide();
+            $('#decimal_pl').parent().show();
+        }
+        if ($(this).val() in timeseries_set) {
+            $('#display_yr').parent().hide();
+        } else {
+            $('#display_yr').parent().show();
+        }        
+        submit();
+    });
     $('#display_yr').change(submit);
     $('#display_ctry').change(submit);
     $('#decimal_pl').change(submit);
