@@ -1,4 +1,5 @@
 <?php
+include("graphs/graph_core.php");
 
 function dec($num) {
     return max(0, 1 - floor(log10(abs($num))));
@@ -102,10 +103,67 @@ EOHTML;
     $val = 1000 * $world_tot['gdp_mer'] * 0.01 * $ctry_val["gdrs_rci"]/$ctry_val['pop_mln'];
     $retval .= "<td>$" . number_format($val, dec($val)) . "</td>";
     $retval .= "</tr>";
-        
+    
+$query = <<< EOSQL
+SELECT year, SUM(gdrs_alloc_MtCO2) AS gdrs_alloc_MtCO2, SUM(fossil_CO2_MtCO2) AS fossil_CO2_MtCO2,
+       SUM(LULUCF_MtCO2) AS LULUCF_MtCO2, SUM(NonCO2_MtCO2e) AS NonCO2_MtCO2e FROM disp_temp
+       WHERE year >= 1990 AND year <= 2030 GROUP BY year ORDER BY year;
+EOSQL;
+    
+    $global_bau_series = array();
+    $global_alloc_series = array();
+    foreach ($db->query($query) as $record) {
+        $yr_ndx = $record['year'];
+        $global_alloc_series[$yr_ndx] = $record['gdrs_alloc_MtCO2'];
+        $global_bau_series[$yr_ndx] = $record['fossil_CO2_MtCO2'];
+        if ($shared_params['use_lulucf']['value']) {
+            $global_bau_series[$yr_ndx] += $record['LULUCF_MtCO2'];
+        }
+        if ($shared_params['use_nonco2']['value']) {
+            $global_bau_series[$yr_ndx] += $record['NonCO2_MtCO2e'];
+        }
+    }
+    $query = 'SELECT year, gdrs_alloc_MtCO2, fossil_CO2_MtCO2, LULUCF_MtCO2,
+        NonCO2_MtCO2e FROM disp_temp WHERE year >= 1990 AND year <= 2030';
+    $query .= ' AND iso3="' . $iso3 . '" ORDER BY year;';
+    
+    $bau_series = array();
+    $alloc_series = array();
+    $dulline_series = array();
+    $min = 0;
+    $max = 0;
+    foreach ($db->query($query) as $record) {
+        $yr_ndx = $record['year'];
+        $alloc_series[$yr_ndx] = $record['gdrs_alloc_MtCO2'];
+        $bau_series[$yr_ndx] = $record['fossil_CO2_MtCO2'];
+        if ($shared_params['use_lulucf']['value']) {
+            $bau_series[$yr_ndx] += $record['LULUCF_MtCO2'];
+        }
+        if ($shared_params['use_nonco2']['value']) {
+            $bau_series[$yr_ndx] += $record['NonCO2_MtCO2e'];
+        }
+        $dulline_series[$yr_ndx] = $bau_series[$yr_ndx] * ($global_alloc_series[$yr_ndx]/$global_bau_series[$yr_ndx]);
+        $min = min($min, $alloc_series[$yr_ndx]);
+        $max = max($max, $alloc_series[$yr_ndx]);
+    }
+    
+    $graph = new Graph(500, 312);
+    // The TRUE means use the specified limits for the graph
+    $graph->set_xaxis(1990, 2030, "years", "", TRUE);
+    $graph->set_yaxis($min, $max, "MtCO2", "");
+    $graph->add_series($bau_series);
+    $graph->add_series($dulline_series);
+    $graph->add_series($alloc_series);
+    $graph_file = $graph->svgplot_wedges(array("#8ebd7f", "#eac073"));
+
+    $graph_file = "/tmp/" . basename($graph_file);
+    
 $retval .= <<< EOHTML
     </tbody>
 </table>
+<object data="$graph_file" type="image/svg+xml" style="width:500px; height:312px; border: 1px solid #CCC;">
+    <p>No SVG support</p>
+</object>
 EOHTML;
 return $retval;
 }

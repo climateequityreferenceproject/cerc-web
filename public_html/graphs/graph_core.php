@@ -5,11 +5,12 @@
         protected $label = "";
         protected $unit = "";
         
-        function __construct($min, $max, $label, $unit) {
+        function __construct($min, $max, $label, $unit, $use_limits) {
             $this->min = $min;
             $this->max = $max;
             $this->label = $label;
             $this->unit = $unit;
+            $this->use_limits = $use_limits;
         }
         
         public function get_label() {
@@ -49,15 +50,20 @@
                 }
             }
             
-            $nicemin = $step * $factor * round($xmin/$factor/$step);
-            $nicemax = $step * $factor * round($xmax/$factor/$step);
-            
-            if ($nicemax < $xmax) {
-                $nicemax = $nicemax + $step * $factor;
-            }
-            
-            if ($nicemin > $xmin) {
-                $nicemin = $nicemin - $step * $factor;
+            if ($this->use_limits) {
+                $nicemin = $this->min;
+                $nicemax = $this->max;
+            } else {
+                $nicemin = $step * $factor * round($xmin/$factor/$step);
+                $nicemax = $step * $factor * round($xmax/$factor/$step);
+
+                if ($nicemax < $xmax) {
+                    $nicemax = $nicemax + $step * $factor;
+                }
+
+                if ($nicemin > $xmin) {
+                    $nicemin = $nicemin - $step * $factor;
+                }
             }
             
             return array('min'=>$nicemin, 'max'=>$nicemax, 'step'=>$step * $factor);
@@ -92,14 +98,14 @@
         }
         
         // For now, axes are set once, not resest
-        public function set_xaxis($min, $max, $label, $unit) {
+        public function set_xaxis($min, $max, $label, $unit, $use_limits=FALSE) {
             if (!$this->xaxis) {
-                $this->xaxis = new Axis($min, $max, $label, $unit);
+                $this->xaxis = new Axis($min, $max, $label, $unit, $use_limits);
             }
         }
-        public function set_yaxis($min, $max, $label, $unit) {
+        public function set_yaxis($min, $max, $label, $unit, $use_limits=FALSE) {
             if (!$this->yaxis) {
-                $this->yaxis = new Axis($min, $max, $label, $unit);
+                $this->yaxis = new Axis($min, $max, $label, $unit, $use_limits);
             }
         }
         
@@ -252,7 +258,7 @@
                     $ytransf = $yoff + round($yfact * ($y - $yscale['min']));
                     $points .= $xtransf . "," . ($this->dim['height'] - $ytransf) . " " ;
                 }
-                $svg .= '<polygon stroke-width="1" stroke="#CCC" fill="' . $colors[$colorndx] . '" points="' . $points . '" />' . "\n";
+                $svg .= '<polygon stroke-width="1" stroke="#999" fill="' . $colors[$colorndx] . '" points="' . $points . '" />' . "\n";
             }
             
             $svg .= $this->svg_end();
