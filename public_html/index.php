@@ -116,7 +116,7 @@ include("form_functions.php");
                             <li>
                                 <input type="checkbox" name="use_netexports" id="use_netexports" class="click" value="1" <?php if ($shared_params["use_netexports"]['value'])
                                            echo 'checked="checked"'; ?>  />
-                                <label for="use_netexports" class="click"> Include emissions in traded goods</label>
+                                <label for="use_netexports" class="click"> Include emissions embodied in trade</label>
                             </li>
                             <?php
                                        if ($display_params['framework']['value'] === 'gdrs') {
