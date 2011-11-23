@@ -152,7 +152,7 @@ td, th {
 form { padding:0.5em 0.5em 1.0em 0.5em; }
 #form1 {
     float:left;
-    width:23em;
+    width:24em;
 }
 /* min form height to prevent table from dropping below when form content is less tall than intro */
 #calc_container>form1 { 
@@ -175,7 +175,7 @@ fieldset fieldset {
 fieldset, fieldset li {
 	margin-left:auto;
 	margin-right:auto;
-	width:19em;
+	width:20em;
 }
 fieldset li { 
 	float:left;
