@@ -12,7 +12,7 @@ $can_run = TRUE;
 if (isset($_GET['ctry_report_country'])) {
     $iso3 = $_GET['ctry_report_country'];
 } else {
-    $iso3 = "USA";
+    $iso3 = NULL;
 }
 
 if (isset($_GET['year'])) {
@@ -45,6 +45,9 @@ function gdrs_country_report($dbfile, $year, $iso3) {
     $shared_params = Framework::get_shared_params($dbfile);
     
     $countries = Framework::get_country_list($dbfile);
+    if (!$iso3) {
+        $iso3 = $countries[0]['iso3'];
+    }
 
 
     // Start with the core SQL view
@@ -156,9 +159,5 @@ echo <<< EOHTML
     </head>
     <body>
 EOHTML;
-if ($can_run) {
-    echo gdrs_country_report($user_db, $year, $iso3);
-} else {
-    echo "<p>Insufficient information to run</p>";
-}
+echo gdrs_country_report($user_db, $year, $iso3);
 echo "</body></html>";
