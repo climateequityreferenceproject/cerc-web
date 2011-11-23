@@ -99,50 +99,38 @@
             return basename($user_db);
         }
         
-        public static function get_data_ver($user_db = NULL) {
+        protected function db_cnx($user_db) {
             try {
                 if ($user_db) {
                     $db_cnx = new PDO('sqlite:'.$user_db);
                 } else {
                     $db_cnx = new PDO('sqlite:'.self::$master_db);
                 }
+
             } catch (PDOException $e) {
                 print "Error connecting to database: " . $e->getMessage() . "<br/>";
                 die();
             }
+            
+            return $db_cnx;
+        }
+        
+        public static function get_data_ver($user_db = NULL) {
+            $db_cnx = self::db_cnx($user_db);
             
             $query_result = $db_cnx->query('SELECT data_version FROM meta;')->fetchAll();
             return $query_result[0]['data_version'];
         }
 
         public static function get_calc_ver($user_db = NULL) {
-            try {
-                if ($user_db) {
-                    $db_cnx = new PDO('sqlite:'.$user_db);
-                } else {
-                    $db_cnx = new PDO('sqlite:'.self::$master_db);
-                }
-            } catch (PDOException $e) {
-                print "Error connecting to database: " . $e->getMessage() . "<br/>";
-                die();
-            }
+            $db_cnx = self::db_cnx($user_db);
             
             $query_result = $db_cnx->query('SELECT calc_version FROM meta;')->fetchAll();
             return $query_result[0]['calc_version'];
         }
         
         public static function get_year_range($user_db = NULL) {
-            try {
-                if ($user_db) {
-                    $db_cnx = new PDO('sqlite:'.$user_db);
-                } else {
-                    $db_cnx = new PDO('sqlite:'.self::$master_db);
-                }
-
-            } catch (PDOException $e) {
-                print "Error connecting to database: " . $e->getMessage() . "<br/>";
-                die();
-            }
+            $db_cnx = self::db_cnx($user_db);
             
             // Create the pathway/baseline temporary view
             $query = self::sql_views_baseline_ep();
@@ -167,17 +155,7 @@
         }
         
         public static function get_emerg_paths($user_db = NULL) {
-            try {
-                if ($user_db) {
-                    $db_cnx = new PDO('sqlite:'.$user_db);
-                } else {
-                    $db_cnx = new PDO('sqlite:'.self::$master_db);
-                }
-
-            } catch (PDOException $e) {
-                print "Error connecting to database: " . $e->getMessage() . "<br/>";
-                die();
-            }
+            $db_cnx = self::db_cnx($user_db);
            
             $retval = array();
             foreach ($db_cnx->query('SELECT name_short, name_long, pathway_id FROM pathway_names ORDER BY pathway_id') as $pathways) {
@@ -194,6 +172,29 @@
             return $retval;
         }
         
+        public static function get_country_list($user_db = NULL) {
+            $db_cnx = self::db_cnx($user_db);
+            
+            $query_result = $db_cnx->query('SELECT iso3, name FROM country;')->fetchAll(PDO::FETCH_ASSOC);
+            
+            // Close down nicely
+            $db_cnx = NULL;
+            
+            return $query_result;
+        }
+
+        
+        public static function get_region_list($user_db = NULL) {
+            $db_cnx = self::db_cnx($user_db);
+            
+            $query_result = $db_cnx->query('SELECT flag AS region_code, long_name AS name FROM flag_names;')->fetchAll(PDO::FETCH_ASSOC);
+            
+            // Close down nicely
+            $db_cnx = NULL;
+            
+            return $query_result;
+        }
+        
         // ----------------------------------------------------------------
         // Return the full list of parameters that are shared by all
         // frameworks. Each framework might have its own, framework-
@@ -204,16 +205,7 @@
         // ----------------------------------------------------------------
         public static function get_shared_params($user_db = NULL) {
             $retval = self::$shared_params_default;
-            try {
-                if ($user_db) {
-                    $db_cnx = new PDO('sqlite:'.$user_db);
-                } else {
-                    $db_cnx = new PDO('sqlite:'.self::$master_db);
-                }
-            } catch (PDOException $e) {
-                print "Error connecting to database: " . $e->getMessage() . "<br/>";
-                die();
-            }
+            $db_cnx = self::db_cnx($user_db);
             
             foreach ($db_cnx->query('SELECT param_id, int_val, real_val FROM params;') as $param_val) {
                 foreach ($retval as $key=>$value) {
