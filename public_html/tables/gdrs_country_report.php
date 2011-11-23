@@ -9,10 +9,10 @@ include("../frameworks/frameworks.php");
 
 $can_run = TRUE;
 
-if (isset($_GET['country'])) {
-    $iso3 = $_GET['country'];
+if (isset($_GET['ctry_report_country'])) {
+    $iso3 = $_GET['ctry_report_country'];
 } else {
-    $can_run = FALSE;
+    $iso3 = "USA";
 }
 
 if (isset($_GET['year'])) {
@@ -43,6 +43,8 @@ function gdrs_country_report($dbfile, $year, $iso3) {
     $db = new PDO($database) OR die("<p>Can't open database</p>");
     
     $shared_params = Framework::get_shared_params($dbfile);
+    
+    $countries = Framework::get_country_list($dbfile);
 
 
     // Start with the core SQL view
@@ -71,7 +73,17 @@ EOSQL;
         $bau += $ctry_val['NonCO2_MtCO2e'];
     }
     
-    $retval = "<h1>" . $ctry_val['country'] . "</h1>";
+    $retval = '<form><select name="ctry_report_country" id="ctry_report_country">';
+    foreach ($countries as $item) {
+        $selected = '';
+        if ($item['iso3'] === $iso3) {
+            $selected = ' selected="selected"';
+        }
+        $retval .= '<option value="' . $item['iso3'] .  '"' . $selected . '>' . $item['name'] . '</option>';
+    }
+    $retval .= '</select><input type="submit" name="ctry_report_submit" id="ctry_report_submit" value="Change Country"></form>';
+    
+    $retval .= "<h1>" . $ctry_val['country'] . "</h1>";
     
 $retval .= <<< EOHTML
 <table cellspacing="2" cellpadding="2">
@@ -137,9 +149,16 @@ EOHTML;
 return $retval;
 }
 
-
+echo <<< EOHTML
+<html>
+    <head>
+    <title>Country report TEST</title>
+    </head>
+    <body>
+EOHTML;
 if ($can_run) {
     echo gdrs_country_report($user_db, $year, $iso3);
 } else {
     echo "<p>Insufficient information to run</p>";
 }
+echo "</body></html>";
