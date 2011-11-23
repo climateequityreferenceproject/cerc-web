@@ -52,6 +52,7 @@ $(function() {
     
     $('#table_view').change(submit);
     $('#display_yr').change(submit);
+    $('#display_ctry').change(submit);
     $('#decimal_pl').change(submit);
     $('#emergency_path').change(submit);
     $('#baseline').change(submit);

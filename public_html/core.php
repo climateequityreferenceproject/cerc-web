@@ -90,6 +90,7 @@
     
     $advanced = false;
     // TODO: replace country_grp w JS to show/hide rows and columns, or HTML table filter
+    $country_list = Framework::get_country_list($user_db);
     $display_params = array ('basic_adv' => array(
                                 'value'=>'basic',
                                 'advanced'=>false,
@@ -107,6 +108,14 @@
                                 'min'=>1990,
                                 'max'=>2030,
                                 'step'=>1,
+                                'list'=>NULL
+                            ),
+                             'display_ctry' => array(
+                                'value'=>NULL,
+                                'advanced'=>false,
+                                'min'=>NULL,
+                                'max'=>NULL,
+                                'step'=>NULL,
                                 'list'=>NULL
                             ),
                              'decimal_pl' => array(

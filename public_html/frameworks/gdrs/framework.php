@@ -94,8 +94,11 @@
                             'gdrs_alloc_pc' => array(
                                 'display_name' => 'Allocations per capita time series',
                                 'time_series' => true
+                            ),
+                            'gdrs_country_report' => array(
+                                'display_name' => 'Country report',
+                                'time_series' => false
                             )
-
                         );
         
         public function calculate($user_db, $shared_params, $fw_params) {

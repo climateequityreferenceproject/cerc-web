@@ -72,6 +72,18 @@ include("form_functions.php");
                         <ul>
                             <?php echo select_options_list('table_view', $display_params, "Table view: ", $advanced); ?>
                             <?php echo select_num('display_yr', $display_params, "Year to display:", $advanced); ?>
+                            <?php
+                                echo '<li><label for="display_ctry" class="select" title="Country to display for country report">Country to display:</label>';
+                                echo '<select name="display_ctry" id="display_ctry" action="index.php">';
+                                foreach ($country_list as $item) {
+                                    $selected = '';
+                                    if ($item['iso3'] === $display_params['display_ctry']['value']) {
+                                        $selected = ' selected="selected"';
+                                    }
+                                    echo '<option value="' . $item['iso3'] .  '"' . $selected . '>' . $item['name'] . '</option>';
+                                }
+                                echo '</select></li>';
+                            ?>
                             <?php echo select_num('decimal_pl', $display_params, "Decimal places:", $advanced); ?>
                             </ul>&nbsp;
                         </div>
