@@ -225,7 +225,7 @@ include("form_functions.php");
                                         if (isset($_COOKIE['db']) && !$up_to_date) {
                                             echo '<p class="alert">The calculator or database has been updated since you last visited. Your settings are being reset.</p>';
                                         }
-                                       echo generate_table($display_params, $fw_params, $shared_params, $table_views, $user_db);
+                                       echo generate_table($display_params, $fw_params, $shared_params, $country_list, $table_views, $user_db);
                                        // include("tables/sample_table.php");
                 ?>
                                    </div><!-- end #data -->

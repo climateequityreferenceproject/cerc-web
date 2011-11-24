@@ -201,5 +201,5 @@
         // print_r($fw_params);
         // echo("<br /><br />");
         // print_r($display_params);
-        echo generate_table($display_params, $fw_params, $shared_params, $table_views, $user_db);
+        echo generate_table($display_params, $fw_params, $shared_params, $country_list, $table_views, $user_db);
     }

@@ -43,8 +43,6 @@ EOSQL;
         $bau += $ctry_val['NonCO2_MtCO2e'];
         $gases = "CO2e";
     }
-        
-    $retval .= "<h1>" . $ctry_val['country'] . "</h1>";
     
 $retval .= <<< EOHTML
 <table cellspacing="2" cellpadding="2">
