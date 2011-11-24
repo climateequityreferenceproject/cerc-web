@@ -20,11 +20,11 @@ $retval = <<< EOHTML
     <thead>
         <tr>
             <th class="lj">Country or Group</th>
-            <th>Obligation to pay<br/>(% of total)</th>
-            <th>Obligation to pay<br/>(bln US\$)</th>
-            <th>Obligation to pay<br/>(% GDP)</th>
-            <th>Obligation per<br/>capita (US\$/cap)</th>
-            <th>Obligation per person<br/>above development<br/>threshold (US\$/cap)</th>
+            <th>Obligation<br/>to pay<br/>(% of total)</th>
+            <th>Obligation<br/>to pay<br/>(billion \$US)</th>
+            <th>Obligation<br/>to pay<br/>(% GDP)</th>
+            <th>Obligation<br/>per capita<br/>(\$US/cap)</th>
+            <th>Obligation per person<br/>above development<br/>threshold (\$US/cap)</th>
         </tr>
     </thead>
     <tbody>
