@@ -134,7 +134,14 @@
             }
             $margin = $this->get_margins();
             
-            $ypos = $this->dim['height'] - $margin['bottom'];
+            // Cross zero if need be
+            $yscale = $this->yaxis->get_scale();
+            $yzero = 0;
+            if ($yscale['min'] < 0) {
+                $yzero = -$yscale['min']/($yscale['max'] - $yscale['min']) * ($margin['top'] - $margin['bottom']);
+            }
+            
+            $ypos = $this->dim['height'] - $margin['bottom'] - $yzero;
             $x1 = $margin['left'];
             $x2 = $margin['right'];
             
@@ -258,7 +265,7 @@
                     $ytransf = $yoff + round($yfact * ($y - $yscale['min']));
                     $points .= $xtransf . "," . ($this->dim['height'] - $ytransf) . " " ;
                 }
-                $svg .= '<polygon stroke-width="1" stroke="#999" fill="' . $colors[$colorndx] . '" points="' . $points . '" />' . "\n";
+                $svg .= '<polygon stroke-width="1" stroke="#999" fill="' . $colors[$colorndx] . '" fill-opacity="0.8" points="' . $points . '" />' . "\n";
             }
             
             $svg .= $this->svg_end();
