@@ -154,7 +154,13 @@ EOSQL;
     $graph->add_series($bau_series);
     $graph->add_series($dulline_series);
     $graph->add_series($alloc_series);
-    $graph_file = $graph->svgplot_wedges(array("#8ebd7f", "#eac073"));
+    $fund_others = $alloc_series[2030] < $dulline_series[2030];
+    if ($fund_others) {
+        $gap_color = "#eac073";
+    } else {
+        $gap_color = '#6b87c3';
+    }
+    $graph_file = $graph->svgplot_wedges(array("#8ebd7f", $gap_color), 0.8);
 
     $graph_file = "/tmp/" . basename($graph_file);
     
@@ -165,5 +171,20 @@ $retval .= <<< EOHTML
     <p>No SVG support</p>
 </object>
 EOHTML;
+
+$retval .= '<ul id="legend">';
+$retval .= '<li><img src="img/leg_clr_green.png" />&nbsp;';
+if ($fund_others) {
+    $retval .= 'Domestic mitigation</li>';
+} else {
+    $retval .= 'Domestically-funded mitigation</li>';
+}
+if ($fund_others) {
+    $retval .= '<li><img src="img/leg_clr_ochre.png" />&nbsp;Mitigation in other countries</li>';
+} else {
+    $retval .= '<li><img src="img/leg_clr_blue.png" />&nbsp;Mitigation funded by other countries</li>';
+}
+$retval .= '</ul>';
+
 return $retval;
 }

@@ -128,7 +128,7 @@
         }
         
         protected function dec($num) {
-            return max(0, -floor(log10(abs($num))));
+            return max(0, 1 - floor(log10(abs($num))));
         }
         
         protected function svg_xaxis() {
@@ -178,7 +178,7 @@
             }
             
             $x = $margin['left'] + round(0.5 * $canvas_len);
-            $y = $ypos + 30;
+            $y = $ypos + 35;
             
             $retval .= '<text ' . $this->label_text_attr . ' x="' . $x . '" y="' . $y . '">' . "\n";
             $retval .= $label;
@@ -229,7 +229,7 @@
             }
             
             $y = $this->dim['height'] - ($margin['bottom'] + round(0.5 * $canvas_len));
-            $x = $xpos - 30;
+            $x = $xpos - 35;
             
             $retval .= '<text ' . $this->label_text_attr . ' x="' . 0 . '" y="' . 0 . '" transform="rotate(-90) translate(' . -$y . ',' . $x . ')">' . "\n";
             $retval .= $label;
@@ -254,7 +254,7 @@
         
         // For wedges, expect series to be in order--can be top-down or bottom-up
         // Colors are the colors of the wedges in sequence
-        public function svgplot_wedges($colors) {
+        public function svgplot_wedges($colors, $opacity) {
             // Must have axes and series to plot
             if (!$this->xaxis || !$this->yaxis || count($this->series) == 0) {
                 return;
@@ -289,7 +289,7 @@
                     $ytransf = $yoff + round($yfact * ($y - $yscale['min']));
                     $points .= $xtransf . "," . ($this->dim['height'] - $ytransf) . " " ;
                 }
-                $svg .= '<polygon stroke-width="1" stroke="#999" fill="' . $colors[$colorndx] . '" fill-opacity="0.8" points="' . $points . '" />' . "\n";
+                $svg .= '<polygon stroke-width="1" stroke="#999" fill="' . $colors[$colorndx] . '" fill-opacity="' . $opacity . '" points="' . $points . '" />' . "\n";
             }
             
             $svg .= $this->svg_end();
