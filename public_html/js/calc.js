@@ -39,6 +39,9 @@ $(function() {
     // If JS is enabled, hide the submit button
     $('#submit').hide();
     
+    // Make sure display options are shown/hidden consistent with the chosen view
+    set_display();
+    
     $('#loading').html('<img src="img/spinner.gif" alt="loading indicator" />');
     
     //--------------------------------------------------
@@ -51,20 +54,7 @@ $(function() {
     $('#adv').click(forcesubmit);
     
     $('#table_view').change(function () {
-        country_set = {gdrs_country_report: 1};
-        timeseries_set = {gdrs_RCI: 1, gdrs_alloc: 1, gdrs_alloc_pc: 1};
-        if ($(this).val() in country_set) {
-            $('#display_ctry').parent().show();
-            $('#decimal_pl').parent().hide();
-        } else {
-            $('#display_ctry').parent().hide();
-            $('#decimal_pl').parent().show();
-        }
-        if ($(this).val() in timeseries_set) {
-            $('#display_yr').parent().hide();
-        } else {
-            $('#display_yr').parent().show();
-        }        
+        set_display();
         submit();
     });
     $('#display_yr').change(submit);
@@ -180,6 +170,23 @@ function submit() {
 
 function forcesubmit() {
     $('#forcesubmit').click();
+}
+
+function set_display() {
+    country_set = {gdrs_country_report: 1};
+    timeseries_set = {gdrs_RCI: 1, gdrs_alloc: 1, gdrs_alloc_pc: 1};
+    if ($('#table_view').val() in country_set) {
+        $('#display_ctry').parent().show();
+        $('#decimal_pl').parent().hide();
+    } else {
+        $('#display_ctry').parent().hide();
+        $('#decimal_pl').parent().show();
+    }
+    if ($('#table_view').val() in timeseries_set) {
+        $('#display_yr').parent().hide();
+    } else {
+        $('#display_yr').parent().show();
+    }
 }
 
 function uniqid()
