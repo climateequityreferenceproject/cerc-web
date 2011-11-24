@@ -144,7 +144,7 @@ EOSQL;
         }
         $dulline_series[$yr_ndx] = $bau_series[$yr_ndx] * ($global_alloc_series[$yr_ndx]/$global_bau_series[$yr_ndx]);
         $min = min($min, $alloc_series[$yr_ndx]);
-        $max = max($max, $alloc_series[$yr_ndx]);
+        $max = max($max, $bau_series[$yr_ndx]);
     }
     
     $graph = new Graph(500, 312);
