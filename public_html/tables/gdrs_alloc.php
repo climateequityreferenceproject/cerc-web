@@ -19,7 +19,7 @@ $retval = <<< EOHTML
             <th colspan="5">$units</th>
         </tr>
         <tr>
-            <th class="lj">Country or<br/>Group</th>
+            <th class="lj">Country or Group</th>
             <th>2010</th>
             <th>2015</th>
             <th>2020</th>

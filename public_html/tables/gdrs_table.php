@@ -11,7 +11,7 @@ $retval = <<< EOHTML
 <table cellspacing="0" cellpadding="0">
     <thead>
         <tr>
-            <th class="lj">Country or<br/>Group</th>
+            <th class="lj">Country or Group</th>
             <th>Population<br/>(million)</th>
             <th>Population<br/>(% of global)</th>
             <th>GDP<br/>(billion \$US)</th>
@@ -31,7 +31,7 @@ $retval = <<< EOHTML
 <table cellspacing="0" cellpadding="0">
     <thead>
         <tr>
-            <th class="lj">Country or<br/>Group</th>
+            <th class="lj">Country or Group</th>
             <th>Population<br/>(% of global)</th>
             <th>GDP<br/>(% of global)</th>
             <th>Income<br/>(\$US PPP/cap)</th>

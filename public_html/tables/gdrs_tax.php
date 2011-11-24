@@ -19,7 +19,7 @@ $retval = <<< EOHTML
 <table cellspacing="0" cellpadding="0">
     <thead>
         <tr>
-            <th class="lj">Country or<br/>Group</th>
+            <th class="lj">Country or Group</th>
             <th>Obligation to pay<br/>(% of total)</th>
             <th>Obligation to pay<br/>(bln US\$)</th>
             <th>Obligation to pay<br/>(% GDP)</th>

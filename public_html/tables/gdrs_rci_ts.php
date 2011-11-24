@@ -10,7 +10,10 @@ $retval = <<< EOHTML
 <table cellspacing="0" cellpadding="0">
     <thead>
         <tr>
-            <th class="lj">Country or<br/>Group</th>
+            <th> </th>
+            <th colspan="5">percent of global total</th>
+        </tr>        <tr>
+            <th class="lj">Country or Group</th>
             <th>2010</th>
             <th>2015</th>
             <th>2020</th>
