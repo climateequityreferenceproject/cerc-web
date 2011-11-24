@@ -148,8 +148,8 @@ EOSQL;
     }
     
     $graph = new Graph(500, 312);
-    // The TRUE means use the specified limits for the graph
-    $graph->set_xaxis(1990, 2030, "year", "", TRUE);
+    // The TRUE means use the specified limits for the graph; the FALSE means don't format numbers
+    $graph->set_xaxis(1990, 2030, "year", "", TRUE, FALSE);
     $graph->set_yaxis($min, $max, "Mt" . $gases, "");
     $graph->add_series($bau_series);
     $graph->add_series($dulline_series);

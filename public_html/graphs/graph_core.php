@@ -5,12 +5,13 @@
         protected $label = "";
         protected $unit = "";
         
-        function __construct($min, $max, $label, $unit, $use_limits) {
+        function __construct($min, $max, $label, $unit, $use_limits, $number_format) {
             $this->min = $min;
             $this->max = $max;
             $this->label = $label;
             $this->unit = $unit;
             $this->use_limits = $use_limits;
+            $this->number_format = $number_format;
         }
         
         public function get_label() {
@@ -98,14 +99,14 @@
         }
         
         // For now, axes are set once, not resest
-        public function set_xaxis($min, $max, $label, $unit, $use_limits=FALSE) {
+        public function set_xaxis($min, $max, $label, $unit, $use_limits=FALSE, $number_format=TRUE) {
             if (!$this->xaxis) {
-                $this->xaxis = new Axis($min, $max, $label, $unit, $use_limits);
+                $this->xaxis = new Axis($min, $max, $label, $unit, $use_limits, $number_format);
             }
         }
-        public function set_yaxis($min, $max, $label, $unit, $use_limits=FALSE) {
+        public function set_yaxis($min, $max, $label, $unit, $use_limits=FALSE, $number_format=TRUE) {
             if (!$this->yaxis) {
-                $this->yaxis = new Axis($min, $max, $label, $unit, $use_limits);
+                $this->yaxis = new Axis($min, $max, $label, $unit, $use_limits, $number_format);
             }
         }
         
@@ -124,6 +125,10 @@
                 'bottom' => $y + $this->textheight,
                 'top' => $this->dim['height'] - $y
             );
+        }
+        
+        protected function dec($num) {
+            return max(0, -floor(log10(abs($num))));
         }
         
         protected function svg_xaxis() {
@@ -151,14 +156,23 @@
             
             $retval = '<line x1="' . $x1 . '" y1="' . $ypos . '" x2="' . $x2 . '" y2="' . $ypos . '" stroke="black" />' . "\n";
             
+            $dec = $this->dec($scale['max']);
             $y1 = $ypos;
             $y2 = $ypos + $this->ticksize;
             $xval = $scale['min'];
             for ($offset = 0; $offset <= $canvas_len; $offset += $canvas_step) {
-                $x = $margin['left'] + $offset;
+                if ($this->xaxis->number_format) {
+                    $val = number_format($xval, $dec);
+                    // Avoid negative zero
+                    if ((float) $val == 0.0) {
+                        $val = number_format(0, $dec);
+                    }
+                } else {
+                    $val = $xval;
+                }                $x = $margin['left'] + $offset;
                 $retval .= '<line x1="' . $x . '" y1="' . $y1 . '" x2="' . $x . '" y2="' . $y2 . '" stroke="black" />' . "\n";
                 $retval .= '<text ' . $this->axis_text_attr . ' x="' . $x . '" y="' . ($y2 + 14) . '">' . "\n";
-                $retval .= $xval;
+                $retval .= $val;
                 $retval .= "</text>\n";
                 $xval += $scale['step'];
             }
@@ -192,14 +206,24 @@
             
             $retval = '<line x1="' . $xpos . '" y1="' . $y1 . '" x2="' . $xpos . '" y2="' . $y2 . '" stroke="black" />' . "\n";
             
+            $dec = $this->dec($scale['max']);
             $x1 = $xpos;
             $x2 = $xpos - $this->ticksize;
             $yval = $scale['min'];
             for ($offset = 0; $offset <= $canvas_len; $offset += $canvas_step) {
+                if ($this->yaxis->number_format) {
+                    $val = number_format($yval, $dec);
+                    // Avoid negative zero
+                    if ((float) $val == 0.0) {
+                        $val = number_format(0, $dec);
+                    }
+                } else {
+                    $val = $yval;
+                }
                 $y = $this->dim['height'] - ($margin['bottom'] + $offset);
                 $retval .= '<line x1="' . $x1 . '" y1="' . $y . '" x2="' . $x2 . '" y2="' . $y . '" stroke="black" />' . "\n";
                 $retval .= '<text ' . $this->axis_text_attr . ' x="' . ($x2 - 14) . '" y="' . ($y + 5) . '">' . "\n";
-                $retval .= $yval;
+                $retval .= $val;
                 $retval .= "</text>\n";
                 $yval += $scale['step'];
             }
