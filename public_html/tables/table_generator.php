@@ -12,6 +12,7 @@
         $advanced = $display_params['basic_adv']['value'] !== 'basic';
         $dec = $display_params["decimal_pl"]['value'];
         $disp_year = $display_params["display_yr"]['value'];
+        $use_nonco2 = $shared_params['use_nonco2']['value'] == 0 ? FALSE : TRUE;
         
         $table_name = $table_views[$display_params["table_view"]['value']]['display_name'];
         if (!$table_views[$display_params["table_view"]['value']]['time_series']) {
@@ -79,11 +80,11 @@
                         break;
                     case 'gdrs_alloc':
                         include("tables/gdrs_alloc.php");
-                        return $retval . gdrs_alloc($user_db,$dec, 'total');
+                        return $retval . gdrs_alloc($user_db,$dec, 'total', $use_nonco2);
                         break;
                     case 'gdrs_alloc_pc':
                         include("tables/gdrs_alloc.php");
-                        return $retval . gdrs_alloc($user_db,$dec, 'percap');
+                        return $retval . gdrs_alloc($user_db,$dec, 'percap', $use_nonco2);
                         break;
                     case 'gdrs_country_report':
                         include("tables/gdrs_country_report.php");

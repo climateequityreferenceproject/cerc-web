@@ -33,6 +33,7 @@ EOSQL;
     $ctry_val = $record[1];
     $bau_1990 = $ctry_val_1990['fossil_CO2_MtCO2'];
     $bau = $ctry_val['fossil_CO2_MtCO2'];
+    $gases = "CO2";
     if ($shared_params['use_lulucf']['value']) {
         $bau_1990 += $ctry_val_1990['LULUCF_MtCO2'];
         $bau += $ctry_val['LULUCF_MtCO2'];
@@ -40,6 +41,7 @@ EOSQL;
     if ($shared_params['use_nonco2']['value']) {
         $bau_1990 += $ctry_val_1990['NonCO2_MtCO2e'];
         $bau += $ctry_val['NonCO2_MtCO2e'];
+        $gases = "CO2e";
     }
         
     $retval .= "<h1>" . $ctry_val['country'] . "</h1>";
@@ -81,13 +83,13 @@ EOHTML;
     $retval .= "</tr>";
     // year Mitigation obligation as MtCO2e below BAU
     $retval .= "<tr>";
-    $retval .= "<td class=\"lj\">" . $year . " Mitigation obligation as MtCO2e below BAU</td>";
+    $retval .= "<td class=\"lj\">" . $year . " Mitigation obligation as Mt" . $gases . "below BAU</td>";
     $val = $bau - $ctry_val["gdrs_alloc_MtCO2"];
     $retval .= "<td>" . number_format($val, dec($val)) . "</td>";
     $retval .= "</tr>";
     // year Mitigation obligation per capita as tCO2e below BAU
     $retval .= "<tr>";
-    $retval .= "<td class=\"lj\">" . $year . " Mitigation obligation per capita as tCO2e below BAU</td>";
+    $retval .= "<td class=\"lj\">" . $year . " Mitigation obligation per capita as t" . $gases . " below BAU</td>";
     $val = ($bau - $ctry_val["gdrs_alloc_MtCO2"])/$ctry_val['pop_mln'];
     $retval .= "<td>" . number_format($val, dec($val)) . "</td>";
     $retval .= "</tr>";
@@ -150,7 +152,7 @@ EOSQL;
     $graph = new Graph(500, 312);
     // The TRUE means use the specified limits for the graph
     $graph->set_xaxis(1990, 2030, "years", "", TRUE);
-    $graph->set_yaxis($min, $max, "MtCO2", "");
+    $graph->set_yaxis($min, $max, "Mt" . $gases, "");
     $graph->add_series($bau_series);
     $graph->add_series($dulline_series);
     $graph->add_series($alloc_series);

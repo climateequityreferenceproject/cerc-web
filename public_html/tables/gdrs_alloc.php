@@ -1,14 +1,19 @@
 <?php
-function gdrs_alloc($dbfile, $dec, $mode) {
+function gdrs_alloc($dbfile, $dec, $mode, $non_co2 = FALSE) {
     include("table_common.php");
 
     $database = 'sqlite:'.$dbfile;
 
     $db = new PDO($database) OR die("<p>Can't open database</p>");
     
-    $units = "MtCO2";
+    if ($non_co2) {
+        $gases = "CO2e";
+    } else {
+        $gases = "CO2";
+    }
+    $units = "Mt" . $gases;
     if ($mode === 'percap') {
-        $units = "tCO2/cap";
+        $units = "t" . $gases . "/cap";
     }
     
 $retval = <<< EOHTML
