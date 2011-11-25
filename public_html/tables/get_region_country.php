@@ -4,6 +4,10 @@ $database = 'sqlite:' . $_POST["user_db"];
 
 $db = new PDO($database) OR die("<p>Can't open database</p>");
 
+$allRegion[] = array(
+    'name_S' => 'world',
+    'name_L' => 'World'
+);
 foreach ($db->query('SELECT * FROM flag_names') as $flag) {
     $regionName = $flag['flag'];
     $regionLongName = $flag['long_name'];

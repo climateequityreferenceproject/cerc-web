@@ -163,7 +163,6 @@ $(function() {
         user_db:$('#user_db').val()
     }, function(data){
         regionCountryData=data;
-        $('#regionList').append('<option value="world">World</option>');
         for (index in regionCountryData.allRegion){
             var regionName=regionCountryData.allRegion[index].name_S;
             var regionLongName=regionCountryData.allRegion[index].name_L;
