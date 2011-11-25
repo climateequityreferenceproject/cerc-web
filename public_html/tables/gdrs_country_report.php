@@ -172,7 +172,7 @@ $retval .= <<< EOHTML
 </object>
 EOHTML;
 
-$retval .= '<ul id="legend">';
+$retval .= '<ul id="ctry_report_legend">';
 $retval .= '<li><img src="img/leg_clr_green.png" />&nbsp;';
 if ($fund_others) {
     $retval .= 'Domestic mitigation</li>';
