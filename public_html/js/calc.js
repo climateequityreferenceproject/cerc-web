@@ -40,8 +40,9 @@ $(function() {
     $('#form1').append('<input type="submit" name="forcesubmit" id="forcesubmit" value="forcesubmit" />');
     $('#forcesubmit').hide();
     
-    // If JS is enabled, hide the submit button
+    // If JS is enabled, hide the submit button & show the region-country filter
     $('#submit').hide();
+    $('#region_country_filter').show();
     
     // Make sure display options are shown/hidden consistent with the chosen view
     set_display();

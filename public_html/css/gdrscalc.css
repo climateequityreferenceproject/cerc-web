@@ -225,6 +225,11 @@ fieldset fieldset legend.open span { background-position:-48px center; }
     float: right;
 }
 
+/* If no JavaScript, can't access the region & country filter */
+#region_country_filter {
+    display: none;
+}
+
 /*** spinoff window layout ***/
 #spinoff #data, #spinoff #footer { 
 	margin:0; 
