@@ -44,6 +44,15 @@ $(function() {
     $('#submit').hide();
     $('#region_country_filter').show();
     
+    // Region list actions
+    $('#regionList').click(changeRegionList);
+    $('#btnAdd').click(function () {
+        moveElement('country_available','country_selected');
+    });
+    $('#btnRemove').click(function () {
+        moveElement('country_selected','country_available');
+    });
+    
     // Make sure display options are shown/hidden consistent with the chosen view
     set_display();
     

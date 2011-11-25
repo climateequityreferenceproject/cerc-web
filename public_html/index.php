@@ -180,23 +180,21 @@ include("form_functions.php");
                            <input type="submit" name="reset" id="reset" class="click" value="reset to default values" />
                        </form>
 
-                       <div id="filterDiv" style=" display: none;">
-                           <p style="text-align: left;"><select id="regionList" onchange="changeRegionList();"></select></p>
+                       <div id="filterDiv">
+                           <p><select id="regionList"></select></p>
                            <table>
                                <tr>
                                    <td>
                                        <label for="country_available">Available Countries:</label><br/>
-                                       <select style="width:250px"  id="country_available" size="5">
-
-                                       </select>
+                                       <select id="country_available" size="5" />
                                    </td>
-                                   <td style="vertical-align:middle">
-                                       <p><button class="button" name="btnAdd" type="button"  style="width: 120px" onclick="moveElement('country_available','country_selected');">Add >></button></p>
-                                       <p><button class="button" name="btnRemove" type="button" style="width: 120px" onclick="moveElement('country_selected','country_available');"><< Remove</button></p>
+                                   <td class="button_btwn_list">
+                                       <p><button class="button" name="btnAdd" id="btnAdd" type="button">Add &gt;&gt;></button></p>
+                                       <p><button class="button" name="btnRemove" id="btnRemove" type="button">&lt;&lt; Remove</button></p>
                                    </td>
                                    <td>
                                        <label for="country_selected">Selected Countries:</label><br/>
-                                       <select style="width:250px"  id="country_selected" size="5">
+                                       <select id="country_selected" size="5">
 
                                        </select>
                                    </td>

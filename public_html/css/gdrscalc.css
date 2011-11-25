@@ -378,3 +378,24 @@ img.float-right {
 	float:right;
 	margin:0 0 5px 15px;
 }
+
+/*** Country and region filter ***/
+#filterDiv {
+    display: none;
+}
+
+#filterDiv p {
+    text-align: left;
+}
+
+#country_available, #country_selected {
+    width: 250px;
+}
+
+.button_btwn_list {
+    vertical-align: middle;
+}
+
+.button_btwn_list button {
+    width: 120px;
+}
