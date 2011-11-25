@@ -15,9 +15,11 @@ function gdrs_tax($dbfile, $year, $ep_start, $dec) {
     if ($year >= $ep_start) {
         $record = $db->query("SELECT real_val FROM params WHERE param_id='billpercgwp'")->fetchAll();
         $billfracgwp = 0.01 * $record[0]["real_val"];
+        $oblfactor = 1.0;
     } else {
         // If the emergency program hasn't started, then no obligations
         $billfracgwp = 0.0;
+        $oblfactor = 0.0;
     }
 
 $retval = <<< EOHTML
@@ -67,7 +69,7 @@ EOSQL;
     $retval .= "<tr>";
     $retval .= '<td class="lj cr_item">( 1) World</td>';
     // Obligation to pay % of total
-    $retval .= "<td>" . number_format(100.00, $dec) . "</td>";
+    $retval .= "<td>" . number_format($oblfactor * 100.00, $dec) . "</td>";
     // Obligation to pay bln USD MER
     $val = $billfracgwp * $gwp_mer;
     $retval .= "<td>" . number_format($val, $dec) . "</td>";
@@ -98,7 +100,7 @@ EOSQL;
             $retval .= '<td class="lj cr_item">' . $longname . "</td>";
             // Obligation to pay % of total
             $obl_frac = $record["gdrs_oblig"]/$world_tot["gdrs_oblig"];
-            $val = 100.0 * $obl_frac;
+            $val = 100.0 * $oblfactor * $obl_frac;
             $retval .= "<td>" . number_format($val, $dec) . "</td>";
             // Obligation to pay bln USD MER
             $obl_mer = $billfracgwp * $gwp_mer * $obl_frac;
@@ -122,7 +124,7 @@ EOSQL;
         $retval .= '<td class="lj cr_item">' . $record["country"] . "</td>";
         // Obligation to pay % of total
         $obl_frac = $record["gdrs_oblig"]/$world_tot["gdrs_oblig"];
-        $val = 100.0 * $obl_frac;
+        $val = 100.0 * $oblfactor * $obl_frac;
         $retval .= "<td>" . number_format($val, $dec) . "</td>";
         // Obligation to pay bln USD MER
         $obl_mer = $billfracgwp * $gwp_mer * $obl_frac;
