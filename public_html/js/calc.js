@@ -62,7 +62,10 @@ $(function() {
         $('#reset').click();
     });
 
-    $('#adv').click(set_display);
+    $('#adv').click(function() {
+        set_display();
+        submit();
+    });
     
     $('#table_view').change(function () {
         set_display();
