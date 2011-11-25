@@ -182,7 +182,7 @@ include("form_functions.php");
                                <tr>
                                    <td>
                                        <label for="country_available">Available Countries:</label><br/>
-                                       <select id="country_available" size="5" />
+                                       <select id="country_available" size="5" multiple="multiple" />
                                    </td>
                                    <td class="button_btwn_list">
                                        <p><button class="button" name="btnAdd" id="btnAdd" type="button">Add &gt;&gt;></button></p>
@@ -190,9 +190,7 @@ include("form_functions.php");
                                    </td>
                                    <td>
                                        <label for="country_selected">Selected Countries:</label><br/>
-                                       <select id="country_selected" size="5">
-
-                                       </select>
+                                       <select id="country_selected" size="5" multiple="multiple" />
                                    </td>
                                </tr>
                            </table>
