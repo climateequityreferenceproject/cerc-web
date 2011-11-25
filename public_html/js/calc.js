@@ -23,6 +23,10 @@ $(function() {
     }, function() {
         $(this).removeClass('pretty-hover');
     });
+    
+    $("#country_list_button button").click(function() {
+        $('#filterDiv').dialog('open');
+    });
 
 
     $("legend").siblings().hide();
@@ -32,7 +36,7 @@ $(function() {
 	   
     $('#save').append('<button id="spinoff" type="button">Copy table to new window</button>');
     
-    // Allow for a hidden submit button that submits the whole form without a refresh--need to framework change
+    // Allow for a hidden submit button that submits the whole form without a refresh--needed for framework change
     $('#form1').append('<input type="submit" name="forcesubmit" id="forcesubmit" value="forcesubmit" />');
     $('#forcesubmit').hide();
     
@@ -119,6 +123,7 @@ $(function() {
         // Short-circuit form submission
         return false;
     });
+    
     $('#spinoff').click(function() {
         spinoff_window();
     });

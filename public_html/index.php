@@ -60,7 +60,7 @@ include("form_functions.php");
                     <legend class="open"><span>&nbsp;</span>Select regions and countries</legend>
                     <div>
                         <ul>
-                            <li>Current list<span style=" float: right;"><button type="button" onclick="$('#filterDiv').dialog('open');">Edit list</button></span></li>
+                            <li>Current list<span id="country_list_button"><button type="button">Edit list</button></span></li>
                             <li><select id="current_list" multiple="multiple" size="5" style="width:100%"></select></li>
                         </ul>&nbsp;
                     </div>

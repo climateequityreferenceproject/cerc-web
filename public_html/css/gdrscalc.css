@@ -220,6 +220,10 @@ fieldset fieldset legend.open span { background-position:-48px center; }
 .pretty-hover { cursor:pointer; }
 #submit, #reset { margin-left:1em; }
 
+/*** specific form elements ***/
+#country_list_button {
+    float: right;
+}
 
 /*** spinoff window layout ***/
 #spinoff #data, #spinoff #footer { 
