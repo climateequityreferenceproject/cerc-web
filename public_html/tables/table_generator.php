@@ -13,7 +13,7 @@
         $dec = $display_params["decimal_pl"]['value'];
         $disp_year = $display_params["display_yr"]['value'];
         $use_nonco2 = $shared_params['use_nonco2']['value'] == 0 ? FALSE : TRUE;
-        
+        $ep_start = $shared_params['emergency_program_start']['value'];
         $table_name = $table_views[$display_params["table_view"]['value']]['display_name'];
         if (!$table_views[$display_params["table_view"]['value']]['time_series']) {
             $table_name .= " in " . $display_params["display_yr"]['value'];
@@ -82,7 +82,7 @@
                         break;
                     case 'gdrs_tax':
                         include("tables/gdrs_tax.php");
-                        return $retval . gdrs_tax($user_db, $disp_year, $dec);
+                        return $retval . gdrs_tax($user_db, $disp_year, $ep_start, $dec);
                         break;
                     case 'gdrs_RCI':
                         include("tables/gdrs_rci_ts.php");

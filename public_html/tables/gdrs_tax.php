@@ -1,5 +1,5 @@
 <?php
-function gdrs_tax($dbfile, $year, $dec) {
+function gdrs_tax($dbfile, $year, $ep_start, $dec) {
     include("table_common.php");
 
     $database = 'sqlite:'.$dbfile;
@@ -12,8 +12,13 @@ function gdrs_tax($dbfile, $year, $dec) {
     $flag_use_lulucf = $record[0]["int_val"]; // Only one record, but using "fetchAll" makes sure curser closed
     $record = $db->query("SELECT int_val FROM params WHERE param_id='use_nonco2'")->fetchAll();
     $flag_use_nonco2 = $record[0]["int_val"];
-    $record = $db->query("SELECT real_val FROM params WHERE param_id='billpercgwp'")->fetchAll();
-    $billfracgwp = 0.01 * $record[0]["real_val"];    
+    if ($year >= $ep_start) {
+        $record = $db->query("SELECT real_val FROM params WHERE param_id='billpercgwp'")->fetchAll();
+        $billfracgwp = 0.01 * $record[0]["real_val"];
+    } else {
+        // If the emergency program hasn't started, then no obligations
+        $billfracgwp = 0.0;
+    }
 
 $retval = <<< EOHTML
 <table cellspacing="0" cellpadding="0">

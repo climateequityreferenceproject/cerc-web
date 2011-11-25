@@ -303,6 +303,17 @@
                                 'list' => NULL,
                                 'type' => 'int'
                             ),
+                            'emergency_program_start' => array(
+                                'description' => 'Start year of the emergency program',
+                                'advanced' => false,
+                                'db_param' => 'emergstart',
+                                'value' => NULL,
+                                'min' => NULL,
+                                'max' => NULL,
+                                'step' => NULL,
+                                'list' => NULL,
+                                'type' => 'int'
+                            ),
                             'baseline' => array(
                                 'description' => 'Collection of baseline emissions for all countries',
                                 'advanced' => false,
