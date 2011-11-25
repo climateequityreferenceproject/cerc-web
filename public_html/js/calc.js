@@ -36,13 +36,10 @@ $(function() {
 	   
     $('#save').append('<button id="spinoff" type="button">Copy table to new window</button>');
     
-    // Allow for a hidden submit button that submits the whole form without a refresh--needed for framework change
-    $('#form1').append('<input type="submit" name="forcesubmit" id="forcesubmit" value="forcesubmit" />');
-    $('#forcesubmit').hide();
-    
-    // If JS is enabled, hide the submit button & show the region-country filter
+    // If JS is enabled, hide the submit button & show the region-country filter + basic/adv
     $('#submit').hide();
     $('#region_country_filter').show();
+    $('#basic_adv').show();
     
     // Region list actions
     $('#regionList').click(changeRegionList);
@@ -65,7 +62,7 @@ $(function() {
         $('#reset').click();
     });
 
-    $('#adv').click(forcesubmit);
+    $('#adv').click(set_display);
     
     $('#table_view').change(function () {
         set_display();
@@ -183,10 +180,6 @@ function submit() {
     $('#submit').click();
 }
 
-function forcesubmit() {
-    $('#forcesubmit').click();
-}
-
 function set_display() {
     country_set = {gdrs_country_report: 1};
     timeseries_set = {gdrs_RCI: 1, gdrs_alloc: 1, gdrs_alloc_pc: 1};
@@ -201,6 +194,13 @@ function set_display() {
         $('#display_yr').parent().hide();
     } else {
         $('#display_yr').parent().show();
+    }
+    
+    // Hide advanced if need be
+    if ($('input:radio[name=basic_adv]:checked').val() == 'basic') {
+        $('.advanced').hide();
+    } else {
+        $('.advanced').show();
     }
 }
 

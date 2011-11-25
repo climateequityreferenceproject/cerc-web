@@ -3,8 +3,16 @@
 // Print options list for select input field with consecutive integer values
 function select_num($param, $param_list, $label, $advanced) {
     // print nothing if the parameter is for Advanced view only and the selected view is Basic
-    if ($param_list[$param]['advanced'] && !$advanced) {
-        return "";
+    if ($param_list[$param]['advanced']) {
+        if ($high <= 999999) { 
+            $select_class = 'class="short advanced"';
+        } else { 
+            $select_class = 'class="advanced"';
+        }
+    } else {
+        if ($high <= 999999) { 
+            $select_class = 'class="short"';
+        }
     }
     // otherwise print the select field with its label, all between <li></li> tags, 
     // flagging the selected value in the option list
@@ -32,11 +40,7 @@ function select_num($param, $param_list, $label, $advanced) {
         $retval .= ' "class="select"';        
     }
     $retval .= '>' . $label . " </label>\n";
-    $retval .= '<select name="' . $param . '" id="' . $param  . '" ';
-    if ($high <= 999999) { 
-        $retval .= 'class="short"';
-    }
-    $retval .=  ">\n";
+    $retval .= '<select name="' . $param . '" id="' . $param  . '" ' . $select_class . ">\n";
     $test_val = $param_list[$param]['value'];
     // If you don't use "round" then small rounding errors can throw this off
     for ($val=round($low, $prec); $val<=round($high, $prec); $val += $step) {

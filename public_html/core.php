@@ -57,7 +57,6 @@
             }
         }
         // Checkboxes are special - if not checked, they do not exist in $_POST, so check to make sure the form has been submitted
-        // However, if they are hidden they are also not reported. So, have to check if we're in advanced view.
         if (isset($_POST['submit'])) {
             if ($array['use_lulucf'] && !$_POST['use_lulucf']) {
                 $array['use_lulucf']['value'] = 0;
@@ -65,16 +64,14 @@
             if ($array['use_nonco2'] && !$_POST['use_nonco2']) {
                 $array['use_nonco2']['value'] = 0;
             }
-            if (isset($_POST['basic_adv']) && $_POST['basic_adv'] === 'adv') {
-                if ($array['use_sequencing'] && !$_POST['use_sequencing']) {
-                    $array['use_sequencing']['value'] = 0;
-                }
-                if ($array['do_luxcap'] && !$_POST['do_luxcap']) {
-                    $array['do_luxcap']['value'] = 0;
-                }
-                if ($array['interp_btwn_thresh'] && !$_POST['interp_btwn_thresh']) {
-                    $array['interp_btwn_thresh']['value'] = 0;
-                }
+            if ($array['use_sequencing'] && !$_POST['use_sequencing']) {
+                $array['use_sequencing']['value'] = 0;
+            }
+            if ($array['do_luxcap'] && !$_POST['do_luxcap']) {
+                $array['do_luxcap']['value'] = 0;
+            }
+            if ($array['interp_btwn_thresh'] && !$_POST['interp_btwn_thresh']) {
+                $array['interp_btwn_thresh']['value'] = 0;
             }
         }
     }

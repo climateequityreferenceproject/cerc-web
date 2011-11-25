@@ -122,53 +122,49 @@ include("form_functions.php");
                                        if ($display_params['framework']['value'] === 'gdrs') {
                                            echo select_num('dev_thresh', $fw_params, "Development threshold:", $advanced);
                                            echo select_num('lux_thresh', $fw_params, "Luxury threshold:", $advanced);
-                                           if ($advanced) {
-                                               echo "<li>";
-                                               echo '<input type="checkbox" name="do_luxcap" id="do_luxcap" class="click" value="1" ' . ($fw_params["do_luxcap"]['value'] ? 'checked="checked"' : '') . '/>';
-                                               echo '<label for="do_luxcap" class="click"> Cap baselines at luxury threshold</label>';
-                                               echo "</li>";
-                                               echo "<li>";
-                                               echo '<input type="checkbox" name="interp_btwn_thresh" id="interp_btwn_thresh" class="click" value="1" ' . ($shared_params["interp_btwn_thresh"]['value'] ? 'checked="checked"' : '') . '/>';
-                                               echo '<label for="interp_btwn_thresh" class="click"> Progressive between thresholds</label>';
-                                               echo "</li>";
-                                               /*echo "<li>";
-                                               echo '<fieldset><legend class="closed"><span>&nbsp;</span>Income toward capacity</legend>';
-                                               echo "<div><ul>";
-                                               echo "<li><label>Below devt threshold: </label>0%</li>";
-                                               echo select_num('mid_rate', $fw_params, "% between thresholds:", $advanced);
-                                               echo "<li><label>Above luxury threshold: </label>100%</li>";
-                                               echo "</ul>&nbsp;</div>";
-                                               echo "</fieldset>";
-                                               echo "</li>";*/
-                                           }
+                                           echo '<li class="advanced">';
+                                           echo '<input type="checkbox" name="do_luxcap" id="do_luxcap" class="click" value="1" ' . ($fw_params["do_luxcap"]['value'] ? 'checked="checked"' : '') . '/>';
+                                           echo '<label for="do_luxcap" class="click"> Cap baselines at luxury threshold</label>';
+                                           echo "</li>";
+                                           echo '<li class="advanced">';
+                                           echo '<input type="checkbox" name="interp_btwn_thresh" id="interp_btwn_thresh" class="click" value="1" ' . ($shared_params["interp_btwn_thresh"]['value'] ? 'checked="checked"' : '') . '/>';
+                                           echo '<label for="interp_btwn_thresh" class="click"> Progressive between thresholds</label>';
+                                           echo "</li>";
+                                           /*echo "<li>";
+                                           echo '<fieldset><legend class="closed"><span>&nbsp;</span>Income toward capacity</legend>';
+                                           echo "<div><ul>";
+                                           echo "<li><label>Below devt threshold: </label>0%</li>";
+                                           echo select_num('mid_rate', $fw_params, "% between thresholds:", $advanced);
+                                           echo "<li><label>Above luxury threshold: </label>100%</li>";
+                                           echo "</ul>&nbsp;</div>";
+                                           echo "</fieldset>";
+                                           echo "</li>";*/
                                            // echo select_num('tax_income_level', $fw_params, "Income level for tax:",$advanced);
                                            echo select_num('r_wt', $fw_params, "Responsibility weight:", $advanced);
                                        }
                                        echo select_num('percent_gwp', $shared_params, "Total cost as % GWP:", $advanced);
                                        echo select_num('em_elast', $shared_params, "Emissions elasticity:", $advanced);
-                                       if ($advanced) {
-                                           // Later, other frameworks may use these. But right now only GDRs
-                                           if ($display_params['framework']['value'] === 'gdrs') {
-                                               echo "<li><fieldset>";
-                                               echo '<legend class="closed"><span>&nbsp;</span>Sequencing</legend>';
-                                               echo '<div><ul id="sequencing">';
-                                               echo "<li>";
-                                               echo '<input type="checkbox" name="use_sequencing" id="use_sequencing" class="click" value="1" ' . ($shared_params["use_sequencing"]['value'] ? 'checked="checked"' : '') . '/>';
-                                               echo '<label for="use_sequencing" class="click"> Use sequencing</label>';
-                                               echo "</li>";
-                                               echo select_num('percent_a1_rdxn', $shared_params, "A1 reduction %:", $advanced);
-                                               echo select_num('base_levels_yr', $shared_params, "Sequencing base yr:", $advanced);
-                                               echo select_num('end_commitment_period', $shared_params, "End of period:", $advanced);
-                                               echo select_num('a1_smoothing', $shared_params, "A1 smoothing:", $advanced);
-                                               echo "<li>";
-                                               echo '<p>Mitigation requirement gap borne by: </p><ul><li>';
-                                               echo '<input type="radio" name="mit_gap_borne" id="annex1" class="click" value="1" ' . ($shared_params["mit_gap_borne"]['value'] == "1" ? 'checked="checked"' : '') . "/>";
-                                               echo '<label for="annex1" class="click radio"> Annex 1</label>';
-                                               echo '<input type="radio" name="mit_gap_borne" id="annex2" class="click" value="2" ' . ($shared_params["mit_gap_borne"]['value'] == "2" ? 'checked="checked"' : '') . "/>";
-                                               echo '<label for="annex2" class="click radio"> Annex 2</label>';
-                                               echo '</li></ul></li><ul>&nbsp;<!-- end #sequencing -->';
-                                               echo '</div></fieldset></li>';
-                                           }
+                                       // Later, other frameworks may use these. But right now only GDRs
+                                       if ($display_params['framework']['value'] === 'gdrs') {
+                                           echo '<li class="advanced"><fieldset>';
+                                           echo '<legend class="closed"><span>&nbsp;</span>Sequencing</legend>';
+                                           echo '<div><ul id="sequencing">';
+                                           echo "<li>";
+                                           echo '<input type="checkbox" name="use_sequencing" id="use_sequencing" class="click" value="1" ' . ($shared_params["use_sequencing"]['value'] ? 'checked="checked"' : '') . '/>';
+                                           echo '<label for="use_sequencing" class="click"> Use sequencing</label>';
+                                           echo "</li>";
+                                           echo select_num('percent_a1_rdxn', $shared_params, "A1 reduction %:", $advanced);
+                                           echo select_num('base_levels_yr', $shared_params, "Sequencing base yr:", $advanced);
+                                           echo select_num('end_commitment_period', $shared_params, "End of period:", $advanced);
+                                           echo select_num('a1_smoothing', $shared_params, "A1 smoothing:", $advanced);
+                                           echo "<li>";
+                                           echo '<p>Mitigation requirement gap borne by: </p><ul><li>';
+                                           echo '<input type="radio" name="mit_gap_borne" id="annex1" class="click" value="1" ' . ($shared_params["mit_gap_borne"]['value'] == "1" ? 'checked="checked"' : '') . "/>";
+                                           echo '<label for="annex1" class="click radio"> Annex 1</label>';
+                                           echo '<input type="radio" name="mit_gap_borne" id="annex2" class="click" value="2" ' . ($shared_params["mit_gap_borne"]['value'] == "2" ? 'checked="checked"' : '') . "/>";
+                                           echo '<label for="annex2" class="click radio"> Annex 2</label>';
+                                           echo '</li></ul></li><ul>&nbsp;<!-- end #sequencing -->';
+                                           echo '</div></fieldset></li>';
                                        }
                             ?>
                                    </ul>&nbsp;
