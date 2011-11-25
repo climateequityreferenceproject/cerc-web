@@ -81,7 +81,7 @@ EOHTML;
     $retval .= "</tr>";
     // year Mitigation obligation as MtCO2e below BAU
     $retval .= "<tr>";
-    $retval .= "<td class=\"lj\">" . $year . " Mitigation obligation as Mt" . $gases . "below BAU</td>";
+    $retval .= "<td class=\"lj\">" . $year . " Mitigation obligation as Mt" . $gases . " below BAU</td>";
     $val = $bau - $ctry_val["gdrs_alloc_MtCO2"];
     $retval .= "<td>" . number_format($val, dec($val)) . "</td>";
     $retval .= "</tr>";
@@ -93,7 +93,7 @@ EOHTML;
     $retval .= "</tr>";
     // year Mitigation obligation per capita as reduction from 1990
     $retval .= "<tr>";
-    $retval .= "<td class=\"lj\">" . $year . " Mitigation obligation as per capita as reduction from 1990</td>";
+    $retval .= "<td class=\"lj\">" . $year . " Mitigation obligation per capita as reduction from 1990</td>";
     $val = 100.0 * (1 - ($ctry_val["gdrs_alloc_MtCO2"]/$ctry_val['pop_mln'])/($bau_1990/$ctry_val_1990['pop_mln']));
     $retval .= "<td>" . number_format($val, dec($val)) . "%</td>";
     $retval .= "</tr>";
