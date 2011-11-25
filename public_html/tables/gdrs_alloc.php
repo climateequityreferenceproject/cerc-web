@@ -45,7 +45,7 @@ SELECT year, SUM(gdrs_alloc_MtCO2) AS gdrs_alloc, SUM(pop_mln) AS pop
 EOSQL;
 
     $retval .= "<tr>";
-    $retval .= "<td class=\"lj\">( 1) World</td>";
+    $retval .= '<td class="lj cr_item">( 1) World</td>';
     foreach ($db->query($worldquery) as $record) {
         switch ($mode) {
             case 'total':
@@ -75,7 +75,7 @@ SELECT year, SUM(gdrs_alloc_MtCO2) AS gdrs_alloc, SUM(pop_mln) AS pop
 EOSQL;
                 
         $retval .= "<tr>";
-        $retval .= "<td class=\"lj\">" . $longname . "</td>";
+        $retval .= '<td class="lj cr_item">' . $longname . "</td>";
         foreach ($db->query($regionquery) as $record) {
             switch ($mode) {
                 case 'total':
@@ -104,7 +104,7 @@ EOSQL;
     foreach ($db->query($countryquery) as $record) {
         if ($year == 2010) {
             $retval .= "<tr>";
-            $retval .= "<td class=\"lj\">" . $record["country"] . "</td>";
+            $retval .= '<td class="lj cr_item">' . $record["country"] . "</td>";
         }
         switch ($mode) {
             case 'total':

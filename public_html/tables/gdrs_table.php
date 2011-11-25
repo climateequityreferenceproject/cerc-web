@@ -58,7 +58,7 @@ EOSQL;
     $record = $db->query($worldquery)->fetchAll();
     $world_tot = $record[0]; // Only one record, but using "fetchAll" makes sure curser closed
     $retval .= "<tr>";
-    $retval .= "<td class=\"lj\">( 1) World</td>";
+    $retval .= '<td class="lj cr_item">( 1) World</td>';
     if ($advanced) {
         // Pop million
         $retval .= "<td>" . number_format($world_tot["pop"], $dec) . "</td>";
@@ -105,7 +105,7 @@ EOSQL;
                 
         foreach ($db->query($regionquery) as $record) {
             $retval .= "<tr>";
-            $retval .= "<td class=\"lj\">" . $longname . "</td>";
+            $retval .= '<td class="lj cr_item">' . $longname . "</td>";
             if ($advanced) {
                 // Pop mln
                 $retval .= "<td>" . number_format($record["pop"], $dec) . "</td>";
@@ -147,7 +147,7 @@ EOSQL;
 
     foreach ($db->query('SELECT * FROM disp_temp WHERE year=' . $year . ' ORDER BY country') as $record) {
         $retval .= "<tr>";
-        $retval .= "<td class=\"lj\">" . $record["country"] . "</td>";
+        $retval .= '<td class="lj cr_item">' . $record["country"] . "</td>";
         if ($advanced) {
             // Pop mln
             $retval .= "<td>" . number_format($record["pop_mln"], $dec) . "</td>";

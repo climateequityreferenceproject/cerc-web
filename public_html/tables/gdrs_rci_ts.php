@@ -35,7 +35,7 @@ EOSQL;
 
     # Out to be 100% in all years for world, but check...
     $retval .= "<tr>";
-    $retval .= "<td class=\"lj\">( 1) World</td>";
+    $retval .= '<td class="lj cr_item">( 1) World</td>';
     foreach ($db->query($worldquery) as $record) {
         $retval .= "<td>" . number_format(100.00 * $record["rci"], $dec) . "</td>";
     }
@@ -54,7 +54,7 @@ SELECT year, SUM(gdrs_rci) AS rci
 EOSQL;
                 
         $retval .= "<tr>";
-        $retval .= "<td class=\"lj\">" . $longname . "</td>";
+        $retval .= '<td class="lj cr_item">' . $longname . "</td>";
         foreach ($db->query($regionquery) as $record) {
             $retval .= "<td>" . number_format(100.00 * $record["rci"], $dec) . "</td>";
         }
@@ -72,7 +72,7 @@ EOSQL;
     foreach ($db->query($countryquery) as $record) {
         if ($year == 2010) {
             $retval .= "<tr>";
-            $retval .= "<td class=\"lj\">" . $record["country"] . "</td>";
+            $retval .= '<td class="lj cr_item">' . $record["country"] . "</td>";
         }
         $retval .= "<td>" . number_format(100.00 * $record["gdrs_rci"], $dec) . "</td>";
         $year += 5;

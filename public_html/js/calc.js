@@ -297,11 +297,11 @@ function changeRegionList(){
 
 function filterResult(){
     if($('#current_list option').size()==0){
-        $('table tr td.lj').each(function(){
+        $('table tr td.cr_item').each(function(){
             $(this).parent().show();
         });
     }else{
-        $('table tr td.lj').each(function(){
+        $('table tr td.cr_item').each(function(){
             var display=false;
             var name=$(this).text();
             //if string start with (n), remove it

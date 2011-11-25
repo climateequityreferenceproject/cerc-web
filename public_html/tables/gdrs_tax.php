@@ -60,7 +60,7 @@ EOSQL;
     $record = $db->query($worldquery)->fetchAll();
     $world_tot = $record[0]; // Only one record, but using "fetchAll" makes sure curser closed
     $retval .= "<tr>";
-    $retval .= "<td class=\"lj\">( 1) World</td>";
+    $retval .= '<td class="lj cr_item">( 1) World</td>';
     // Obligation to pay % of total
     $retval .= "<td>" . number_format(100.00, $dec) . "</td>";
     // Obligation to pay bln USD MER
@@ -90,7 +90,7 @@ EOSQL;
                 
         foreach ($db->query($regionquery) as $record) {
             $retval .= "<tr>";
-            $retval .= "<td class=\"lj\">" . $longname . "</td>";
+            $retval .= '<td class="lj cr_item">' . $longname . "</td>";
             // Obligation to pay % of total
             $obl_frac = $record["gdrs_oblig"]/$world_tot["gdrs_oblig"];
             $val = 100.0 * $obl_frac;
@@ -114,7 +114,7 @@ EOSQL;
 
     foreach ($db->query("SELECT * FROM tax_temp ORDER BY country") as $record) {
         $retval .= "<tr>";
-        $retval .= "<td class=\"lj\">" . $record["country"] . "</td>";
+        $retval .= '<td class="lj cr_item">' . $record["country"] . "</td>";
         // Obligation to pay % of total
         $obl_frac = $record["gdrs_oblig"]/$world_tot["gdrs_oblig"];
         $val = 100.0 * $obl_frac;
