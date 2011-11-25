@@ -17,7 +17,6 @@
     // Always using GDRs framework now
     $shared_params = Framework::get_shared_params();
     $fw = new Framework::$frameworks['gdrs']['class'];
-    $fw_params = $fw->get_fw_params();
     
     /*** Databases ************************************************************/
     // Create database filename if doesn't already exist
@@ -35,10 +34,11 @@
         $master_db = $db_array['db'];
         if ($db_array['did_create']) {
             // Created a new one, so run it
-            $fw->calculate($master_db, $shared_params, $fw_params);
+            $fw->calculate($master_db, $shared_params, $fw->get_fw_params());
         }
         $user_db = Framework::get_user_db($master_db);
     }
+    $fw_params = $fw->get_fw_params($user_db);
     setcookie('db',serialize(Framework::get_db_name($user_db)),time()+60*60*24*28);
 
     // If just asking for the db name (or to create a db) then that is all this script does
@@ -57,21 +57,24 @@
             }
         }
         // Checkboxes are special - if not checked, they do not exist in $_POST, so check to make sure the form has been submitted
+        // However, if they are hidden they are also not reported. So, have to check if we're in advanced view.
         if (isset($_POST['submit'])) {
-            if ($array['use_sequencing'] && !$_POST['use_sequencing']) {
-                $array['use_sequencing']['value'] = 0;
-            }
             if ($array['use_lulucf'] && !$_POST['use_lulucf']) {
                 $array['use_lulucf']['value'] = 0;
             }
             if ($array['use_nonco2'] && !$_POST['use_nonco2']) {
                 $array['use_nonco2']['value'] = 0;
             }
-            if ($array['do_luxcap'] && !$_POST['do_luxcap']) {
-                $array['do_luxcap']['value'] = 0;
-            }
-            if ($array['interp_btwn_thresh'] && !$_POST['interp_btwn_thresh']) {
-                $array['interp_btwn_thresh']['value'] = 0;
+            if (isset($_POST['basic_adv']) && $_POST['basic_adv'] === 'adv') {
+                if ($array['use_sequencing'] && !$_POST['use_sequencing']) {
+                    $array['use_sequencing']['value'] = 0;
+                }
+                if ($array['do_luxcap'] && !$_POST['do_luxcap']) {
+                    $array['do_luxcap']['value'] = 0;
+                }
+                if ($array['interp_btwn_thresh'] && !$_POST['interp_btwn_thresh']) {
+                    $array['interp_btwn_thresh']['value'] = 0;
+                }
             }
         }
     }
