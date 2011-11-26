@@ -117,7 +117,8 @@ if ($_POST['form']) {
                     </td>
                 </tr>
             </table>
-            <label>Source: <input type="text" name="source" maxlength="255" size="50"/></label>
+            <label>Source: <input type="text" name="source" maxlength="255" size="50"/></label><br/>
+            <label>Details: <input type="text" name="details" maxlength="255" size="50"/></label>
             <br /><br />
             <input type="submit" value ="Add" />
             <br />

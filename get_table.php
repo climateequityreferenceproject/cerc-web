@@ -8,7 +8,7 @@ function db_get_table() {
     
 $query = <<<SQL
 SELECT id, country.iso3 AS iso3, name, conditional, quantity, reduction_percent,
-    rel_to, year_or_bau, rel_to_year, by_year, source
+    rel_to, year_or_bau, rel_to_year, by_year, source, details
     FROM country, pledge
     WHERE country.iso3 = pledge.iso3
     ORDER BY name, by_year, conditional;
@@ -35,6 +35,7 @@ SQL;
     $html .= "<th>Target year</th>";
     $html .= "<th></th>";
     $html .= "<th>Source</th>";
+    $html .= "<th>Details</th>";
     $html .= "</tr>";
     while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
         $html .= "<tr>";
@@ -49,6 +50,7 @@ SQL;
         $html .= "<td>" . $row['by_year'] . "</td>";
         $html .= '<td><input type="submit" value="Delete" name="' . $row['id'] . '"></td>';
         $html .= "<td>" . $row['source'] . "</td>";
+        $html .= "<td>" . $row['details'] . "</td>";
         $html .= "</tr>";
     }
     $html .= "</table>";
