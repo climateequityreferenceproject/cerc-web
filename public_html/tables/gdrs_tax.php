@@ -12,6 +12,8 @@ function gdrs_tax($dbfile, $year, $ep_start, $dec) {
     $flag_use_lulucf = $record[0]["int_val"]; // Only one record, but using "fetchAll" makes sure curser closed
     $record = $db->query("SELECT int_val FROM params WHERE param_id='use_nonco2'")->fetchAll();
     $flag_use_nonco2 = $record[0]["int_val"];
+    $record = $db->query("SELECT int_val FROM params WHERE param_id='usesequence'")->fetchAll();
+    $flag_use_sequence = $record[0]["int_val"];
     if ($year >= $ep_start) {
         $record = $db->query("SELECT real_val FROM params WHERE param_id='billpercgwp'")->fetchAll();
         $billfracgwp = 0.01 * $record[0]["real_val"];
@@ -51,7 +53,7 @@ CREATE TEMPORARY VIEW tax_temp AS
 SELECT iso3, country, pop_mln as pop, gdp_blnUSDMER AS gdp_mer, gdp_blnUSDPPP AS gdp_ppp,
         max(0, fossil_CO2_MtCO2 + $flag_use_lulucf * LULUCF_MtCO2 +
         $flag_use_nonco2 * NonCO2_MtCO2e - gdrs_alloc_MtCO2 -
-        vol_rdxn_MtCO2) as gdrs_oblig,
+        $flag_use_sequence * vol_rdxn_MtCO2) as gdrs_oblig,
         gdrs_pop_mln_above_dl AS pop_above_dl
     FROM disp_temp WHERE year = $year;
 EOSQL;
