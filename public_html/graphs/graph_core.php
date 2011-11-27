@@ -127,7 +127,7 @@
             $retval .= ' width="' . $pattern['width'] . '" height="' . $pattern['height'] . '"';
             $retval .= ' patternUnits="objectBoundingBox">';
             $retval .= '<line class="stripe" x1="0" y1="0" x2="0" y2="100"';
-            $retval .= ' style="stroke:' . $pattern['stripe_color'] . '; stroke-width:' . $pattern['stripe_width'] . '"/>';
+            $retval .= ' stroke="' . $pattern['stripe_color'] . '" stroke-width="' . $pattern['stripe_width'] . '"/>';
             $retval .= '</pattern>' . "\n";
             return $retval;
         }
