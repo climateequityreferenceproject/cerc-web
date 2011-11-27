@@ -402,10 +402,10 @@
             $bb_left = min(array_keys($ref_series));
             $bb_right = max(array_keys($ref_series));
             $stripe_width = 5;
-            $stripe_percent = round(100 * ($stripe_width/($bb_right - $bb_left))) . "%";
+            $stripe_percent = round(100 * (2 * $stripe_width/($bb_right - $bb_left))) . "%";
             $stripe_pattern = array(
                 'width' => $stripe_percent,
-                'height' => '1%',
+                'height' => '10%',
                 'stripe_width' => $stripe_width,
                 'stripe_color' => '#F00'
             );  
