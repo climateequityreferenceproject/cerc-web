@@ -196,6 +196,7 @@
             }
             
             $ypos = $this->dim['height'] - $margin['bottom'] - $yzero;
+            $ybottom = $this->dim['height'] - $margin['bottom'];
             $x1 = $margin['left'];
             $x2 = $margin['right'];
             
@@ -206,7 +207,7 @@
             $retval = "";
             
             if ($params['line']) {
-                $retval .= '<line x1="' . $x1 . '" y1="' . $ypos . '" x2="' . $x2 . '" y2="' . $ypos . '" stroke="black" />' . "\n";
+                $retval .= '<line class="axis" x1="' . $x1 . '" y1="' . $ypos . '" x2="' . $x2 . '" y2="' . $ypos . '" stroke="black" />' . "\n";
             }
             
             $dec = $this->dec($scale['max']);
@@ -226,7 +227,7 @@
                 if ($params['ticks']) {
                     $retval .= '<line x1="' . $x . '" y1="' . $y1 . '" x2="' . $x . '" y2="' . $y2 . '" stroke="black" />' . "\n";
                 }
-                $retval .= '<text ' . $this->axis_text_attr . ' x="' . $x . '" y="' . ($y2 + 14) . '">' . "\n";
+                $retval .= '<text ' . $this->axis_text_attr . ' x="' . $x . '" y="' . ($ybottom + 20) . '">' . "\n";
                 $retval .= $val;
                 $retval .= "</text>\n";
                 $xval += $scale['step'];
@@ -262,7 +263,7 @@
             $retval = "";
             
             if ($params['line']) {
-                $retval .= '<line x1="' . $xpos . '" y1="' . $y1 . '" x2="' . $xpos . '" y2="' . $y2 . '" stroke="black" />' . "\n";
+                $retval .= '<line class="axis" x1="' . $xpos . '" y1="' . $y1 . '" x2="' . $xpos . '" y2="' . $y2 . '" stroke="black" />' . "\n";
             }
             
             $dec = $this->dec($scale['max']);
