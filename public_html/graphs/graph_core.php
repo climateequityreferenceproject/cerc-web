@@ -328,7 +328,14 @@
         
         // For wedges, expect series to be in order--can be top-down or bottom-up
         // Colors are the colors of the wedges in sequence
-        public function svgplot_wedges($wedges, $css_file = NULL, $common_id = NULL) {
+        public function svgplot_wedges($wedges, $params=NULL) {
+            if (!params) {
+                $params = array(
+                    'css' => array('filename' => NULL, 'embed' => false),
+                    'common_id' => NULL,
+                    'vertical_at' => NULL
+                );
+            }
             // Must have axes and series to plot
             if (!$this->xaxis || !$this->yaxis || count($this->series) == 0) {
                 return;
@@ -355,7 +362,7 @@
             }
 
             // Search through and see what points all the series have in common
-            if ($common_id) {
+            if ($params['common_id']) {
                 $common_series = array();
                 $ref_series = current($scaled_series);
                 $finished = false;
@@ -389,12 +396,12 @@
                         unset($scaled_series[$id][$x]);
                     }
                 }
-                $scaled_series[$common_id] = $common_series;
+                $scaled_series[$params['common_id']] = $common_series;
             }
             
             //******* Begin SVG **********//
 
-            $svg = $this->svg_start($css_file);
+            $svg = $this->svg_start($params['css']['filename']);
             
             // Check for any striped patterns
             reset($scaled_series);
@@ -423,6 +430,15 @@
             
             $svg .= $this->svg_xaxis(array('ticks'=>false, 'line'=>true));
             $svg .= $this->svg_yaxis(array('ticks'=>false, 'line'=>false));
+            
+            if ($params['vertical_at']) {
+                $y1 = $this->dim['height'] - $margin['bottom'];
+                $y2 = $this->dim['height'] - $margin['top'];
+                $xvert_scaled = $xoff + round($xfact * ($params['vertical_at'] - $xscale['min']));
+                $svg .= '<line id="vertical" width="1" stroke="#cccccc"';
+                $svg .= ' x1="' . $xvert_scaled . '" y1="' . $y1 . '" x2="' . $xvert_scaled . '" y2="' . $y2 . '"';
+                $svg .= ' />' . "\n";
+            }
             
             foreach ($wedges as $id => $wedge) {
                 $s1 = $wedge['between'][0];

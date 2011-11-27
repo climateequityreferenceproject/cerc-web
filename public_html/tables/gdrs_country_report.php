@@ -149,7 +149,7 @@ EOSQL;
     
     $graph = new Graph(500, 312);
     // The TRUE means use the specified limits for the graph; the FALSE means don't format numbers
-    $graph->set_xaxis(1990, 2030, "year", "", TRUE, FALSE);
+    $graph->set_xaxis(1990, 2030, "", "", TRUE, FALSE);
     $graph->set_yaxis($min, $max, "Mt" . $gases, "");
     $graph->add_series($bau_series, "bau");
     $graph->add_series($dulline_series, "physical");
@@ -179,7 +179,15 @@ EOSQL;
                             'stripes' => $stripes,
                             'opacity' => 0.8
                         )
-                    ), 'css/country_graphs.css', 'historical');
+                    ), array(
+                            'css' => array(
+                                'filename' => 'css/country_graphs.css',
+                                'embed' => false
+                            ),
+                            'common_id' => 'historical',
+                            'vertical_at' => $year
+                        )
+                    );
 
     $graph_file = "/tmp/" . basename($graph_file);
     
