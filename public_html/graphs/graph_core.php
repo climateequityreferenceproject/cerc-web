@@ -167,9 +167,17 @@
             $axis_len = $yscale['max'] - $yscale['min'];
             $canvas_step = floor($yscale['step'] * $canvas_len/$axis_len);
             
+            $yzero = 0;
+            if ($yscale['min'] < 0) {
+                $yzero = -round($yscale['min']/($yscale['max'] - $yscale['min']) * ($margin['top'] - $margin['bottom']));
+            }
+            $yzero = $this->dim['height'] - $margin['bottom'] - $yzero;
+            
             for ($offset = 0; $offset <= $canvas_len; $offset += $canvas_step) {
                 $y = $this->dim['height'] - ($margin['bottom'] + $offset);
-                $retval .= '<line class="' . $id . '" x1="' . $x1 . '" y1="' . $y . '" x2="' . $x2 . '" y2="' . $y . '" width="1" stroke="black" stroke-dasharray="1,2" />' . "\n";
+                if ($y !== $yzero) {
+                    $retval .= '<line class="' . $id . '" x1="' . $x1 . '" y1="' . $y . '" x2="' . $x2 . '" y2="' . $y . '" width="1" stroke="black" stroke-dasharray="1,2" />' . "\n";
+                }
                 $yval += $yscale['step'];
             }
             
@@ -188,7 +196,7 @@
             $yscale = $this->yaxis->get_scale();
             $yzero = 0;
             if ($yscale['min'] < 0) {
-                $yzero = -$yscale['min']/($yscale['max'] - $yscale['min']) * ($margin['top'] - $margin['bottom']);
+                $yzero = -round($yscale['min']/($yscale['max'] - $yscale['min']) * ($margin['top'] - $margin['bottom']));
             }
             
             $ypos = $this->dim['height'] - $margin['bottom'] - $yzero;
