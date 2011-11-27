@@ -267,7 +267,11 @@
                 $url = (!empty($_SERVER['HTTPS'])) ? "https://" : "http://";
                 $url .= $_SERVER['SERVER_NAME'];
                 if (substr($stylesheet, 0, 1) !== '/') {
-                    $url .= $_SERVER['REQUEST_URI'];
+                    $relpath = $_SERVER['REQUEST_URI'];
+                    if (substr($relpath, -1) !== '/') {
+                        $relpath = dirname($relpath) . '/';
+                    }
+                    $url .= $relpath;
                 }
                 $stylesheet = $url . $stylesheet;
                 $retval .= '<?xml-stylesheet type="text/css" href="' . $stylesheet . '" ?>' . "\n";
