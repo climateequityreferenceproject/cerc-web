@@ -84,6 +84,8 @@
     //
     class Graph {
         protected $dim = array('width' => 0, 'height' => 0);
+        protected $css = array('filename' => NULL, 'embed' => false);
+        protected $have_css = false;
         protected $series = array();
         protected $xaxis = null;
         protected $yaxis = null;
@@ -94,10 +96,12 @@
         protected $y_axis_text_attr = 'text-anchor="end" font-family="Arial" font-size="9pt"';       
         protected $label_text_attr = 'text-anchor="middle" font-family="Arial" font-size="11pt"';
         
-        function __construct($width, $height, $legend_height) {
-            $this->dim['width'] = $width;
-            $this->dim['height'] = $height;
-            $this->dim['legend_height'] = $legend_height;
+        function __construct($dim_array, $css = NULL) {
+            $this->dim = $dim_array;
+            if ($css) {
+                $this->css = $css;
+                $this->have_css = true;
+            }
         }
         
         // For now, axes are set once, not resest
@@ -129,8 +133,10 @@
             $retval .= ' width="' . $pattern['width'] . '" height="' . $pattern['height'] . '"';
             $retval .= ' patternUnits="objectBoundingBox">';
             $retval .= '<line class="stripe" x1="0" y1="0" x2="0" y2="100"';
-            $retval .= ' stroke="' . $pattern['stripe_color'] . '" stroke-width="' . $pattern['stripe_width'] . '"/>';
-            $retval .= '</pattern>' . "\n";
+            if (!$this->have_css) {
+                $retval .= ' stroke="' . $pattern['stripe_color'] . '" stroke-width="' . $pattern['stripe_width'] . '"';
+            }
+            $retval .= ' /></pattern>' . "\n";
             return $retval;
         }
         
@@ -174,7 +180,11 @@
             for ($offset = 0; $offset <= $canvas_len; $offset += $canvas_step) {
                 $y = $this->dim['height'] - ($margin['bottom'] + $offset);
                 if ($y !== $yzero) {
-                    $retval .= '<line class="' . $id . '" x1="' . $x1 . '" y1="' . $y . '" x2="' . $x2 . '" y2="' . $y . '" width="1" stroke="black" stroke-dasharray="1,2" />' . "\n";
+                    $retval .= '<line class="' . $id . '" x1="' . $x1 . '" y1="' . $y . '" x2="' . $x2 . '" y2="' . $y .'"';
+                    if (!$this->have_css) {
+                        $retval .= ' width="1" stroke="black" stroke-dasharray="1,2"';
+                    }
+                    $retval .= ' />' . "\n";
                 }
                 $yval += $yscale['step'];
             }
@@ -209,7 +219,11 @@
             $retval = "";
             
             if ($params['line']) {
-                $retval .= '<line class="axis" x1="' . $x1 . '" y1="' . $ypos . '" x2="' . $x2 . '" y2="' . $ypos . '" stroke="black" />' . "\n";
+                $retval .= '<line class="axis" x1="' . $x1 . '" y1="' . $ypos . '" x2="' . $x2 . '" y2="' . $ypos . '"';
+                if (!$this->have_css) {
+                    $retval .= ' stroke="black"';
+                }
+                $retval .= '/>' . "\n";
             }
             
             $dec = $this->dec($scale['max']);
@@ -227,9 +241,14 @@
                     $val = $xval;
                 }                $x = $margin['left'] + $offset;
                 if ($params['ticks']) {
-                    $retval .= '<line x1="' . $x . '" y1="' . $y1 . '" x2="' . $x . '" y2="' . $y2 . '" stroke="black" />' . "\n";
+                    $retval .= '<line x1="' . $x . '" y1="' . $y1 . '" x2="' . $x . '" y2="' . $y2 . '"';
+                    if (!$this->have_css) {
+                        $retval .= ' stroke="black"';
+                    }
+                    $retval .= '/>' . "\n";
                 }
-                $retval .= '<text class="axis-label-x" ' . $this->x_axis_text_attr . ' x="' . $x . '" y="' . ($ybottom + 20) . '">' . "\n";
+                $attr = $this->have_css ? '' : $this->x_axis_text_attr;
+                $retval .= '<text class="axis-label-x" ' . $attr . ' x="' . $x . '" y="' . ($ybottom + 20) . '">' . "\n";
                 $retval .= $val;
                 $retval .= "</text>\n";
                 $xval += $scale['step'];
@@ -238,7 +257,8 @@
             $x = $margin['left'] + round(0.5 * $canvas_len);
             $y = $ypos + 35;
             
-            $retval .= '<text class="axis-title" ' . $this->label_text_attr . ' x="' . $x . '" y="' . $y . '">' . "\n";
+            $attr = $this->have_css ? '' : $this->label_text_attr;
+            $retval .= '<text class="axis-title" ' . $attr . ' x="' . $x . '" y="' . $y . '">' . "\n";
             $retval .= $label;
             $retval .= "</text>\n";
             
@@ -265,7 +285,11 @@
             $retval = "";
             
             if ($params['line']) {
-                $retval .= '<line class="axis" x1="' . $xpos . '" y1="' . $y1 . '" x2="' . $xpos . '" y2="' . $y2 . '" stroke="black" />' . "\n";
+                $retval .= '<line class="axis" x1="' . $xpos . '" y1="' . $y1 . '" x2="' . $xpos . '" y2="' . $y2 . '"';
+                if (!$this->have_css) {
+                    $retval .= ' stroke="black"';
+                }
+                $retval .= '/>' . "\n";
             }
             
             $dec = $this->dec($scale['max']);
@@ -284,9 +308,14 @@
                 }
                 $y = $this->dim['height'] - ($margin['bottom'] + $offset);
                 if ($params['ticks']) {
-                    $retval .= '<line x1="' . $x1 . '" y1="' . $y . '" x2="' . $x2 . '" y2="' . $y . '" stroke="black" />' . "\n";
+                    $retval .= '<line x1="' . $x1 . '" y1="' . $y . '" x2="' . $x2 . '" y2="' . $y . '"';
+                    if (!$this->have_css) {
+                        $retval .= ' stroke="black"';
+                    }
+                    $retval .= '/>' . "\n";
                 }
-                $retval .= '<text class="axis-label-y" ' . $this->y_axis_text_attr . ' x="' . $x2 . '" y="' . ($y + 3) . '">' . "\n";
+                $attr = $this->have_css ? '' : $this->y_axis_text_attr;
+                $retval .= '<text class="axis-label-y" ' . $attr . ' x="' . $x2 . '" y="' . ($y + 3) . '">' . "\n";
                 $retval .= $val;
                 $retval .= "</text>\n";
                 $yval += $scale['step'];
@@ -295,7 +324,8 @@
             $y = $this->dim['height'] - ($margin['bottom'] + round(0.5 * $canvas_len));
             $x = $xpos - 40;
             
-            $retval .= '<text class="axis-title" ' . $this->label_text_attr . ' x="' . 0 . '" y="' . 0 . '" transform="rotate(-90) translate(' . -$y . ',' . $x . ')">' . "\n";
+            $attr = $this->have_css ? '' : $this->label_text_attr;
+            $retval .= '<text class="axis-title" ' . $attr . ' x="' . 0 . '" y="' . 0 . '" transform="rotate(-90) translate(' . -$y . ',' . $x . ')">' . "\n";
             $retval .= $label;
             $retval .= "</text>\n";
             
@@ -303,9 +333,10 @@
             return $retval;
          }
         
-        protected function svg_start($stylesheet) {
+        protected function svg_start() {
+            $stylesheet = $this->css['filename'];
             $retval = '<?xml version="1.0" standalone="no"?>' . "\n";
-            if ($stylesheet) {
+            if ($stylesheet && !$this->css['embed']) {
                 $url = (!empty($_SERVER['HTTPS'])) ? "https://" : "http://";
                 $url .= $_SERVER['SERVER_NAME'];
                 if (substr($stylesheet, 0, 1) !== '/') {
@@ -321,6 +352,11 @@
             $retval .= '<svg width="' . $this->dim['width'] . 'px" height="' . $this->dim['height'] . 'px" version = "1.1"' . "\n";
             $retval .= '   baseProfile="basic"' . "\n";
             $retval .= '   xmlns="http://www.w3.org/2000/svg">' . "\n";
+            if ($stylesheet && $this->css['embed']) {
+                $retval .= '<style type="text/css"><![CDATA[' . "\n";
+                $retval .= file_get_contents($stylesheet);
+                $retval .= "\n" . ']]></style>' . "\n";
+            }
             return $retval;
         }
         
@@ -334,7 +370,6 @@
         public function svgplot_wedges($wedges, $params=NULL) {
             if (!params) {
                 $params = array(
-                    'css' => array('filename' => NULL, 'embed' => false),
                     'common_id' => NULL,
                     'vertical_at' => NULL
                 );
@@ -404,7 +439,7 @@
             
             //******* Begin SVG **********//
 
-            $svg = $this->svg_start($params['css']['filename']);
+            $svg = $this->svg_start();
             
             // Check for any striped patterns
             reset($scaled_series);
@@ -438,7 +473,10 @@
                 $y1 = $this->dim['height'] - $margin['bottom'];
                 $y2 = $this->dim['height'] - $margin['top'];
                 $xvert_scaled = $xoff + round($xfact * ($params['vertical_at'] - $xscale['min']));
-                $svg .= '<line id="vertical" width="1" stroke="#cccccc"';
+                $svg .= '<line id="vertical" ';
+                if (!$this->have_css) {
+                    $svg .= ' width="1" stroke="#999"';
+                }
                 $svg .= ' x1="' . $xvert_scaled . '" y1="' . $y1 . '" x2="' . $xvert_scaled . '" y2="' . $y2 . '"';
                 $svg .= ' />' . "\n";
             }
@@ -453,16 +491,19 @@
                 foreach (array_reverse($scaled_series[$s2], true) as $x => $y) {
                     $points .= $x . "," . ($this->dim['height'] - $y) . " " ;
                 }
-                $svg .= '<polygon stroke-width="0" stroke="#000"';
+                $svg .= '<polygon';
+                if (!$this->have_css) {
+                    $svg .= ' stroke-width="0" stroke="#000"';
+                }
                 if ($wedge['id']) {
                     $svg .= ' id="' . $wedge['id'] . '"';
                 }
-                if ($wedge['color']) {
+                if ($wedge['color'] && !$this->have_css) {
                     $svg .= ' fill="' . $wedge['color'] . '"';
                 } elseif ($wedge['stripes']) {
                     $svg .= ' style="fill:url(#' . $wedge['stripes'] . ');"';
                 }
-                if ($wedge['opacity']) {
+                if ($wedge['opacity'] && !$this->have_css) {
                     $svg .= ' fill-opacity="' . $wedge['opacity'] . '"';
                 }
                 $svg .= ' points="' . $points . '" />' . "\n";
@@ -473,8 +514,15 @@
                 foreach ($point_array as $x => $y) {
                     $points .= $x . "," . ($this->dim['height'] - $y) . " " ;
                 }
-                $svg .= '<polyline id="' . $id . '" stroke-width="1" stroke="#000"';
-                $svg .= ' points="' . $points . '" fill="none" />' . "\n";
+                $svg .= '<polyline id="' . $id . '"';
+                if (!$this->have_css) {
+                    $svg .= ' stroke-width="1" stroke="#000"';
+                }
+                $svg .= ' points="' . $points . '"';
+                if (!$this->have_css) {
+                    $svg .= ' fill="none"';
+                }
+                $svg .= ' />' . "\n";
             }
             
             $svg .= $this->svg_end();

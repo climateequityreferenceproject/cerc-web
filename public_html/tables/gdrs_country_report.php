@@ -150,7 +150,15 @@ EOSQL;
     $graph_width = 500;
     $graph_height = 312;
     $legend_height = 48;
-    $graph = new Graph($graph_width, $graph_height, $legend_height);
+    $graph = new Graph(array(
+                    'width' => $graph_width,
+                    'height' => $graph_height,
+                    'legend_height' => $legend_height
+                ), array(
+                    'filename' => 'css/country_graphs.css',
+                    'embed' => true
+                )
+                );
     // The TRUE means use the specified limits for the graph; the FALSE means don't format numbers
     $graph->set_xaxis(1990, 2030, "", "", TRUE, FALSE);
     $graph->set_yaxis($min, $max, "Mt" . $gases, "");
@@ -190,13 +198,9 @@ EOSQL;
                             'opacity' => 0.8
                         )
                     ), array(
-                            'css' => array(
-                                'filename' => 'css/country_graphs.css',
-                                'embed' => false
-                            ),
-                            'common_id' => 'historical',
-                            'vertical_at' => $year
-                        )
+                        'common_id' => 'historical',
+                        'vertical_at' => $year
+                    )
                     );
 
     $graph_file = "/tmp/" . basename($graph_file);
