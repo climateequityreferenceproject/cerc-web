@@ -90,7 +90,8 @@
         protected $margin = 15;
         protected $textheight = 35; // Approx space to give text in pixels
         protected $ticksize = 4; // Tick size in pixels
-        protected $axis_text_attr = 'text-anchor="middle" font-family="Arial" font-size="9pt"';
+        protected $x_axis_text_attr = 'text-anchor="middle" font-family="Arial" font-size="9pt"';
+        protected $y_axis_text_attr = 'text-anchor="end" font-family="Arial" font-size="9pt"';       
         protected $label_text_attr = 'text-anchor="middle" font-family="Arial" font-size="11pt"';
         
         function __construct($width, $height) {
@@ -227,7 +228,7 @@
                 if ($params['ticks']) {
                     $retval .= '<line x1="' . $x . '" y1="' . $y1 . '" x2="' . $x . '" y2="' . $y2 . '" stroke="black" />' . "\n";
                 }
-                $retval .= '<text ' . $this->axis_text_attr . ' x="' . $x . '" y="' . ($ybottom + 20) . '">' . "\n";
+                $retval .= '<text class="axis-label-x" ' . $this->x_axis_text_attr . ' x="' . $x . '" y="' . ($ybottom + 20) . '">' . "\n";
                 $retval .= $val;
                 $retval .= "</text>\n";
                 $xval += $scale['step'];
@@ -284,7 +285,7 @@
                 if ($params['ticks']) {
                     $retval .= '<line x1="' . $x1 . '" y1="' . $y . '" x2="' . $x2 . '" y2="' . $y . '" stroke="black" />' . "\n";
                 }
-                $retval .= '<text ' . $this->axis_text_attr . ' x="' . ($x2 - 14) . '" y="' . ($y + 5) . '">' . "\n";
+                $retval .= '<text class="axis-label-y" ' . $this->y_axis_text_attr . ' x="' . $x2 . '" y="' . ($y + 3) . '">' . "\n";
                 $retval .= $val;
                 $retval .= "</text>\n";
                 $yval += $scale['step'];
