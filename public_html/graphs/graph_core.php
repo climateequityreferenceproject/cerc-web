@@ -110,8 +110,30 @@
             }
         }
         
-        public function add_series($points) {
-            $this->series[] = $points;
+        public function add_series($points, $id) {
+            $this->series[$id] = $points;
+        }
+        
+        protected function horiz_stripes($id, $pattern = NULL) {
+            if (!$pattern) {
+                $pattern = array(
+                    'width' => '20%',
+                    'height' => '20%',
+                    'stripe_width' => 5,
+                    'stripe1_color' => '#000',
+                    'stripe2_color' => '#FFF'
+                );  
+            }
+            $retval =  '<pattern id="' . $id . '" x="0" y="0"';
+            $retval .= ' width="' . $pattern['width'] . '" height="' . $pattern['height'] . '"';
+            $retval .= 'patternUnits="objectBoundingBox">';
+            $retval .= '<line class="stripe1" x1="0" y1="0" x2="100" y2="0"';
+            $retval .= 'style="stroke:' . $pattern['stripe1_color'] . '; stroke-width:' . $pattern['stripe_width'] . '"/>';
+            $retval .= '<line class="stripe2" x1="0" y1="' . $pattern['stripe_width'];
+            $retval .= '" x2="100" y2="' . $pattern['stripe_width'] . '"';
+            $retval .= 'style="stroke:' . $pattern['stripe2_color'] . '; stroke-width:' . $pattern['stripe_width'] . '"/>';
+            $retval .= '</pattern>';
+            return $retval;
         }
         
         // Hm... as implemented, not actually margins... gives x & y position of bounds on axes
@@ -239,8 +261,17 @@
             return $retval;
          }
         
-        protected function svg_start() {
+        protected function svg_start($stylesheet) {
             $retval = '<?xml version="1.0" standalone="no"?>' . "\n";
+            if ($stylesheet) {
+                $url = (!empty($_SERVER['HTTPS'])) ? "https://" : "http://";
+                $url .= $_SERVER['SERVER_NAME'];
+                if (substr($stylesheet, 0, 1) !== '/') {
+                    $url .= $_SERVER['REQUEST_URI'];
+                }
+                $stylesheet = $url . $stylesheet;
+                $retval .= '<?xml-stylesheet type="text/css" href="' . $stylesheet . '" ?>' . "\n";
+            }
             $retval .= '<svg width="' . $this->dim['width'] . 'px" height="' . $this->dim['height'] . 'px" version = "1.1"' . "\n";
             $retval .= '   baseProfile="basic"' . "\n";
             $retval .= '   xmlns="http://www.w3.org/2000/svg">' . "\n";
@@ -254,12 +285,12 @@
         
         // For wedges, expect series to be in order--can be top-down or bottom-up
         // Colors are the colors of the wedges in sequence
-        public function svgplot_wedges($colors, $opacity) {
+        public function svgplot_wedges($wedges, $css_file = NULL, $common_id = NULL) {
             // Must have axes and series to plot
             if (!$this->xaxis || !$this->yaxis || count($this->series) == 0) {
                 return;
             }
-            
+                        
             $xscale = $this->xaxis->get_scale();
             $yscale = $this->yaxis->get_scale();
             $margin = $this->get_margins();
@@ -269,27 +300,94 @@
             $xfact = ($margin['right'] - $margin['left'])/($xscale['max'] - $xscale['min']);
             $yfact = ($margin['top'] - $margin['bottom'])/($yscale['max'] - $yscale['min']);
             
-            $ncolors = count($colors);
+            // Rescale all series
+            $scaled_series = array();
+            foreach ($this->series as $id => $points_array) {
+                $scaled_series[$id] = array();
+                foreach ($points_array as $x => $y) {
+                    $xtransf = $xoff + round($xfact * ($x - $xscale['min']));
+                    $ytransf = $yoff + round($yfact * ($y - $yscale['min']));
+                    $scaled_series[$id][$xtransf] = $ytransf;
+                }
+            }
+
+            // Search through and see what points all the series have in common
+            if ($common_id) {
+                $common_series = array();
+                $ref_series = current($scaled_series);
+                $finished = false;
+                $prev_x = NULL;
+                $prev_y = NULL;
+                foreach (array_keys($ref_series) as $ndx => $x) {
+                    $yval = NULL;
+                    foreach ($scaled_series as $id => $points_array) {
+                        if (!$yval) {
+                            $yval = $points_array[$x];
+                        } else {
+                            if ($points_array[$x] !== $yval) {
+                                $finished = TRUE;
+                                break;
+                            }
+                        }
+                    }
+                    if ($finished) {
+                        if ($prev_x && $prev_y) {
+                            $prepend = array($prev_x => $prev_y);
+                            foreach ($scaled_series as $id => $val) {
+                                $scaled_series[$id] = $prepend + $scaled_series[$id];
+                            }
+                        }
+                        break;
+                    }
+                    $prev_x = $x;
+                    $prev_y = $ref_series[$x];
+                    $common_series[$x] = $ref_series[$x];
+                    foreach ($scaled_series as $id => $val) {
+                        unset($scaled_series[$id][$x]);
+                    }
+                }
+                $scaled_series[$common_id] = $common_series;
+            }
             
-            $svg = $this->svg_start();
+            //******* Begin SVG **********//
+
+            $svg = $this->svg_start($css_file);
             
             $svg .= $this->svg_xaxis();
             $svg .= $this->svg_yaxis();
             
-            for ($i = 0; $i < count($this->series) - 1; $i++) {
-                $colorndx = fmod($i, $ncolors);
+            foreach ($wedges as $id => $wedge) {
+                $s1 = $wedge['between'][0];
+                $s2 = $wedge['between'][1];
                 $points = "";
-                foreach ($this->series[$i] as $x => $y) {
-                    $xtransf = $xoff + round($xfact * ($x - $xscale['min']));
-                    $ytransf = $yoff + round($yfact * ($y - $yscale['min']));
-                    $points .= $xtransf . "," . ($this->dim['height'] - $ytransf) . " " ;
+                foreach ($scaled_series[$s1] as $x => $y) {
+                    $points .= $x . "," . ($this->dim['height'] - $y) . " " ;
                 }
-                foreach (array_reverse($this->series[$i + 1], true) as $x => $y) {
-                    $xtransf = $xoff + round($xfact * ($x - $xscale['min']));
-                    $ytransf = $yoff + round($yfact * ($y - $yscale['min']));
-                    $points .= $xtransf . "," . ($this->dim['height'] - $ytransf) . " " ;
+                foreach (array_reverse($scaled_series[$s2], true) as $x => $y) {
+                    $points .= $x . "," . ($this->dim['height'] - $y) . " " ;
                 }
-                $svg .= '<polygon stroke-width="1" stroke="#999" fill="' . $colors[$colorndx] . '" fill-opacity="' . $opacity . '" points="' . $points . '" />' . "\n";
+                $svg .= '<polygon stroke-width="0" stroke="#000"';
+                if ($wedge['id']) {
+                    $svg .= ' id="' . $wedge['id'] . '"';
+                }
+                if ($wedge['color']) {
+                    $svg .= ' fill="' . $wedge['color'] . '"';
+                } elseif ($wedge['stripes']) {
+                    $svg .= ' style="fill:url(#' . $wedge['stripes'] . ');"';
+                }
+                if ($wedge['opacity']) {
+                    $svg .= ' fill-opacity="' . $wedge['opacity'] . '"';
+                }
+                $svg .= ' points="' . $points . '" />' . "\n";
+            }
+            
+            foreach ($scaled_series as $id => $point_array) {
+                $points = "";
+                foreach ($point_array as $x => $y) {
+                    $points .= $x . "," . ($this->dim['height'] - $y) . " " ;
+                }
+                $svg .= '<polyline id="' . $id . '" stroke-width="1" stroke="#000"';
+                $svg .= ' points="' . $points . '" fill="none" />' . "\n";
             }
             
             $svg .= $this->svg_end();

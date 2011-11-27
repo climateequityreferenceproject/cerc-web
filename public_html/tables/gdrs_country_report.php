@@ -151,16 +151,33 @@ EOSQL;
     // The TRUE means use the specified limits for the graph; the FALSE means don't format numbers
     $graph->set_xaxis(1990, 2030, "year", "", TRUE, FALSE);
     $graph->set_yaxis($min, $max, "Mt" . $gases, "");
-    $graph->add_series($bau_series);
-    $graph->add_series($dulline_series);
-    $graph->add_series($alloc_series);
+    $graph->add_series($bau_series, "bau");
+    $graph->add_series($dulline_series, "physical");
+    $graph->add_series($alloc_series, "gdrs_alloc");
     $fund_others = $alloc_series[2030] < $dulline_series[2030];
     if ($fund_others) {
         $gap_color = "#eac073";
+        $wedge_id = 'intl_oblig';
     } else {
         $gap_color = '#6b87c3';
+        $wedge_id = 'supported_mit';
     }
-    $graph_file = $graph->svgplot_wedges(array("#8ebd7f", $gap_color), 0.8);
+    $graph_file = $graph->svgplot_wedges(array(
+                        array(
+                            'id' => 'mit_oblig',
+                            'between' => array('bau', 'gdrs_alloc'),
+                            'color' => '#8ebd7f',
+                            'stripes' => NULL,
+                            'opacity' => 0.8
+                        ),
+                        array(
+                            'id' => $wedge_id,
+                            'between' => array('physical', 'gdrs_alloc'),
+                            'color' => $gap_color,
+                            'stripes' => NULL,
+                            'opacity' => 0.8
+                        )
+                    ), 'css/country_graphs.css', 'historical');
 
     $graph_file = "/tmp/" . basename($graph_file);
     
