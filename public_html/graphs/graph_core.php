@@ -153,7 +153,30 @@
             return max(0, 1 - floor(log10(abs($num))));
         }
         
-        protected function svg_xaxis() {
+        protected function svg_hrule($id) {
+            $yscale = $this->yaxis->get_scale();
+            $margin = $this->get_margins();
+            
+            $yval = $yscale['min'];
+            $retval = "";
+            
+            $x1 = $margin['left'];
+            $x2 = $margin['right'];
+            
+            $canvas_len = $margin['top'] - $margin['bottom'];
+            $axis_len = $yscale['max'] - $yscale['min'];
+            $canvas_step = floor($yscale['step'] * $canvas_len/$axis_len);
+            
+            for ($offset = 0; $offset <= $canvas_len; $offset += $canvas_step) {
+                $y = $this->dim['height'] - ($margin['bottom'] + $offset);
+                $retval .= '<line class="' . $id . '" x1="' . $x1 . '" y1="' . $y . '" x2="' . $x2 . '" y2="' . $y . '" width="1" stroke="black" stroke-dasharray="1,2" />' . "\n";
+                $yval += $yscale['step'];
+            }
+            
+            return $retval;
+        }
+        
+        protected function svg_xaxis($params = array('ticks'=>true, 'line' => true)) {
             $scale = $this->xaxis->get_scale();
             $label = $this->xaxis->get_label();
             if (($unit = $this->xaxis->get_unit()) !== "") {
@@ -176,7 +199,11 @@
             $axis_len = $scale['max'] - $scale['min'];
             $canvas_step = floor($scale['step'] * $canvas_len/$axis_len);
             
-            $retval = '<line x1="' . $x1 . '" y1="' . $ypos . '" x2="' . $x2 . '" y2="' . $ypos . '" stroke="black" />' . "\n";
+            $retval = "";
+            
+            if ($params['line']) {
+                $retval .= '<line x1="' . $x1 . '" y1="' . $ypos . '" x2="' . $x2 . '" y2="' . $ypos . '" stroke="black" />' . "\n";
+            }
             
             $dec = $this->dec($scale['max']);
             $y1 = $ypos;
@@ -192,7 +219,9 @@
                 } else {
                     $val = $xval;
                 }                $x = $margin['left'] + $offset;
-                $retval .= '<line x1="' . $x . '" y1="' . $y1 . '" x2="' . $x . '" y2="' . $y2 . '" stroke="black" />' . "\n";
+                if ($params['ticks']) {
+                    $retval .= '<line x1="' . $x . '" y1="' . $y1 . '" x2="' . $x . '" y2="' . $y2 . '" stroke="black" />' . "\n";
+                }
                 $retval .= '<text ' . $this->axis_text_attr . ' x="' . $x . '" y="' . ($y2 + 14) . '">' . "\n";
                 $retval .= $val;
                 $retval .= "</text>\n";
@@ -210,7 +239,7 @@
             return $retval;
         }
         
-        protected function svg_yaxis() {
+        protected function svg_yaxis($params = array('ticks'=>true, 'line' => true)) {
             $scale = $this->yaxis->get_scale();
             $label = $this->yaxis->get_label();
             if (($unit = $this->yaxis->get_unit()) !== "") {
@@ -226,7 +255,11 @@
             $axis_len = $scale['max'] - $scale['min'];
             $canvas_step = floor($scale['step'] * $canvas_len/$axis_len);
             
-            $retval = '<line x1="' . $xpos . '" y1="' . $y1 . '" x2="' . $xpos . '" y2="' . $y2 . '" stroke="black" />' . "\n";
+            $retval = "";
+            
+            if ($params['line']) {
+                $retval .= '<line x1="' . $xpos . '" y1="' . $y1 . '" x2="' . $xpos . '" y2="' . $y2 . '" stroke="black" />' . "\n";
+            }
             
             $dec = $this->dec($scale['max']);
             $x1 = $xpos;
@@ -243,7 +276,9 @@
                     $val = $yval;
                 }
                 $y = $this->dim['height'] - ($margin['bottom'] + $offset);
-                $retval .= '<line x1="' . $x1 . '" y1="' . $y . '" x2="' . $x2 . '" y2="' . $y . '" stroke="black" />' . "\n";
+                if ($params['ticks']) {
+                    $retval .= '<line x1="' . $x1 . '" y1="' . $y . '" x2="' . $x2 . '" y2="' . $y . '" stroke="black" />' . "\n";
+                }
                 $retval .= '<text ' . $this->axis_text_attr . ' x="' . ($x2 - 14) . '" y="' . ($y + 5) . '">' . "\n";
                 $retval .= $val;
                 $retval .= "</text>\n";
@@ -357,8 +392,10 @@
 
             $svg = $this->svg_start($css_file);
             
-            $svg .= $this->svg_xaxis();
-            $svg .= $this->svg_yaxis();
+            $svg .= $this->svg_hrule('hrule');
+            
+            $svg .= $this->svg_xaxis(array('ticks'=>false, 'line'=>true));
+            $svg .= $this->svg_yaxis(array('ticks'=>false, 'line'=>false));
             
             foreach ($wedges as $id => $wedge) {
                 $s1 = $wedge['between'][0];
