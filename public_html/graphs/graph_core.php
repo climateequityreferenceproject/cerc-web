@@ -117,22 +117,22 @@
         protected function horiz_stripes($id, $pattern = NULL) {
             if (!$pattern) {
                 $pattern = array(
-                    'width' => '20%',
-                    'height' => '20%',
+                    'width' => '2%',
+                    'height' => '2%',
                     'stripe_width' => 5,
-                    'stripe1_color' => '#000',
+                    'stripe1_color' => '#CCC',
                     'stripe2_color' => '#FFF'
                 );  
             }
             $retval =  '<pattern id="' . $id . '" x="0" y="0"';
             $retval .= ' width="' . $pattern['width'] . '" height="' . $pattern['height'] . '"';
             $retval .= ' patternUnits="objectBoundingBox">';
-            $retval .= '<line class="stripe1" x1="0" y1="0" x2="100" y2="0"';
+            $retval .= '<line class="stripe1" x1="0" y1="0" x2="0" y2="100"';
             $retval .= ' style="stroke:' . $pattern['stripe1_color'] . '; stroke-width:' . $pattern['stripe_width'] . '"/>';
-            $retval .= '<line class="stripe2" x1="0" y1="' . $pattern['stripe_width'];
-            $retval .= '" x2="100" y2="' . $pattern['stripe_width'] . '"';
+            $retval .= '<line class="stripe2" x1="' . $pattern['stripe_width'] . '" y1="0"';
+            $retval .= ' x2="' . $pattern['stripe_width'] . '" y2="100"';
             $retval .= ' style="stroke:' . $pattern['stripe2_color'] . '; stroke-width:' . $pattern['stripe_width'] . '"/>';
-            $retval .= '</pattern>';
+            $retval .= '</pattern>' . "\n";
             return $retval;
         }
         
@@ -401,11 +401,13 @@
             $svg = $this->svg_start($css_file);
             
             // Check for any striped patterns
+            $svg .= "<defs>\n";
             foreach ($wedges as $id => $wedge) {
                 if ($wedge['stripes']) {
                     $svg .= $this->horiz_stripes($wedge['stripes']);
                 }
             }
+            $svg .= "</defs>\n";
 
 
 
