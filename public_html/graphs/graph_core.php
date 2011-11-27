@@ -40,7 +40,7 @@
                 }
             }
             
-            $expon = round(log10($dx));
+            $expon = floor(log10($dx));
             $factor = pow(10.0, $expon);
             
             $dx = $dx/$factor;
