@@ -175,7 +175,7 @@
         public static function get_country_list($user_db = NULL) {
             $db_cnx = self::db_cnx($user_db);
             
-            $query_result = $db_cnx->query('SELECT iso3, name FROM country;')->fetchAll(PDO::FETCH_ASSOC);
+            $query_result = $db_cnx->query('SELECT iso3, name FROM country ORDER BY NAME;')->fetchAll(PDO::FETCH_ASSOC);
             
             // Close down nicely
             $db_cnx = NULL;
