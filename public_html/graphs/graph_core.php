@@ -120,18 +120,14 @@
                     'width' => '2%',
                     'height' => '2%',
                     'stripe_width' => 5,
-                    'stripe1_color' => '#CCC',
-                    'stripe2_color' => '#FFF'
+                    'stripe_color' => '#CCC'
                 );  
             }
             $retval =  '<pattern id="' . $id . '" x="0" y="0"';
             $retval .= ' width="' . $pattern['width'] . '" height="' . $pattern['height'] . '"';
             $retval .= ' patternUnits="objectBoundingBox">';
-            $retval .= '<line class="stripe1" x1="0" y1="0" x2="0" y2="100"';
-            $retval .= ' style="stroke:' . $pattern['stripe1_color'] . '; stroke-width:' . $pattern['stripe_width'] . '"/>';
-            $retval .= '<line class="stripe2" x1="' . $pattern['stripe_width'] . '" y1="0"';
-            $retval .= ' x2="' . $pattern['stripe_width'] . '" y2="100"';
-            $retval .= ' style="stroke:' . $pattern['stripe2_color'] . '; stroke-width:' . $pattern['stripe_width'] . '"/>';
+            $retval .= '<line class="stripe" x1="0" y1="0" x2="0" y2="100"';
+            $retval .= ' style="stroke:' . $pattern['stripe_color'] . '; stroke-width:' . $pattern['stripe_width'] . '"/>';
             $retval .= '</pattern>' . "\n";
             return $retval;
         }
@@ -401,10 +397,22 @@
             $svg = $this->svg_start($css_file);
             
             // Check for any striped patterns
+            reset($scaled_series);
+            $ref_series = current($scaled_series);
+            $bb_left = min(array_keys($ref_series));
+            $bb_right = max(array_keys($ref_series));
+            $stripe_width = 5;
+            $stripe_percent = round(100 * ($stripe_width/($bb_right - $bb_left))) . "%";
+            $stripe_pattern = array(
+                'width' => $stripe_percent,
+                'height' => '1%',
+                'stripe_width' => $stripe_width,
+                'stripe_color' => '#F00'
+            );  
             $svg .= "<defs>\n";
             foreach ($wedges as $id => $wedge) {
                 if ($wedge['stripes']) {
-                    $svg .= $this->horiz_stripes($wedge['stripes']);
+                    $svg .= $this->horiz_stripes($wedge['stripes'], $stripe_pattern);
                 }
             }
             $svg .= "</defs>\n";
