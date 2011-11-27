@@ -147,7 +147,10 @@ EOSQL;
         $max = max($max, $bau_series[$yr_ndx]);
     }
     
-    $graph = new Graph(500, 312);
+    $graph_width = 500;
+    $graph_height = 312;
+    $legend_height = 48;
+    $graph = new Graph($graph_width, $graph_height, $legend_height);
     // The TRUE means use the specified limits for the graph; the FALSE means don't format numbers
     $graph->set_xaxis(1990, 2030, "", "", TRUE, FALSE);
     $graph->set_yaxis($min, $max, "Mt" . $gases, "");
@@ -198,11 +201,13 @@ EOSQL;
 
     $graph_file = "/tmp/" . basename($graph_file);
     
+    $width_string = $graph_width . "px";
+    $height_string = ($graph_height + $legend_height) . "px";
 $retval .= <<< EOHTML
     </tbody>
 </table>
 <br />
-<object data="$graph_file" type="image/svg+xml" style="width:500px; height:312px; border: 1px solid #CCC;">
+<object data="$graph_file" type="image/svg+xml" style="width:$width_string; height:$height_string; border: 1px solid #CCC;">
     <p>No SVG support</p>
 </object>
 EOHTML;

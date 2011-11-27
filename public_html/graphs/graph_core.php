@@ -87,16 +87,17 @@
         protected $series = array();
         protected $xaxis = null;
         protected $yaxis = null;
-        protected $margin = 15;
+        protected $margin = 20;
         protected $textheight = 35; // Approx space to give text in pixels
         protected $ticksize = 4; // Tick size in pixels
         protected $x_axis_text_attr = 'text-anchor="middle" font-family="Arial" font-size="9pt"';
         protected $y_axis_text_attr = 'text-anchor="end" font-family="Arial" font-size="9pt"';       
         protected $label_text_attr = 'text-anchor="middle" font-family="Arial" font-size="11pt"';
         
-        function __construct($width, $height) {
+        function __construct($width, $height, $legend_height) {
             $this->dim['width'] = $width;
             $this->dim['height'] = $height;
+            $this->dim['legend_height'] = $legend_height;
         }
         
         // For now, axes are set once, not resest
@@ -292,7 +293,7 @@
             }
             
             $y = $this->dim['height'] - ($margin['bottom'] + round(0.5 * $canvas_len));
-            $x = $xpos - 38;
+            $x = $xpos - 40;
             
             $retval .= '<text class="axis-title" ' . $this->label_text_attr . ' x="' . 0 . '" y="' . 0 . '" transform="rotate(-90) translate(' . -$y . ',' . $x . ')">' . "\n";
             $retval .= $label;
