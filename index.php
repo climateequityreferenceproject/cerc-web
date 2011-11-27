@@ -33,11 +33,23 @@ if ($_POST['form']) {
                 die('Invalid query: ' . mysql_error());
             }
             break;
-        case 'delete':
+        case 'table':
             foreach ($_POST as $key => $value) {
-                if ($key !== 'form') {
-                    $sql = "DELETE FROM pledge WHERE id=" . $key;
-                    mysql_query($sql, $db);
+                switch ($value) {
+                    case 'Delete':
+                        $sql = "DELETE FROM pledge WHERE id=" . $key;
+                        mysql_query($sql, $db);
+                        break;
+                    case 'Publish':
+                        $sql = "UPDATE pledge SET public = 1 WHERE id=" . $key;
+                        mysql_query($sql, $db);
+                        break;
+                    case 'Hide':
+                        $sql = "UPDATE pledge SET public = 0 WHERE id=" . $key;
+                        mysql_query($sql, $db);
+                        break;
+                    default:
+                        ;
                 }
             }
             break;
@@ -124,7 +136,7 @@ if ($_POST['form']) {
             <br />
         </form>
         <form name="table" method="post">
-            <input type="hidden" name="form" value="delete"/>
+            <input type="hidden" name="form" value="table"/>
             <div id="table">
                 <?php include("get_table.php"); ?>
             </div>

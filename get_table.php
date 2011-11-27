@@ -7,7 +7,7 @@ function db_get_table() {
     mysql_select_db("pledges", $db);
     
 $query = <<<SQL
-SELECT id, country.iso3 AS iso3, name, conditional, quantity, reduction_percent,
+SELECT public, id, country.iso3 AS iso3, name, conditional, quantity, reduction_percent,
     rel_to, year_or_bau, rel_to_year, by_year, source, details
     FROM country, pledge
     WHERE country.iso3 = pledge.iso3
@@ -24,6 +24,7 @@ SQL;
 
     $html = "<table>";
     $html .= "<tr>";
+    $html .= "<public>";
     $html .= "<th>ISO code</th>";
     $html .= "<th>Name</th>";
     $html .= "<th>Conditional?</th>";
@@ -39,6 +40,12 @@ SQL;
     $html .= "</tr>";
     while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
         $html .= "<tr>";
+        $chk = $row['public'] ? ' checked="checked"' : '';
+        if ($row['public']) {
+            $html .= '<td><input type="submit" value="Hide" name="' . $row['id'] . '"></td>';
+        } else {
+            $html .= '<td><input type="submit" value="Publish" name="' . $row['id'] . '"></td>';
+        }
         $html .= "<td>" . $row['iso3'] . "</td>";
         $html .= "<td>" . $row['name'] . "</td>";
         $html .= "<td>" . ($row['conditional'] ? "yes" : "no") . "</td>";
