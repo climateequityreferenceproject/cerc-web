@@ -156,11 +156,13 @@ EOSQL;
     $graph->add_series($alloc_series, "gdrs_alloc");
     $fund_others = $alloc_series[2030] < $dulline_series[2030];
     if ($fund_others) {
-        $gap_color = "#eac073";
+        $gap_color = NULL;
         $wedge_id = 'intl_oblig';
+        $stripes = 'intl_oblig_stripes';
     } else {
         $gap_color = '#6b87c3';
         $wedge_id = 'supported_mit';
+        $stripes = NULL;
     }
     $graph_file = $graph->svgplot_wedges(array(
                         array(
@@ -174,7 +176,7 @@ EOSQL;
                             'id' => $wedge_id,
                             'between' => array('physical', 'gdrs_alloc'),
                             'color' => $gap_color,
-                            'stripes' => NULL,
+                            'stripes' => $stripes,
                             'opacity' => 0.8
                         )
                     ), 'css/country_graphs.css', 'historical');
@@ -184,6 +186,7 @@ EOSQL;
 $retval .= <<< EOHTML
     </tbody>
 </table>
+<br />
 <object data="$graph_file" type="image/svg+xml" style="width:500px; height:312px; border: 1px solid #CCC;">
     <p>No SVG support</p>
 </object>

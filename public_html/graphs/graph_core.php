@@ -126,12 +126,12 @@
             }
             $retval =  '<pattern id="' . $id . '" x="0" y="0"';
             $retval .= ' width="' . $pattern['width'] . '" height="' . $pattern['height'] . '"';
-            $retval .= 'patternUnits="objectBoundingBox">';
+            $retval .= ' patternUnits="objectBoundingBox">';
             $retval .= '<line class="stripe1" x1="0" y1="0" x2="100" y2="0"';
-            $retval .= 'style="stroke:' . $pattern['stripe1_color'] . '; stroke-width:' . $pattern['stripe_width'] . '"/>';
+            $retval .= ' style="stroke:' . $pattern['stripe1_color'] . '; stroke-width:' . $pattern['stripe_width'] . '"/>';
             $retval .= '<line class="stripe2" x1="0" y1="' . $pattern['stripe_width'];
             $retval .= '" x2="100" y2="' . $pattern['stripe_width'] . '"';
-            $retval .= 'style="stroke:' . $pattern['stripe2_color'] . '; stroke-width:' . $pattern['stripe_width'] . '"/>';
+            $retval .= ' style="stroke:' . $pattern['stripe2_color'] . '; stroke-width:' . $pattern['stripe_width'] . '"/>';
             $retval .= '</pattern>';
             return $retval;
         }
@@ -239,7 +239,7 @@
             $x = $margin['left'] + round(0.5 * $canvas_len);
             $y = $ypos + 35;
             
-            $retval .= '<text ' . $this->label_text_attr . ' x="' . $x . '" y="' . $y . '">' . "\n";
+            $retval .= '<text class="axis-title" ' . $this->label_text_attr . ' x="' . $x . '" y="' . $y . '">' . "\n";
             $retval .= $label;
             $retval .= "</text>\n";
             
@@ -296,7 +296,7 @@
             $y = $this->dim['height'] - ($margin['bottom'] + round(0.5 * $canvas_len));
             $x = $xpos - 35;
             
-            $retval .= '<text ' . $this->label_text_attr . ' x="' . 0 . '" y="' . 0 . '" transform="rotate(-90) translate(' . -$y . ',' . $x . ')">' . "\n";
+            $retval .= '<text class="axis-title" ' . $this->label_text_attr . ' x="' . 0 . '" y="' . 0 . '" transform="rotate(-90) translate(' . -$y . ',' . $x . ')">' . "\n";
             $retval .= $label;
             $retval .= "</text>\n";
             
@@ -400,6 +400,15 @@
 
             $svg = $this->svg_start($css_file);
             
+            // Check for any striped patterns
+            foreach ($wedges as $id => $wedge) {
+                if ($wedge['stripes']) {
+                    $svg .= $this->horiz_stripes($wedge['stripes']);
+                }
+            }
+
+
+
             $svg .= $this->svg_hrule('hrule');
             
             $svg .= $this->svg_xaxis(array('ticks'=>false, 'line'=>true));

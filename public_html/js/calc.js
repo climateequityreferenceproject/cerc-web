@@ -224,12 +224,13 @@ function spinoff_window() {
     '      <div id="calc_container">\n' +
     '         <div id="data">\n';
     html += $('#data').html();
+    var d = new Date();
     html +=  '              <br class="clear"/>\n' +
     '         </div>\n' +
     '         <br class="clear"/>\n' +
     '      </div>\n' +
     '      <div id="footer">\n' +
-    '           <p>| <strong>Greenhouse Development Rights</strong> is a project of <a href="http://www.earthisland.org/">EcoEquity</a> and the <a href="http://www.sei-us.org">Stockholm Environment Institute</a> &#169; 2008 |</p>\n' +
+    '           <p>| <strong>Greenhouse Development Rights</strong> is a project of <a href="http://www.earthisland.org/">EcoEquity</a> and the <a href="http://www.sei-us.org">Stockholm Environment Institute</a> &#169; 2008-' + d.getFullYear() + ' |</p>\n' +
     '      </div>\n' +
     '   </body>\n' +
     '</html>\n';
