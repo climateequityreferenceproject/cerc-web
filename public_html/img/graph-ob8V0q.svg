@@ -1,0 +1,40 @@
+<?xml version="1.0" standalone="no"?>
+<?xml-stylesheet type="text/css" href="http://gdrights.org/calculator_dev/css/country_graphs.css" ?>
+<svg width="500px" height="312px" version = "1.1"
+   baseProfile="basic"
+   xmlns="http://www.w3.org/2000/svg">
+<line class="hrule" x1="50" y1="213" x2="485" y2="213" width="1" stroke="black" stroke-dasharray="1,2" />
+<line class="hrule" x1="50" y1="164" x2="485" y2="164" width="1" stroke="black" stroke-dasharray="1,2" />
+<line class="hrule" x1="50" y1="115" x2="485" y2="115" width="1" stroke="black" stroke-dasharray="1,2" />
+<line class="hrule" x1="50" y1="66" x2="485" y2="66" width="1" stroke="black" stroke-dasharray="1,2" />
+<line class="hrule" x1="50" y1="17" x2="485" y2="17" width="1" stroke="black" stroke-dasharray="1,2" />
+<line x1="50" y1="262" x2="485" y2="262" stroke="black" />
+<text text-anchor="middle" font-family="Arial" font-size="9pt" x="50" y="280">
+1990</text>
+<text text-anchor="middle" font-family="Arial" font-size="9pt" x="267" y="280">
+2010</text>
+<text text-anchor="middle" font-family="Arial" font-size="9pt" x="484" y="280">
+2030</text>
+<text text-anchor="middle" font-family="Arial" font-size="11pt" x="268" y="297">
+year</text>
+<text text-anchor="middle" font-family="Arial" font-size="9pt" x="32" y="267">
+0</text>
+<text text-anchor="middle" font-family="Arial" font-size="9pt" x="32" y="218">
+2</text>
+<text text-anchor="middle" font-family="Arial" font-size="9pt" x="32" y="169">
+4</text>
+<text text-anchor="middle" font-family="Arial" font-size="9pt" x="32" y="120">
+6</text>
+<text text-anchor="middle" font-family="Arial" font-size="9pt" x="32" y="71">
+8</text>
+<text text-anchor="middle" font-family="Arial" font-size="9pt" x="32" y="22">
+10</text>
+<text text-anchor="middle" font-family="Arial" font-size="11pt" x="0" y="0" transform="rotate(-90) translate(-138,15)">
+MtCO2e</text>
+<polygon stroke-width="0" stroke="#000" id="mit_oblig" fill="#8ebd7f" fill-opacity="0.8" points="278,66 289,64 300,63 311,61 322,59 333,58 344,56 355,54 365,52 376,51 387,49 398,47 409,45 420,43 431,41 442,39 452,37 463,35 474,32 485,30 485,131 474,126 463,121 452,116 442,111 431,107 420,102 409,98 398,93 387,89 376,85 365,81 355,77 344,74 333,70 322,67 311,66 300,65 289,65 278,66 " />
+<polygon stroke-width="0" stroke="#000" id="supported_mit" fill="#6b87c3" fill-opacity="0.8" points="278,66 289,67 300,70 311,76 322,85 333,95 344,106 355,117 365,126 376,135 387,144 398,151 409,159 420,165 431,172 442,177 452,183 463,188 474,193 485,197 485,131 474,126 463,121 452,116 442,111 431,107 420,102 409,98 398,93 387,89 376,85 365,81 355,77 344,74 333,70 322,67 311,66 300,65 289,65 278,66 " />
+<polyline id="bau" stroke-width="1" stroke="#000" points="278,66 289,64 300,63 311,61 322,59 333,58 344,56 355,54 365,52 376,51 387,49 398,47 409,45 420,43 431,41 442,39 452,37 463,35 474,32 485,30 " fill="none" />
+<polyline id="physical" stroke-width="1" stroke="#000" points="278,66 289,67 300,70 311,76 322,85 333,95 344,106 355,117 365,126 376,135 387,144 398,151 409,159 420,165 431,172 442,177 452,183 463,188 474,193 485,197 " fill="none" />
+<polyline id="gdrs_alloc" stroke-width="1" stroke="#000" points="278,66 289,65 300,65 311,66 322,67 333,70 344,74 355,77 365,81 376,85 387,89 398,93 409,98 420,102 431,107 442,111 452,116 463,121 474,126 485,131 " fill="none" />
+<polyline id="historical" stroke-width="1" stroke="#000" points="50,25 61,83 72,129 83,135 94,131 104,140 115,136 126,143 137,134 148,96 159,91 170,82 181,62 191,53 202,55 213,30 224,51 235,50 246,58 257,68 268,68 278,66 " fill="none" />
+</svg>
