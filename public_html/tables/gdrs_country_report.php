@@ -154,7 +154,14 @@ EOSQL;
     $graph->add_series($bau_series, "bau");
     $graph->add_series($dulline_series, "physical");
     $graph->add_series($alloc_series, "gdrs_alloc");
-    $fund_others = $alloc_series[2030] < $dulline_series[2030];
+    $maxgap = 0;
+    $fund_others = false;
+    for ($i = 1990; $i <= 2030; $i++ ) {
+        if (abs($alloc_series[$i] - $dulline_series[$i]) > $maxgap) {
+            $maxgap = abs($alloc_series[$i] - $dulline_series[$i]);
+            $fund_others = $alloc_series[$i] < $dulline_series[$i];
+        }
+    }
     if ($fund_others) {
         $gap_color = NULL;
         $wedge_id = 'intl_oblig';

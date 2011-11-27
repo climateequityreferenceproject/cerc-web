@@ -291,7 +291,7 @@
             }
             
             $y = $this->dim['height'] - ($margin['bottom'] + round(0.5 * $canvas_len));
-            $x = $xpos - 35;
+            $x = $xpos - 38;
             
             $retval .= '<text class="axis-title" ' . $this->label_text_attr . ' x="' . 0 . '" y="' . 0 . '" transform="rotate(-90) translate(' . -$y . ',' . $x . ')">' . "\n";
             $retval .= $label;
