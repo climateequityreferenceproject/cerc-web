@@ -24,7 +24,7 @@ SQL;
 
     $html = "<table>";
     $html .= "<tr>";
-    $html .= "<public>";
+    $html .= "<th>public</th>";
     $html .= "<th>ISO code</th>";
     $html .= "<th>Name</th>";
     $html .= "<th>Conditional?</th>";

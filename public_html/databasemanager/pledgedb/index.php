@@ -83,7 +83,7 @@ if ($_POST['form']) {
             </select>
             <br />
             <!-- Conditional/unconditional-->
-            <input type="checkbox" name="conditional" id="conditional" value="0" />
+            <input type="checkbox" name="conditional" id="conditional" value="1" />
             <label for="conditional"> Conditional</label>
             <br /><br />
             <table>
