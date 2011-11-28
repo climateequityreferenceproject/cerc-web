@@ -216,21 +216,24 @@ $retval .= <<< EOHTML
 </object>
 EOHTML;
 
-/* $retval .= '<ul id="ctry_report_legend">';
-$retval .= '<li><img src="img/leg_clr_green.png" />&nbsp;';
-if ($fund_others) {
-    $retval .= 'Domestic mitigation</li>';
-} else {
-    $retval .= 'Domestically-funded mitigation</li>';
-}
-if ($fund_others) {
-    $retval .= '<li><img src="img/leg_clr_ochre.png" />&nbsp;Mitigation in other countries</li>';
-} else {
-    $retval .= '<li><img src="img/leg_clr_blue.png" />&nbsp;Mitigation funded by other countries</li>';
-}
-$retval .= '</ul>';
- */
-$retval .= '<p><em>We are working on the legend</em></p>';
+$retval .= '<dl id="ctry_report_legend">';
+    $retval .= '<dt class="key-bau"><span></span>Business as Usual</dt>';
+    $retval .= '<dt class="key-gdrs"><span></span>GDRs "fair share" allocation</dt>';
+    $retval .= '<dt class="key-phys"><span></span>Domestic emissions</dt>';
+    $retval .= '<dt class="key-dom"><span></span>';
+    if ($fund_others) {
+        $retval .= 'Domestic mitigation</dt>';
+    } else {
+        $retval .= 'Domestically-funded mitigation</dt>';
+    }
+    if ($fund_others) {
+        $retval .= '<dt class="key-intl"><span></span>Mitigation in other countries</dt>';
+    } else {
+        $retval .= '<dt class="key-sup"><span></span>Mitigation funded by other countries</dt>';
+    }
+$retval .= '</dl>';
+ 
+/* $retval .= '<p><em>We are working on the legend</em></p>'; */
 
 return $retval;
 }

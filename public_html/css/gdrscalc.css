@@ -403,3 +403,20 @@ img.float-right {
 .button_btwn_list button {
     width: 120px;
 }
+
+/*** Country graph legend ***/
+dl#ctry_report_legend dt span {
+    background:url(../img/graph_leg_sprite.png) no-repeat;
+    display:block;
+    float:left;
+    height:10px;
+    margin-right:0.5em;
+    margin-top:4px;
+    width:20px;
+} 
+dl#ctry_report_legend dt.key-bau span { background-position:0 0; } /* business as usual line */
+dl#ctry_report_legend dt.key-gdrs span { background-position:0 -20px; } /* gdrs allocation line */
+dl#ctry_report_legend dt.key-phys span { background-position:0 -40px; } /* example physical emissions, or domestic emissions, line */
+dl#ctry_report_legend dt.key-dom span { background-position:0 -60px; } /* domestically funded mitigation */
+dl#ctry_report_legend dt.key-intl span { background-position:0 -80px; } /* international mitigation, or mitigation funded in other countries */
+dl#ctry_report_legend dt.key-sup span { background-position:0 -100px; } /* supported mitigation, or mitigation funded by other countries */
