@@ -149,7 +149,7 @@ EOSQL;
     
     $graph_width = 500;
     $graph_height = 312;
-    $legend_height = 48;
+    $legend_height = 0;
     $graph = new Graph(array(
                     'width' => $graph_width,
                     'height' => $graph_height,
