@@ -36,8 +36,16 @@ function select_num($param, $param_list, $label, $advanced) {
     }
     
     $retval = '<li><label for="' . $param . '" title="' . $param_list[$param]['description'] . '"';
-    if ($high > 999999) {
-        $retval .= ' "class="select"';        
+    if ($param_list[$param]['advanced']) {
+        if ($high > 999999) { 
+            $retval .= 'class="select advanced"';
+        } else { 
+            $retval .= 'class="advanced"';
+        }
+    } else {
+        if ($high > 999999) { 
+            $retval .= 'class="select"';
+        }
     }
     $retval .= '>' . $label . " </label>\n";
     $retval .= '<select name="' . $param . '" id="' . $param  . '" ' . $select_class . ">\n";
@@ -62,16 +70,23 @@ function select_num($param, $param_list, $label, $advanced) {
 
 // Print options list for select input field with a list of text values (option names)
 function select_options_list($param, $param_list, $label, $advanced) {
-    // print nothing if the parameter is for Advanced view only and the selected view is Basic
-    if ($param_list[$param]['advanced'] && !$advanced) {
-        return "";
-    }
     $option_list = $param_list[$param]['list'];
     // otherwise print the select field with its label, all between <li></li> tags, 
     // flagging the selected value in the option list
     
-    $retval = '<li><label for="' . $param . '" class="select" title="' . $param_list[$param]['description'] . '">' . $label . " </label>\n";
-    $retval .= '<select name="' . $param . '" id="' . $param . '" >' . "\n";
+    if ($advanced) {
+        $class = 'class="select advanced"';
+    } else {
+        $class = 'class="select"';
+    }
+    $retval = '<li><label for="' . $param . '" ' . $class . ' title="' . $param_list[$param]['description'] . '">' . $label . " </label>\n";
+
+    if ($advanced) {
+        $class = ' class="advanced"';
+    } else {
+        $class = '';
+    }
+    $retval .= '<select name="' . $param . '"' . $class . ' id="' . $param . '" >' . "\n";
     
     $test_val = $param_list[$param]['value'];
     foreach($option_list as $key => $val) {
