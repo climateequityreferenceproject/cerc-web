@@ -383,6 +383,12 @@ img.float-right {
 	margin:0 0 5px 15px;
 }
 
+#spinoff { display: block;text-indent: -5000px;width: 300px!important;height: 28px;background-image:url(../img/spinoff-button-sprite.png)!important;background-repeat: no-repeat;border: 0px!important;padding: 0px!important; }
+#spinoff {background-position: 0 0;}
+#spinoff:hover {background-position: 0 -47px;}
+#spinoff:active {background-position: 0 -47px;}
+
+
 /*** Country and region filter ***/
 #filterDiv {
     display: none;
@@ -405,12 +411,15 @@ img.float-right {
 }
 
 /*** Country graph legend ***/
+dl#ctry_report_legend { line-height: 1.3;}
+dl#ctry_report_legend dt { font-weight:bold; margin-top:1em;}
+dl#ctry_report_legend dd { padding-left:25px;}
 dl#ctry_report_legend dt span {
     background:url(../img/graph_leg_sprite.png) no-repeat;
     display:block;
     float:left;
     height:10px;
-    margin-right:0.5em;
+    margin-right:5px;
     margin-top:4px;
     width:20px;
 } 

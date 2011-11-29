@@ -217,7 +217,7 @@ function spinoff_window() {
     '<html xmlns="http://www.w3.org/1999/xhtml">\n' +
     '   <head>\n' +
     '       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />\n' +
-    '       <title>Table -- generated from the Greenhouse Development Rights online calculator</title>\n' +
+    '       <title>View -- generated from the Greenhouse Development Rights online calculator</title>\n' +
     '       <link rel="stylesheet" href="http://www.gdrights.org/calculator/css/gdrscalc.css" type="text/css" media="screen, projection" />\n' +
     '   </head>\n' +
     '   <body id="spinoff">\n' +

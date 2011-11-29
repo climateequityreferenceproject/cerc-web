@@ -164,7 +164,7 @@ EOSQL;
     $graph->set_yaxis($min, $max, "Mt" . $gases, "");
     $graph->add_series($bau_series, "bau");
     $graph->add_series($dulline_series, "physical");
-    $graph->add_series($alloc_series, "gdrs_alloc");
+    $graph->add_series($alloc_series, "gdrsalloc");
     $maxgap = 0;
     $fund_others = false;
     for ($i = 1990; $i <= 2030; $i++ ) {
@@ -175,24 +175,24 @@ EOSQL;
     }
     if ($fund_others) {
         $gap_color = NULL;
-        $wedge_id = 'intl_oblig';
-        $stripes = 'intl_oblig_stripes';
+        $wedge_id = 'intloblig';
+        $stripes = 'intlobligstripes';
     } else {
         $gap_color = '#6b87c3';
-        $wedge_id = 'supported_mit';
+        $wedge_id = 'supportedmit';
         $stripes = NULL;
     }
     $graph_file = $graph->svgplot_wedges(array(
                         array(
-                            'id' => 'mit_oblig',
-                            'between' => array('bau', 'gdrs_alloc'),
+                            'id' => 'mitoblig',
+                            'between' => array('bau', 'gdrsalloc'),
                             'color' => '#8ebd7f',
                             'stripes' => NULL,
                             'opacity' => 0.8
                         ),
                         array(
                             'id' => $wedge_id,
-                            'between' => array('physical', 'gdrs_alloc'),
+                            'between' => array('physical', 'gdrsalloc'),
                             'color' => $gap_color,
                             'stripes' => $stripes,
                             'opacity' => 0.8
@@ -218,18 +218,30 @@ EOHTML;
 
 $retval .= '<dl id="ctry_report_legend">';
     $retval .= '<dt class="key-bau"><span></span>Business as Usual</dt>';
+    $retval .= '<dd></dd>';
+
     $retval .= '<dt class="key-gdrs"><span></span>GDRs "fair share" allocation</dt>';
+    $retval .= '<dd>National allocation trajectory, as calculated by GDRs for ' . $ctry_val["country"] . ' using the specified pathways and parameters. The mitigation implied by this allocation can be either domestic or international &#8211; GDRs in itself says nothing about how or where it occurs.</dd>';
+    
     $retval .= '<dt class="key-phys"><span></span>Domestic emissions</dt>';
+    $retval .= '<dd>An example of an emissions trajectory for ' . $ctry_val["country"] . ' that is consistent with the specified pathways and parameters. ';
+    $retval .= 'The actual domestic emissions trajectory would depend on the international cost and mitigation sharing that ' . $ctry_val["country"] . ' chooses to participate in. GDRs assigns each country a mitigation obligation. It does not specify how or where that obligation should be discharged.</dd>';
+
     $retval .= '<dt class="key-dom"><span></span>';
     if ($fund_others) {
-        $retval .= 'Domestic mitigation</dt>';
+        $retval .= 'Domestic-funded mitigation</dt>'; // if we decide to make a distinction, this one would be Domestic mitigation, with its own definition 
+        $retval .= '<dd>Mitigation funded by ' . $ctry_val["country"] . ' and carried out within its own borders. The fraction of a country\'s mitigation obligation that is discharged domestically is not specified by GDRs, but is rather a result of the international cost and mitigation sharing arrangements that it chooses to participate in.</dd>';
     } else {
         $retval .= 'Domestically-funded mitigation</dt>';
+        $retval .= '<dd>Mitigation funded by ' . $ctry_val["country"] . ' and carried out within its own borders. The fraction of a country\'s mitigation obligation that is discharged domestically is not specified by GDRs, but is rather a result of the international cost and mitigation sharing arrangements that it chooses to participate in.</dd>';
     }
+    
     if ($fund_others) {
-        $retval .= '<dt class="key-intl"><span></span>Mitigation in other countries</dt>';
-    } else {
+        $retval .= '<dt class="key-intl"><span></span>Mitigation funded in other countries</dt>';
+        $retval .= '<dd>Mitigation funded by ' . $ctry_val["country"] . ' and carried out within other countries. The fraction of a country\'s mitigation obligation that is discharged in other countries is not specified by GDRs, but is rather a result of the international cost and mitigation sharing arrangements that it chooses to participate in.</dd>';
+        } else {
         $retval .= '<dt class="key-sup"><span></span>Mitigation funded by other countries</dt>';
+        $retval .= '<dd>Mitigation funded other countries, but carried out within the borders of ' . $ctry_val["country"] . '. GDRs assigns the "credit" for this mitigation to the funder, but of course the terms of the mitigation would be as negotiated with the host country.</dd>';
     }
 $retval .= '</dl>';
  

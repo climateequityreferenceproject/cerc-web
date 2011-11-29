@@ -9,13 +9,14 @@ line#vertical {width:1; stroke:#999;}
 polyline {stroke-width:1; stroke:black; fill:none;}
 polyline#bau {stroke-width:2; stroke:#555;}
 polyline#historical {stroke-width:4; stroke:#555;}
-polyline#gdrs_alloc {stroke-width:4; stroke:#0066b3;}
+polyline#gdrsalloc {stroke-width:4; stroke:#0066b3;}
 polyline#physical {stroke-width:4; stroke:#7e9f51; stroke-dasharray:4,4;}
 polygon {stroke-width:0; stroke:black; fill-opacity:0.8;}
-polygon#mit_oblig {fill:#e6b350;}
-polygon#intl_oblig {fill:#e6b350;}
-pattern#intl_oblig_stripes line.stripe {stroke:#c2823e; stroke-width:10;}
-polygon#supported_mit {fill:#e6e6e6;}
+polygon#mitoblig {fill:#e6b350;}
+polygon#intloblig {fill:#e6b350;}
+polygon#intloblig {fill:url(#intlobligstripes);}
+pattern#intlobligstripes line.stripe {stroke:#c2823e; stroke-width:10;}
+polygon#supportedmit {fill:#e6e6e6;}
 
 /* colors *******************
   #e6b350 ochre 100% (domestic mitigation before opacity reduction)
