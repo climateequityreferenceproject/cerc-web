@@ -34,7 +34,7 @@ $(function() {
 	
     $('#loading').hide();
 	   
-    $('#save').append('<button id="spinoff" type="button">Copy view to new window</button>');
+    $('#save').append('<button id="spinoff_button" type="button">Copy view to new window</button>');
     
     // If JS is enabled, hide the submit button & show the region-country filter + basic/adv
     $('#submit').hide();
@@ -134,7 +134,7 @@ $(function() {
         return false;
     });
     
-    $('#spinoff').click(function() {
+    $('#spinoff_button').click(function() {
         spinoff_window();
     });
 
