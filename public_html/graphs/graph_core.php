@@ -500,7 +500,7 @@
                 }
                 if ($wedge['color'] && !$this->have_css) {
                     $svg .= ' fill="' . $wedge['color'] . '"';
-                } elseif ($wedge['stripes']) {
+                } elseif ($wedge['stripes'] && !$this->have_css) {
                     $svg .= ' style="fill:url(#' . $wedge['stripes'] . ');"';
                 }
                 if ($wedge['opacity'] && !$this->have_css) {
