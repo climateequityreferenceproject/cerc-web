@@ -158,9 +158,10 @@
             $db_cnx = self::db_cnx($user_db);
            
             $retval = array();
-            foreach ($db_cnx->query('SELECT name_short, name_long, pathway_id FROM pathway_names ORDER BY pathway_id') as $pathways) {
+            foreach ($db_cnx->query('SELECT name_short, name_long, pathway_id, advanced FROM pathway_names ORDER BY pathway_id') as $pathways) {
                 $retval[] = array(
                     'id' => $pathways['pathway_id'],
+                    'advanced' => $pathways['advanced'],
                     'short_code' =>  $pathways['name_short'],
                     'display_name' => $pathways['name_long']
                 );
@@ -223,12 +224,8 @@
                 }
             } 
 
-            // Get the list of emergency pathways
-            $pathway_array = array();
-            foreach ($db_cnx->query('SELECT name_long, pathway_id FROM pathway_names ORDER BY pathway_id') as $pathways) {
-                $pathway_array[] = array('display_name' => $pathways["name_long"]);
-            }
-            $retval['emergency_path']['list'] = $pathway_array;
+            // Get the list of emergency pathways: note that get_emerg_paths orders by pathway ID
+            $retval['emergency_path']['list'] = self::get_emerg_paths($user_db);
             
             // Check the year range and apply to 'cum_since_year': Note that this does not update the user's current choice of cum_since_year
             $year_range = self::get_year_range($user_db);

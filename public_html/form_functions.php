@@ -90,10 +90,15 @@ function select_options_list($param, $param_list, $label, $advanced) {
     
     $test_val = $param_list[$param]['value'];
     foreach($option_list as $key => $val) {
-        if ($key==$test_val) {
-            $retval .= "<option value=\"".$key."\" selected=\"selected\">".$val['display_name']."</option>\n";
+        if (isset($val['advanced']) && $val['advanced']) {
+            $class = ' class="advanced"';
         } else {
-            $retval .= "<option value=\"".$key."\">".$val['display_name']."</option>\n";
+            $class = '';
+        }
+        if ($key==$test_val) {
+            $retval .= '<option' . $class . ' value="' .$key. '" selected="selected">' .$val['display_name']. '</option>'  . "\n";
+        } else {
+            $retval .= '<option' . $class . ' value="' .$key. '">' .$val['display_name'] . '</option>' . "\n";
         }
     }
     $retval .= "</select>\n";
