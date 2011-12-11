@@ -1,5 +1,6 @@
 <?php
 include("graphs/graph_core.php");
+include("pledges/pledge_functions.php");
 
 function dec($num) {
     return max(0, 1 - floor(log10(abs($num))));
@@ -98,6 +99,74 @@ EOHTML;
     $retval .= "<td>$" . number_format($val, dec($val)) . "</td>";
     $retval .= "</tr>";
     
+    /*
+     * Pledge table
+     */
+$retval .= <<< EOHTML
+    </tbody>
+</table>
+<br />
+<table cellspacing="2" cellpadding="2">
+    <tbody>
+EOHTML;
+    // International pledge
+    $intl_pledge = get_intl_pledge($iso3, $year);
+    if ($intl_pledge['intl_pledge'] !== 0) {
+        $retval .= '<tr><td class="lj" colspan="2">Pledged international support assuming ' . $intl_pledge['intl_price'] . ' USD/t' . $gases . '</td></tr>';
+        // Total
+        $retval .= "<tr>";
+        $retval .= "<td class=\"lj level2\">As Mt" . $gases . "</td>";
+        $val = $intl_pledge['intl_pledge'];
+        $retval .= "<td>" . number_format($val, dec($val)) . "</td>";
+        $retval .= "</tr>";
+        // Percent
+        $retval .= "<tr>";
+        $retval .= "<td class=\"lj level2\">As share of " . $year . " mitigation obligation</td>";
+        $val = 100 * $intl_pledge['intl_pledge']/($bau - $ctry_val["gdrs_alloc_MtCO2"]);
+        $retval .= "<td>" . number_format($val, dec($val)) . "%</td>";
+        $retval .= "</tr>";
+    }
+    $dom_pledges = get_processed_pledges($iso3, $shared_params);
+    if ($dom_pledges['unconditional']) {
+        $common_str = 'Unconditional pledged domestic action to ';
+        $common_str .= $dom_pledges['unconditional']['pledge_info']['description'];
+        $common_str .= ' by ' . $dom_pledges['unconditional']['year'];
+        $retval .= '<tr><td class="lj" colspan="2">' . $common_str . '</td></tr>';
+        // Total
+        $retval .= "<tr>";
+        $retval .= "<td class=\"lj level2\">As Mt" . $gases . "</td>";
+        $val = $dom_pledges['unconditional']['pledge_info']['pledge'];
+        $retval .= "<td>" . number_format($val, dec($val)) . "</td>";
+        $retval .= "</tr>";
+        // Percent
+        $retval .= "<tr>";
+        $retval .= "<td class=\"lj level2\">As share of " . $year . " mitigation obligation</td>";
+        $val = 100 * $dom_pledges['unconditional']['pledge_info']['pledge']/($bau - $ctry_val["gdrs_alloc_MtCO2"]);
+        $retval .= "<td>" . number_format($val, dec($val)) . "%</td>";
+        $retval .= "</tr>";
+    }
+    if ($dom_pledges['conditional']) {
+        $common_str = 'Conditional pledged domestic action to ';
+        $common_str .= $dom_pledges['conditional']['pledge_info']['description'];
+        $common_str .= ' by ' . $dom_pledges['conditional']['year'];
+        $retval .= '<tr><td class="lj" colspan="2">' . $common_str . '</td></tr>';
+        // Total
+        $retval .= "<tr>";
+        $retval .= "<td class=\"lj level2\">As Mt" . $gases . "</td>";
+        $val = $dom_pledges['conditional']['pledge_info']['pledge'];
+        $retval .= "<td>" . number_format($val, dec($val)) . "</td>";
+        $retval .= "</tr>";
+        // Percent
+        $retval .= "<tr>";
+        $retval .= "<td class=\"lj level2\">As share of " . $year . " mitigation obligation</td>";
+        $val = 100 * $dom_pledges['conditional']['pledge_info']['pledge']/($bau - $ctry_val["gdrs_alloc_MtCO2"]);
+        $retval .= "<td>" . number_format($val, dec($val)) . "%</td>";
+        $retval .= "</tr>";
+    }
+
+    /*
+     * Generate graphs
+     */
 $query = <<< EOSQL
 SELECT year, SUM(gdrs_alloc_MtCO2) AS gdrs_alloc_MtCO2, SUM(fossil_CO2_MtCO2) AS fossil_CO2_MtCO2,
        SUM(LULUCF_MtCO2) AS LULUCF_MtCO2, SUM(NonCO2_MtCO2e) AS NonCO2_MtCO2e FROM disp_temp

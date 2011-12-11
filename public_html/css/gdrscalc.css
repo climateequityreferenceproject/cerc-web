@@ -314,6 +314,10 @@ select, input, select.short { font-size:95%; }
 #data td, #data th { text-align:right; }
 #input_values td, #input_values th, #data td.lj, #data th.lj { text-align:left; }
 
+/*** table ****************************************************/
+td.level2 {
+    padding-left: 2em;
+}
 
 /*** color ****************************************************/
 body {
