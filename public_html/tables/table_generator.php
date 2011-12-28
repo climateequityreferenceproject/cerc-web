@@ -31,7 +31,7 @@
         $retval = "<h3><!--Table view: -->" . $table_name . "</h3>\n";
         $retval .= '<div id="input_values" class="group"><table cellspacing="0" cellpadding="0">' . "\n";
         $retval .= "<tr>\n";
-        $retval .= generate_entry("Emergency pathway: ", $ep_name);
+        $retval .= generate_entry("Mitigation pathway: ", $ep_name);
         // TODO: add baseline parameter variable and echo value here
         $retval .= generate_entry("Baseline: ", "Default");
         $retval .= generate_entry("Development threshold: ", "\$" . number_format($fw_params["dev_thresh"]['value']));

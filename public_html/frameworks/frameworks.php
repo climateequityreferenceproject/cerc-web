@@ -391,7 +391,7 @@
                                 'type' => 'real'
                             ),
                             'mit_gap_borne' => array(
-                                'description' => 'The country group (A1 or A2) that makes up differeence between domestic emissions reductions and emergency pathway during the first sequencing period',
+                                'description' => 'The country group (A1 or A2) that makes up difference between domestic emissions reductions and emergency pathway during the first sequencing period',
                                 'advanced' => true,
                                 'db_param' => 'assign_mit_gap_to',
                                 'value' => NULL,
