@@ -23,7 +23,9 @@ function gdrs_country_report($dbfile, $shared_params, $iso3 = NULL, $year = 2020
 $worldquery = <<< EOSQL
 SELECT SUM(pop_mln) AS pop, SUM(gdp_blnUSDMER) AS gdp_mer,
         SUM(gdp_blnUSDPPP) AS gdp_ppp, SUM(gdrs_alloc_MtCO2) AS gdrs_alloc,
-        SUM(gdrs_r_MtCO2) AS r, SUM(gdrs_c_blnUSDMER) AS c, SUM(gdrs_rci) AS rci
+        SUM(gdrs_r_MtCO2) AS r, SUM(gdrs_c_blnUSDMER) AS c, SUM(gdrs_rci) AS rci,
+        SUM(fossil_CO2_MtCO2) AS fossil_CO2, SUM(LULUCF_MtCO2) AS LULUCF,
+        SUM(NonCO2_MtCO2e) AS NonCO2
     FROM disp_temp WHERE year = $year;
 EOSQL;
 
@@ -34,14 +36,17 @@ EOSQL;
     $ctry_val = $record[1];
     $bau_1990 = $ctry_val_1990['fossil_CO2_MtCO2'];
     $bau = $ctry_val['fossil_CO2_MtCO2'];
+    $world_bau = $world_tot['fossil_CO2'];
     $gases = "CO2";
     if ($shared_params['use_lulucf']['value']) {
         $bau_1990 += $ctry_val_1990['LULUCF_MtCO2'];
         $bau += $ctry_val['LULUCF_MtCO2'];
+        $world_bau += $world_tot['LULUCF'];
     }
     if ($shared_params['use_nonco2']['value']) {
         $bau_1990 += $ctry_val_1990['NonCO2_MtCO2e'];
         $bau += $ctry_val['NonCO2_MtCO2e'];
+        $world_bau += $world_tot['NonCO2'];
         $gases = "CO2e";
     }
     
@@ -73,6 +78,12 @@ EOHTML;
     $retval .= "<td class=\"lj\">Share of global RCI in " . $year . "</td>";
     $val = 100.0 * $ctry_val["gdrs_rci"];
     $retval .= "<td>" . number_format($val, dec($val)) . "%</td>";
+    $retval .= "</tr>";
+    // year Global mitigation obligation as MtCO2e below BAU
+    $retval .= "<tr>";
+    $retval .= "<td class=\"lj\">" . $year . " Global mitigation requirement as Mt" . $gases . " below BAU</td>";
+    $val = $world_bau - $world_tot["gdrs_alloc"];
+    $retval .= "<td>" . number_format($val, dec($val)) . "</td>";
     $retval .= "</tr>";
     // year Mitigation obligation as a reduction target from 1990
     $retval .= "<tr>";
