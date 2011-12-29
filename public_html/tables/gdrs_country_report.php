@@ -81,8 +81,14 @@ EOHTML;
     $retval .= "</tr>";
     // year Global mitigation obligation as MtCO2e below BAU
     $retval .= "<tr>";
-    $retval .= "<td class=\"lj\">" . $year . " Global mitigation requirement as Mt" . $gases . " below BAU</td>";
+    $retval .= "<td class=\"lj\">Global mitigation requirement in " . $year . " as Mt" . $gases . " below BAU</td>";
     $val = $world_bau - $world_tot["gdrs_alloc"];
+    $retval .= "<td>" . number_format($val, dec($val)) . "</td>";
+    $retval .= "</tr>";
+    // year National mitigation obligation as MtCO2e below BAU
+    $retval .= "<tr>";
+    $retval .= "<td class=\"lj\">National mitigation obligation in " . $year ." as Mt" . $gases . " below BAU (= global mitigation requirement &#215; share of global RCI)</td>";
+    $val = $bau - $ctry_val["gdrs_alloc_MtCO2"];
     $retval .= "<td>" . number_format($val, dec($val)) . "</td>";
     $retval .= "</tr>";
     // year Mitigation obligation as a reduction target from 1990
@@ -90,12 +96,6 @@ EOHTML;
     $retval .= "<td class=\"lj\">" . $year . " Mitigation obligation as percentage of 1990 emissions</td>";
     $val = 100.0 * ($bau - $ctry_val["gdrs_alloc_MtCO2"])/$bau_1990;
     $retval .= "<td>" . number_format($val, dec($val)) . "%</td>";
-    $retval .= "</tr>";
-    // year Mitigation obligation as MtCO2e below BAU
-    $retval .= "<tr>";
-    $retval .= "<td class=\"lj\">" . $year . " Mitigation obligation as Mt" . $gases . " below BAU</td>";
-    $val = $bau - $ctry_val["gdrs_alloc_MtCO2"];
-    $retval .= "<td>" . number_format($val, dec($val)) . "</td>";
     $retval .= "</tr>";
     // year Mitigation obligation per capita as reduction from 1990
     $retval .= "<tr>";
