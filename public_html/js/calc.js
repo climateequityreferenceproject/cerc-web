@@ -230,7 +230,7 @@ function spinoff_window() {
     '         <br class="clear"/>\n' +
     '      </div>\n' +
     '      <div id="footer">\n' +
-    '           <p>| <strong>Greenhouse Development Rights</strong> is a project of <a href="http://www.earthisland.org/">EcoEquity</a> and the <a href="http://www.sei-us.org">Stockholm Environment Institute</a> &#169; 2008-' + d.getFullYear() + ' |</p>\n' +
+    '           <p>| <strong>Greenhouse Development Rights</strong> is a project of <a href="http://www.ecoequity.org/">EcoEquity</a> and the <a href="http://www.sei-international.org">Stockholm Environment Institute</a> &#169; 2008-' + d.getFullYear() + ' |</p>\n' +
     '      </div>\n' +
     '   </body>\n' +
     '</html>\n';
