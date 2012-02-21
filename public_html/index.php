@@ -97,7 +97,7 @@ if (isset($_GET['iso3'])) {
                         <legend class="open"><span>&nbsp;</span>Calculator settings</legend>
                         <div>
                             <ul>
-                            <?php echo select_options_list('emergency_path', $shared_params, "Mitigation pathway: ", $advanced); ?>
+                            <?php echo select_options_list('emergency_path', $shared_params, "Global mitigation pathway: ", $advanced); ?>
                                 <!--<li>
                                     <label for="baseline" class="select">Baseline: </label>
                                     <select name="baseline" id="baseline">
