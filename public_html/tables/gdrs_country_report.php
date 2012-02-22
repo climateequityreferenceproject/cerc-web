@@ -121,22 +121,22 @@ $retval .= <<< EOHTML
     <tbody>
 EOHTML;
     // International pledge
-    $intl_pledge = get_intl_pledge($iso3, $year);
-    if ($intl_pledge['intl_pledge'] !== 0) {
-        $retval .= '<tr><td class="lj" colspan="2">Pledged international support assuming ' . $intl_pledge['intl_price'] . ' USD/t' . $gases . '</td></tr>';
-        // Total
-        $retval .= "<tr>";
-        $retval .= "<td class=\"lj level2\">As Mt" . $gases . "</td>";
-        $val = $intl_pledge['intl_pledge'];
-        $retval .= "<td>" . number_format($val, dec($val)) . "</td>";
-        $retval .= "</tr>";
-        // Percent
-        $retval .= "<tr>";
-        $retval .= "<td class=\"lj level2\">As share of " . $year . " mitigation obligation</td>";
-        $val = 100 * $intl_pledge['intl_pledge']/($bau - $ctry_val["gdrs_alloc_MtCO2"]);
-        $retval .= "<td>" . number_format($val, dec($val)) . "%</td>";
-        $retval .= "</tr>";
-    }
+//    $intl_pledge = get_intl_pledge($iso3, $year);
+//    if ($intl_pledge['intl_pledge'] !== 0) {
+//        $retval .= '<tr><td class="lj" colspan="2">Pledged international support assuming ' . $intl_pledge['intl_price'] . ' USD/t' . $gases . '</td></tr>';
+//        // Total
+//        $retval .= "<tr>";
+//        $retval .= "<td class=\"lj level2\">As Mt" . $gases . "</td>";
+//        $val = $intl_pledge['intl_pledge'];
+//        $retval .= "<td>" . number_format($val, dec($val)) . "</td>";
+//        $retval .= "</tr>";
+//        // Percent
+//        $retval .= "<tr>";
+//        $retval .= "<td class=\"lj level2\">As share of " . $year . " mitigation obligation</td>";
+//        $val = 100 * $intl_pledge['intl_pledge']/($bau - $ctry_val["gdrs_alloc_MtCO2"]);
+//        $retval .= "<td>" . number_format($val, dec($val)) . "%</td>";
+//        $retval .= "</tr>";
+//    }
     $dom_pledges = get_processed_pledges($iso3, $shared_params);
     if ($dom_pledges['unconditional']) {
         $common_str = 'Unconditional pledged domestic action to ';
