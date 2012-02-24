@@ -1,6 +1,5 @@
 <?php
-// This is not strictly necessary, but already worked out using API
-// TODO: Rewrite get_processed_pledges to use functions in frameworks.php
+// Use the API: over time, will make things more consistent
 require_once "HTTP/Request.php";
 
 function pledge_db_connect() {
