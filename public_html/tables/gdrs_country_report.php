@@ -6,6 +6,21 @@ function dec($num) {
     return max(0, 1 - floor(log10(abs($num))));
 }
 
+function nice_number($prefix, $num, $postfix) {
+    if ($num < 0) {
+        $retval = '<span class="num_negative">-';
+    } else {
+        $retval = '';
+    }
+    $retval .= $prefix;
+    $retval .= number_format(abs($num), dec($num));
+    $retval .= $postfix;
+    if ($num < 0) {
+        $retval .= '</span>';
+    }
+    return $retval;
+}
+
 function gdrs_country_report($dbfile, $shared_params, $iso3 = NULL, $year = 2020) {
     include("table_common.php");
 
@@ -59,55 +74,55 @@ EOHTML;
     $retval .= "<tr>";
     $retval .= "<td class=\"lj\">BAU emissions as percentage of 1990 emissions – projected to " . $year . "</td>";
     $val = 100.0 * $bau/$bau_1990;
-    $retval .= "<td>" . number_format($val, dec($val)) . "%</td>";
+    $retval .= "<td>" . nice_number('', $val, '%') . "</td>";
     $retval .= "</tr>";
     // Share of population above the development threshold – projected to year
     $retval .= "<tr>";
     $retval .= "<td class=\"lj\">Share of population above the development threshold – projected to " . $year . "</td>";
     $val = 100.0 * $ctry_val["gdrs_pop_mln_above_dl"]/$ctry_val["pop_mln"];
-    $retval .= "<td>" . number_format($val, dec($val)) . "%</td>";
+    $retval .= "<td>" . nice_number('', $val, '%') . "</td>";
     $retval .= "</tr>";
     // Share of global population – projected to year
     $retval .= "<tr>";
     $retval .= "<td class=\"lj\">Share of global population – projected to " . $year . "</td>";
     $val = 100.0 * $ctry_val["pop_mln"]/$world_tot["pop"];
-    $retval .= "<td>" . number_format($val, dec($val)) . "%</td>";
+    $retval .= "<td>" . nice_number('', $val, '%') . "</td>";
     $retval .= "</tr>";
     // Share of global RCI in year
     $retval .= "<tr>";
     $retval .= "<td class=\"lj\">Share of global RCI in " . $year . "</td>";
     $val = 100.0 * $ctry_val["gdrs_rci"];
-    $retval .= "<td>" . number_format($val, dec($val)) . "%</td>";
+    $retval .= "<td>" . nice_number('', $val, '%') . "</td>";
     $retval .= "</tr>";
     // year Global mitigation obligation as MtCO2e below BAU
     $retval .= "<tr>";
     $retval .= "<td class=\"lj\">Global mitigation requirement in " . $year . " as Mt" . $gases . " below BAU</td>";
     $val = $world_bau - $world_tot["gdrs_alloc"];
-    $retval .= "<td>" . number_format($val, dec($val)) . "</td>";
+    $retval .= "<td>" . nice_number('', $val, '') . "</td>";
     $retval .= "</tr>";
     // year National mitigation obligation as MtCO2e below BAU
     $retval .= "<tr>";
     $retval .= "<td class=\"lj\">National mitigation obligation in " . $year ." as Mt" . $gases . " below BAU (= global mitigation requirement &#215; share of global RCI)</td>";
     $val = $bau - $ctry_val["gdrs_alloc_MtCO2"];
-    $retval .= "<td>" . number_format($val, dec($val)) . "</td>";
+    $retval .= "<td>" . nice_number('', $val, '') . "</td>";
     $retval .= "</tr>";
     // year Mitigation obligation as a reduction target from 1990
     $retval .= "<tr>";
     $retval .= "<td class=\"lj\">" . $year . " Mitigation obligation as percentage of 1990 emissions</td>";
     $val = 100.0 * ($bau - $ctry_val["gdrs_alloc_MtCO2"])/$bau_1990;
-    $retval .= "<td>" . number_format($val, dec($val)) . "%</td>";
+    $retval .= "<td>" . nice_number('', $val, '%') . "</td>";
     $retval .= "</tr>";
     // year Mitigation obligation per capita as reduction from 1990
     $retval .= "<tr>";
     $retval .= "<td class=\"lj\">" . $year . " Mitigation obligation per capita as percentage of 1990 per capita emissions</td>";
     $val = 100.0 * (($bau - $ctry_val["gdrs_alloc_MtCO2"])/$ctry_val['pop_mln'])/($bau_1990/$ctry_val_1990['pop_mln']);
-    $retval .= "<td>" . number_format($val, dec($val)) . "%</td>";
+    $retval .= "<td>" . nice_number('', $val, '%') . "</td>";
     $retval .= "</tr>";
     // year Mitigation obligation as PC tax (collecting 1% of global GWP)
     $retval .= "<tr>";
     $retval .= "<td class=\"lj\">" . $year . " Mitigation obligation as per capita tax (assuming global mitigation costs = 1% of global GWP)</td>";
     $val = 1000 * $world_tot['gdp_mer'] * 0.01 * $ctry_val["gdrs_rci"]/$ctry_val['pop_mln'];
-    $retval .= "<td>$" . number_format($val, dec($val)) . "</td>";
+    $retval .= "<td>" . nice_number('$', $val, '') . "</td>";
     $retval .= "</tr>";
     
     /*
@@ -128,13 +143,13 @@ EOHTML;
 //        $retval .= "<tr>";
 //        $retval .= "<td class=\"lj level2\">As Mt" . $gases . "</td>";
 //        $val = $intl_pledge['intl_pledge'];
-//        $retval .= "<td>" . number_format($val, dec($val)) . "</td>";
+//        $retval .= "<td>" . nice_number('', $val, '') . "</td>";
 //        $retval .= "</tr>";
 //        // Percent
 //        $retval .= "<tr>";
 //        $retval .= "<td class=\"lj level2\">As share of " . $year . " mitigation obligation</td>";
 //        $val = 100 * $intl_pledge['intl_pledge']/($bau - $ctry_val["gdrs_alloc_MtCO2"]);
-//        $retval .= "<td>" . number_format($val, dec($val)) . "%</td>";
+//        $retval .= "<td>" . nice_number('', $val, '') . "%</td>";
 //        $retval .= "</tr>";
 //    }
     $dom_pledges = get_processed_pledges($iso3, $shared_params);
@@ -147,13 +162,13 @@ EOHTML;
         $retval .= "<tr>";
         $retval .= "<td class=\"lj level2\">As Mt" . $gases . "</td>";
         $val = $dom_pledges['unconditional']['pledge_info']['pledge'];
-        $retval .= "<td>" . number_format($val, dec($val)) . "</td>";
+        $retval .= "<td>" . nice_number('', $val, '') . "</td>";
         $retval .= "</tr>";
         // Percent
         $retval .= "<tr>";
         $retval .= "<td class=\"lj level2\">As share of " . $year . " mitigation obligation</td>";
         $val = 100 * $dom_pledges['unconditional']['pledge_info']['pledge']/($bau - $ctry_val["gdrs_alloc_MtCO2"]);
-        $retval .= "<td>" . number_format($val, dec($val)) . "%</td>";
+        $retval .= "<td>" . nice_number('', $val, '%') . "</td>";
         $retval .= "</tr>";
     }
     if ($dom_pledges['conditional']) {
@@ -165,13 +180,13 @@ EOHTML;
         $retval .= "<tr>";
         $retval .= "<td class=\"lj level2\">As Mt" . $gases . "</td>";
         $val = $dom_pledges['conditional']['pledge_info']['pledge'];
-        $retval .= "<td>" . number_format($val, dec($val)) . "</td>";
+        $retval .= "<td>" . nice_number('', $val, '') . "</td>";
         $retval .= "</tr>";
         // Percent
         $retval .= "<tr>";
         $retval .= "<td class=\"lj level2\">As share of " . $year . " mitigation obligation</td>";
         $val = 100 * $dom_pledges['conditional']['pledge_info']['pledge']/($bau - $ctry_val["gdrs_alloc_MtCO2"]);
-        $retval .= "<td>" . number_format($val, dec($val)) . "%</td>";
+        $retval .= "<td>" . nice_number('', $val, '%') . "</td>";
         $retval .= "</tr>";
     }
 
