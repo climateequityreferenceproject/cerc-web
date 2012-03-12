@@ -91,16 +91,22 @@ function get_pledge_information($iso3, $conditional, $year) {
     return $row;
 }
 
-function get_processed_pledges($iso3, $shared_params) {
+function get_processed_pledges($iso3, $shared_params, $dbfile=NULL) {
     $retval = array();
     
     $pathway = $shared_params['emergency_path']['value'];
+    
+    if ($dbfile) {
+        $db = basename($dbfile);
+    } else {
+        $db = NULL;
+    }
     
     $year = get_min_target_year($iso3, true);
     if ($year) {
         $retval['conditional']['year'] = $year;
         $pledge_info = get_pledge_information($iso3, true, $year);
-        $retval['conditional']['pledge_info'] = process_pledges($pledge_info, $pathway);
+        $retval['conditional']['pledge_info'] = process_pledges($pledge_info, $pathway, $db);
     } else {
         $retval['conditional'] = NULL;
     }
@@ -110,7 +116,7 @@ function get_processed_pledges($iso3, $shared_params) {
         $retval['unconditional']['year'] = $year;
         $retval['unconditional']['year'] = $year;
         $pledge_info = get_pledge_information($iso3, false, $year);
-        $retval['unconditional']['pledge_info'] = process_pledges($pledge_info, $pathway);
+        $retval['unconditional']['pledge_info'] = process_pledges($pledge_info, $pathway, $db);
     } else {
         $retval['unconditional'] = NULL;
     }
@@ -118,10 +124,14 @@ function get_processed_pledges($iso3, $shared_params) {
     return $retval;
 }
 
-function process_pledges($pledge_info, $pathway) {
+function process_pledges($pledge_info, $pathway, $db) {
     $api_url = "http://gdrights.org/calculator_dev/api/";
     // First, get the parameter values used by the database
-    $req =& new HTTP_Request($api_url . "?q=params");
+    $querystring = '?q=params';
+    if ($db) {
+        $querystring .= '&db=' . $db;
+    }
+    $req =& new HTTP_Request($api_url . $querystring);
     $req->setMethod(HTTP_REQUEST_METHOD_GET);
     if (!PEAR::isError($req->sendRequest())) {
          $params = (array) json_decode($req->getResponseBody());
@@ -146,6 +156,9 @@ function process_pledges($pledge_info, $pathway) {
     $req->addPostData("years", $years);
     $req->addPostData("countries", $pledge_info['iso3']);
     $req->addPostData("emergency_path", $pathway);
+    if ($db) {
+        $req->addPostData("db", $db);
+    }
     if (!PEAR::isError($req->sendRequest())) {
          $response = json_decode($req->getResponseBody());
          // Oddly, the decode procedure seems to duplicate the first element, so get the tail:

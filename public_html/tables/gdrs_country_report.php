@@ -152,7 +152,7 @@ EOHTML;
 //        $retval .= "<td>" . nice_number('', $val, '') . "%</td>";
 //        $retval .= "</tr>";
 //    }
-    $dom_pledges = get_processed_pledges($iso3, $shared_params);
+    $dom_pledges = get_processed_pledges($iso3, $shared_params, $dbfile);
     if ($dom_pledges['unconditional']) {
         $common_str = 'Unconditional pledged domestic action to ';
         $common_str .= $dom_pledges['unconditional']['pledge_info']['description'];
