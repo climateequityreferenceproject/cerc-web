@@ -21,8 +21,14 @@
     /*** Databases ************************************************************/
     // Create database filename if doesn't already exist
     $have_db = FALSE;
-    if ($_POST['user_db'] && Framework::add_user_db_path($_POST['user_db'])) {
-        $user_db = Framework::add_user_db_path($_POST['user_db']);
+    // Future-proof: right now keep the path, but in future might just use basename
+    if ($_POST['user_db']) {
+        $user_db_nopath = basename($_POST['user_db']);
+    } else {
+        $user_db_nopath = NULL;
+    }
+    if ($user_db_nopath && Framework::add_user_db_path($user_db_nopath)) {
+        $user_db = Framework::add_user_db_path($user_db_nopath);
         $have_db = TRUE;
     } elseif (isset($_COOKIE['db']) && $up_to_date) {
         $user_db = realpath(unserialize(stripslashes($_COOKIE['db'])));
