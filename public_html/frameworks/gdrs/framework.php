@@ -22,7 +22,7 @@
                                 'min' => 0,
                                 'max' => 1000000,
                                 'step' => array(
-                                    array('cutoff' => 30000, 'step' => 30000),
+                                    array('cutoff' => 30000, 'step' => 5000),
                                     array('cutoff' => 50000, 'step' => 20000),
                                     array('cutoff' => 500000, 'step' => 25000),
                                     array('cutoff' => NULL, 'step' => 100000)
