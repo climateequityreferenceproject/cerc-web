@@ -439,6 +439,8 @@
         // This method must be redefined by each Framework instance
         abstract public function calculate($db, $shared_params, $fw_params);
         
+        abstract public function get_default_fw_params();
+        
         // ----------------------------------------------------------------
         // Methods to implement the database connection, which is maintained
         // over the life of each instance of a specific framework. (So, there
@@ -521,7 +523,7 @@
         public $table_views = array();
         
         public function get_fw_params($user_db = NULL) {
-            $retval = $this->fw_params_default;
+            $retval = $this->get_default_fw_params();
             try {
                 if ($user_db) {
                     $db_cnx = new PDO('sqlite:'.$user_db);

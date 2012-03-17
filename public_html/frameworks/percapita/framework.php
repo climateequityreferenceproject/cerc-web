@@ -58,6 +58,10 @@ EOSQL;
             
             return $params_changed;
         }
+        
+        public function get_default_fw_params() {
+            return $this->fw_params_default;
+        }
     }
     
     // Register the framework

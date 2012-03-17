@@ -166,7 +166,12 @@
             }
             return $did_exec;
         }
+        
+        public function get_default_fw_params() {
+            return $this->fw_params_default;
+        }
     }
+    
     
     // Register the framework
     Framework::register_fw('gdrs', 'Greenhouse Development Rights', 'GreenhouseDevRights');
