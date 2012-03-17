@@ -3,7 +3,7 @@
         public static $exec_path = NULL;
         
         // No parameters--just equal per capita emissions
-        public $fw_params_default = array();
+        private $fw_params_default = array();
         
         public $table_views = array(
 						    'percap_alloc' => array(

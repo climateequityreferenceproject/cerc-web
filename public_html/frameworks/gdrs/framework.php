@@ -2,7 +2,7 @@
     class GreenhouseDevRights extends Framework {
         public static $exec_path = NULL;
         
-        public $fw_params_default = array(
+        private $fw_params_default = array(
                             'dev_thresh' => array(
                                 'description' => 'Below this income, individual income (and associated emissions) are excluded from capacity and responsibility',
                                 'advanced' => false,

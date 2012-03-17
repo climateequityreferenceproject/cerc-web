@@ -519,7 +519,6 @@
         // Basic getters and setters that are common to the instances of
         // all classes.
         // ----------------------------------------------------------------
-        public $fw_params_default = array();
         public $table_views = array();
         
         public function get_fw_params($user_db = NULL) {
