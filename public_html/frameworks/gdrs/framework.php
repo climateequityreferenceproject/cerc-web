@@ -6,8 +6,8 @@
                             'dev_thresh' => array(
                                 'description' => 'Below this income, individual income (and associated emissions) are excluded from capacity and responsibility',
                                 'advanced' => false,
-                                'db_param' => NULL,
-                                'value' => 7500.0,
+                                'db_param' => 'dev_thresh',
+                                'value' => NULL,
                                 'min' => 0.0,
                                 'max' => 20000.0,
                                 'step' => 500.0,
@@ -17,8 +17,8 @@
                             'lux_thresh' => array(
                                 'description' => 'Above this income, 100% of individual income (and associated emissions) count toward capacity and responsibility',
                                 'advanced' => true,
-                                'db_param' => NULL,
-                                'value' => 30000,
+                                'db_param' => 'lux_thresh',
+                                'value' => NULL,
                                 'min' => 0,
                                 'max' => 1000000,
                                 'step' => array(
@@ -118,30 +118,6 @@
             foreach ($fw_params as $id => $param_array) {
                 if ($this->update_param($param_array)) {
                     $params_changed = true;
-                }
-            }
-            
-            // Thresholds -- not treated same as other parameters
-            // Only GDRs framework gets its own special parameter table!
-            $num_thresh = 2;
-            $t[0] = $fw_params['dev_thresh']['value'];
-            $t[1] = $fw_params['lux_thresh']['value'];
-            $rate[0] = 0.01 * $fw_params['mid_rate']['value'];
-            $rate[1] = 1.0;
-            $name[0] = 'development';
-            $name[1] = 'luxury';
-            $i = 0;
-            foreach ($this->get_db()->query("SELECT * FROM thresholds") as $record) {
-                if ($record["income"] != $t[$i] or $record["rate"] != $rate[$i]) {
-                    $params_changed = true;
-                }
-                $i++;
-            }
-            // If any threshold changed, just go ahead and update the whole thing
-            if ($params_changed) {
-                $this->get_db()->query("DELETE FROM thresholds;")->closeCursor();
-                for ($i = 0; $i < $num_thresh; $i++) {
-                    $this->get_db()->query("INSERT INTO thresholds VALUES ('" . $name[$i] . "', " . $t[$i] . ", " . $rate[$i] . ");")->closeCursor();
                 }
             }
             

@@ -56,7 +56,7 @@ SELECT SUM(pop_mln) AS pop, SUM(gdp_blnUSDMER) AS gdp_mer,
 EOSQL;
 
     $record = $db->query($worldquery)->fetchAll();
-    $world_tot = $record[0]; // Only one record, but using "fetchAll" makes sure curser closed
+    $world_tot = $record[0]; // Only one record, but using "fetchAll" makes sure cursor closed
     $retval .= "<tr>";
     $retval .= '<td class="lj cr_item">( 1) World</td>';
     if ($advanced) {
