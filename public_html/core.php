@@ -24,6 +24,8 @@
     // Future-proof: right now keep the path, but in future might just use basename
     if ($_POST['user_db']) {
         $user_db_nopath = basename($_POST['user_db']);
+    } elseif ($_GET['db']) {
+        $user_db_nopath = basename($_GET['db']);
     } else {
         $user_db_nopath = NULL;
     }
