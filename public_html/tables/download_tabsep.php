@@ -57,10 +57,6 @@ foreach ($db->query("SELECT param_id, int_val, descr FROM params WHERE int_val I
 foreach ($db->query("SELECT param_id, real_val, descr FROM params WHERE real_val IS NOT NULL") as $record) {
     fwrite($fp, $record["param_id"] . "\t" . $record["real_val"] . "\t" . $record["descr"] . "\n");
 }
-fwrite($fp, "Thresholds and share of income counted toward capacity above threshold:\n");
-foreach ($db->query("SELECT * FROM thresholds") as $record) {
-    fwrite($fp, $record["income"] . "\t" . 100.0 * $record["rate"] . "%\n");
-}
 
 $query = $db->query("SELECT * FROM disp_temp ORDER BY country;");
 if ($record = $query->fetch(PDO::FETCH_ASSOC)) {
