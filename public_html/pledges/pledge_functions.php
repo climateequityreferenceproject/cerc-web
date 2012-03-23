@@ -125,7 +125,7 @@ function get_processed_pledges($iso3, $shared_params, $dbfile=NULL) {
 }
 
 function process_pledges($pledge_info, $pathway, $db) {
-    $api_url = "http://gdrights.org/calculator/api/";
+    $api_url = "http://gdrights.org/calculator_dev/api/";
     // First, get the parameter values used by the database
     $querystring = '?q=params';
     if ($db) {
