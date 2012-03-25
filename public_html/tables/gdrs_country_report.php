@@ -254,6 +254,20 @@ EOSQL;
     $graph->add_series($bau_series, "bau");
     $graph->add_series($dulline_series, "physical");
     $graph->add_series($alloc_series, "gdrsalloc");
+    if ($dom_pledges['conditional']) {
+        $yr_ndx = $dom_pledges['conditional']['year'];
+        $graph->add_glyph($yr_ndx,
+                $bau_series[$yr_ndx] - $dom_pledges['conditional']['pledge_info']['pledge'],
+                'cond-glyph',
+                'square');
+    }
+    if ($dom_pledges['unconditional']) {
+        $yr_ndx = $dom_pledges['unconditional']['year'];
+        $graph->add_glyph($yr_ndx,
+                $bau_series[$yr_ndx] - $dom_pledges['unconditional']['pledge_info']['pledge'],
+                'uncond-glyph',
+                'circle');
+    }
     $maxgap = 0;
     $fund_others = false;
     for ($i = 1990; $i <= 2030; $i++ ) {

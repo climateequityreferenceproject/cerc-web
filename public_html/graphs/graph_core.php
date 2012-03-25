@@ -104,6 +104,7 @@
         protected $series = array();
         protected $xaxis = null;
         protected $yaxis = null;
+        protected $glyphs = array();
         protected $margin = 20;
         protected $textheight = 35; // Approx space to give text in pixels
         protected $ticksize = 4; // Tick size in pixels
@@ -119,7 +120,22 @@
             }
         }
         
-        public static function make_glyph($id, $type, $size = 10, $style = NULL) {
+        public function add_glyph($x, $y, $id, $type, $size = 6, $style = null) {
+            $margin = $this->get_margins();
+            
+            $xtransf = $this->xaxis->transf_coord($x, $margin['left'], $margin['right']);
+            $ytransf = $this->yaxis->transf_coord($y, $margin['bottom'], $margin['top']);
+            
+            $glyph_string = self::make_glyph($id, $type, $size, $style);
+            
+            $this->glyphs[$id] = array(
+                'xtrans' => $xtransf,
+                'ytrans' => $this->dim['height'] - $ytransf,
+                'def' => $glyph_string
+            );
+        }
+        
+        private static function make_glyph($id, $type, $size, $style) {
             // Have to specify by half-width, radius, etc., so effectively round down to nearest even value
             $half_size = (int) $size / 2;
             $full_size = 2 * $half_size;
@@ -139,7 +155,6 @@
                 case 'square':
                     $shape = 'rect';
                     $attr = 'width="' . $full_size . '" height="' . $full_size .'" x="-' . $half_size . '" y="' . $half_size . '"';
-                    $attr = '';
                     break;
                 case 'triangle':
                     $shape = 'polygon';
@@ -163,6 +178,10 @@
         
         protected static function dec($num) {
             return max(0, 1 - floor(log10(abs($num))));
+        }
+        
+        private static function translate($xoff, $yoff) {
+            return 'transform="translate(' . $xoff . ',' . $yoff . ')"';
         }
         
         // For now, axes are set once, not resest
@@ -409,7 +428,8 @@
             }
             $retval .= '<svg width="' . $this->dim['width'] . 'px" height="' . $this->dim['height'] . 'px" version = "1.1"' . "\n";
             $retval .= '   baseProfile="basic"' . "\n";
-            $retval .= '   xmlns="http://www.w3.org/2000/svg">' . "\n";
+            $retval .= '   xmlns="http://www.w3.org/2000/svg"' . "\n";
+            $retval .= '   xmlns:xlink="http://www.w3.org/1999/xlink">' . "\n";
             if ($stylesheet && $this->css['embed']) {
                 $retval .= '<style type="text/css"><![CDATA[' . "\n";
                 $retval .= file_get_contents($stylesheet);
@@ -510,6 +530,10 @@
                     $svg .= $this->horiz_stripes($wedge['stripes'], $stripe_pattern);
                 }
             }
+            // Define glyphs
+            foreach ($this->glyphs as $glyph) {
+                $svg .= $glyph['def'] . "\n";
+            }
             $svg .= "</defs>\n";
 
 
@@ -522,7 +546,7 @@
             if ($params['vertical_at']) {
                 $y1 = $this->dim['height'] - $margin['bottom'];
                 $y2 = $this->dim['height'] - $margin['top'];
-                $xvert_scaled = $xoff + round($xfact * ($params['vertical_at'] - $xscale['min']));
+                $xvert_scaled = $this->xaxis->transf_coord($params['vertical_at'], $margin['left'], $margin['right']);
                 $svg .= '<line id="vertical" ';
                 if (!$this->have_css) {
                     $svg .= ' width="1" stroke="#999"';
@@ -572,6 +596,13 @@
                 if (!$this->have_css) {
                     $svg .= ' fill="none"';
                 }
+                $svg .= ' />' . "\n";
+            }
+            
+            // Place glyphs
+            foreach ($this->glyphs as $id => $glyph) {
+                $svg .= '<use xlink:href="#' . $id . '" ';
+                $svg .= self::translate($glyph['xtrans'], $glyph['ytrans']);
                 $svg .= ' />' . "\n";
             }
             
