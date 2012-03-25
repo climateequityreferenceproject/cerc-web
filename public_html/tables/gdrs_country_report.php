@@ -259,15 +259,16 @@ EOSQL;
         $graph->add_glyph($yr_ndx,
                 $bau_series[$yr_ndx] - $dom_pledges['conditional']['pledge_info']['pledge'],
                 'cond-glyph',
-                'square');
+                'circle', 10);
     }
     if ($dom_pledges['unconditional']) {
         $yr_ndx = $dom_pledges['unconditional']['year'];
         $graph->add_glyph($yr_ndx,
                 $bau_series[$yr_ndx] - $dom_pledges['unconditional']['pledge_info']['pledge'],
                 'uncond-glyph',
-                'circle');
+                'diamond', 12);
     }
+
     $maxgap = 0;
     $fund_others = false;
     for ($i = 1990; $i <= 2030; $i++ ) {
