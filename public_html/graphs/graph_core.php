@@ -1,4 +1,6 @@
 <?php
+    class GraphException extends Exception { }
+
     class Axis {
         protected $min = 0;
         protected $max = 0;
@@ -104,6 +106,52 @@
             }
         }
         
+        public static function make_glyph($id, $type, $size = 10, $style = NULL) {
+            // Have to specify by half-width, radius, etc., so effectively round down to nearest even value
+            $half_size = (int) $size / 2;
+            $full_size = 2 * $half_size;
+            switch ($type) {
+                case 'circle':
+                    $shape = 'circle';
+                    $attr = 'r="' . $half_size . '"';
+                    break;
+                case 'diamond':
+                    $shape = 'polygon';
+                    $bottom = '0,' . $half_size;
+                    $top = '0,-' . $half_size;
+                    $right = $half_size . ',0';
+                    $left = '-' . $half_size . ',0';
+                    $attr = 'points="' . $right . ' ' . $bottom . ' ' . $left . ' ' . $top . '"';
+                    break;
+                case 'square':
+                    $shape = 'rect';
+                    $attr = 'width="' . $full_size . '" height="' . $full_size .'" x="-' . $half_size . '" y="' . $half_size . '"';
+                    $attr = '';
+                    break;
+                case 'triangle':
+                    $shape = 'polygon';
+                    $long_segment = (int) floor(2 * $full_size/sqrt(3.0));
+                    $short_segment = (int) floor($long_segment / 2);
+                    $bottom_left = '-' . $half_size . ',' . $short_segment;
+                    $bottom_right = $half_size . ',' . $short_segment;
+                    $top = '0,-' . $long_segment ;
+                    $attr = 'points="' . $bottom_left . ' ' . $bottom_right . ' ' . $top . '"';
+                    break;
+                default:
+                    throw new GraphException('Glyph type "' . $type . '" not recognized.');
+            }
+            if ($style) {
+                $style_string = 'style="' . $style . '"';
+            } else {
+                $style_string = '';
+            }
+            return '<' . $shape . ' id="' . $id . '" ' . $attr . ' ' . $style_string . ' />';
+        }
+        
+        protected static function dec($num) {
+            return max(0, 1 - floor(log10(abs($num))));
+        }
+        
         // For now, axes are set once, not resest
         public function set_xaxis($min, $max, $label, $unit, $use_limits=FALSE, $number_format=TRUE) {
             if (!$this->xaxis) {
@@ -151,10 +199,6 @@
                 'bottom' => $y + $this->textheight,
                 'top' => $this->dim['height'] - $y
             );
-        }
-        
-        protected function dec($num) {
-            return max(0, 1 - floor(log10(abs($num))));
         }
         
         protected function svg_hrule($id) {
@@ -226,7 +270,7 @@
                 $retval .= '/>' . "\n";
             }
             
-            $dec = $this->dec($scale['max']);
+            $dec = self::dec($scale['max']);
             $y1 = $ypos;
             $y2 = $ypos + $this->ticksize;
             $xval = $scale['min'];
@@ -292,7 +336,7 @@
                 $retval .= '/>' . "\n";
             }
             
-            $dec = $this->dec($scale['max']);
+            $dec = self::dec($scale['max']);
             $x1 = $xpos;
             $x2 = $xpos - $this->ticksize;
             $yval = $scale['min'];

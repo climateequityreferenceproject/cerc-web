@@ -296,6 +296,7 @@ EOSQL;
     
     $width_string = $graph_width . "px";
     $height_string = ($graph_height + $legend_height) . "px";
+    
 $retval .= <<< EOHTML
     </tbody>
 </table>
@@ -333,8 +334,6 @@ $retval .= '<dl id="ctry_report_legend">';
         $retval .= '<dd>Mitigation funded other countries, but carried out within the borders of ' . $ctry_val["country"] . '. GDRs assigns the "credit" for this mitigation to the funder, but of course the terms of the mitigation would be as negotiated with the host country.</dd>';
     }
 $retval .= '</dl>';
- 
-/* $retval .= '<p><em>We are working on the legend</em></p>'; */
 
 return $retval;
 }
