@@ -14,6 +14,7 @@
             $this->unit = $unit;
             $this->use_limits = $use_limits;
             $this->number_format = $number_format;
+            $this->scale = $this->calc_scale();
         }
         
         public function get_label() {
@@ -24,9 +25,21 @@
             return $this->unit;
         }
         
+        public function get_scale() {
+            return $this->scale;
+        }
+        
+        public function transf_coord($coord, $margin_min, $margin_max) {
+            $offset = $margin_min;
+            $len = $margin_max - $margin_min;
+            $factor = $len/($this->scale['max'] - $this->scale['min']);
+            
+            return $offset + round($factor * ($coord - $this->scale['min']));
+        }
+        
         // This is from Tcl's plotchart module by Arjen Markus
         // Returns a list as "min, max, step"
-        public function get_scale() {
+        private function calc_scale() {
             $xmin = $this->min;
             $xmax = $this->max;
             
@@ -408,8 +421,7 @@
         protected function svg_end() {
             return "</svg>\n";
         }
-        
-        
+
         // For wedges, expect series to be in order--can be top-down or bottom-up
         // Colors are the colors of the wedges in sequence
         public function svgplot_wedges($wedges, $params=NULL) {
@@ -424,22 +436,15 @@
                 return;
             }
                         
-            $xscale = $this->xaxis->get_scale();
-            $yscale = $this->yaxis->get_scale();
             $margin = $this->get_margins();
-            
-            $xoff = $margin['left'];
-            $yoff = $margin['bottom'];
-            $xfact = ($margin['right'] - $margin['left'])/($xscale['max'] - $xscale['min']);
-            $yfact = ($margin['top'] - $margin['bottom'])/($yscale['max'] - $yscale['min']);
             
             // Rescale all series
             $scaled_series = array();
             foreach ($this->series as $id => $points_array) {
                 $scaled_series[$id] = array();
                 foreach ($points_array as $x => $y) {
-                    $xtransf = $xoff + round($xfact * ($x - $xscale['min']));
-                    $ytransf = $yoff + round($yfact * ($y - $yscale['min']));
+                    $xtransf = $this->xaxis->transf_coord($x, $margin['left'], $margin['right']);
+                    $ytransf = $this->yaxis->transf_coord($y, $margin['bottom'], $margin['top']);
                     $scaled_series[$id][$xtransf] = $ytransf;
                 }
             }
