@@ -348,7 +348,13 @@ $retval .= '<dl id="ctry_report_legend">';
         $retval .= '<dt class="key-sup"><span></span>Mitigation funded by other countries</dt>';
         $retval .= '<dd>Mitigation funded other countries, but carried out within the borders of ' . $ctry_val["country"] . '. GDRs assigns the "credit" for this mitigation to the funder, but of course the terms of the mitigation would be as negotiated with the host country.</dd>';
     }
-$retval .= '</dl>';
+    $retval .= '<dt class="key-uncond"><span></span>Unconditional Pledge</dt>';
+    $retval .= '<dd>Emissions consistent with ' . $ctry_val["country"] . '&#8217;s pledged emission reductions <em>not</em> conditional on other countries&#8217; actions.</dd>';
+
+    $retval .= '<dt class="key-cond"><span></span>Conditional Pledge</dt>';
+    $retval .= '<dd>Emissions consistent with ' . $ctry_val["country"] . '&#8217;s pledged emission reductions conditional on other countries&#8217; actions.</dd>';
+
+    $retval .= '</dl>';
 
 return $retval;
 }

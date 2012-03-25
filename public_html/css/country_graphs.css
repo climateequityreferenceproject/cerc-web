@@ -17,8 +17,8 @@ polygon#intloblig {fill:#e6b350;}
 polygon#intloblig {fill:url(#intlobligstripes);}
 pattern#intlobligstripes line.stripe {stroke:#c2823e; stroke-width:10;}
 polygon#supportedmit {fill:#e6e6e6;}
-#cond-glyph {stroke:#000;stroke-width:1px;fill:rgb(150,220,255);}
-#uncond-glyph {stroke:#000;stroke-width:1px;fill:rgb(255,60,60);}
+#uncond-glyph {stroke:#000;stroke-width:1px;fill:#ff3c3c;}
+#cond-glyph {stroke:#000;stroke-width:1px;fill:#96dcff;}
 
 /* colors *******************
   #e6b350 ochre 100% (domestic mitigation before opacity reduction)
@@ -26,5 +26,7 @@ polygon#supportedmit {fill:#e6e6e6;}
   #0066b3 blue (GDRs obligation line)
   #7e9f51 green (physical reductions line)
   #e6e6e6 gray (supported mitigation)
+  rgb(255,60,60) #ff3c3c red (unconditional glyph)
+  rgb(150,220,255) #96dcff light blue (conditional glyph)
 
 */
