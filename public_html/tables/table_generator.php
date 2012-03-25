@@ -29,7 +29,8 @@
             $table_name .= " for " . $country_name;
         }
         $retval = "<h3><!--Table view: -->" . $table_name . "</h3>\n";
-        $retval .= '<div id="input_values" class="group"><table cellspacing="0" cellpadding="0">' . "\n";
+        $retval .= '<table  id="input_values" class="group" cellspacing="0" cellpadding="0">' . "\n";
+        $retval .= '<caption>parameters</caption><tbody>' ."\n";
         $retval .= "<tr>\n";
         $retval .= generate_entry("Global mitigation pathway: ", $ep_name);
         // TODO: add baseline parameter variable and echo value here
@@ -71,7 +72,7 @@
             $retval .= generate_entry("Mitigation requirement gap borne by: ", $val);
             $retval .= "</tr>\n";
         }
-        $retval .= '</table></div><!-- /input_values -->' . "\n";
+        $retval .= '</tbody></table><!-- /input_values -->' . "\n";
 
         switch ($display_params["framework"]['value']) {
             case 'gdrs':

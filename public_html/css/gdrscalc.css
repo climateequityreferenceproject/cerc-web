@@ -84,6 +84,13 @@ body>#container, body>#footer {
     padding-right:3%; 
     width:30%; 
 }
+#input_values caption {
+    text-align: left;
+    display: none; /* Actually, this should be visible */
+}
+#input_values tbody {
+    /* display: none; */
+}
 td, th {
     border:1px solid;
     border-left:0;
