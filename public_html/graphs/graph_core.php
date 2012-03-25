@@ -283,7 +283,8 @@
                     }
                 } else {
                     $val = $xval;
-                }                $x = $margin['left'] + $offset;
+                }
+                $x = $margin['left'] + $offset;
                 if ($params['ticks']) {
                     $retval .= '<line x1="' . $x . '" y1="' . $y1 . '" x2="' . $x . '" y2="' . $y2 . '"';
                     if (!$this->have_css) {
