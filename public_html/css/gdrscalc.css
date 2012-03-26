@@ -86,10 +86,10 @@ body>#container, body>#footer {
 }
 #input_values caption {
     text-align: left;
-    display: none; /* Actually, this should be visible */
+    /* display: none; Actually, this should be visible */
 }
 #input_values tbody {
-    /* display: none; */
+    display: none; /* */
 }
 td, th {
     border:1px solid;

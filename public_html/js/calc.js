@@ -17,8 +17,8 @@ $(function() {
         }
     });
 	
-    // hand cursor for hover on legend of fieldset
-    $("legend").hover(function() {
+    // hand cursor for hover on legend of fieldset, or input values caption
+    $("legend, #input_values caption").hover(function() {
         $(this).addClass('pretty-hover');
     }, function() {
         $(this).removeClass('pretty-hover');
@@ -95,6 +95,9 @@ $(function() {
     $('#a1_smoothing').change(submit);
     $('#mit_gap_borne').change(submit);
     
+    // Set the parameters to show or hide
+    $('#input_values caption').click(function() {$('#input_values tbody').toggle()});
+    
     //--------------------------------------------------
     // Action on form submit
     //--------------------------------------------------
@@ -111,6 +114,15 @@ $(function() {
                 $('#data').html(data);
 		// Make table sortable
                 $("#data table:eq(1)").addClass('tablesorter').tablesorter();
+                // Set the parameters to show or hide
+                $("#input_values caption").hover(function() {
+                    $(this).addClass('pretty-hover');
+                }, function() {
+                    $(this).removeClass('pretty-hover');
+                });
+                $('#input_values caption').click(function() {
+                    $('#input_values tbody').toggle();
+                });
                 
                 // hide spinner
                 $('#loading').hide();
