@@ -153,11 +153,6 @@
     }
     setcookie('display_params',serialize($display_params),time()+60*60*24*365);
     
-    /*** Calculator parameters *************************************************/
-    // TODO: implement mid_rate - marginal nominal tax rate b/n dev and lux - as slider 0-100
-    // TODO: implement tax_income_level - income level for nominal personal tax - as separate script?    
-
-    
     // Redundant but convenient to have both
     $table_views = $fw->get_table_views();
     $display_params['table_view']['list'] = $fw->get_table_views();

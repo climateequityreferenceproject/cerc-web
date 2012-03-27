@@ -1,7 +1,4 @@
 <?php
-    // TODO: This is meant to provide the intended interface, but is not the intended
-    // implementation (yet)
-    
     function generate_entry($label, $val) {
         return "<td><strong>" . $label . "</strong>" . $val . "</td>\n";
     }
