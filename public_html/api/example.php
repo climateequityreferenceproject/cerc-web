@@ -31,8 +31,11 @@ function get_country_data($iso3) {
     $req->addPostData('countries', $iso3);
     if (!PEAR::isError($req->sendRequest())) {
         $response = json_decode($req->getResponseBody());
-        // The decode procedure duplicates the first element: get the tail
-        $response = array_slice($response, 1);
+        // Oddly, the decode procedure sometimes seems to duplicate the first element.
+        // Test by comparing to the number of elements we expect (1).
+        if (count($response) > 1) {
+           $response = array_slice($response, 1);
+        }
     } else {
         throw new Exception($req->getMessage());
     }
