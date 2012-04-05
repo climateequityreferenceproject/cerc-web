@@ -64,27 +64,35 @@ function get_intl_pledge($iso3, $year) {
 }
 
 // $iso3 is the three-letter code, $conditional is a boolean saying whether it's conditional or not
-function get_min_target_year($iso3, $conditional) {
-    // To protect against SQL injection, force conditional to be boolean & iso3 to be three first characters
+function get_min_target_year($code, $conditional) {
+    // To protect against SQL injection, force conditional to be boolean
     $conditional_bool = $conditional ? 1 : 0;
-    $iso3_3lett = substr($iso3, 0, 3);
-    $sql = 'SELECT MIN(by_year) AS year FROM pledge WHERE conditional=' . $conditional_bool . ' AND iso3="' . $iso3_3lett . '" AND public = 1;';
+    if (is_country($code)) {
+        $ctryrgn_str = 'iso3="' . $code . '"';
+    } else {
+        $ctryrgn_str = 'region="' . $code . '"';
+    }
+    $sql = 'SELECT MIN(by_year) AS year FROM pledge WHERE conditional=' . $conditional_bool . ' AND ' . $ctryrgn_str . ' AND public = 1;';
     $result = pledge_query_db($sql);
     $row = mysql_fetch_array($result, MYSQL_ASSOC);
     mysql_free_result($result);
     if (!$row) {
         return NULL;
     } else {
-        return $row['year'];
-    }
+    return $row['year'];
+}
 }
 
-function get_pledge_information($iso3, $conditional, $year) {
+function get_pledge_information($code, $conditional, $year) {
     // Protect against injection
     $conditional_bool = $conditional ? 1 : 0;
-    $iso3_3lett = substr($iso3, 0, 3);
     $year_checked = intval($year);
-    $sql = 'SELECT * FROM pledge WHERE conditional=' . $conditional_bool . ' AND iso3="' . $iso3_3lett . '" AND by_year=' . $year_checked . ';';
+    if (is_country($code)) {
+        $ctryrgn_str = 'iso3="' . $code . '"';
+    } else {
+        $ctryrgn_str = 'region="' . $code . '"';
+    }
+    $sql = 'SELECT * FROM pledge WHERE conditional=' . $conditional_bool . ' AND ' . $ctryrgn_str . ' AND by_year=' . $year_checked . ';';
     $result = pledge_query_db($sql);
     $row = mysql_fetch_array($result, MYSQL_ASSOC);
     mysql_free_result($result);
@@ -124,6 +132,22 @@ function get_processed_pledges($iso3, $shared_params, $dbfile=NULL) {
     return $retval;
 }
 
+function is_country($code)
+{
+    $db = pledge_db_connect();
+    
+    $sql = 'SELECT iso3 FROM country WHERE iso3="' . $code . '";';
+    
+    $result = mysql_query($sql, $db);
+    if (!$result) {
+        mysql_close($db);
+        die('Invalid query: ' . mysql_error());
+    }
+    mysql_close($db);
+    
+    return mysql_num_rows($result) > 0;
+}
+
 function process_pledges($pledge_info, $pathway, $db) {
     $api_url = "http://gdrights.org/calculator_dev/api/";
     // First, get the parameter values used by the database
@@ -154,7 +178,14 @@ function process_pledges($pledge_info, $pathway, $db) {
         $years = $pledge_info['by_year'];
     }
     $req->addPostData("years", $years);
-    $req->addPostData("countries", $pledge_info['iso3']);
+    if (isset($pledge_info['iso3'])) {
+        $ctryrgn = $pledge_info['iso3'];
+    } elseif (isset($pledge_info['region'])) {
+        $ctryrgn = $pledge_info['region'];
+    } else {
+        $ctryrgn = null;
+    }
+    $req->addPostData("countries", $ctryrgn);
     $req->addPostData("emergency_path", $pathway);
     if ($db) {
         $req->addPostData("db", $db);
