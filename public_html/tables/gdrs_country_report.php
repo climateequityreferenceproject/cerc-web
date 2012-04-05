@@ -252,8 +252,6 @@ EOSQL;
     }
     $query .= ' AND year >= 1990 AND year <= 2030 GROUP BY year ORDER BY year;';
     
-    echo $query . "<br />";
-    
     $bau_series = array();
     $alloc_series = array();
     $dulline_series = array();
