@@ -21,6 +21,7 @@ function nice_number($prefix, $num, $postfix) {
     return $retval;
 }
 
+// TODO: Replace "iso3" with the more generic "code"
 function gdrs_country_report($dbfile, $shared_params, $iso3 = NULL, $year = 2020) {
     include("table_common.php");
 
@@ -44,9 +45,32 @@ SELECT SUM(pop_mln) AS pop, SUM(gdp_blnUSDMER) AS gdp_mer,
     FROM disp_temp WHERE year = $year;
 EOSQL;
 
+if (!is_country($iso3)) {
+$regionquery = <<< EOSQL
+SELECT year, SUM(pop_mln) AS pop_mln, SUM(gdrs_pop_mln_above_dl) AS gdrs_pop_mln_above_dl,
+        SUM(gdp_blnUSDMER) AS gdp_blnUSDMER, SUM(gdp_blnUSDPPP) AS gdp_blnUSDPPP,
+        SUM(gdrs_alloc_MtCO2) AS gdrs_alloc_MtCO2,
+        SUM(gdrs_r_MtCO2) AS gdrs_r_MtCO2, SUM(gdrs_c_blnUSDMER) AS gdrs_c_blnUSDMER,
+        SUM(gdrs_rci) AS gdrs_rci, SUM(fossil_CO2_MtCO2) AS fossil_CO2_MtCO2,
+        SUM(LULUCF_MtCO2) AS LULUCF_MtCO2, SUM(NonCO2_MtCO2e) AS NonCO2_MtCO2e
+    FROM disp_temp, flags WHERE
+        flags.iso3 = disp_temp.iso3 AND
+        (year=$year OR year=1990) AND
+        flags.value = 1 AND
+        flags.flag = "$iso3"
+    GROUP BY year ORDER BY year;
+EOSQL;
+} else {
+    $regionquery = null;
+}
+
     $record = $db->query($worldquery)->fetchAll();
     $world_tot = $record[0]; // Only one record, but using "fetchAll" makes sure curser closed
-    $record = $db->query('SELECT * FROM disp_temp WHERE (year=' . $year . ' OR year=1990) AND iso3="' . $iso3 . '" ORDER BY year;')->fetchAll();
+    if (is_country($iso3)) {
+        $record = $db->query('SELECT * FROM disp_temp WHERE (year=' . $year . ' OR year=1990) AND iso3="' . $iso3 . '" ORDER BY year;')->fetchAll();
+    } else {
+        $record = $db->query($regionquery)->fetchAll();;
+    }
     $ctry_val_1990 = $record[0];
     $ctry_val = $record[1];
     $bau_1990 = $ctry_val_1990['fossil_CO2_MtCO2'];
@@ -212,9 +236,23 @@ EOSQL;
             $global_bau_series[$yr_ndx] += $record['NonCO2_MtCO2e'];
         }
     }
-    $query = 'SELECT year, gdrs_alloc_MtCO2, fossil_CO2_MtCO2, LULUCF_MtCO2,
-        NonCO2_MtCO2e FROM disp_temp WHERE year >= 1990 AND year <= 2030';
-    $query .= ' AND iso3="' . $iso3 . '" ORDER BY year;';
+    $query = 'SELECT year,';
+    if (is_country($iso3)) {
+        $query .=  ' gdrs_alloc_MtCO2, fossil_CO2_MtCO2, LULUCF_MtCO2,
+        NonCO2_MtCO2e';
+        $query .= ' FROM disp_temp WHERE iso3="' . $iso3 . '"';
+    } else {
+        $query .=  ' SUM(gdrs_alloc_MtCO2) AS gdrs_alloc_MtCO2,
+        SUM(fossil_CO2_MtCO2) AS fossil_CO2_MtCO2,
+        SUM(LULUCF_MtCO2) AS LULUCF_MtCO2,
+        SUM(NonCO2_MtCO2e) AS NonCO2_MtCO2e';
+       $query .= ' FROM disp_temp, flags WHERE';
+        $query .= ' flags.value = 1 AND flags.iso3 = disp_temp.iso3 AND';
+        $query .= ' flags.flag="' . $iso3 . '"';
+    }
+    $query .= ' AND year >= 1990 AND year <= 2030 GROUP BY year ORDER BY year;';
+    
+    echo $query . "<br />";
     
     $bau_series = array();
     $alloc_series = array();

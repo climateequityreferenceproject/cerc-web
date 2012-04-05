@@ -174,8 +174,10 @@ function process_pledges($pledge_info, $pathway, $db) {
     $req->setMethod(HTTP_REQUEST_METHOD_POST);
     if ($pledge_info['rel_to_year']) {
         $years = $pledge_info['rel_to_year'] . "," . $pledge_info['by_year'];
+        $numitems = 2;
     } else {
         $years = $pledge_info['by_year'];
+        $numitems = 1;
     }
     $req->addPostData("years", $years);
     if (isset($pledge_info['iso3'])) {
@@ -191,9 +193,11 @@ function process_pledges($pledge_info, $pathway, $db) {
         $req->addPostData("db", $db);
     }
     if (!PEAR::isError($req->sendRequest())) {
-         $response = json_decode($req->getResponseBody());
-         // Oddly, the decode procedure seems to duplicate the first element, so get the tail:
-         $response = array_slice($response, 1);
+         $response = (array) json_decode($req->getResponseBody());
+         // Oddly, the decode procedure sometimes seems to duplicate the first element.
+         if (count($response) > $numitems) {
+            $response = array_slice($response, 1);
+         }
     } else {
         return NULL;
     }
