@@ -73,6 +73,8 @@ if ($_POST['form']) {
     <head profile="http://gmpg.org/xfn/11">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <title>GDRs Pledges Database</title>
+        <script type="text/javascript" src="tinymce/js/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
+        <script type="text/javascript" src="tinymce/js/pledge_editor.js"></script>
     </head>
     <body>
         <h1>GDRs pledges database entry form</h1>
@@ -146,9 +148,11 @@ if ($_POST['form']) {
                     </td>
                 </tr>
             </table>
-            <label>Source: <input type="text" name="source" maxlength="255" size="50"/></label><br/>
-            <label>Details: <input type="text" name="details" maxlength="255" size="50"/></label>
-            <br /><br />
+            <label>Source:</label><br/>
+            <textarea name="source" cols="75" ></textarea><br />
+            <label>Details:</label><br />
+            <textarea name="details" cols="75" rows="2" ></textarea><br />
+            <br />
             <input type="submit" value ="Add" />
             <br />
         </form>
