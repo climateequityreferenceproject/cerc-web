@@ -7,8 +7,14 @@ if ($_POST['form']) {
         case 'add':
             $new_values = array_slice($_POST, 1);
             if ($new_values['year_or_bau'] == 'bau') {
-                $new_values['rel_to_year'] = NULL;
+                $new_values['rel_to_year'] = null;
             }
+            if ($new_values['country_or_region'] == 'country') {
+                $new_values['region'] = null;
+            } else {
+                $new_value['country'] = null;
+            }
+            unset($new_values['country_or_region']); // This isn't a field in the database
             // Check boxes are odd--they just don't appear if unchecked
             if (array_key_exists('conditional', $new_values)) {
                 $new_values['conditional'] = 1;
@@ -21,7 +27,9 @@ if ($_POST['form']) {
             $values = array_values($new_values);
             $mod_values = array();
             foreach ($values as $value) {
-                if (!is_numeric($value)) {
+                if ($value === null) {
+                    $value = 'NULL';
+                } elseif (!is_numeric($value)) {
                     $value = "'" . $value . "'";
                 }
                 $mod_values[] = $value;
@@ -71,7 +79,7 @@ if ($_POST['form']) {
         <form name="add" method="post">
             <input type="hidden" name="form" value="add"/>
             <!-- Country list-->
-            <label for="iso3">Country: </label>
+            <input type="radio" name="country_or_region" value="country" checked="checked" /><label for="iso3">Country: </label>
             <select name="iso3" id="iso3">
                 <?php
                     $result = query_db("SELECT iso3, name FROM country ORDER BY name;");
@@ -80,8 +88,17 @@ if ($_POST['form']) {
                     }
                     mysql_free_result($result);
                 ?>
-            </select>
-            <br />
+            </select><br />
+            <input type="radio" name="country_or_region" value="region" /><label for="region">Region: </label>
+            <select name="region" id="region">
+                <?php
+                    $result = query_db("SELECT region_code, name FROM region ORDER BY name;");
+                    while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+                        printf('<option value="%s">%s</option>', $row['region_code'], $row['name']);  
+                    }
+                    mysql_free_result($result);
+                ?>
+            </select>            <br />
             <!-- Conditional/unconditional-->
             <input type="checkbox" name="conditional" id="conditional" value="1" />
             <label for="conditional"> Conditional</label>
