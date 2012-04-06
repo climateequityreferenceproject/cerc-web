@@ -79,6 +79,13 @@ if (isset($_GET['iso3'])) {
                             <?php
                                 echo '<li><label for="display_ctry" class="select" title="Country to display for country report">Country to display:</label>';
                                 echo '<select name="display_ctry" id="display_ctry" action="index.php">';
+                                foreach ($region_list as $item) {
+                                    $selected = '';
+                                    if ($item['region_code'] === $display_params['display_ctry']['value']) {
+                                        $selected = ' selected="selected"';
+                                    }
+                                    echo '<option value="' . $item['region_code'] .  '"' . $selected . '>' . $item['name'] . '</option>';
+                                }
                                 foreach ($country_list as $item) {
                                     $selected = '';
                                     if ($item['iso3'] === $display_params['display_ctry']['value']) {
@@ -221,7 +228,7 @@ if (isset($_GET['iso3'])) {
                                         if (isset($_COOKIE['db']) && !$up_to_date) {
                                             echo '<p class="alert">The calculator or database has been updated since you last visited. Your settings have been reset.</p>';
                                         }
-                                       echo generate_table($display_params, $fw_params, $shared_params, $country_list, $table_views, $user_db);
+                                       echo generate_table($display_params, $fw_params, $shared_params, $country_list, $region_list, $table_views, $user_db);
                                        // include("tables/sample_table.php");
                 ?>
                                    </div><!-- end #data -->

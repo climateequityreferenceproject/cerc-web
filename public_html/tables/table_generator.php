@@ -3,7 +3,7 @@
         return "<td><strong>" . $label . "</strong>" . $val . "</td>\n";
     }
     
-    function generate_table($display_params, $fw_params, $shared_params, $country_list, $table_views, $user_db) {
+    function generate_table($display_params, $fw_params, $shared_params, $country_list, $region_list, $table_views, $user_db) {
         $ep_index = $shared_params["emergency_path"]['value'];
         $ep_name = $shared_params["emergency_path"]['list'][$ep_index]['display_name'];
         $advanced = $display_params['basic_adv']['value'] !== 'basic';
@@ -16,11 +16,22 @@
             $table_name .= " in " . $display_params["display_yr"]['value'];
         }
         if ($display_params["table_view"]['value'] === 'gdrs_country_report') {
+            $found_it = false;
             foreach ($country_list as $item) {
                 $selected = '';
                 if ($item['iso3'] === $display_params['display_ctry']['value']) {
                     $country_name = $item['name'];
+                    $found_it = true;
                     break;
+                }
+            }
+            if (!$found_it) {
+                foreach ($region_list as $item) {
+                    $selected = '';
+                    if ($item['region_code'] === $display_params['display_ctry']['value']) {
+                        $country_name = $item['name'];
+                        break;
+                    }
                 }
             }
             $table_name .= " for " . $country_name;

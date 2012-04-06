@@ -84,6 +84,7 @@
     $advanced = false;
     // TODO: replace country_grp w JS to show/hide rows and columns, or HTML table filter
     $country_list = Framework::get_country_list($user_db);
+    $region_list = Framework::get_region_list($user_db);
     $display_params = array ('basic_adv' => array(
                                 'value'=>'basic',
                                 'advanced'=>false,
@@ -189,5 +190,5 @@
         // print_r($fw_params);
         // echo("<br /><br />");
         // print_r($display_params);
-        echo generate_table($display_params, $fw_params, $shared_params, $country_list, $table_views, $user_db);
+        echo generate_table($display_params, $fw_params, $shared_params, $country_list, $region_list, $table_views, $user_db);
     }
