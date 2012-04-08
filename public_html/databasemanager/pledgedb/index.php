@@ -12,7 +12,7 @@ if ($_POST['form']) {
             if ($new_values['country_or_region'] == 'country') {
                 $new_values['region'] = null;
             } else {
-                $new_value['country'] = null;
+                $new_values['iso3'] = null;
             }
             unset($new_values['country_or_region']); // This isn't a field in the database
             // Check boxes are odd--they just don't appear if unchecked
@@ -36,6 +36,7 @@ if ($_POST['form']) {
             }
             $sql .= implode(",", $mod_values);
             $sql .= ")";
+            echo $sql;
             if (!mysql_query($sql, $db)) {
                 mysql_close($db);
                 die('Invalid query: ' . mysql_error());
