@@ -75,10 +75,12 @@ if ($_POST['form']) {
         <title>GDRs Pledges Database</title>
         <script type="text/javascript" src="tinymce/js/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
         <script type="text/javascript" src="tinymce/js/pledge_editor.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/pledges.css" />
     </head>
     <body>
+        <div id="header-wrapper">
         <h1>GDRs pledges database entry form</h1>
-        <form name="add" method="post">
+        <form name="add" id="add" method="post">
             <input type="hidden" name="form" value="add"/>
             <!-- Country list-->
             <input type="radio" name="country_or_region" value="country" checked="checked" /><label for="iso3">Country: </label>
@@ -151,11 +153,11 @@ if ($_POST['form']) {
             <label>Source:</label><br/>
             <textarea name="source" cols="75" ></textarea><br />
             <label>Details:</label><br />
-            <textarea name="details" cols="75" rows="2" ></textarea><br />
-            <br />
+            <textarea name="details" cols="75" rows="2" ></textarea>
             <input type="submit" value ="Add" />
             <br />
         </form>
+        </div>
         <form name="table" method="post">
             <input type="hidden" name="form" value="table"/>
             <div id="table">

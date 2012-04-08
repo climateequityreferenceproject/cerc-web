@@ -22,7 +22,7 @@ SQL;
     
     mysql_close($db);
 
-    $html = "<table>";
+    $html = '<table id="country_tbl">';
     $html .= "<tr>";
     $html .= "<th>public</th>";
     $html .= "<th>ISO code</th>";
@@ -89,7 +89,7 @@ SQL;
     
     mysql_close($db);
 
-    $html = "<table>";
+    $html = '<table id="region_tbl">';
     $html .= "<tr>";
     $html .= "<th>public</th>";
     $html .= "<th>GDRs region code</th>";
@@ -133,6 +133,6 @@ SQL;
     return $html;
 }
 
-echo db_get_country_table();
-echo "<br /><br />";
 echo db_get_region_table();
+echo "<br /><br />";
+echo db_get_country_table();
