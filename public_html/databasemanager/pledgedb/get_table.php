@@ -23,6 +23,7 @@ SQL;
     mysql_close($db);
 
     $html = '<table id="country_tbl">';
+    $html .= '<thead>';
     $html .= "<tr>";
     $html .= "<th>public</th>";
     $html .= "<th>ISO code</th>";
@@ -38,6 +39,8 @@ SQL;
     $html .= "<th>Source</th>";
     $html .= "<th>Details</th>";
     $html .= "</tr>";
+    $html .= '</thead>';
+    $html .= '<tbody>';
     while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
         $html .= "<tr>";
         $chk = $row['public'] ? ' checked="checked"' : '';
@@ -60,6 +63,7 @@ SQL;
         $html .= "<td>" . $row['details'] . "</td>";
         $html .= "</tr>";
     }
+    $html .= '</tbody>';
     $html .= "</table>";
     mysql_free_result($result);
     
@@ -90,6 +94,7 @@ SQL;
     mysql_close($db);
 
     $html = '<table id="region_tbl">';
+    $html .= '<thead>';
     $html .= "<tr>";
     $html .= "<th>public</th>";
     $html .= "<th>GDRs region code</th>";
@@ -105,6 +110,8 @@ SQL;
     $html .= "<th>Source</th>";
     $html .= "<th>Details</th>";
     $html .= "</tr>";
+    $html .= '</thead>';
+    $html .= '<tbody>';
     while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
         $html .= "<tr>";
         $chk = $row['public'] ? ' checked="checked"' : '';
@@ -127,6 +134,7 @@ SQL;
         $html .= "<td>" . $row['details'] . "</td>";
         $html .= "</tr>";
     }
+    $html .= '</tbody>';
     $html .= "</table>";
     mysql_free_result($result);
     
