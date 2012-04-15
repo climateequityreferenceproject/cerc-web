@@ -20,61 +20,76 @@ include_once 'process.php';
         <h1>GDRs pledges database entry form</h1>
         <form name="add" id="add" method="post" action="">
             <input type="hidden" name="form" value="add"/>
-            <!-- Country list-->
-            <input type="radio" name="country_or_region" value="country" checked="checked" /><label for="iso3">Country: </label>
-            <select name="iso3" id="iso3">
-                <?php
-                    $result = query_db("SELECT iso3, name FROM country ORDER BY name;");
-                    while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
-                        printf('<option value="%s">%s</option>', $row['iso3'], $row['name']);  
-                    }
-                    mysql_free_result($result);
-                ?>
-            </select><br />
-            <input type="radio" name="country_or_region" value="region" /><label for="region">Region: </label>
-            <select name="region" id="region">
-                <?php
-                    $result = query_db("SELECT region_code, name FROM region ORDER BY name;");
-                    while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
-                        printf('<option value="%s">%s</option>', $row['region_code'], $row['name']);  
-                    }
-                    mysql_free_result($result);
-                ?>
-            </select>            <br />
+            <!-- Country and region drop-downs -->
+            <?php echo make_ctryregion_list($edit_array); ?>
             <!-- Conditional/unconditional-->
-            <input type="checkbox" name="conditional" id="conditional" value="1" />
+            <?php
+            if (get_conditional_value($edit_array) == 1) {
+                $checked = 'checked="checked"';
+            } else {
+                $checked = '';
+            }
+            ?>
+            <input type="checkbox" name="conditional" id="conditional" value="1" <?php echo $checked; ?> />
             <label for="conditional"> Conditional</label>
             <br /><br />
             <table>
                 <tr>
                     <td>Reduce</td>
                     <td>
-                        <label><input type="radio" name="quantity" value="absolute" checked="checked"/> absolute emissions</label>
+                        <?php
+                        if (get_quantity_value($edit_array) === 'absolute') {
+                            $abs_checked = 'checked = "checked"';
+                            $quant_checked = '';
+                        } else {
+                            $abs_checked = '';
+                            $quant_checked = 'checked = "checked"';
+                        }
+                        ?>
+                        <label><input type="radio" name="quantity" value="absolute" <?php echo $abs_checked; ?>/> absolute emissions</label>
                         <br />
-                        <label><input type="radio" name="quantity" value="intensity" /> intensity</label>
+                        <label><input type="radio" name="quantity" value="intensity" <?php echo $quant_checked; ?> /> intensity</label>
                     </td>
                     <td>to</td>
                     <td>
                         <select name="reduction_percent" id="reduction_percent">
                         <?php
-                        option_number(1, 100, 1);
+                        option_number(1, 100, 1, get_reduction_percent($edit_array));
                         ?>
                         </select>%
                     </td>
                     <td>
-                        <label><input type="radio" name="rel_to" value="below" checked="checked"/> below</label>
+                        <?php
+                        if (get_relto_value($edit_array) === 'below') {
+                            $below_checked = 'checked = "checked"';
+                            $of_checked = '';
+                        } else {
+                            $below_checked = '';
+                            $of_checked = 'checked = "checked"';
+                        }
+                        ?>
+                        <label><input type="radio" name="rel_to" value="below" <?php echo $below_checked; ?> /> below</label>
                         <br />
-                        <label><input type="radio" name="rel_to" value="of" /> of</label>
+                        <label><input type="radio" name="rel_to" value="of" <?php echo $of_checked; ?> /> of</label>
                     </td>
                     <td>
-                        <label><input type="radio" name="year_or_bau" value="year" checked="checked"/> value in</label>
+                        <?php
+                        if (get_yearbau_value($edit_array) === 'year') {
+                            $year_checked = 'checked = "checked"';
+                            $bau_checked = '';
+                        } else {
+                            $year_checked = '';
+                            $bau_checked = 'checked = "checked"';
+                        }
+                        ?>
+                        <label><input type="radio" name="year_or_bau" value="year" <?php echo $year_checked; ?> /> value in</label>
                         <br />
-                        <label><input type="radio" name="year_or_bau" value="bau" /> BAU</label>
+                        <label><input type="radio" name="year_or_bau" value="bau" <?php echo $bau_checked; ?> /> BAU</label>
                     </td>
                     <td>
                         <select name="rel_to_year" id="rel_to_year">
                         <?php
-                        option_number(1990, 2010, 1);
+                        option_number(1990, 2010, 1, get_relto_year($edit_array));
                         ?>
                         </select>
                     </td>
@@ -82,16 +97,16 @@ include_once 'process.php';
                     <td>
                         <select name="by_year" id="by_year">
                         <?php
-                        option_number(2010, 2050, 1, 2020);
+                        option_number(2010, 2050, 1, get_by_year($edit_array));
                         ?>
                         </select>
                     </td>
                 </tr>
             </table>
             <label>Source:</label><br/>
-            <textarea name="source" cols="75" rows="2" ></textarea><br />
+            <textarea name="source" cols="75" rows="2" ><?php echo get_text($edit_array, 'source');?></textarea><br />
             <label>Details:</label><br />
-            <textarea name="details" cols="75" rows="2" ></textarea>
+            <textarea name="details" cols="75" rows="2" ><?php echo get_text($edit_array, 'details');?></textarea>
             <input type="submit" value ="Add" />
             <br />
         </form>

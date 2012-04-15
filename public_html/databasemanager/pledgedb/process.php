@@ -1,6 +1,7 @@
 <?php
 include_once 'functions.php';
 
+$edit_array = null;
 if ($_POST['form']) {
     $db = db_connect();
     switch ($_POST['form']) {
@@ -56,6 +57,10 @@ if ($_POST['form']) {
                         $sql = "UPDATE pledge SET public = 0 WHERE id=" . $key;
                         mysql_query($sql, $db);
                         break;
+                    case 'Edit':
+                        $sql = "SELECT * FROM pledge WHERE id=" . $key;
+                        $result = mysql_query($sql, $db);
+                        $edit_array = mysql_fetch_array($result, MYSQL_ASSOC);
                     default:
                         ;
                 }
