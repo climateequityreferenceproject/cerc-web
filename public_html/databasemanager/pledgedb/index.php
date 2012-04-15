@@ -122,8 +122,11 @@ include_once 'process.php';
                     </td>
                 </tr>
             </table>
+            <label>Link to more information: </label><input type="text" name="info_link" value="<?php echo get_text($edit_array, 'info_link');?>"/><br />
             <label>Source:</label><br/>
             <textarea name="source" cols="75" rows="2" ><?php echo get_text($edit_array, 'source');?></textarea><br />
+            <label>Caveat:</label><br/>
+            <textarea name="caveat" cols="75" rows="2" ><?php echo get_text($edit_array, 'caveat');?></textarea><br />
             <label>Details:</label><br />
             <textarea name="details" cols="75" rows="2" ><?php echo get_text($edit_array, 'details');?></textarea>
             <?php
