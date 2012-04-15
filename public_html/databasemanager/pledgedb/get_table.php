@@ -1,10 +1,8 @@
 <?php
+include_once 'functions.php';
+
 function db_get_country_table() {
-    $db = mysql_connect('localhost', 'pledges', '***REMOVED***');
-    if (!$db) {
-        die('Could not connect: ' . mysql_error());
-    }
-    mysql_select_db("pledges", $db);
+    $db = db_connect();
     
 $query = <<<SQL
 SELECT public, id, country.iso3 AS iso3, name, conditional, quantity, reduction_percent,
@@ -71,11 +69,7 @@ SQL;
 }
 
 function db_get_region_table() {
-    $db = mysql_connect('localhost', 'pledges', '***REMOVED***');
-    if (!$db) {
-        die('Could not connect: ' . mysql_error());
-    }
-    mysql_select_db("pledges", $db);
+    $db = db_connect();
     
 $query = <<<SQL
 SELECT public, id, region.region_code AS region_code, name, conditional, quantity, reduction_percent,
