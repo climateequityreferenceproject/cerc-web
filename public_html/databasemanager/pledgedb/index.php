@@ -107,7 +107,15 @@ include_once 'process.php';
             <textarea name="source" cols="75" rows="2" ><?php echo get_text($edit_array, 'source');?></textarea><br />
             <label>Details:</label><br />
             <textarea name="details" cols="75" rows="2" ><?php echo get_text($edit_array, 'details');?></textarea>
-            <input type="submit" value ="Add" />
+            <?php
+            if ($edit_array) {
+                printf('<input type="hidden" name="edit_id" value="%s"/>', $edit_array['id']);
+                echo '<input type="submit" name="replace" value ="Replace" />';
+                echo '<input type="submit" name="cancel" value ="Cancel" />';
+            } else {
+                echo '<input type="submit" value ="Add" />';
+            }
+            ?>
             <br />
         </form>
         </div>

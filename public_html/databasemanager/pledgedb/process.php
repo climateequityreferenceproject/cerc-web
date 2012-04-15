@@ -2,7 +2,7 @@
 include_once 'functions.php';
 
 $edit_array = null;
-if ($_POST['form']) {
+if (isset($_POST['form']) && !isset($_POST['cancel'])) {
     $db = db_connect();
     switch ($_POST['form']) {
         case 'add':
@@ -15,31 +15,47 @@ if ($_POST['form']) {
             } else {
                 $new_values['iso3'] = null;
             }
-            unset($new_values['country_or_region']); // This isn't a field in the database
+            // The following aren't fields in the database
+            unset($new_values['country_or_region']);
+            if (isset($new_values['replace'])) {
+                $do_replace = true;
+                $edit_id = $new_values['edit_id'];
+                unset($new_values['replace']);
+                unset($new_values['edit_id']);
+            } else {
+                $do_replace = false;
+            }
             // Check boxes are odd--they just don't appear if unchecked
             if (array_key_exists('conditional', $new_values)) {
                 $new_values['conditional'] = 1;
             } else {
                 $new_values['conditional'] = 0;
             }
-            $sql = "INSERT INTO pledge (";
-            $sql .= implode(",", array_keys($new_values));
-            $sql .= ") VALUE (";
-            $values = array_values($new_values);
-            $mod_values = array();
-            foreach ($values as $value) {
+            foreach ($new_values as $key=>$value) {
                 if ($value === null) {
-                    $value = 'NULL';
+                    $new_values[$key] = 'NULL';
                 } elseif (!is_numeric($value)) {
-                    $value = "'" . $value . "'";
+                    $new_values[$key] = "'" . $value . "'";
                 }
-                $mod_values[] = $value;
             }
-            $sql .= implode(",", $mod_values);
-            $sql .= ")";
+            if ($do_replace) {
+                $sql = "UPDATE pledge SET ";
+                $colvals = array();
+                foreach ($new_values as $key=>$value) {
+                    $colvals[] = $key . '=' . $value . ' ';
+                }
+                $sql .= implode(",", $colvals);
+                $sql .= 'WHERE id=' .$edit_id . ';';
+            } else {
+                $sql = "INSERT INTO pledge (";
+                $sql .= implode(",", array_keys($new_values));
+                $sql .= ") VALUE (";
+                $sql .= implode(",", array_values($new_values));
+                $sql .= ")";
+            }
             if (!mysql_query($sql, $db)) {
                 mysql_close($db);
-                die('Invalid query: ' . mysql_error());
+                die('Invalid query: ' . mysql_error() . ' from SQL: ' . $sql);
             }
             break;
         case 'table':
