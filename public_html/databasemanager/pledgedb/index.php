@@ -18,7 +18,7 @@ include_once 'process.php';
     <body>
         <div id="header-wrapper">
         <h1>GDRs pledges database entry form</h1>
-        <form name="add" id="add" method="post">
+        <form name="add" id="add" method="post" action="">
             <input type="hidden" name="form" value="add"/>
             <!-- Country list-->
             <input type="radio" name="country_or_region" value="country" checked="checked" /><label for="iso3">Country: </label>
@@ -89,14 +89,14 @@ include_once 'process.php';
                 </tr>
             </table>
             <label>Source:</label><br/>
-            <textarea name="source" cols="75" ></textarea><br />
+            <textarea name="source" cols="75" rows="2" ></textarea><br />
             <label>Details:</label><br />
             <textarea name="details" cols="75" rows="2" ></textarea>
             <input type="submit" value ="Add" />
             <br />
         </form>
         </div>
-        <form name="table" method="post">
+        <form name="table" method="post" action="">
             <input type="hidden" name="form" value="table"/>
             <div id="table">
                 <?php include("get_table.php"); ?>
