@@ -6,7 +6,7 @@ function db_get_country_table() {
     
 $query = <<<SQL
 SELECT public, id, country.iso3 AS iso3, name, conditional, quantity, reduction_percent,
-    rel_to, year_or_bau, rel_to_year, by_year, source, details
+    rel_to, include_nonco2, include_lulucf, year_or_bau, rel_to_year, by_year, info_link, source, caveat, details
     FROM country, pledge
     WHERE country.iso3 = pledge.iso3
     ORDER BY name, by_year, conditional;
@@ -34,6 +34,8 @@ SQL;
     $html .= "<th>Relative to</th>";
     $html .= "<th>Reference year</th>";
     $html .= "<th>Target year</th>";
+    $html .= "<th>non-CO<sub>2</sub>?</th>";
+    $html .= "<th>LULUCF?</th>";
     $html .= "<th>Delete</th>";
     $html .= "<th>Source</th>";
     $html .= "<th>Details</th>";
@@ -58,6 +60,8 @@ SQL;
         $html .= "<td>" . $row['year_or_bau'] . "</td>";
         $html .= "<td>" . ($row['rel_to_year'] ? $row['rel_to_year'] : "") . "</td>";
         $html .= "<td>" . $row['by_year'] . "</td>";
+        $html .= "<td>" . ($row['include_nonco2'] ? "yes" : "no") . "</td>";
+        $html .= "<td>" . ($row['include_lulucf'] ? "yes" : "no") . "</td>";
         $html .= '<td><input type="submit" value="Delete" name="' . $row['id'] . '"></td>';
         $html .= "<td>" . $row['source'] . "</td>";
         $html .= "<td>" . $row['details'] . "</td>";
@@ -75,7 +79,7 @@ function db_get_region_table() {
     
 $query = <<<SQL
 SELECT public, id, region.region_code AS region_code, name, conditional, quantity, reduction_percent,
-    rel_to, year_or_bau, rel_to_year, by_year, source, details
+    rel_to, include_nonco2, include_lulucf, year_or_bau, rel_to_year, by_year, info_link, source, caveat, details
     FROM region, pledge
     WHERE region.region_code = pledge.region
     ORDER BY name, by_year, conditional;
@@ -103,6 +107,8 @@ SQL;
     $html .= "<th>Relative to</th>";
     $html .= "<th>Reference year</th>";
     $html .= "<th>Target year</th>";
+    $html .= "<th>non-CO<sub>2</sub>?</th>";
+    $html .= "<th>LULUCF?</th>";
     $html .= "<th>Delete</th>";
     $html .= "<th>Source</th>";
     $html .= "<th>Details</th>";
@@ -127,6 +133,8 @@ SQL;
         $html .= "<td>" . $row['year_or_bau'] . "</td>";
         $html .= "<td>" . ($row['rel_to_year'] ? $row['rel_to_year'] : "") . "</td>";
         $html .= "<td>" . $row['by_year'] . "</td>";
+        $html .= "<td>" . ($row['include_nonco2'] ? "yes" : "no") . "</td>";
+        $html .= "<td>" . ($row['include_lulucf'] ? "yes" : "no") . "</td>";
         $html .= '<td><input type="submit" value="Delete" name="' . $row['id'] . '"></td>';
         $html .= "<td>" . $row['source'] . "</td>";
         $html .= "<td>" . $row['details'] . "</td>";

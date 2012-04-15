@@ -48,6 +48,24 @@ function get_conditional_value($edit_array) {
     return $retval;
 }
 
+function get_include_nonco2($edit_array) {
+    if ($edit_array) {
+        $retval = $edit_array['include_nonco2'];
+    } else {
+        $retval = 1;
+    }
+    return $retval;
+}
+
+function get_include_lulucf($edit_array) {
+    if ($edit_array) {
+        $retval = $edit_array['include_lulucf'];
+    } else {
+        $retval = 0;
+    }
+    return $retval;
+}
+
 function get_quantity_value($edit_array) {
     if ($edit_array) {
         $retval = $edit_array['quantity'];

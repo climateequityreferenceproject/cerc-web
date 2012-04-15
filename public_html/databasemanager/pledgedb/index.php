@@ -32,6 +32,25 @@ include_once 'process.php';
             ?>
             <input type="checkbox" name="conditional" id="conditional" value="1" <?php echo $checked; ?> />
             <label for="conditional"> Conditional</label>
+             <?php
+            if (get_include_nonco2($edit_array) == 1) {
+                $checked = 'checked="checked"';
+            } else {
+                $checked = '';
+            }
+            ?>
+            <br /><span>BAU includes: </span>
+            <input type="checkbox" name="include_nonco2" id="include_nonco2" value="1" <?php echo $checked; ?> />
+            <label for="include_nonco2"> non-CO<sub>2</sub></label>
+             <?php
+            if (get_include_lulucf($edit_array) == 1) {
+                $checked = 'checked="checked"';
+            } else {
+                $checked = '';
+            }
+            ?>
+            <input type="checkbox" name="include_lulucf" id="include_lulucf" value="1" <?php echo $checked; ?> />
+            <label for="include_lulucf"> LULUCF</label>
             <br /><br />
             <table>
                 <tr>

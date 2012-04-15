@@ -26,10 +26,12 @@ if (isset($_POST['form']) && !isset($_POST['cancel'])) {
                 $do_replace = false;
             }
             // Check boxes are odd--they just don't appear if unchecked
-            if (array_key_exists('conditional', $new_values)) {
-                $new_values['conditional'] = 1;
-            } else {
-                $new_values['conditional'] = 0;
+            foreach (array('conditional', 'include_nonco2', 'include_lulucf') as $checkbox) {
+                if (array_key_exists($checkbox, $new_values)) {
+                    $new_values[$checkbox] = 1;
+                } else {
+                    $new_values[$checkbox] = 0;
+                }
             }
             foreach ($new_values as $key=>$value) {
                 if ($value === null) {
