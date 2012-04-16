@@ -2,7 +2,7 @@ var regionCountryData;
 
 $(function() {
     // Make table sortable
-    $("#data table:eq(1)").addClass('tablesorter').tablesorter();
+    $(".tablesorter").tablesorter();
 
     // fieldset show/hide
     $("legend").click(function() {
@@ -113,7 +113,7 @@ $(function() {
             function(data) {
                 $('#data').html(data);
 		// Make table sortable
-                $("#data table:eq(1)").addClass('tablesorter').tablesorter();
+                $(".tablesorter").tablesorter();
                 // Set the parameters to show or hide
                 $("#input_values caption").hover(function() {
                     $(this).addClass('pretty-hover');

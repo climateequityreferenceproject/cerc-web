@@ -17,7 +17,7 @@ function gdrs_alloc($dbfile, $dec, $mode, $non_co2 = FALSE) {
     }
     
 $retval = <<< EOHTML
-<table cellspacing="0" cellpadding="0">
+<table cellspacing="0" cellpadding="0" class="tablesorter">
     <thead>
         <tr>
             <th> </th>

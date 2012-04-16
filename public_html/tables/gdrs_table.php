@@ -8,7 +8,7 @@ function gdrs_table($dbfile, $year, $dec, $advanced) {
 
     if ($advanced) {
 $retval = <<< EOHTML
-<table cellspacing="0" cellpadding="0">
+<table cellspacing="0" cellpadding="0" class="tablesorter">
     <thead>
         <tr>
             <th class="lj">Country or Group</th>

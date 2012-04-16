@@ -25,7 +25,7 @@ function gdrs_tax($dbfile, $year, $ep_start, $dec) {
     }
 
 $retval = <<< EOHTML
-<table cellspacing="0" cellpadding="0">
+<table cellspacing="0" cellpadding="0" class="tablesorter">
     <thead>
         <tr>
             <th class="lj">Country or Group</th>

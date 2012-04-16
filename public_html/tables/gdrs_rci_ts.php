@@ -7,7 +7,7 @@ function gdrs_rci_ts($dbfile, $dec) {
     $db = new PDO($database) OR die("<p>Can't open database</p>");
     
 $retval = <<< EOHTML
-<table cellspacing="0" cellpadding="0">
+<table cellspacing="0" cellpadding="0" class="tablesorter">
     <thead>
         <tr>
             <th> </th>
