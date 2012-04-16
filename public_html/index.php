@@ -2,8 +2,10 @@
 include("core.php");
 include("boilerplate.php");
 include("form_functions.php");
+$table_view_default = $display_params['table_view']['value'];
 if (isset($_GET['iso3'])) {
     $display_params['display_ctry']['value'] = $_GET['iso3'];
+    $display_params['table_view']['value'] = 'gdrs_country_report';
 }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -99,8 +101,7 @@ if (isset($_GET['iso3'])) {
                                 // Simply ignore any invalid country or region code
                                 if (!$valid_countryregion) {
                                     $display_params['display_ctry']['value'] = null;
-                                } else {
-                                    $display_params['table_view']['value'] = 'gdrs_country_report';
+                                    $display_params['table_view']['value'] = $table_view_default;
                                 }
                             ?>
                             <?php echo select_num('decimal_pl', $display_params, "Decimal places:", $advanced); ?>
