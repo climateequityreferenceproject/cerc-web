@@ -22,13 +22,15 @@ $retval = <<< EOHTML
             <th>Capacity<br/>(% of global)</th>
             <th>Responsibility<br/>(% of global)</th>
             <th>RCI</th>
+            <th>Population above dev.<br/>thresh. (% pop)</th>
+            <th>Population above lux.<br/>thresh. (% pop)</th>
         </tr>
     </thead>
     <tbody>
 EOHTML;
     } else {
 $retval = <<< EOHTML
-<table cellspacing="0" cellpadding="0">
+<table cellspacing="0" cellpadding="0" class="tablesorter">
     <thead>
         <tr>
             <th class="lj">Country or Group</th>
@@ -38,6 +40,7 @@ $retval = <<< EOHTML
             <th>Capacity<br/>(% of global)</th>
             <th>Responsibility<br/>(% of global)</th>
             <th>RCI</th>
+            <th>Population above dev.<br/>thresh. (% pop)</th>
         </tr>
     </thead>
     <tbody>
@@ -51,7 +54,8 @@ EOHTML;
 $worldquery = <<< EOSQL
 SELECT SUM(pop_mln) AS pop, SUM(gdp_blnUSDMER) AS gdp_mer,
         SUM(gdp_blnUSDPPP) AS gdp_ppp, SUM(gdrs_alloc_MtCO2) AS gdrs_alloc,
-        SUM(gdrs_r_MtCO2) AS r, SUM(gdrs_c_blnUSDMER) AS c, SUM(gdrs_rci) AS rci
+        SUM(gdrs_r_MtCO2) AS r, SUM(gdrs_c_blnUSDMER) AS c, SUM(gdrs_rci) AS rci,
+        SUM(gdrs_pop_mln_above_dl) AS pop_above_dl, SUM(gdrs_pop_mln_above_lux) AS pop_above_lux
     FROM disp_temp WHERE year = $year;
 EOSQL;
 
@@ -89,6 +93,14 @@ EOSQL;
     $retval .= "<td>" . number_format(100.00, $dec) . "</td>";
     // RCI percent
     $retval .= "<td>" . number_format(100.00, $dec) . "</td>";
+    // Percent of population above development threshold (% Pop)
+    $val = 100 * $world_tot["pop_above_dl"]/$world_tot["pop"];
+    $retval .= "<td>" . number_format($val, $dec) . "</td>";
+    if ($advanced) {
+        // Percent of population above luxury threshold (% Pop)
+        $val = 100 * $world_tot["pop_above_lux"]/$world_tot["pop"];
+        $retval .= "<td>" . number_format($val, $dec) . "</td>";
+    }
     $retval .= "</tr>";
     
     $i = 2;
@@ -98,7 +110,8 @@ EOSQL;
 $regionquery = <<< EOSQL
 SELECT SUM(pop_mln) AS pop, SUM(gdp_blnUSDMER) AS gdp_mer,
         SUM(gdp_blnUSDPPP) AS gdp_ppp, SUM(gdrs_alloc_MtCO2) AS gdrs_alloc,
-        SUM(gdrs_r_MtCO2) AS r, SUM(gdrs_c_blnUSDMER) AS c, SUM(gdrs_rci) AS rci
+        SUM(gdrs_r_MtCO2) AS r, SUM(gdrs_c_blnUSDMER) AS c, SUM(gdrs_rci) AS rci,
+        SUM(gdrs_pop_mln_above_dl) AS pop_above_dl, SUM(gdrs_pop_mln_above_lux) AS pop_above_lux
     FROM disp_temp, flags WHERE flags.iso3 = disp_temp.iso3 AND
         flags.value = 1 AND flags.flag = '$flagname' AND year = $year;
 EOSQL;
@@ -140,6 +153,14 @@ EOSQL;
             $retval .= "<td>" . number_format($val, $dec) . "</td>";
             // RCI percent -- always scaled to sum to 1.0
             $retval .= "<td>" . number_format(100.0 * $record["rci"], $dec) . "</td>";
+            // Percent of population above development threshold (% Pop)
+            $val = 100 * $record["pop_above_dl"]/$record["pop"];
+            $retval .= "<td>" . number_format($val, $dec) . "</td>";
+            if ($advanced) {
+                // Percent of population above luxury threshold (% Pop)
+                $val = 100 * $record["pop_above_lux"]/$record["pop"];
+                $retval .= "<td>" . number_format($val, $dec) . "</td>";
+            }
             $retval .= "</tr>";
         }
         $i++;
@@ -182,6 +203,14 @@ EOSQL;
         $retval .= "<td>" . number_format($val, $dec) . "</td>";
         // RCI percent -- always scaled to sum to 1.0
         $retval .= "<td>" . number_format(100.0 * $record["gdrs_rci"], $dec) . "</td>";
+        // Percent of population above development threshold (% Pop)
+        $val = 100 * $record["gdrs_pop_mln_above_dl"]/$record["pop_mln"];
+        $retval .= "<td>" . number_format($val, $dec) . "</td>";
+        if ($advanced) {
+            // Percent of population above luxury threshold (% Pop)
+            $val = 100 * $record["gdrs_pop_mln_above_lux"]/$record["pop_mln"];
+            $retval .= "<td>" . number_format($val, $dec) . "</td>";
+        }
         $retval .= "</tr>";
     }
 $retval .= <<< EOHTML
