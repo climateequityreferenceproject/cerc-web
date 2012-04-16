@@ -50,6 +50,7 @@
     setcookie('db',serialize(Framework::get_db_name($user_db)),time()+60*60*24*28);
 
     // If just asking for the db name (or to create a db) then that is all this script does
+    // TODO: Get rid of this; it's superseded by API.
     if ($_POST['get_db'] || $_GET['get_db']) {
         echo $user_db;
         return;

@@ -4,7 +4,6 @@ include("boilerplate.php");
 include("form_functions.php");
 if (isset($_GET['iso3'])) {
     $display_params['display_ctry']['value'] = $_GET['iso3'];
-    $display_params['table_view']['value'] = 'gdrs_country_report';
 }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -79,10 +78,12 @@ if (isset($_GET['iso3'])) {
                             <?php
                                 echo '<li><label for="display_ctry" class="select" title="Country to display for country report">Country to display:</label>';
                                 echo '<select name="display_ctry" id="display_ctry" action="index.php">';
+                                $valid_countryregion = false;
                                 foreach ($region_list as $item) {
                                     $selected = '';
                                     if ($item['region_code'] === $display_params['display_ctry']['value']) {
                                         $selected = ' selected="selected"';
+                                        $valid_countryregion = true;
                                     }
                                     echo '<option value="' . $item['region_code'] .  '"' . $selected . '>' . $item['name'] . '</option>';
                                 }
@@ -90,10 +91,17 @@ if (isset($_GET['iso3'])) {
                                     $selected = '';
                                     if ($item['iso3'] === $display_params['display_ctry']['value']) {
                                         $selected = ' selected="selected"';
+                                        $valid_countryregion = true;
                                     }
                                     echo '<option value="' . $item['iso3'] .  '"' . $selected . '>' . $item['name'] . '</option>';
                                 }
                                 echo '</select></li>';
+                                // Simply ignore any invalid country or region code
+                                if (!$valid_countryregion) {
+                                    $display_params['display_ctry']['value'] = null;
+                                } else {
+                                    $display_params['table_view']['value'] = 'gdrs_country_report';
+                                }
                             ?>
                             <?php echo select_num('decimal_pl', $display_params, "Decimal places:", $advanced); ?>
                             </ul>&nbsp;
