@@ -133,20 +133,20 @@ EOHTML;
     // GDRs 2020 allocation as MtCO2e
     $retval .= "<tr>";
     $retval .= "<td class=\"lj\">GDRs " . $year ." allocation as Mt" . $gases . "</td>";
-    $val = -999;
+    $val = $ctry_val["gdrs_alloc_MtCO2"];
     $retval .= "<td>" . nice_number('', $val, '') . "</td>";
     $retval .= "</tr>";
     // GDRs 2020 allocation as percent of 1990 emissions
     $retval .= "<tr>";
     $retval .= "<td class=\"lj\">GDRs " . $year ." allocation as percent of 1990 emissions</td>";
-    $val = -999;
-    $retval .= "<td>" . nice_number('', $val, '') . "</td>";
+    $val = 100.0 * $ctry_val["gdrs_alloc_MtCO2"]/$bau_1990;
+    $retval .= "<td>" . nice_number('', $val, '%') . "</td>";
     $retval .= "</tr>";
     // GDRs 2020 allocation as percent reduction of 1990 emissions 
     $retval .= "<tr>";
     $retval .= "<td class=\"lj\">GDRs " . $year ." allocation as percent reduction from 1990 emissions</td>";
-    $val = -999;
-    $retval .= "<td>" . nice_number('', $val, '') . "</td>";
+    $val = 100.0 * (1 - $ctry_val["gdrs_alloc_MtCO2"]/$bau_1990);
+    $retval .= "<td>" . nice_number('', $val, '%') . "</td>";
     $retval .= "</tr>";
 //    // BAU emissions as percentage of 1990 emissions – projected to year
 //    $retval .= "<tr>";
