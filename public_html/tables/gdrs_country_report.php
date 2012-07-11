@@ -1,6 +1,7 @@
 <?php
-include("graphs/graph_core.php");
-include("pledges/pledge_functions.php");
+require_once("graphs/graph_core.php");
+require_once("pledges/pledge_functions.php");
+require_once("table_common.php");
 
 function dec($num) {
     return max(0, 1 - floor(log10(abs($num))));
@@ -23,7 +24,7 @@ function nice_number($prefix, $num, $postfix) {
 
 // TODO: Replace "iso3" with the more generic "code"
 function gdrs_country_report($dbfile, $shared_params, $iso3 = NULL, $year = 2020) {
-    include("table_common.php");
+    $viewquery = get_common_table_query();
 
     $database = 'sqlite:'.$dbfile;
 

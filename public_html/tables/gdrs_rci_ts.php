@@ -1,6 +1,8 @@
 <?php
+require_once("table_common.php");
+
 function gdrs_rci_ts($dbfile, $dec) {
-    include("table_common.php");
+    $viewquery = get_common_table_query();
 
     $database = 'sqlite:'.$dbfile;
 

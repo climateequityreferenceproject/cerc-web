@@ -1,6 +1,9 @@
 <?php
+require_once("table_common.php");
+
 function gdrs_alloc($dbfile, $dec, $mode, $non_co2 = FALSE) {
-    include("table_common.php");
+    
+    $viewquery = get_common_table_query();
 
     $database = 'sqlite:'.$dbfile;
 
