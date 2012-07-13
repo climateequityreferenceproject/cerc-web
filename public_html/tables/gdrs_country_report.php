@@ -47,6 +47,12 @@ SELECT SUM(pop_mln) AS pop, SUM(gdp_blnUSDMER) AS gdp_mer,
 EOSQL;
 
 if (!is_country($iso3)) {
+    foreach ($db->query("SELECT seq_no FROM tax_levels;") as $record) {
+        $tax_string .= sprintf(', SUM(tax_pop_mln_below_%1$d) AS tax_pop_mln_below_%1$d', $record['seq_no']);
+        $tax_string .= sprintf(', SUM(tax_income_dens_%1$d) AS tax_income_dens_%1$d', $record['seq_no']);
+        $tax_string .= sprintf(', SUM(tax_revenue_dens_%1$d) AS tax_revenue_dens_%1$d', $record['seq_no']);
+        $tax_string .= sprintf(', SUM(tax_pop_dens_%1$d) AS tax_pop_dens_%1$d', $record['seq_no']);
+    }
 $regionquery = <<< EOSQL
 SELECT year, SUM(pop_mln) AS pop_mln, SUM(gdrs_pop_mln_above_dl) AS gdrs_pop_mln_above_dl,
         SUM(gdp_blnUSDMER) AS gdp_blnUSDMER, SUM(gdp_blnUSDPPP) AS gdp_blnUSDPPP,
@@ -54,6 +60,7 @@ SELECT year, SUM(pop_mln) AS pop_mln, SUM(gdrs_pop_mln_above_dl) AS gdrs_pop_mln
         SUM(gdrs_r_MtCO2) AS gdrs_r_MtCO2, SUM(gdrs_c_blnUSDMER) AS gdrs_c_blnUSDMER,
         SUM(gdrs_rci) AS gdrs_rci, SUM(fossil_CO2_MtCO2) AS fossil_CO2_MtCO2,
         SUM(LULUCF_MtCO2) AS LULUCF_MtCO2, SUM(NonCO2_MtCO2e) AS NonCO2_MtCO2e
+        $tax_string
     FROM disp_temp, flags WHERE
         flags.iso3 = disp_temp.iso3 AND
         (year=$year OR year=1990) AND
@@ -177,6 +184,46 @@ EOHTML;
 //    $val = 100.0 * $ctry_val["pop_mln"]/$world_tot["pop"];
 //    $retval .= "<td>" . nice_number('', $val, '%') . "</td>";
 //    $retval .= "</tr>";
+    
+    
+    /*
+     * Tax table
+     */
+$retval .= <<< EOHTML
+    </tbody>
+</table>
+<br />
+<table cellspacing="2" cellpadding="2">
+    <tbody>
+    <thead>
+    <tr>
+        <th>Tax level<br/>(\$US/cap)</th>
+        <th class="lj"></th>
+        <th>Tax rate<br/>(% income)</th>
+        <th>Population above<br/>tax level (% pop.)</th>
+    </tr>
+EOHTML;
+    foreach ($db->query("SELECT seq_no, label, value FROM tax_levels;") as $record) {
+        $retval .= '<tr>';
+        if (!$record['value']) {
+            $description = '(' . $record['label'] . ')';
+            $val = $ctry_val['tax_income_dens_' . $record['seq_no']]/$ctry_val['tax_pop_dens_' . $record['seq_no']];
+        } else {
+            $description = '';
+            $val = $record['value'];
+        }
+        $retval .= '<td>' . nice_number('', $val, '') . '</td>';
+        $retval .= '<td class="lj">' . $description . '</td>';
+        $val = 100 * $ctry_val['tax_revenue_dens_' . $record['seq_no']]/$ctry_val['tax_income_dens_' . $record['seq_no']];
+        $retval .= "<td>" . nice_number('', $val, '') . "</td>";
+        $val = 100 * (1 - $ctry_val['tax_pop_mln_below_' . $record['seq_no']]/$ctry_val['pop_mln']);
+        $retval .= "<td>" . nice_number('', $val, '') . "</td>";
+        $retval .= '</tr>';
+    }
+$retval .= <<< EOHTML
+    </tbody>
+</table>
+EOHTML;
     
     /*
      * Pledge table
