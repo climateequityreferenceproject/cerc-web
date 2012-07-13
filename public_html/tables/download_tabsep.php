@@ -1,38 +1,42 @@
 <?php
-$viewquery = <<< EOSQL
-    CREATE TEMPORARY VIEW disp_temp AS
-        SELECT combined.iso3 AS iso3, country.name AS country, year, pop_mln,
-            gdp_blnUSDMER, gdp_blnUSDPPP, fossil_CO2_MtCO2, LULUCF_MtCO2, NonCO2_MtCO2e,
-            vol_rdxn_MtCO2, gdrs_alloc_MtCO2, gdrs_r_MtCO2,
-            a1_dom_rdxn_MtCO2, net_import_MtCO2, gdrs_c_blnUSDMER, gdrs_rci,
-            gdrs_pop_mln_above_dl, gdrs_pop_mln_above_lux, lux_emiss_MtCO2,
-            lux_emiss_applied_MtCO2
-            FROM country,
-            (SELECT core.iso3 AS iso3, core.year AS year,
-            1e-6 * pop_person AS pop_mln, gdp_blnUSDMER,
-            ppp2mer * gdp_blnUSDMER AS gdp_blnUSDPPP,
-            (11.0/3.0) * fossil_CO2_MtC AS fossil_CO2_MtCO2,
-            (11.0/3.0) * LULCF_MtC AS LULUCF_MtCO2,
-            (11.0/3.0) * NonCO2_MtCe AS NonCO2_MtCO2e,
-            (11.0/3.0) * vol_rdxn_MtC as vol_rdxn_MtCO2,
-            (11.0/3.0) * gdrs.allocation_MtC AS gdrs_alloc_MtCO2,
-            (11.0/3.0) * gdrs.r_MtC AS gdrs_r_MtCO2,
-            (11.0/3.0) * a1_dom_rdxn_MtC AS a1_dom_rdxn_MtCO2,
-			-1e-3 * net_export_ktCO2 as net_import_MtCO2,
-            gdrs.c_blnUSDMER AS gdrs_c_blnUSDMER,
-            gdrs.rci AS gdrs_rci, 1e-6 * gdrs.pop_above_dl AS gdrs_pop_mln_above_dl,
-			1e-6 * gdrs.pop_above_lux AS gdrs_pop_mln_above_lux,
-			(11.0/3.0) * gdrs.lux_emiss_MtC AS lux_emiss_MtCO2,
-			(11.0/3.0) * gdrs.lux_emiss_applied_MtC AS lux_emiss_applied_MtCO2
-            FROM core LEFT JOIN gdrs ON core.year = gdrs.year AND core.iso3 = gdrs.iso3)
-        AS combined WHERE country.iso3 = combined.iso3;
-EOSQL;
+require_once("table_common.php");
+$viewquery = get_common_table_query($_GET["db"]);
+//$viewquery = <<< EOSQL
+//    CREATE TEMPORARY VIEW disp_temp AS
+//        SELECT combined.iso3 AS iso3, country.name AS country, year, pop_mln,
+//            gdp_blnUSDMER, gdp_blnUSDPPP, fossil_CO2_MtCO2, LULUCF_MtCO2, NonCO2_MtCO2e,
+//            vol_rdxn_MtCO2, gdrs_alloc_MtCO2, gdrs_r_MtCO2,
+//            a1_dom_rdxn_MtCO2, net_import_MtCO2, gdrs_c_blnUSDMER, gdrs_rci,
+//            gdrs_pop_mln_above_dl, gdrs_pop_mln_above_lux, lux_emiss_MtCO2,
+//            lux_emiss_applied_MtCO2
+//            FROM country,
+//            (SELECT core.iso3 AS iso3, core.year AS year,
+//            1e-6 * pop_person AS pop_mln, gdp_blnUSDMER,
+//            ppp2mer * gdp_blnUSDMER AS gdp_blnUSDPPP,
+//            (11.0/3.0) * fossil_CO2_MtC AS fossil_CO2_MtCO2,
+//            (11.0/3.0) * LULCF_MtC AS LULUCF_MtCO2,
+//            (11.0/3.0) * NonCO2_MtCe AS NonCO2_MtCO2e,
+//            (11.0/3.0) * vol_rdxn_MtC as vol_rdxn_MtCO2,
+//            (11.0/3.0) * gdrs.allocation_MtC AS gdrs_alloc_MtCO2,
+//            (11.0/3.0) * gdrs.r_MtC AS gdrs_r_MtCO2,
+//            (11.0/3.0) * a1_dom_rdxn_MtC AS a1_dom_rdxn_MtCO2,
+//			-1e-3 * net_export_ktCO2 as net_import_MtCO2,
+//            gdrs.c_blnUSDMER AS gdrs_c_blnUSDMER,
+//            gdrs.rci AS gdrs_rci, 1e-6 * gdrs.pop_above_dl AS gdrs_pop_mln_above_dl,
+//			1e-6 * gdrs.pop_above_lux AS gdrs_pop_mln_above_lux,
+//			(11.0/3.0) * gdrs.lux_emiss_MtC AS lux_emiss_MtCO2,
+//			(11.0/3.0) * gdrs.lux_emiss_applied_MtC AS lux_emiss_applied_MtCO2
+//            FROM core LEFT JOIN gdrs ON core.year = gdrs.year AND core.iso3 = gdrs.iso3)
+//        AS combined WHERE country.iso3 = combined.iso3;
+//EOSQL;
 
 $database = 'sqlite:'.$_GET["db"];
 
 $db = new PDO($database) OR die("<p>Can't open database</p>");
 // Start with the core SQL view
-$db->query($viewquery);
+if (!$db->query($viewquery)) {
+    print_r($db->errorInfo());
+}
 
 $dlfile = "gdrs_all_output_" . time() . ".xls";
 $tsfile = tempnam("/***REMOVED***/sessions/gdrs-db", "gdrs-tabsep-");
@@ -57,7 +61,16 @@ foreach ($db->query("SELECT param_id, int_val, descr FROM params WHERE int_val I
 foreach ($db->query("SELECT param_id, real_val, descr FROM params WHERE real_val IS NOT NULL") as $record) {
     fwrite($fp, $record["param_id"] . "\t" . $record["real_val"] . "\t" . $record["descr"] . "\n");
 }
+fwrite($fp, "Tax table:\n");
+fwrite($fp, "\t\"For income at tax, compute tax_income_dens_#/tax_pop_dens_#\"\n");
+fwrite($fp, "\t\"For tax rate, compute tax_revenue_dens_#/tax_income_dens_#\"\n");
+fwrite($fp, "\t\"For tax per capita, compute tax_revenue_dens_#/tax_pop_dens_#\"\n");
+fwrite($fp, "\tSequence number\tLabel\n");
+foreach ($db->query("SELECT seq_no, label FROM tax_levels;") as $record) {
+    fwrite($fp, "\t" . $record['seq_no']. "\t\"" . $record['label'] . "\"\n");
+}
 
+// Country-level data
 $query = $db->query("SELECT * FROM disp_temp ORDER BY country;");
 if ($record = $query->fetch(PDO::FETCH_ASSOC)) {
     fwrite($fp, implode("\t", array_keys($record)) . "\n");

@@ -2,6 +2,18 @@
 
 function get_common_table_query($dbfile = null) {
     $CtoCO2 = 11.0/3.0;
+    
+    $tax_string = '';
+    if ($dbfile) {
+        $database = 'sqlite:'.$dbfile;
+        $db = new PDO($database) OR die("<p>Can't open database '" . $dbfile . "'</p>");
+        foreach ($db->query("SELECT seq_no FROM tax_levels;") as $record) {
+            $tax_string .= sprintf(', 1e-6 * tax_pop_below_%1$d AS tax_pop_mln_below_%1$d', $record['seq_no']);
+            $tax_string .= sprintf(', tax_income_dens_%d', $record['seq_no']);
+            $tax_string .= sprintf(', tax_revenue_dens_%d', $record['seq_no']);
+            $tax_string .= sprintf(', tax_pop_dens_%d', $record['seq_no']);
+        }
+    }
 
 $viewquery = <<< EOSQL
     CREATE TEMPORARY VIEW disp_temp AS
@@ -22,6 +34,7 @@ $viewquery = <<< EOSQL
             1e-6 * gdrs.pop_above_lux AS gdrs_pop_mln_above_lux,
             $CtoCO2 * gdrs.lux_emiss_MtC AS lux_emiss_MtCO2,
             $CtoCO2 * gdrs.lux_emiss_applied_MtC AS lux_emiss_applied_MtCO2
+            $tax_string
         FROM country, core, gdrs
         WHERE country.iso3 = core.iso3 AND country.iso3 = gdrs.iso3
             AND gdrs.year = core.year AND gdrs.allocation_MtC IS NOT NULL;
