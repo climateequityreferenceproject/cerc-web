@@ -107,7 +107,7 @@
                         break;
                     case 'gdrs_country_report':
                         include("tables/gdrs_country_report.php");
-                        return $retval . gdrs_country_report($user_db, $shared_params, $display_params['display_ctry']['value'], $disp_year);
+                        return $retval . gdrs_country_report($user_db, $country_name, $shared_params, $display_params['display_ctry']['value'], $disp_year);
                         break;
                 }
                 break;

@@ -23,8 +23,8 @@ function nice_number($prefix, $num, $postfix) {
 }
 
 // TODO: Replace "iso3" with the more generic "code"
-function gdrs_country_report($dbfile, $shared_params, $iso3 = NULL, $year = 2020) {
-    $viewquery = get_common_table_query();
+function gdrs_country_report($dbfile, $country_name, $shared_params, $iso3 = NULL, $year = 2020) {
+    $viewquery = get_common_table_query($dbfile);
 
     $database = 'sqlite:'.$dbfile;
 
@@ -95,57 +95,67 @@ $retval .= <<< EOHTML
     <tbody>
 EOHTML;
     
-    // Share of global RCI in year
-    $retval .= "<tr>";
-    $retval .= "<td class=\"lj\">Share of global RCI in " . $year . "</td>";
-    $val = 100.0 * $ctry_val["gdrs_rci"];
-    $retval .= "<td>" . nice_number('', $val, '%') . "</td>";
-    $retval .= "</tr>";
     // year Global mitigation obligation as MtCO2e below BAU
     $retval .= "<tr>";
     $retval .= "<td class=\"lj\">Global mitigation requirement in " . $year . " as Mt" . $gases . " below BAU</td>";
     $val = $world_bau - $world_tot["gdrs_alloc"];
     $retval .= "<td>" . nice_number('', $val, '') . "</td>";
     $retval .= "</tr>";
-    // year National mitigation obligation as MtCO2e below BAU
+    // Share of global RCI in year
     $retval .= "<tr>";
-    $retval .= "<td class=\"lj\">National mitigation obligation in " . $year ." as Mt" . $gases . " below BAU (= global mitigation requirement &#215; share of global RCI)</td>";
+    $retval .= "<td class=\"lj\">" . $country_name . " share of global RCI in " . $year . "</td>";
+    $val = 100.0 * $ctry_val["gdrs_rci"];
+    $retval .= "<td>" . nice_number('', $val, '%') . "</td>";
+    $retval .= "</tr>";
+    // year National mitigation obligation
+    $retval .= "<tr>";
+    $retval .= "<td class=\"lj\">Mitigation obligation (= global mitigation requirement &#215; share of global RCI) in " . $year ." as</td>";
+    $retval .= "<td></td>";
+    $retval .= "</tr>";
+    // National mitigation obligation as MtCO2e below BAU
+    $retval .= "<tr>";
+    $retval .= "<td class=\"lj level2\">Mt" . $gases . " below BAU</td>";
     $val = $bau - $ctry_val["gdrs_alloc_MtCO2"];
     $retval .= "<td>" . nice_number('', $val, '') . "</td>";
     $retval .= "</tr>";
     // year Mitigation obligation as a reduction target from 1990
     $retval .= "<tr>";
-    $retval .= "<td class=\"lj level2\">" . $year . " Mitigation obligation as percentage of 1990 emissions</td>";
+    $retval .= "<td class=\"lj level2\">Percentage of 1990 emissions</td>";
     $val = 100.0 * ($bau - $ctry_val["gdrs_alloc_MtCO2"])/$bau_1990;
     $retval .= "<td>" . nice_number('', $val, '%') . "</td>";
     $retval .= "</tr>";
     // year Mitigation obligation per capita as reduction from 1990
     $retval .= "<tr>";
-    $retval .= "<td class=\"lj level2\">" . $year . " Mitigation obligation per capita as percentage of 1990 per capita emissions</td>";
+    $retval .= "<td class=\"lj level2\">Per capita as percentage of 1990 per capita emissions</td>";
     $val = 100.0 * (($bau - $ctry_val["gdrs_alloc_MtCO2"])/$ctry_val['pop_mln'])/($bau_1990/$ctry_val_1990['pop_mln']);
     $retval .= "<td>" . nice_number('', $val, '%') . "</td>";
     $retval .= "</tr>";
     // year Mitigation obligation as PC tax (collecting 1% of global GWP)
     $retval .= "<tr>";
-    $retval .= "<td class=\"lj level2\">" . $year . " Mitigation obligation as per capita tax (assuming global mitigation costs = 1% of global GWP)</td>";
+    $retval .= "<td class=\"lj level2\">Per capita tax (assuming global mitigation costs = 1% of global GWP)</td>";
     $val = 1000 * $world_tot['gdp_mer'] * 0.01 * $ctry_val["gdrs_rci"]/$ctry_val['pop_mln'];
     $retval .= "<td>" . nice_number('$', $val, '') . "</td>";
     $retval .= "</tr>";
+    // GDRs allocation
+    $retval .= "<tr>";
+    $retval .= "<td class=\"lj\">Emissions allocation in " . $year ." as</td>";
+    $retval .= "<td></td>";
+    $retval .= "</tr>";
     // GDRs 2020 allocation as MtCO2e
     $retval .= "<tr>";
-    $retval .= "<td class=\"lj\">GDRs " . $year ." allocation as Mt" . $gases . "</td>";
+    $retval .= "<td class=\"lj level2\">Mt" . $gases . "</td>";
     $val = $ctry_val["gdrs_alloc_MtCO2"];
     $retval .= "<td>" . nice_number('', $val, '') . "</td>";
     $retval .= "</tr>";
     // GDRs 2020 allocation as percent of 1990 emissions
     $retval .= "<tr>";
-    $retval .= "<td class=\"lj\">GDRs " . $year ." allocation as percent of 1990 emissions</td>";
+    $retval .= "<td class=\"lj level2\">Percent of 1990 emissions</td>";
     $val = 100.0 * $ctry_val["gdrs_alloc_MtCO2"]/$bau_1990;
     $retval .= "<td>" . nice_number('', $val, '%') . "</td>";
     $retval .= "</tr>";
     // GDRs 2020 allocation as percent reduction of 1990 emissions 
     $retval .= "<tr>";
-    $retval .= "<td class=\"lj\">GDRs " . $year ." allocation as percent reduction from 1990 emissions</td>";
+    $retval .= "<td class=\"lj level2\">Percent reduction from 1990 emissions</td>";
     $val = 100.0 * (1 - $ctry_val["gdrs_alloc_MtCO2"]/$bau_1990);
     $retval .= "<td>" . nice_number('', $val, '%') . "</td>";
     $retval .= "</tr>";
