@@ -5,14 +5,7 @@ function get_common_table_query($dbfile = null) {
     
     $tax_string = '';
     if ($dbfile) {
-        $database = 'sqlite:'.$dbfile;
-        $db = new PDO($database) OR die("<p>Can't open database '" . $dbfile . "'</p>");
-        foreach ($db->query("SELECT seq_no FROM tax_levels;") as $record) {
-            $tax_string .= sprintf(', 1e-6 * tax_pop_below_%1$d AS tax_pop_mln_below_%1$d', $record['seq_no']);
-            $tax_string .= sprintf(', tax_income_dens_%d', $record['seq_no']);
-            $tax_string .= sprintf(', tax_revenue_dens_%d', $record['seq_no']);
-            $tax_string .= sprintf(', tax_pop_dens_%d', $record['seq_no']);
-        }
+        $tax_string = get_tax_string($dbfile);
     }
 
 $viewquery = <<< EOSQL
@@ -41,4 +34,21 @@ $viewquery = <<< EOSQL
 EOSQL;
 
     return $viewquery;
+}
+
+function get_tax_string($dbfile, $from_gdrs = TRUE) {
+    $database = 'sqlite:'.$dbfile;
+    $db = new PDO($database) OR die("<p>Can't open database '" . $dbfile . "'</p>");
+    $tax_string = '';
+    foreach ($db->query("SELECT seq_no FROM tax_levels;") as $record) {
+        if ($from_gdrs) {
+            $tax_string .= sprintf(', 1e-6 * tax_pop_below_%1$d AS tax_pop_mln_below_%1$d', $record['seq_no']);
+        } else {
+            $tax_string .= sprintf(', tax_pop_mln_below_%d', $record['seq_no']);
+        }
+        $tax_string .= sprintf(', tax_income_dens_%d', $record['seq_no']);
+        $tax_string .= sprintf(', tax_revenue_dens_%d', $record['seq_no']);
+        $tax_string .= sprintf(', tax_pop_dens_%d', $record['seq_no']);
+    }
+    return $tax_string;
 }
