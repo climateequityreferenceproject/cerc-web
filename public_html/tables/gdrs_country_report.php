@@ -49,8 +49,10 @@ EOSQL;
 if (!is_country($iso3)) {
     foreach ($db->query("SELECT seq_no FROM tax_levels;") as $record) {
         $tax_string .= sprintf(', SUM(tax_pop_mln_below_%1$d) AS tax_pop_mln_below_%1$d', $record['seq_no']);
-        $tax_string .= sprintf(', SUM(tax_income_dens_%1$d) AS tax_income_dens_%1$d', $record['seq_no']);
-        $tax_string .= sprintf(', SUM(tax_revenue_dens_%1$d) AS tax_revenue_dens_%1$d', $record['seq_no']);
+        $tax_string .= sprintf(', SUM(tax_income_mer_dens_%1$d) AS tax_income_mer_dens_%1$d', $record['seq_no']);
+        $tax_string .= sprintf(', SUM(tax_income_ppp_dens_%1$d) AS tax_income_ppp_dens_%1$d', $record['seq_no']);
+        $tax_string .= sprintf(', SUM(tax_revenue_mer_dens_%1$d) AS tax_revenue_mer_dens_%1$d', $record['seq_no']);
+        $tax_string .= sprintf(', SUM(tax_revenue_ppp_dens_%1$d) AS tax_revenue_ppp_dens_%1$d', $record['seq_no']);
         $tax_string .= sprintf(', SUM(tax_pop_dens_%1$d) AS tax_pop_dens_%1$d', $record['seq_no']);
     }
 $regionquery = <<< EOSQL
@@ -197,7 +199,7 @@ $retval .= <<< EOHTML
     <tbody>
     <thead>
     <tr>
-        <th>Tax level<br/>(\$US/cap)</th>
+        <th>Tax level<br/>(\$US PPP/cap)</th>
         <th class="lj"></th>
         <th>Tax rate<br/>(% income)</th>
         <th>Population above<br/>tax level (% pop.)</th>
@@ -207,14 +209,14 @@ EOHTML;
         $retval .= '<tr>';
         if (!$record['value']) {
             $description = '(' . $record['label'] . ')';
-            $val = $ctry_val['tax_income_dens_' . $record['seq_no']]/$ctry_val['tax_pop_dens_' . $record['seq_no']];
+            $val = $ctry_val['tax_income_ppp_dens_' . $record['seq_no']]/$ctry_val['tax_pop_dens_' . $record['seq_no']];
         } else {
             $description = '';
             $val = $record['value'];
         }
         $retval .= '<td>' . nice_number('', $val, '') . '</td>';
         $retval .= '<td class="lj">' . $description . '</td>';
-        $val = 100 * $ctry_val['tax_revenue_dens_' . $record['seq_no']]/$ctry_val['tax_income_dens_' . $record['seq_no']];
+        $val = 100 * $ctry_val['tax_revenue_ppp_dens_' . $record['seq_no']]/$ctry_val['tax_income_ppp_dens_' . $record['seq_no']];
         $retval .= "<td>" . nice_number('', $val, '') . "</td>";
         $val = 100 * (1 - $ctry_val['tax_pop_mln_below_' . $record['seq_no']]/$ctry_val['pop_mln']);
         $retval .= "<td>" . nice_number('', $val, '') . "</td>";

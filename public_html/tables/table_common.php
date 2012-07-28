@@ -46,8 +46,10 @@ function get_tax_string($dbfile, $from_gdrs = TRUE) {
         } else {
             $tax_string .= sprintf(', tax_pop_mln_below_%d', $record['seq_no']);
         }
-        $tax_string .= sprintf(', tax_income_dens_%d', $record['seq_no']);
-        $tax_string .= sprintf(', tax_revenue_dens_%d', $record['seq_no']);
+        $tax_string .= sprintf(', tax_income_mer_dens_%d', $record['seq_no']);
+        $tax_string .= sprintf(', tax_income_ppp_dens_%d', $record['seq_no']);
+        $tax_string .= sprintf(', tax_revenue_mer_dens_%d', $record['seq_no']);
+        $tax_string .= sprintf(', tax_revenue_ppp_dens_%d', $record['seq_no']);
         $tax_string .= sprintf(', tax_pop_dens_%d', $record['seq_no']);
     }
     return $tax_string;
