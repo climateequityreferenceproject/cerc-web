@@ -28,6 +28,19 @@
         }
         
         // ----------------------------------------------------------------
+        // Return true or false if the calculator is or is not being
+        // called from a folder name with "dev" in it.
+        // ----------------------------------------------------------------
+        public static function is_dev() {
+            // Note: might return "0" (a correct, non-false value)--have to check for false
+            if (strpos($_SERVER['PHP_SELF'], 'dev')===false) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+        
+        // ----------------------------------------------------------------
         // Return the list of frameworks as display_name => id
         // This can be used by web interface to display the list
         // of available frameworks, and then to create an instance
