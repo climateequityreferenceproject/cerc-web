@@ -33,6 +33,9 @@ function gdrs_country_report($dbfile, $country_name, $shared_params, $iso3 = NUL
     if (!$iso3) {
         $iso3 = $countries[0]['iso3'];
     }
+    
+    // Get value for percent of GWP as a convenience -- used in a couple of places
+    $perc_gwp = $shared_params['percent_gwp']['value'];
 
     // Start with the core SQL view
     $db->query($viewquery);
@@ -139,10 +142,10 @@ EOHTML;
     $val = 100.0 * (($bau - $ctry_val["gdrs_alloc_MtCO2"])/$ctry_val['pop_mln'])/($bau_1990/$ctry_val_1990['pop_mln']);
     $retval .= "<td>" . nice_number('', $val, '%') . "</td>";
     $retval .= "</tr>";
-    // year Mitigation obligation as PC tax (collecting 1% of global GWP)
+    // year Mitigation obligation as PC tax (collecting x% of global GWP)
     $retval .= "<tr>";
-    $retval .= "<td class=\"lj level2\">Per capita tax (assuming global mitigation costs = 1% of global GWP)</td>";
-    $val = 1000 * $world_tot['gdp_mer'] * 0.01 * $ctry_val["gdrs_rci"]/$ctry_val['pop_mln'];
+    $retval .= "<td class=\"lj level2\">Per capita tax (assuming global mitigation costs = " . $perc_gwp . "% of global GWP)</td>";
+    $val = 1000 * $world_tot['gdp_mer'] * 0.01 * $perc_gwp * $ctry_val["gdrs_rci"]/$ctry_val['pop_mln'];
     $retval .= "<td>" . nice_number('$', $val, '') . "</td>";
     $retval .= "</tr>";
     // GDRs allocation
@@ -191,6 +194,9 @@ EOHTML;
     /*
      * Tax table
      */
+    ;
+    $cost_of_mitigation = 0.01 * $perc_gwp * $world_tot['gdp_mer']/($world_bau - $world_tot['gdrs_alloc_MtCO2']);
+    
 $retval .= <<< EOHTML
     </tbody>
 </table>
@@ -204,6 +210,7 @@ $retval .= <<< EOHTML
         <th class="lj"></th>
         <th>&#8220Tax rate&#8221<br/>(% income)</th>
         <th>Population above<br/>tax level (% pop.)</th>
+        <th>Per-capita obligation<br/>(kt$gases/cap)</th>
     </tr>
 EOHTML;
     foreach ($db->query("SELECT seq_no, label, value, ppp FROM tax_levels ORDER BY seq_no;") as $record) {
@@ -225,6 +232,8 @@ EOHTML;
         }
         $retval .= "<td>" . nice_number('', $val, '') . "</td>";
         $val = 100 * (1 - $ctry_val['tax_pop_mln_below_' . $record['seq_no']]/$ctry_val['pop_mln']);
+        $retval .= "<td>" . nice_number('', $val, '') . "</td>";
+        $val = 0.001 * (1/$cost_of_mitigation) * $ctry_val['tax_revenue_mer_dens_' . $record['seq_no']]/$ctry_val['tax_pop_dens_' . $record['seq_no']];        
         $retval .= "<td>" . nice_number('', $val, '') . "</td>";
         $retval .= '</tr>';
     }
