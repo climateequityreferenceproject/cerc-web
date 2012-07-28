@@ -199,24 +199,30 @@ $retval .= <<< EOHTML
     <tbody>
     <thead>
     <tr>
-        <th>Tax level<br/>(\$US PPP/cap)</th>
+        <th>Income level<br/>(\$US/cap)</th>
+        <th>Income level<br/>(in PPP terms)</th>
         <th class="lj"></th>
-        <th>Tax rate<br/>(% income)</th>
+        <th>&#8220Tax rate&#8221<br/>(% income)</th>
         <th>Population above<br/>tax level (% pop.)</th>
     </tr>
 EOHTML;
-    foreach ($db->query("SELECT seq_no, label, value FROM tax_levels;") as $record) {
+    foreach ($db->query("SELECT seq_no, label, value, ppp FROM tax_levels ORDER BY seq_no;") as $record) {
         $retval .= '<tr>';
         if (!$record['value']) {
             $description = '(' . $record['label'] . ')';
-            $val = $ctry_val['tax_income_ppp_dens_' . $record['seq_no']]/$ctry_val['tax_pop_dens_' . $record['seq_no']];
         } else {
             $description = '';
-            $val = $record['value'];
         }
+        $val = $ctry_val['tax_income_mer_dens_' . $record['seq_no']]/$ctry_val['tax_pop_dens_' . $record['seq_no']];
+        $retval .= '<td>' . nice_number('', $val, '') . '</td>';
+        $val = $ctry_val['tax_income_ppp_dens_' . $record['seq_no']]/$ctry_val['tax_pop_dens_' . $record['seq_no']];
         $retval .= '<td>' . nice_number('', $val, '') . '</td>';
         $retval .= '<td class="lj">' . $description . '</td>';
-        $val = 100 * $ctry_val['tax_revenue_ppp_dens_' . $record['seq_no']]/$ctry_val['tax_income_ppp_dens_' . $record['seq_no']];
+        if ($record['ppp']) {
+            $val = 100 * $ctry_val['tax_revenue_ppp_dens_' . $record['seq_no']]/$ctry_val['tax_income_ppp_dens_' . $record['seq_no']];
+        } else {
+            $val = 100 * $ctry_val['tax_revenue_mer_dens_' . $record['seq_no']]/$ctry_val['tax_income_mer_dens_' . $record['seq_no']];
+        }
         $retval .= "<td>" . nice_number('', $val, '') . "</td>";
         $val = 100 * (1 - $ctry_val['tax_pop_mln_below_' . $record['seq_no']]/$ctry_val['pop_mln']);
         $retval .= "<td>" . nice_number('', $val, '') . "</td>";
