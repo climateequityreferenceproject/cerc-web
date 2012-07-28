@@ -5,11 +5,14 @@
     //
     // -------------------------------------------------------------------
     // Point to master database
-    Framework::$master_db = "/***REMOVED***/databases/gdrs_core_pub.sql3";
+    if (Framework::is_dev()) {
+        Framework::$master_db = "/***REMOVED***/databases/gdrs_core.sql3";
+    } else {
+        Framework::$master_db = "/***REMOVED***/databases/gdrs_core_pub.sql3";
+    }
     
     // Point to folder where user databases are stored
     Framework::$user_db_path = "/***REMOVED***/sessions/gdrs-db";
-    
     
     // -------------------------------------------------------------------
     //
@@ -40,4 +43,8 @@
     //
     // -------------------------------------------------------------------
     // For GDRs, set path to the calculator
-    GreenhouseDevRights::$exec_path = "/***REMOVED***/gdrscode/engine/gdrsclib/dist/Public/GNU-Linux-x86/gdrsclib";
+    if (Framework::is_dev()) {
+        GreenhouseDevRights::$exec_path = "/***REMOVED***/gdrscode/engine/gdrsclib/dist/Development/GNU-Linux-x86/gdrsclib";
+    } else {
+        GreenhouseDevRights::$exec_path = "/***REMOVED***/gdrscode/engine/gdrsclib/dist/Public/GNU-Linux-x86/gdrsclib";
+    }
