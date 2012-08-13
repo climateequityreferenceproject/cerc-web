@@ -96,7 +96,13 @@ $(function() {
     $('#mit_gap_borne').change(submit);
     
     // Set the parameters to show or hide
-    $('#input_values caption').click(function() {$('#input_values tbody').toggle()});
+    $('#input_values caption').click(function() {
+        $('#input_values tbody').toggle(function() {
+            $('#input_values caption a').text(
+              $(this).is(':visible') ? "Hide parameters" : "Show parameters"
+            );
+        });
+    });
     
     //--------------------------------------------------
     // Action on form submit
@@ -190,6 +196,12 @@ $(function() {
 
 });
 
+function testajax() { 
+    $.post('js/testajax.php', function(data) {
+        $('#testajax').html(data);
+    });
+}
+
 function submit() {
     $('#submit').click();
 }
@@ -225,6 +237,7 @@ function uniqid()
 }
 
 function spinoff_window() {
+    //$("#spinoff #input_values caption").show();
     html = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\n' +
     '<html xmlns="http://www.w3.org/1999/xhtml">\n' +
     '   <head>\n' +
@@ -235,19 +248,27 @@ function spinoff_window() {
     '         #input_values caption {' +
     '           display:none;' +
     '         }' +
-    '         #input_values tbody {' +
+    '         #spinoff #input_values tbody {' +
     '           display:inline;' +
     '         }' +
     '       </style>\n' +
     '   </head>\n' +
     '   <body id="spinoff">\n' +
-    '      <div id="calc_container">\n' +
-    '         <div id="data">\n';
-    html += $('#data').html();
+    '      <div id="calc_container" class="group">\n' +
+    '         <div id="data" class="group">\n' +
+    '             <div id="calc_parameters" class="group">\n';
+//    html +=  $.post(
+//            "core.php",
+//            $('#form1').serialize() + "&submit=submit&ajax=ajax",
+//            function(data) {
+//                $('#calc_parameters').html(data);
+
+    '             </div>\n' +
+    '             <div id="calc_results" class="group">\n';
+    html += $('#calc_results').html();
     var d = new Date();
-    html +=  '              <br class="clear"/>\n' +
+    '             </div>\n' +
     '         </div>\n' +
-    '         <br class="clear"/>\n' +
     '      </div>\n' +
     '      <div id="footer">\n' +
     '           <p><strong>Greenhouse Development Rights</strong> is a project of <a href="http://www.ecoequity.org/">EcoEquity</a> and the <a href="http://www.sei-international.org">Stockholm Environment Institute</a> &#169; 2008-' + d.getFullYear() + ' </p>\n' +

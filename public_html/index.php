@@ -232,16 +232,25 @@ if (isset($_GET['iso3'])) {
                                    </div><!-- /save -->
                                    <!--<p><?php /* ?><?php print_r(Framework::get_frameworks()); ?><?php */ ?></p>-->
                                </div><!-- /intro -->
+                               
                                <div id="data">
-                <?php
+                                    <?php
                                         if (isset($_COOKIE['db']) && !$up_to_date) {
                                             echo '<p class="alert">The calculator or database has been updated since you last visited. Your settings have been reset.</p>';
                                         }
-                                       echo generate_table($display_params, $fw_params, $shared_params, $country_list, $region_list, $table_views, $user_db);
-                                       // include("tables/sample_table.php");
-                ?>
-                                   </div><!-- end #data -->
-                               </div><!-- end #calc_container -->
+                                     ?>
+
+                                    <div id="calc_parameters">
+                                       <?php echo generate_params_table($display_params, $fw_params, $shared_params, $country_list, $region_list, $table_views); ?>
+                                    </div><!-- end #calc_parameters -->
+
+                                    <div id="calc_results">
+                                       <?php echo generate_results_table($display_params, $shared_params, $country_list, $region_list, $user_db); 
+                                        // include("tables/sample_table.php");
+                                       ?>
+                                    </div><!-- end #calc_results -->
+                               </div><!-- end #data -->
+                           </div><!-- end #calc_container -->
         <?php echo get_footer(Framework::get_data_ver(), Framework::get_calc_ver()); ?>
     </body>
 </html>

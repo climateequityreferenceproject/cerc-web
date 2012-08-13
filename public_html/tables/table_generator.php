@@ -3,18 +3,7 @@
         return "<td><strong>" . $label . "</strong>" . $val . "</td>\n";
     }
     
-    function generate_table($display_params, $fw_params, $shared_params, $country_list, $region_list, $table_views, $user_db) {
-        $ep_index = $shared_params["emergency_path"]['value'];
-        $ep_name = $shared_params["emergency_path"]['list'][$ep_index]['display_name'];
-        $advanced = $display_params['basic_adv']['value'] !== 'basic';
-        $dec = $display_params["decimal_pl"]['value'];
-        $disp_year = $display_params["display_yr"]['value'];
-        $use_nonco2 = $shared_params['use_nonco2']['value'] == 0 ? FALSE : TRUE;
-        $ep_start = $shared_params['emergency_program_start']['value'];
-        $table_name = $table_views[$display_params["table_view"]['value']]['display_name'];
-        if (!$table_views[$display_params["table_view"]['value']]['time_series']) {
-            $table_name .= " in " . $display_params["display_yr"]['value'];
-        }
+    function get_country_name($display_params, $country_list, $region_list) {
         if ($display_params["table_view"]['value'] === 'gdrs_country_report') {
             $found_it = false;
             foreach ($country_list as $item) {
@@ -34,11 +23,27 @@
                     }
                 }
             }
+        }
+        else $country_name = '';
+        return $country_name;
+    }
+            
+    function generate_params_table($display_params, $fw_params, $shared_params, $country_list, $region_list, $table_views) {
+        $ep_index = $shared_params["emergency_path"]['value'];
+        $ep_name = $shared_params["emergency_path"]['list'][$ep_index]['display_name'];
+        $use_nonco2 = $shared_params['use_nonco2']['value'] == 0 ? FALSE : TRUE;
+        $table_name = $table_views[$display_params["table_view"]['value']]['display_name'];
+        if (!$table_views[$display_params["table_view"]['value']]['time_series']) {
+            $table_name .= " in " . $display_params["display_yr"]['value'];
+        }
+        $country_name = get_country_name($display_params, $country_list, $region_list);
+        if ($country_name != '') {
             $table_name .= " for " . $country_name;
         }
+        
         $retval = "<h3><!--Table view: -->" . $table_name . "</h3>\n";
         $retval .= '<table  id="input_values" class="group" cellspacing="0" cellpadding="0">' . "\n";
-        $retval .= '<caption>parameters (click to hide or show) [NOTE: This feature is still being implemented]</caption><tbody>' ."\n";
+        $retval .= '<caption><a href="#">Show parameters</a></caption><tbody>' ."\n";
         $retval .= "<tr>\n";
         $retval .= generate_entry("Global mitigation pathway: ", $ep_name);
         // TODO: add baseline parameter variable and echo value here
@@ -81,7 +86,17 @@
             $retval .= "</tr>\n";
         }
         $retval .= '</tbody></table><!-- /input_values -->' . "\n";
-
+        return $retval;
+    }
+    
+    function generate_results_table($display_params, $shared_params, $country_list, $region_list, $user_db) {
+        $disp_year = $display_params["display_yr"]['value'];
+        $dec = $display_params["decimal_pl"]['value'];
+        $advanced = $display_params['basic_adv']['value'] !== 'basic';
+        $ep_start = $shared_params['emergency_program_start']['value'];
+        $use_nonco2 = $shared_params['use_nonco2']['value'] == 0 ? FALSE : TRUE;
+        $country_name = get_country_name($display_params, $country_list, $region_list);
+        
         switch ($display_params["framework"]['value']) {
             case 'gdrs':
                 switch ($display_params["table_view"]['value']) {
@@ -120,4 +135,11 @@
                 }
                 break;
         }
+        return $retval;
+    }
+
+    function generate_table($display_params, $fw_params, $shared_params, $country_list, $region_list, $table_views, $user_db){
+        $retval = generate_params_table($display_params, $fw_params, $shared_params, $country_list, $region_list, $table_views);
+        $retval .= generate_results_table($display_params, $shared_params, $country_list, $region_list, $user_db);
+        return $retval;
     }
