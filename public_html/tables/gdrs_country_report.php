@@ -455,33 +455,33 @@ $retval .= '<dl id="ctry_report_legend">';
     $retval .= '<dd>GHG emissions baselines (“BAU”) are based on projected emissions growth rates from McKinsey and Co\'s projections (Version 2.1) applied to the most current available annual emissions data (CO2 from fossil fuels from CDIAC\'s 2010 estimates); CO2 from land use is projected constant at 2005 levels and non-CO2 GHGs are a constant proportion relative to Fossil CO2 emissions at 2005 levels.</dd>';
 
     $retval .= '<dt class="key-gdrs"><span></span>GDRs "fair share" allocation</dt>';
-    $retval .= '<dd>National allocation trajectory, as calculated by GDRs for ' . $ctry_val["country"] . ' using the specified pathways and parameters. The mitigation implied by this allocation can be either domestic or international &#8211; GDRs in itself says nothing about how or where it occurs.</dd>';
+    $retval .= '<dd>National allocation trajectory, as calculated by GDRs for ' . $country_name . ' using the specified pathways and parameters. The mitigation implied by this allocation can be either domestic or international &#8211; GDRs in itself says nothing about how or where it occurs.</dd>';
     
     $retval .= '<dt class="key-phys"><span></span>Domestic emissions</dt>';
-    $retval .= '<dd>An example of an emissions trajectory for ' . $ctry_val["country"] . ' that is consistent with the specified pathways and parameters. ';
-    $retval .= 'The actual domestic emissions trajectory would depend on the international cost and mitigation sharing that ' . $ctry_val["country"] . ' chooses to participate in. GDRs assigns each country a mitigation obligation. It does not specify how or where that obligation should be discharged.</dd>';
+    $retval .= '<dd>An example of an emissions trajectory for ' . $country_name . ' that is consistent with the specified pathways and parameters. ';
+    $retval .= 'The actual domestic emissions trajectory would depend on the international cost and mitigation sharing that ' . $country_name . ' chooses to participate in. GDRs assigns each country a mitigation obligation. It does not specify how or where that obligation should be discharged.</dd>';
 
     $retval .= '<dt class="key-dom"><span></span>';
     if ($fund_others) {
         $retval .= 'Domestic-funded mitigation</dt>'; // if we decide to make a distinction, this one would be Domestic mitigation, with its own definition 
-        $retval .= '<dd>Mitigation funded by ' . $ctry_val["country"] . ' and carried out within its own borders. The fraction of a country\'s mitigation obligation that is discharged domestically is not specified by GDRs, but is rather a result of the international cost and mitigation sharing arrangements that it chooses to participate in.</dd>';
+        $retval .= '<dd>Mitigation funded by ' . $country_name . ' and carried out within its own borders. The fraction of a country\'s mitigation obligation that is discharged domestically is not specified by GDRs, but is rather a result of the international cost and mitigation sharing arrangements that it chooses to participate in.</dd>';
     } else {
         $retval .= 'Domestically-funded mitigation</dt>';
-        $retval .= '<dd>Mitigation funded by ' . $ctry_val["country"] . ' and carried out within its own borders. The fraction of a country\'s mitigation obligation that is discharged domestically is not specified by GDRs, but is rather a result of the international cost and mitigation sharing arrangements that it chooses to participate in.</dd>';
+        $retval .= '<dd>Mitigation funded by ' . $country_name . ' and carried out within its own borders. The fraction of a country\'s mitigation obligation that is discharged domestically is not specified by GDRs, but is rather a result of the international cost and mitigation sharing arrangements that it chooses to participate in.</dd>';
     }
     
     if ($fund_others) {
         $retval .= '<dt class="key-intl"><span></span>Mitigation funded in other countries</dt>';
-        $retval .= '<dd>Mitigation funded by ' . $ctry_val["country"] . ' and carried out within other countries. The fraction of a country\'s mitigation obligation that is discharged in other countries is not specified by GDRs, but is rather a result of the international cost and mitigation sharing arrangements that it chooses to participate in.</dd>';
+        $retval .= '<dd>Mitigation funded by ' . $country_name . ' and carried out within other countries. The fraction of a country\'s mitigation obligation that is discharged in other countries is not specified by GDRs, but is rather a result of the international cost and mitigation sharing arrangements that it chooses to participate in.</dd>';
         } else {
         $retval .= '<dt class="key-sup"><span></span>Mitigation funded by other countries</dt>';
-        $retval .= '<dd>Mitigation funded other countries, but carried out within the borders of ' . $ctry_val["country"] . '. GDRs assigns the "credit" for this mitigation to the funder, but of course the terms of the mitigation would be as negotiated with the host country.</dd>';
+        $retval .= '<dd>Mitigation funded other countries, but carried out within the borders of ' . $country_name . '. GDRs assigns the "credit" for this mitigation to the funder, but of course the terms of the mitigation would be as negotiated with the host country.</dd>';
     }
     $retval .= '<dt class="key-uncond"><span></span>Unconditional Pledge</dt>';
-    $retval .= '<dd>Emissions consistent with ' . $ctry_val["country"] . '&#8217;s pledged emission reductions <em>not</em> conditional on other countries&#8217; actions.</dd>';
+    $retval .= '<dd>Emissions consistent with ' . $country_name . '&#8217;s pledged emission reductions <em>not</em> conditional on other countries&#8217; actions.</dd>';
 
     $retval .= '<dt class="key-cond"><span></span>Conditional Pledge</dt>';
-    $retval .= '<dd>Emissions consistent with ' . $ctry_val["country"] . '&#8217;s pledged emission reductions conditional on other countries&#8217; actions.</dd>';
+    $retval .= '<dd>Emissions consistent with ' . $country_name . '&#8217;s pledged emission reductions conditional on other countries&#8217; actions.</dd>';
 
     $retval .= '</dl>';
 
