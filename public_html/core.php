@@ -1,6 +1,11 @@
 <?php
     include("frameworks/frameworks.php");
     
+    // Generic cookie array
+    $cookie_info=array();
+    $cookie_info['time'] = time()+60*60*24*28;
+    $cookie_info['server'] = preg_replace("/^\.|www\./","",$_SERVER['HTTP_HOST']);
+    
     // Check that we're current
     $up_to_date = FALSE;
     $ver_info = array();
@@ -12,9 +17,7 @@
            $up_to_date = TRUE;
        }
     }
-    $cookie_time = time()+60*60*24*28;
-    $cookie_server = preg_replace("/^\.|www\./","",$_SERVER['HTTP_HOST']);
-    setcookie('ver',serialize($ver_info),$cookie_time,"",$cookie_server);
+    setcookie('ver',serialize($ver_info),$cookie_info['time'],"",$cookie_info['server']);
     
     // Always using GDRs framework now
     $shared_params = Framework::get_shared_params();
@@ -49,7 +52,7 @@
         $user_db = Framework::get_user_db($master_db);
     }
     $fw_params = $fw->get_fw_params($user_db);
-    setcookie('db',serialize(Framework::get_db_name($user_db)),$cookie_time,"",$cookie_server);
+    setcookie('db',serialize(Framework::get_db_name($user_db)),$cookie_info['time'],"",$cookie_info['server']);
 
     // If just asking for the db name (or to create a db) then that is all this script does
     // TODO: Get rid of this; it's superseded by API.
@@ -62,7 +65,7 @@
 
     // Function to update parameters array with last user values, if any
     function get_usr_vals(&$array) {
-        foreach($array as $key => $val) {
+        foreach(array_keys($array) as $key) {
             if (isset($_POST[$key])) {
                 $array[$key]['value'] = $_POST[$key];
             } elseif (isset($_POST['submit']) && Framework::is_bool($key, $array)) {
@@ -155,7 +158,7 @@
         }
         get_usr_vals($display_params);
     }
-    setcookie('display_params',serialize($display_params),$cookie_time,"",$cookie_server);
+    setcookie('display_params',serialize($display_params),$cookie_info['time'],"",$cookie_info['server']);
     
     // Redundant but convenient to have both
     $table_views = $fw->get_table_views();
@@ -164,7 +167,7 @@
     if (isset($_POST['forcesubmit']) || !isset($_POST['submit'])) {
         $tmp = array_keys($table_views);
         $display_params['table_view']['value'] = $tmp[0];
-        setcookie('display_params',serialize($display_params),$cookie_time,"",$cookie_server);
+        setcookie('display_params',serialize($display_params),$cookie_info['time'],"",$cookie_info['server']);
     }
     
     if (!$_POST['reset']) {
