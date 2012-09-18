@@ -1,5 +1,6 @@
 <?php
     include("frameworks/frameworks.php");
+    include("tables/table_generator.php");
     
     // Generic cookie array
     $cookie_info=array();
@@ -53,15 +54,6 @@
     }
     $fw_params = $fw->get_fw_params($user_db);
     setcookie('db',serialize(Framework::get_db_name($user_db)),$cookie_info['time'],"",$cookie_info['server']);
-
-    // If just asking for the db name (or to create a db) then that is all this script does
-    // TODO: Get rid of this; it's superseded by API.
-    if ($_POST['get_db'] || $_GET['get_db']) {
-        echo $user_db;
-        return;
-    }
-    // If not just getting db, then load table_generator and define get_usr_vals
-    include("tables/table_generator.php");
 
     // Function to update parameters array with last user values, if any
     function get_usr_vals(&$array) {
@@ -164,7 +156,7 @@
     $table_views = $fw->get_table_views();
     $display_params['table_view']['list'] = $table_views;
     
-    if (isset($_POST['forcesubmit']) || !isset($_POST['submit'])) {
+    if (isset($_POST['forcesubmit'])) { // || !isset($_POST['submit'])
         $tmp = array_keys($table_views);
         $display_params['table_view']['value'] = $tmp[0];
         setcookie('display_params',serialize($display_params),$cookie_info['time'],"",$cookie_info['server']);
