@@ -1,5 +1,11 @@
 <?php
 require_once("table_common.php");
+$include_all_years = false;
+if ($include_all_years) {
+    $all_years_condition_string = "";
+} else {
+    $all_years_condition_string = "AND combined.gdrs_alloc_MtCO2 IS NOT NULL";
+}
 $tax_string_gdrs = get_tax_string($_GET["db"]);
 $tax_string_combined = get_tax_string($_GET["db"], FALSE);
 $viewquery = <<< EOSQL
@@ -30,7 +36,7 @@ $viewquery = <<< EOSQL
 			(11.0/3.0) * gdrs.lux_emiss_applied_MtC AS lux_emiss_applied_MtCO2
                         $tax_string_gdrs
             FROM core LEFT JOIN gdrs ON core.year = gdrs.year AND core.iso3 = gdrs.iso3)
-        AS combined WHERE country.iso3 = combined.iso3;
+        AS combined WHERE country.iso3 = combined.iso3 $all_years_condition_string;
 EOSQL;
 
 $database = 'sqlite:'.$_GET["db"];
