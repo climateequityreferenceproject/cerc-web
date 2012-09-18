@@ -1,4 +1,5 @@
 <?php
+header("Cache-Control: no-cache, no-store");
 include("core.php");
 include("boilerplate.php");
 include("form_functions.php");
