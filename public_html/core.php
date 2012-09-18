@@ -12,7 +12,9 @@
            $up_to_date = TRUE;
        }
     }
-    setcookie('ver',serialize($ver_info),time()+60*60*24*28);
+    $cookie_time = time()+60*60*24*28;
+    $cookie_server = preg_replace("/^\.|www\./","",$_SERVER['HTTP_HOST']);
+    setcookie('ver',serialize($ver_info),$cookie_time,"",$cookie_server);
     
     // Always using GDRs framework now
     $shared_params = Framework::get_shared_params();
@@ -47,7 +49,7 @@
         $user_db = Framework::get_user_db($master_db);
     }
     $fw_params = $fw->get_fw_params($user_db);
-    setcookie('db',serialize(Framework::get_db_name($user_db)),time()+60*60*24*28);
+    setcookie('db',serialize(Framework::get_db_name($user_db)),$cookie_time,"",$cookie_server);
 
     // If just asking for the db name (or to create a db) then that is all this script does
     // TODO: Get rid of this; it's superseded by API.
@@ -153,7 +155,7 @@
         }
         get_usr_vals($display_params);
     }
-    setcookie('display_params',serialize($display_params),time()+60*60*24*365);
+    setcookie('display_params',serialize($display_params),$cookie_time,"",$cookie_server);
     
     // Redundant but convenient to have both
     $table_views = $fw->get_table_views();
@@ -162,7 +164,7 @@
     if (isset($_POST['forcesubmit']) || !isset($_POST['submit'])) {
         $tmp = array_keys($table_views);
         $display_params['table_view']['value'] = $tmp[0];
-        setcookie('display_params',serialize($display_params),time()+60*60*24*365);
+        setcookie('display_params',serialize($display_params),$cookie_time,"",$cookie_server);
     }
     
     if (!$_POST['reset']) {
