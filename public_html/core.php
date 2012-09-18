@@ -157,14 +157,11 @@
     
     // Redundant but convenient to have both
     $table_views = $fw->get_table_views();
-    $display_params['table_view']['list'] = $fw->get_table_views();
+    $display_params['table_view']['list'] = $table_views;
     
-    // A trick to get the first table defined in the view
     if (isset($_POST['forcesubmit']) || !isset($_POST['submit'])) {
-        foreach ($table_views as $key => $val) {
-            $display_params['table_view']['value'] = $key;
-            break;
-        }
+        $tmp = array_keys($table_views);
+        $display_params['table_view']['value'] = $tmp[0];
         setcookie('display_params',serialize($display_params),time()+60*60*24*365);
     }
     
