@@ -166,7 +166,7 @@
         get_usr_vals($shared_params);
         get_usr_vals($fw_params);
     }
-    
+
     $fw->calculate($user_db, $shared_params, $fw_params);
     
     // Use the most up-to-date parameter list: years might have changed

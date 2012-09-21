@@ -21,6 +21,8 @@ setlocale(LC_ALL,
         $locale . ".UTF-8",
         $locale,
         "CC_LANG");
+// This ensures that decimal numbers use a decimal point rather than a comma
+setlocale(LC_NUMERIC, 'C');
 bindtextdomain($domain, dirname(__FILE__).'/locale');
 bind_textdomain_codeset($domain, $codeset);
 textdomain($domain);

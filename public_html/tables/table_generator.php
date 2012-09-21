@@ -102,27 +102,27 @@
                 switch ($display_params["table_view"]['value']) {
                     case 'gdrs_default':
                         include("tables/gdrs_table.php");
-                        return $retval . gdrs_table($user_db, $disp_year, $dec, $advanced);
+                        return gdrs_table($user_db, $disp_year, $dec, $advanced);
                         break;
                     case 'gdrs_tax':
                         include("tables/gdrs_tax.php");
-                        return $retval . gdrs_tax($user_db, $disp_year, $ep_start, $dec);
+                        return gdrs_tax($user_db, $disp_year, $ep_start, $dec);
                         break;
                     case 'gdrs_RCI':
                         include("tables/gdrs_rci_ts.php");
-                        return $retval . gdrs_rci_ts($user_db, $dec);
+                        return gdrs_rci_ts($user_db, $dec);
                         break;
                     case 'gdrs_alloc':
                         include("tables/gdrs_alloc.php");
-                        return $retval . gdrs_alloc($user_db,$dec, 'total', $use_nonco2);
+                        return gdrs_alloc($user_db,$dec, 'total', $use_nonco2);
                         break;
                     case 'gdrs_alloc_pc':
                         include("tables/gdrs_alloc.php");
-                        return $retval . gdrs_alloc($user_db,$dec, 'percap', $use_nonco2);
+                        return gdrs_alloc($user_db,$dec, 'percap', $use_nonco2);
                         break;
                     case 'gdrs_country_report':
                         include("tables/gdrs_country_report.php");
-                        return $retval . gdrs_country_report($user_db, $country_name, $shared_params, $display_params['display_ctry']['value'], $disp_year);
+                        return gdrs_country_report($user_db, $country_name, $shared_params, $display_params['display_ctry']['value'], $disp_year);
                         break;
                 }
                 break;
