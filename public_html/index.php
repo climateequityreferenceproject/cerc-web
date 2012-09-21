@@ -1,5 +1,30 @@
 <?php
+ini_set('display_errors',1); 
+error_reporting(E_ALL);
 header("Cache-Control: no-cache, no-store");
+// I18N support information here
+if (isset($_GET['lang'])) {
+    $locale = $_GET['lang'];
+} else {
+    $locale = 'en_EN';
+}
+$domain = 'messages';
+$codeset = 'UTF8';
+putenv("LANG=$locale");
+putenv("LANGUAGE=$locale");
+putenv("LC_ALL=$locale");
+putenv("LC_MESSAGES=$locale");
+setlocale(LC_ALL,
+        $locale . ".utf8",
+        $locale . ".UTF8",
+        $locale . ".utf-8",
+        $locale . ".UTF-8",
+        $locale,
+        "CC_LANG");
+bindtextdomain($domain, dirname(__FILE__).'/locale');
+bind_textdomain_codeset($domain, $codeset);
+textdomain($domain);
+
 include("core.php");
 include("boilerplate.php");
 include("form_functions.php");
@@ -76,10 +101,11 @@ if (isset($_GET['iso3'])) {
                     <legend class="open"><span>&nbsp;</span>Display settings</legend>
                     <div>
                         <ul>
-                            <?php echo select_options_list('table_view', $display_params, "Table view: ", $advanced); ?>
-                            <?php echo select_num('display_yr', $display_params, "Year to display:", $advanced); ?>
+                            <?php echo select_options_list('table_view', $display_params, _("Table view: "), $advanced); ?>
+                            <?php echo select_num('display_yr', $display_params, _("Year to display:"), $advanced); ?>
                             <?php
-                                echo '<li><label for="display_ctry" class="select" title="Country to display for country report">Country to display:</label>';
+                                // Choose country to display for country report
+                                echo '<li><label for="display_ctry" class="select" title="' . _("Country to display for country report") . '">' . _("Country to display:") . '</label>';
                                 echo '<select name="display_ctry" id="display_ctry" action="index.php">';
                                 $valid_countryregion = false;
                                 foreach ($region_list as $item) {
@@ -105,7 +131,8 @@ if (isset($_GET['iso3'])) {
                                     $display_params['table_view']['value'] = $table_view_default;
                                 }
                             ?>
-                            <?php echo select_num('decimal_pl', $display_params, "Decimal places:", $advanced); ?>
+                            
+                            <?php echo select_num('decimal_pl', $display_params, _("Decimal places:"), $advanced); ?>
                             </ul>&nbsp;
                         </div>
                     </fieldset>
@@ -114,7 +141,7 @@ if (isset($_GET['iso3'])) {
                         <legend class="open"><span>&nbsp;</span>Calculator settings</legend>
                         <div>
                             <ul>
-                            <?php echo select_options_list('emergency_path', $shared_params, "Global mitigation pathway: ", $advanced); ?>
+                            <?php echo select_options_list('emergency_path', $shared_params, _("Global mitigation pathway: "), $advanced); ?>
                                 <!--<li>
                                     <label for="baseline" class="select">Baseline: </label>
                                     <select name="baseline" id="baseline">
@@ -122,7 +149,7 @@ if (isset($_GET['iso3'])) {
                                     </select>
                                 </li>-->
                                 <div id="cum_since_yr_wrapper">
-                            <?php echo select_num('cum_since_yr', $shared_params, "Cumulative since:", $advanced); ?>
+                            <?php echo select_num('cum_since_yr', $shared_params, _("Cumulative since:"), $advanced); ?>
                                 </div>
                                 <li>
                                     <input type="checkbox" name="use_lulucf" id="use_lulucf" class="click" value="1" <?php if ($shared_params["use_lulucf"]['value'])
@@ -141,49 +168,39 @@ if (isset($_GET['iso3'])) {
                             </li>
                             <?php
                                        if ($display_params['framework']['value'] === 'gdrs') {
-                                           echo select_num('dev_thresh', $fw_params, "Development threshold:", $advanced);
-                                           echo select_num('lux_thresh', $fw_params, "Luxury threshold:", $advanced);
+                                           echo select_num('dev_thresh', $fw_params, _("Development threshold:"), $advanced);
+                                           echo select_num('lux_thresh', $fw_params, _("Luxury threshold:"), $advanced);
                                            echo '<li class="advanced">';
                                            echo '<input type="checkbox" name="do_luxcap" id="do_luxcap" class="click" value="1" ' . ($fw_params["do_luxcap"]['value'] ? 'checked="checked"' : '') . '/>';
-                                           echo '<label for="do_luxcap" class="click"> Cap baselines at luxury threshold</label>';
+                                           echo '<label for="do_luxcap" class="click"> ' . _("Cap baselines at luxury threshold") . '</label>';
                                            echo "</li>";
                                            echo '<li class="advanced">';
-                                           echo '<input type="checkbox" name="interp_btwn_thresh" id="interp_btwn_thresh" class="click" value="1" ' . ($shared_params["interp_btwn_thresh"]['value'] ? 'checked="checked"' : '') . '/>';
-                                           echo '<label for="interp_btwn_thresh" class="click"> Progressive between thresholds</label>';
+                                           echo '<input type="checkbox" name="interp_btwn_thresh" id="interp_btwn_thresh" class="click" value="1" ' . ($fw_params["interp_btwn_thresh"]['value'] ? 'checked="checked"' : '') . '/>';
+                                           echo '<label for="interp_btwn_thresh" class="click"> ' . _("Progressive between thresholds") . '</label>';
                                            echo "</li>";
-                                           /*echo "<li>";
-                                           echo '<fieldset><legend class="closed"><span>&nbsp;</span>Income toward capacity</legend>';
-                                           echo "<div><ul>";
-                                           echo "<li><label>Below devt threshold: </label>0%</li>";
-                                           echo select_num('mid_rate', $fw_params, "% between thresholds:", $advanced);
-                                           echo "<li><label>Above luxury threshold: </label>100%</li>";
-                                           echo "</ul>&nbsp;</div>";
-                                           echo "</fieldset>";
-                                           echo "</li>";*/
-                                           // echo select_num('tax_income_level', $fw_params, "Income level for tax:",$advanced);
-                                           echo select_num('r_wt', $fw_params, "Responsibility weight:", $advanced);
+                                           echo select_num('r_wt', $fw_params, _("Responsibility weight:"), $advanced);
                                        }
-                                       echo select_num('percent_gwp', $shared_params, "Total cost as % GWP:", $advanced);
-                                       echo select_num('em_elast', $shared_params, "Emissions elasticity:", $advanced);
+                                       echo select_num('percent_gwp', $shared_params, _("Total cost as % GWP:"), $advanced);
+                                       echo select_num('em_elast', $shared_params, _("Emissions elasticity:"), $advanced);
                                        // Later, other frameworks may use these. But right now only GDRs
                                        if ($display_params['framework']['value'] === 'gdrs') {
                                            echo '<li class="advanced"><fieldset>';
-                                           echo '<legend class="closed"><span>&nbsp;</span>Sequencing</legend>';
+                                           echo '<legend class="closed"><span>&nbsp;</span>' . _("Sequencing") . '</legend>';
                                            echo '<div><ul id="sequencing">';
                                            echo "<li>";
                                            echo '<input type="checkbox" name="use_sequencing" id="use_sequencing" class="click" value="1" ' . ($shared_params["use_sequencing"]['value'] ? 'checked="checked"' : '') . '/>';
-                                           echo '<label for="use_sequencing" class="click"> Use sequencing</label>';
+                                           echo '<label for="use_sequencing" class="click"> ' . _("Use sequencing") . '</label>';
                                            echo "</li>";
-                                           echo select_num('percent_a1_rdxn', $shared_params, "A1 reduction %:", $advanced);
-                                           echo select_num('base_levels_yr', $shared_params, "Sequencing base yr:", $advanced);
-                                           echo select_num('end_commitment_period', $shared_params, "End of period:", $advanced);
-                                           echo select_num('a1_smoothing', $shared_params, "A1 smoothing:", $advanced);
+                                           echo select_num('percent_a1_rdxn', $shared_params, _("A1 reduction %:"), $advanced);
+                                           echo select_num('base_levels_yr', $shared_params, _("Sequencing base yr:"), $advanced);
+                                           echo select_num('end_commitment_period', $shared_params, _("End of period:"), $advanced);
+                                           echo select_num('a1_smoothing', $shared_params, _("A1 smoothing:"), $advanced);
                                            echo "<li>";
-                                           echo '<p>Mitigation requirement gap borne by: </p><ul><li>';
+                                           echo '<p>' . _("Mitigation requirement gap borne by: ") . '</p><ul><li>';
                                            echo '<input type="radio" name="mit_gap_borne" id="annex1" class="click" value="1" ' . ($shared_params["mit_gap_borne"]['value'] == "1" ? 'checked="checked"' : '') . "/>";
-                                           echo '<label for="annex1" class="click radio"> Annex 1</label>';
+                                           echo '<label for="annex1" class="click radio"> ' . _("Annex 1") . '</label>';
                                            echo '<input type="radio" name="mit_gap_borne" id="annex2" class="click" value="2" ' . ($shared_params["mit_gap_borne"]['value'] == "2" ? 'checked="checked"' : '') . "/>";
-                                           echo '<label for="annex2" class="click radio"> Annex 2</label>';
+                                           echo '<label for="annex2" class="click radio"> ' . _("Annex 2") . '</label>';
                                            echo '</li></ul></li><ul>&nbsp;<!-- end #sequencing -->';
                                            echo '</div></fieldset></li>';
                                        }
@@ -193,8 +210,8 @@ if (isset($_GET['iso3'])) {
                            </fieldset>
 
                            <input type="hidden" id="user_db" name="user_db" value="<?php echo $user_db; ?>" />
-                           <input type="submit" name="submit" id="submit" class="click" value="calculate" /> <!-- TODO: add validation -->
-                           <input type="submit" name="reset" id="reset" class="click" value="reset to default values" />
+                           <input type="submit" name="submit" id="submit" class="click" value="<?php echo _("calculate") ?>" /> <!-- TODO: add validation -->
+                           <input type="submit" name="reset" id="reset" class="click" value="<?php echo _("reset to default values") ?>" />
                        </form>
 
                        <div id="filterDiv">
@@ -202,15 +219,15 @@ if (isset($_GET['iso3'])) {
                            <table>
                                <tr>
                                    <td>
-                                       <label for="country_available">Available Countries:</label><br/>
+                                       <label for="country_available"><?php echo _("Available Countries:")?></label><br/>
                                        <select id="country_available" size="5" multiple="multiple" />
                                    </td>
                                    <td class="button_btwn_list">
-                                       <p><button class="button" name="btnAdd" id="btnAdd" type="button">Add &gt;&gt;></button></p>
-                                       <p><button class="button" name="btnRemove" id="btnRemove" type="button">&lt;&lt; Remove</button></p>
+                                       <p><button class="button" name="btnAdd" id="btnAdd" type="button"><?php echo _("Add") ?> &gt;&gt;></button></p>
+                                       <p><button class="button" name="btnRemove" id="btnRemove" type="button">&lt;&lt; <?php echo _("Remove") ?></button></p>
                                    </td>
                                    <td>
-                                       <label for="country_selected">Selected Countries:</label><br/>
+                                       <label for="country_selected"><?php echo _("Selected Countries:") ?></label><br/>
                                        <select id="country_selected" size="5" multiple="multiple" />
                                    </td>
                                </tr>
@@ -221,12 +238,15 @@ if (isset($_GET['iso3'])) {
                 <?php /* ?><!--<p><?php print_r($shared_params); ?></p>
                                          <p><?php print_r($fw_params); ?></p>
                                          <p><?php print_r($display_params); ?></p>--><?php */ ?>
-                                       <p>Welcome to the Greenhouse Development Rights Calculator. Use the controls to the left to change the
-                                           parameters in the GDRs framework and see the implications for the Responsibility and Capacity Index (RCI) and other indicators.</p>
+                                       <p><?php
+                                       $welcome_string = _('Welcome to the Greenhouse Development Rights Calculator.');
+                                       $welcome_string .= ' ' . _('Use the controls to the left to change the parameters in the GDRs framework and see the implications for the Responsibility and Capacity Index (RCI) and other indicators.');
+                                       echo $welcome_string;
+                                       ?></p>
                                        <div id="save">
                     <?php
                                        if ($display_params['framework']['value'] === 'gdrs') {
-                                           echo '<p><a href="tables/download_tabsep.php?db=' . $user_db . '">Download complete Excel table</a></p>';
+                                           echo '<p><a href="tables/download_tabsep.php?db=' . $user_db . '">' . _("Download complete Excel table") . '</a></p>';
                                            # echo '<p><a href="viz/test.php?db=' . $user_db . '">Google visualization test</a></p>';
                                        }
                     ?>
@@ -237,7 +257,7 @@ if (isset($_GET['iso3'])) {
                                <div id="data">
                                     <?php
                                         if (isset($_COOKIE['db']) && !$up_to_date) {
-                                            echo '<p class="alert">The calculator or database has been updated since you last visited. Your settings have been reset.</p>';
+                                            echo '<p class="alert">' . _("The calculator or database has been updated since you last visited. Your settings have been reset.") . '</p>';
                                         }
                                      ?>
 

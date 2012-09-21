@@ -1,0 +1,150 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: GDRs\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-09-21 10:46+0700\n"
+"PO-Revision-Date: 2012-09-21 11:08+0700\n"
+"Last-Translator: Eric Kemp-Benedict <eric.kemp-benedict@sei-international.org>\n"
+"Language-Team: Eric Kemp-Benedict <gdrs_authors@googlegroups.com>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: _;gettext;gettext_noop\n"
+"X-Poedit-Basepath: /home/erickb/NetBeansProjects/gdrs_web/site\n"
+"X-Poedit-Language: French\n"
+"X-Poedit-Country: FRANCE\n"
+"X-Poedit-SearchPath-0: /home/erickb/NetBeansProjects/gdrs_web/site\n"
+
+#: /home/erickb/NetBeansProjects/gdrs_web/site/index.php:79
+msgid "Table view: "
+msgstr "Vue: "
+
+#: /home/erickb/NetBeansProjects/gdrs_web/site/index.php:80
+msgid "Year to display:"
+msgstr "Année à afficher:"
+
+#: /home/erickb/NetBeansProjects/gdrs_web/site/index.php:83
+msgid "Country to display for country report"
+msgstr "Pays pour afficher"
+
+#: /home/erickb/NetBeansProjects/gdrs_web/site/index.php:83
+msgid "Country to display:"
+msgstr "Pays pour afficher:"
+
+#: /home/erickb/NetBeansProjects/gdrs_web/site/index.php:110
+msgid "Decimal places:"
+msgstr "Nombre de décimales:"
+
+#: /home/erickb/NetBeansProjects/gdrs_web/site/index.php:119
+msgid "Global mitigation pathway: "
+msgstr "Voie atténuation au niveau mondial: "
+
+#: /home/erickb/NetBeansProjects/gdrs_web/site/index.php:127
+msgid "Cumulative since:"
+msgstr "S'accumulent depuis:"
+
+#: /home/erickb/NetBeansProjects/gdrs_web/site/index.php:146
+msgid "Development threshold:"
+msgstr "Seuil de développement:"
+
+#: /home/erickb/NetBeansProjects/gdrs_web/site/index.php:147
+msgid "Luxury threshold:"
+msgstr "Seuil de luxe:"
+
+#: /home/erickb/NetBeansProjects/gdrs_web/site/index.php:150
+msgid "Cap baselines at luxury threshold"
+msgstr "Tronquer référence au seuil de luxe"
+
+#: /home/erickb/NetBeansProjects/gdrs_web/site/index.php:154
+msgid "Progressive between thresholds"
+msgstr "Augmenter régulièrement entre les lignes de base"
+
+#: /home/erickb/NetBeansProjects/gdrs_web/site/index.php:156
+msgid "Responsibility weight:"
+msgstr "Facteur de la responsabilité:"
+
+#: /home/erickb/NetBeansProjects/gdrs_web/site/index.php:158
+msgid "Total cost as % GWP:"
+msgstr "Coût total en% du PIB mondial:"
+
+#: /home/erickb/NetBeansProjects/gdrs_web/site/index.php:159
+msgid "Emissions elasticity:"
+msgstr "l'Elasticité des émissions:"
+
+#: /home/erickb/NetBeansProjects/gdrs_web/site/index.php:163
+msgid "Sequencing"
+msgstr "Séquençage"
+
+#: /home/erickb/NetBeansProjects/gdrs_web/site/index.php:167
+msgid "Use sequencing"
+msgstr "Utilisez séquençage"
+
+#: /home/erickb/NetBeansProjects/gdrs_web/site/index.php:169
+msgid "A1 reduction %:"
+msgstr "% De réduction pour les pays de l'Annexe I:"
+
+#: /home/erickb/NetBeansProjects/gdrs_web/site/index.php:170
+msgid "Sequencing base yr:"
+msgstr "Année de départ pour le séquençage:"
+
+#: /home/erickb/NetBeansProjects/gdrs_web/site/index.php:171
+msgid "End of period:"
+msgstr "Fin de la période"
+
+#: /home/erickb/NetBeansProjects/gdrs_web/site/index.php:172
+msgid "A1 smoothing:"
+msgstr "Paramètre de lissage pour les pays de l'Annexe I:"
+
+#: /home/erickb/NetBeansProjects/gdrs_web/site/index.php:174
+msgid "Mitigation requirement gap borne by: "
+msgstr "Écart d'atténuation sont pris en charge par :"
+
+#: /home/erickb/NetBeansProjects/gdrs_web/site/index.php:176
+msgid "Annex 1"
+msgstr "Annexe I"
+
+#: /home/erickb/NetBeansProjects/gdrs_web/site/index.php:178
+msgid "Annex 2"
+msgstr "Annexe II"
+
+#: /home/erickb/NetBeansProjects/gdrs_web/site/index.php:188
+msgid "calculate"
+msgstr "calculer"
+
+#: /home/erickb/NetBeansProjects/gdrs_web/site/index.php:189
+msgid "reset to default values"
+msgstr "réinitialiser les valeurs par défaut"
+
+#: /home/erickb/NetBeansProjects/gdrs_web/site/index.php:197
+msgid "Available Countries:"
+msgstr "Pays Disponibles:"
+
+#: /home/erickb/NetBeansProjects/gdrs_web/site/index.php:201
+msgid "Add"
+msgstr "Ajouter"
+
+#: /home/erickb/NetBeansProjects/gdrs_web/site/index.php:202
+msgid "Remove"
+msgstr "Enlever"
+
+#: /home/erickb/NetBeansProjects/gdrs_web/site/index.php:205
+msgid "Selected Countries:"
+msgstr "Pays Sélectionnés:"
+
+#: /home/erickb/NetBeansProjects/gdrs_web/site/index.php:217
+msgid "Welcome to the Greenhouse Development Rights Calculator."
+msgstr "Bienvenue à la calculatrice pour Greenhouse Development Rights."
+
+#: /home/erickb/NetBeansProjects/gdrs_web/site/index.php:218
+msgid "Use the controls to the left to change the parameters in the GDRs framework and see the implications for the Responsibility and Capacity Index (RCI) and other indicators."
+msgstr "Utilisez les commandes vers la gauche pour modifier les paramètres dans le cadre des GDR et voir les implications pour l'indice de responsabilité et de la capacité (RCI) et d'autres indicateurs."
+
+#: /home/erickb/NetBeansProjects/gdrs_web/site/index.php:224
+msgid "Download complete Excel table"
+msgstr "Télécharger le tableau complet en Excel"
+
+#: /home/erickb/NetBeansProjects/gdrs_web/site/index.php:235
+msgid "The calculator or database has been updated since you last visited. Your settings have been reset."
+msgstr "La calculatrice ou base de données a été mise à jour depuis votre dernière visite. Vos paramètres ont été réinitialisés."
+

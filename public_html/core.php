@@ -28,9 +28,9 @@
     // Create database filename if doesn't already exist
     $have_db = FALSE;
     // Future-proof: right now keep the path, but in future might just use basename
-    if ($_POST['user_db']) {
+    if (isset($_POST['user_db']) && $_POST['user_db']) {
         $user_db_nopath = basename($_POST['user_db']);
-    } elseif ($_GET['db']) {
+    } elseif (isset($_GET['db']) && $_GET['db']) {
         $user_db_nopath = basename($_GET['db']);
     } else {
         $user_db_nopath = NULL;
@@ -68,7 +68,7 @@
     }
     
     // Reload parameters--might be different from defaults
-    if (!$_POST['reset']) {
+    if (!isset($_POST['reset']) || !$_POST['reset']) {
         $shared_params = Framework::get_shared_params($user_db);
         $fw_params = $fw->get_fw_params($user_db);
     }
@@ -76,8 +76,8 @@
     /*** Display parameters ****************************************************/
 
     $basic_adv = array (
-        basic => 'Basic',
-        adv => 'Advanced');
+        'basic' => 'Basic',
+        'adv' => 'Advanced');
     
     $advanced = false;
     // TODO: replace country_grp w JS to show/hide rows and columns, or HTML table filter
@@ -90,8 +90,8 @@
                                 'max'=>NULL,
                                 'step'=>NULL,
                                 'list'=>array(
-                                    basic=>array('display_name'=>'Basic'),
-                                    adv=>array('display_name'=>'Advanced')
+                                    'basic'=>array('display_name'=>'Basic'),
+                                    'adv'=>array('display_name'=>'Advanced')
                                 )    
                             ),
                              'display_yr' => array(
@@ -144,7 +144,7 @@
                             )
                         );
     
-    if (!$_POST['reset']) {
+    if (!isset($_POST['reset']) || !$_POST['reset']) {
         if (isset($_COOKIE['display_params']) && $up_to_date) {
             $display_params = unserialize(stripslashes($_COOKIE['display_params']));    
         }
@@ -162,7 +162,7 @@
         setcookie('display_params',serialize($display_params),$cookie_info['time'],"",$cookie_info['server']);
     }
     
-    if (!$_POST['reset']) {
+    if (!isset($_POST['reset']) || !$_POST['reset']) {
         get_usr_vals($shared_params);
         get_usr_vals($fw_params);
     }
@@ -177,7 +177,7 @@
     // Just to be sure, explicitly delete the object
     unset($fw);
     
-    if ($_POST['ajax']) {
+    if (isset($_POST['ajax']) && $_POST['ajax']) {
         // print_r($_POST);
         // echo("<br /><br />");
         // print_r($shared_params);
