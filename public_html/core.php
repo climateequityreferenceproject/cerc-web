@@ -1,4 +1,6 @@
 <?php
+    require_once('i18n.php');
+
     include("frameworks/frameworks.php");
     include("tables/table_generator.php");
     

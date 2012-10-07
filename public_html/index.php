@@ -1,31 +1,8 @@
 <?php
-ini_set('display_errors',1); 
-error_reporting(E_ALL);
-header("Cache-Control: no-cache, no-store");
-// I18N support information here
-if (isset($_GET['lang'])) {
-    $locale = $_GET['lang'];
-} else {
-    $locale = 'en_EN';
+if (isset($_GET['debug']) && $_GET['debug'] == 'yes') {
+    ini_set('display_errors',1); 
+    error_reporting(E_ALL);
 }
-$domain = 'messages';
-$codeset = 'UTF8';
-putenv("LANG=$locale");
-putenv("LANGUAGE=$locale");
-putenv("LC_ALL=$locale");
-putenv("LC_MESSAGES=$locale");
-setlocale(LC_ALL,
-        $locale . ".utf8",
-        $locale . ".UTF8",
-        $locale . ".utf-8",
-        $locale . ".UTF-8",
-        $locale,
-        "CC_LANG");
-// This ensures that decimal numbers use a decimal point rather than a comma
-setlocale(LC_NUMERIC, 'C');
-bindtextdomain($domain, dirname(__FILE__).'/locale');
-bind_textdomain_codeset($domain, $codeset);
-textdomain($domain);
 
 include("core.php");
 include("boilerplate.php");
