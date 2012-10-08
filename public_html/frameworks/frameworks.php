@@ -171,7 +171,14 @@
             $db_cnx = self::db_cnx($user_db);
            
             $retval = array();
-            foreach ($db_cnx->query('SELECT name_short, name_long, pathway_id, advanced FROM pathway_names ORDER BY pathway_id') as $pathways) {
+            
+            // This query ensures that only pathways that have numbers entered in the 'pathways' table get listed
+$query = <<< EOSQL
+            SELECT name_short, name_long, pathway_id, advanced FROM pathway_names,
+(SELECT DISTINCT pathway FROM pathways WHERE pathway IS NOT NULL) AS pwname_temp
+WHERE name_short = pwname_temp.pathway ORDER BY pathway_id;
+EOSQL;
+            foreach ($db_cnx->query($query) as $pathways) {
                 $retval[] = array(
                     'id' => $pathways['pathway_id'],
                     'advanced' => $pathways['advanced'],
@@ -238,7 +245,11 @@
             } 
 
             // Get the list of emergency pathways: note that get_emerg_paths orders by pathway ID
-            $retval['emergency_path']['list'] = self::get_emerg_paths($user_db);
+            $emerg_path_list = array();
+            foreach (self::get_emerg_paths($user_db) as $val) {
+                $emerg_path_list[$val['id']] = $val;
+            }
+            $retval['emergency_path']['list'] = $emerg_path_list;
             
             // Check the year range and apply to 'cum_since_year': Note that this does not update the user's current choice of cum_since_year
             $year_range = self::get_year_range($user_db);
