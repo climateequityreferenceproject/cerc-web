@@ -73,7 +73,29 @@
                                 'step' => 1,
                                 'list' => NULL,
                                 'type' => 'int'
-                            )
+                            ),
+                            'use_kab' => array(
+                                'description' => 'If this is checked, then baselines are capped at the luxury threshold',
+                                'advanced' => true,
+                                'db_param' => 'use_kab',
+                                'value' => NULL,
+                                'min' => 0,
+                                'max' => 1,
+                                'step' => 1,
+                                'list' => NULL,
+                                'type' => 'int'
+                            ),
+                            'kab_only_ratified' => array(
+                                'description' => 'If this is checked, then baselines are capped at the luxury threshold',
+                                'advanced' => true,
+                                'db_param' => 'kab_only_ratified',
+                                'value' => NULL,
+                                'min' => 0,
+                                'max' => 1,
+                                'step' => 1,
+                                'list' => NULL,
+                                'type' => 'int'
+                            ),
                         );
                         
         public $table_views = array(

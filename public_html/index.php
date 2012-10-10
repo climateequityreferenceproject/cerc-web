@@ -164,6 +164,21 @@ if (isset($_GET['iso3'])) {
                                        // Later, other frameworks may use these. But right now only GDRs
                                        if ($display_params['framework']['value'] === 'gdrs') {
                                            echo '<li class="advanced"><fieldset>';
+                                           echo '<legend class="closed"><span>&nbsp;</span>' . _("Kyoto-adjusted baselines") . '</legend>';
+                                           echo '<div><ul id="kab">';
+                                           echo "<li>";
+                                           echo '<input type="checkbox" name="use_kab" id="use_kab" class="click" value="1" ' . ($shared_params["use_kab"]['value'] ? 'checked="checked"' : '') . '/>';
+                                           echo '<label for="use_kab" class="click"> ' . _("Use KABs") . '</label>';
+                                           echo "</li>";
+                                           echo "<li>";
+                                           echo '<input type="checkbox" name="kab_only_ratified" id="kab_only_ratified" class="click" value="1" ' . ($shared_params["kab_only_ratified"]['value'] ? 'checked="checked"' : '') . '/>';
+                                           echo '<label for="kab_only_ratified" class="click"> ' . _("Only ratifying countries") . '</label>';
+                                           echo "</li>";
+                                           echo '</li><ul>&nbsp;<!-- end #kab -->';
+                                           echo '</div></fieldset></li>';
+                                       }
+                                       if ($display_params['framework']['value'] === 'gdrs') {
+                                           echo '<li class="advanced"><fieldset>';
                                            echo '<legend class="closed"><span>&nbsp;</span>' . _("Sequencing") . '</legend>';
                                            echo '<div><ul id="sequencing">';
                                            echo "<li>";

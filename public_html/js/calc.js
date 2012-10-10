@@ -75,18 +75,26 @@ $(function() {
     $('#display_ctry').change(submit);
     $('#decimal_pl').change(submit);
     $('#emergency_path').change(submit);
+    
     $('#baseline').change(submit);
     $('#cum_since_yr').change(submit);
     $('#use_lulucf').change(submit);
     $('#use_nonco2').change(submit);
     $('#use_netexports').change(submit);
+    
     $('#dev_thresh').change(submit);
     $('#lux_thresh').change(submit);
     $('#do_luxcap').change(submit);
     $('#interp_btwn_thresh').change(submit);
+    
     $('#r_wt').change(submit);
     $('#percent_gwp').change(submit);
     $('#em_elast').change(submit);
+    
+    $('#use_kab').change(submit);
+    // TODO: This should not run if "use_kab" is not checked
+    $('#kab_only_ratified').change(submit);
+    
     $('#use_sequencing').change(submit);
     // TODO: These should only be run if use sequencing is checked
     $('#percent_a1_rdxn').change(submit);
