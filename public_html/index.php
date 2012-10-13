@@ -163,41 +163,41 @@ if (isset($_GET['iso3'])) {
                                        echo select_num('em_elast', $shared_params, _("Emissions elasticity:"), $advanced);
                                        // Later, other frameworks may use these. But right now only GDRs
                                        if ($display_params['framework']['value'] === 'gdrs') {
-                                           echo '<li class="advanced"><fieldset>';
-                                           echo '<legend class="closed"><span>&nbsp;</span>' . _("Kyoto-adjusted baselines") . '</legend>';
+//                                           echo '<li class="advanced"><fieldset>';
+//                                           echo '<legend class="closed"><span>&nbsp;</span>' . _("Kyoto-adjusted baselines") . '</legend>';
                                            echo '<div><ul id="kab">';
                                            echo "<li>";
                                            echo '<input type="checkbox" name="use_kab" id="use_kab" class="click" value="1" ' . ($shared_params["use_kab"]['value'] ? 'checked="checked"' : '') . '/>';
-                                           echo '<label for="use_kab" class="click"> ' . _("Use KABs") . '</label>';
+                                           echo '<label for="use_kab" class="click"> ' . _("Use Kyoto-adjusted baselines") . '</label>';
                                            echo "</li>";
                                            echo "<li>";
                                            echo '<input type="checkbox" name="kab_only_ratified" id="kab_only_ratified" class="click" value="1" ' . ($shared_params["kab_only_ratified"]['value'] ? 'checked="checked"' : '') . '/>';
-                                           echo '<label for="kab_only_ratified" class="click"> ' . _("Only ratifying countries") . '</label>';
+                                           echo '<label for="kab_only_ratified" class="click"> ' . _("But only for ratifying countries") . '</label>';
                                            echo "</li>";
-                                           echo '</li><ul>&nbsp;<!-- end #kab -->';
-                                           echo '</div></fieldset></li>';
+                                           echo '</li><ul>&nbsp;</div><!-- end #kab -->';
+//                                           echo '</fieldset></li>';
                                        }
-                                       if ($display_params['framework']['value'] === 'gdrs') {
-                                           echo '<li class="advanced"><fieldset>';
-                                           echo '<legend class="closed"><span>&nbsp;</span>' . _("Sequencing") . '</legend>';
-                                           echo '<div><ul id="sequencing">';
-                                           echo "<li>";
-                                           echo '<input type="checkbox" name="use_sequencing" id="use_sequencing" class="click" value="1" ' . ($shared_params["use_sequencing"]['value'] ? 'checked="checked"' : '') . '/>';
-                                           echo '<label for="use_sequencing" class="click"> ' . _("Use sequencing") . '</label>';
-                                           echo "</li>";
-                                           echo select_num('percent_a1_rdxn', $shared_params, _("A1 reduction %:"), $advanced);
-                                           echo select_num('base_levels_yr', $shared_params, _("Sequencing base yr:"), $advanced);
-                                           echo select_num('end_commitment_period', $shared_params, _("End of period:"), $advanced);
-                                           echo select_num('a1_smoothing', $shared_params, _("A1 smoothing:"), $advanced);
-                                           echo "<li>";
-                                           echo '<p>' . _("Mitigation requirement gap borne by: ") . '</p><ul><li>';
-                                           echo '<input type="radio" name="mit_gap_borne" id="annex1" class="click" value="1" ' . ($shared_params["mit_gap_borne"]['value'] == "1" ? 'checked="checked"' : '') . "/>";
-                                           echo '<label for="annex1" class="click radio"> ' . _("Annex 1") . '</label>';
-                                           echo '<input type="radio" name="mit_gap_borne" id="annex2" class="click" value="2" ' . ($shared_params["mit_gap_borne"]['value'] == "2" ? 'checked="checked"' : '') . "/>";
-                                           echo '<label for="annex2" class="click radio"> ' . _("Annex 2") . '</label>';
-                                           echo '</li></ul></li><ul>&nbsp;<!-- end #sequencing -->';
-                                           echo '</div></fieldset></li>';
-                                       }
+//                                       if ($display_params['framework']['value'] === 'gdrs') {
+//                                           echo '<li class="advanced"><fieldset>';
+//                                           echo '<legend class="closed"><span>&nbsp;</span>' . _("Sequencing") . '</legend>';
+//                                           echo '<div><ul id="sequencing">';
+//                                           echo "<li>";
+//                                           echo '<input type="checkbox" name="use_sequencing" id="use_sequencing" class="click" value="1" ' . ($shared_params["use_sequencing"]['value'] ? 'checked="checked"' : '') . '/>';
+//                                           echo '<label for="use_sequencing" class="click"> ' . _("Use sequencing") . '</label>';
+//                                           echo "</li>";
+//                                           echo select_num('percent_a1_rdxn', $shared_params, _("A1 reduction %:"), $advanced);
+//                                           echo select_num('base_levels_yr', $shared_params, _("Sequencing base yr:"), $advanced);
+//                                           echo select_num('end_commitment_period', $shared_params, _("End of period:"), $advanced);
+//                                           echo select_num('a1_smoothing', $shared_params, _("A1 smoothing:"), $advanced);
+//                                           echo "<li>";
+//                                           echo '<p>' . _("Mitigation requirement gap borne by: ") . '</p><ul><li>';
+//                                           echo '<input type="radio" name="mit_gap_borne" id="annex1" class="click" value="1" ' . ($shared_params["mit_gap_borne"]['value'] == "1" ? 'checked="checked"' : '') . "/>";
+//                                           echo '<label for="annex1" class="click radio"> ' . _("Annex 1") . '</label>';
+//                                           echo '<input type="radio" name="mit_gap_borne" id="annex2" class="click" value="2" ' . ($shared_params["mit_gap_borne"]['value'] == "2" ? 'checked="checked"' : '') . "/>";
+//                                           echo '<label for="annex2" class="click radio"> ' . _("Annex 2") . '</label>';
+//                                           echo '</li></ul></li><ul>&nbsp;<!-- end #sequencing -->';
+//                                           echo '</div></fieldset></li>';
+//                                       }
                             ?>
                                    </ul>&nbsp;
                                </div>
