@@ -70,6 +70,11 @@ $(function() {
     $('#table_view').change(function () {
         set_display();
         submit();
+        if ($('#table_view').val() == 'gdrs_country_report') {
+            $('#region_country_filter').hide();
+        } else {
+            $('#region_country_filter').show();
+        }
     });
     $('#display_yr').change(submit);
     $('#display_ctry').change(submit);

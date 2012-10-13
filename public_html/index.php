@@ -58,7 +58,7 @@ if (isset($_GET['iso3'])) {
                                     $advanced = true;
                                 }
                                 ?> />
-                                <label for="adv" class="click radio">Advanced</label>
+                                <label for="adv" class="click radio"><?php echo _("Advanced");?></label>
                             </li>
                         </ul>&nbsp;
                         <!-- DO NOT REMOVE the &nbsp; after the last element within each of the divs enclosing everything after legend in fieldsets.
@@ -67,7 +67,7 @@ if (isset($_GET['iso3'])) {
                 </fieldset>
 
                 <fieldset id="region_country_filter">
-                    <legend class="open"><span>&nbsp;</span>Select regions and countries</legend>
+                    <legend class="open"><span>&nbsp;</span><?php echo _("Select regions and countries");?></legend>
                     <div>
                         <ul>
                             <li>Current list<span id="country_list_button"><button type="button">Edit list</button></span></li>
@@ -77,7 +77,7 @@ if (isset($_GET['iso3'])) {
                 </fieldset>
 
                 <fieldset id="display_params">
-                    <legend class="open"><span>&nbsp;</span>Display settings</legend>
+                    <legend class="open"><span>&nbsp;</span><?php echo _("Display settings");?></legend>
                     <div>
                         <ul>
                             <?php echo select_options_list('table_view', $display_params, _("Table view: "), $advanced); ?>
