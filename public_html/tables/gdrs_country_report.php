@@ -23,16 +23,12 @@ function nice_number($prefix, $num, $postfix) {
 }
 
 // TODO: Replace "iso3" with the more generic "code"
-function gdrs_country_report($dbfile, $country_name, $shared_params, $iso3 = NULL, $year = 2020) {
+function gdrs_country_report($dbfile, $country_name, $shared_params, $iso3, $year, $world_code='_WORLD') {
     $viewquery = get_common_table_query($dbfile);
 
     $database = 'sqlite:'.$dbfile;
 
     $db = new PDO($database) OR die("<p>Can't open database</p>");
-    
-    if (!$iso3) {
-        $iso3 = $countries[0]['iso3'];
-    }
     
     // Get value for percent of GWP as a convenience -- used in a couple of places
     $perc_gwp = $shared_params['percent_gwp']['value'];
@@ -50,6 +46,14 @@ SELECT SUM(pop_mln) AS pop, SUM(gdp_blnUSDMER) AS gdp_mer,
 EOSQL;
 
 if (!is_country($iso3)) {
+    if ($iso3 === $world_code) {
+        $flag_string = ' WHERE (year=' . $year . ' OR year=1990)';
+    } else {
+        $flag_string = ', flags WHERE ';
+        $flag_string .= 'flags.iso3 = disp_temp.iso3 AND ';
+        $flag_string .= '(year=' . $year . ' OR year=1990) AND ';
+        $flag_string .= 'flags.value = 1 AND flags.flag = "' . $iso3 . '"';
+    }
     foreach ($db->query("SELECT seq_no FROM tax_levels;") as $record) {
         $tax_string .= sprintf(', SUM(tax_pop_mln_below_%1$d) AS tax_pop_mln_below_%1$d', $record['seq_no']);
         $tax_string .= sprintf(', SUM(tax_income_mer_dens_%1$d) AS tax_income_mer_dens_%1$d', $record['seq_no']);
@@ -66,11 +70,7 @@ SELECT year, SUM(pop_mln) AS pop_mln, SUM(gdrs_pop_mln_above_dl) AS gdrs_pop_mln
         SUM(gdrs_rci) AS gdrs_rci, SUM(fossil_CO2_MtCO2) AS fossil_CO2_MtCO2,
         SUM(LULUCF_MtCO2) AS LULUCF_MtCO2, SUM(NonCO2_MtCO2e) AS NonCO2_MtCO2e
         $tax_string
-    FROM disp_temp, flags WHERE
-        flags.iso3 = disp_temp.iso3 AND
-        (year=$year OR year=1990) AND
-        flags.value = 1 AND
-        flags.flag = "$iso3"
+    FROM disp_temp$flag_string
     GROUP BY year ORDER BY year;
 EOSQL;
 } else {
@@ -89,7 +89,7 @@ EOSQL;
     $bau_1990 = $ctry_val_1990['fossil_CO2_MtCO2'];
     $bau = $ctry_val['fossil_CO2_MtCO2'];
     $world_bau = $world_tot['fossil_CO2'];
-    $gases = "CO2";
+    $gases = "CO<sub>2</sub>";
     if ($shared_params['use_lulucf']['value']) {
         $bau_1990 += $ctry_val_1990['LULUCF_MtCO2'];
         $bau += $ctry_val['LULUCF_MtCO2'];
@@ -99,7 +99,7 @@ EOSQL;
         $bau_1990 += $ctry_val_1990['NonCO2_MtCO2e'];
         $bau += $ctry_val['NonCO2_MtCO2e'];
         $world_bau += $world_tot['NonCO2'];
-        $gases = "CO2e";
+        $gases = "CO<sub>2</sub>e";
     }
     
 $retval .= <<< EOHTML
@@ -333,17 +333,21 @@ EOSQL;
     if (is_country($iso3)) {
         $query .=  ' gdrs_alloc_MtCO2, fossil_CO2_MtCO2, LULUCF_MtCO2,
         NonCO2_MtCO2e';
-        $query .= ' FROM disp_temp WHERE iso3="' . $iso3 . '"';
+        $query .= ' FROM disp_temp WHERE iso3="' . $iso3 . '" AND';
     } else {
         $query .=  ' SUM(gdrs_alloc_MtCO2) AS gdrs_alloc_MtCO2,
         SUM(fossil_CO2_MtCO2) AS fossil_CO2_MtCO2,
         SUM(LULUCF_MtCO2) AS LULUCF_MtCO2,
         SUM(NonCO2_MtCO2e) AS NonCO2_MtCO2e';
-       $query .= ' FROM disp_temp, flags WHERE';
-        $query .= ' flags.value = 1 AND flags.iso3 = disp_temp.iso3 AND';
-        $query .= ' flags.flag="' . $iso3 . '"';
+        if ($iso3 === $world_code) {
+            $query .= ' FROM disp_temp WHERE';
+        } else {
+            $query .= ' FROM disp_temp, flags WHERE';
+            $query .= ' flags.value = 1 AND flags.iso3 = disp_temp.iso3 AND';
+            $query .= ' flags.flag="' . $iso3 . '" AND';
+        }
     }
-    $query .= ' AND year >= 1990 AND year <= 2030 GROUP BY year ORDER BY year;';
+    $query .= ' year >= 1990 AND year <= 2030 GROUP BY year ORDER BY year;';
     
     $bau_series = array();
     $alloc_series = array();
@@ -450,39 +454,40 @@ $retval .= <<< EOHTML
 </object>
 EOHTML;
 
-$retval .= '<dl id="ctry_report_legend">';
+    $retval .= '<dl id="ctry_report_legend">';
     $retval .= '<dt class="key-bau"><span></span>' . _('Business as Usual') . '</dt>';
     $retval .= '<dd>' . _('GHG emissions baselines (“BAU”) are based on projected emissions growth rates from McKinsey and Co\'s projections (Version 2.1) applied to the most current available annual emissions data (CO2 from fossil fuels from CDIAC\'s 2010 estimates); CO2 from land use is projected constant at 2005 levels and non-CO2 GHGs are a constant proportion relative to Fossil CO2 emissions at 2005 levels.') . '</dd>';
 
     $retval .= '<dt class="key-gdrs"><span></span>' . _('GDRs "fair share" allocation') . '</dt>';
     $retval .= '<dd>' . sprintf(_('National allocation trajectory, as calculated by GDRs for %s using the specified pathways and parameters. The mitigation implied by this allocation can be either domestic or international &#8211; GDRs in itself says nothing about how or where it occurs.'), $country_name) . '</dd>';
     
-    $retval .= '<dt class="key-phys"><span></span>' . _('Domestic emissions') . '</dt>';
-    $retval .= '<dd>' . sprintf(_('An example of an emissions trajectory for %s that is consistent with the specified pathways and parameters.'), $country_name);
-    $retval .= sprintf(_('The actual domestic emissions trajectory would depend on the international cost and mitigation sharing that %s chooses to participate in. GDRs assigns each country a mitigation obligation. It does not specify how or where that obligation should be discharged.'), $country_name) . '</dd>';
+    if ($iso3 != $world_code) {
+        $retval .= '<dt class="key-phys"><span></span>' . _('Domestic emissions') . '</dt>';
+        $retval .= '<dd>' . sprintf(_('An example of an emissions trajectory for %s that is consistent with the specified pathways and parameters.'), $country_name);
+        $retval .= sprintf(_('The actual domestic emissions trajectory would depend on the international cost and mitigation sharing that %s chooses to participate in. GDRs assigns each country a mitigation obligation. It does not specify how or where that obligation should be discharged.'), $country_name) . '</dd>';
 
-    $retval .= '<dt class="key-dom"><span></span>';
-    if ($fund_others) {
-        $retval .= _('Domestically-funded mitigation') . '</dt>'; // if we decide to make a distinction, this one would be Domestic mitigation, with its own definition 
-        $retval .= '<dd>'. sprintf(_('Mitigation funded by %s and carried out within its own borders. The fraction of a country\'s mitigation obligation that is discharged domestically is not specified by GDRs, but is rather a result of the international cost and mitigation sharing arrangements that it chooses to participate in.'), $country_name) . '</dd>';
-    } else {
-        $retval .= _('Domestically-funded mitigation') . '</dt>';
-        $retval .= '<dd>' . sprintf(_('Mitigation funded by %s and carried out within its own borders. The fraction of a country\'s mitigation obligation that is discharged domestically is not specified by GDRs, but is rather a result of the international cost and mitigation sharing arrangements that it chooses to participate in.'), $country_name) . '</dd>';
-    }
-    
-    if ($fund_others) {
-        $retval .= '<dt class="key-intl"><span></span>' . _('Mitigation funded in other countries') . '</dt>';
-        $retval .= '<dd>' . sprintf(_('Mitigation funded by %s and carried out within other countries. The fraction of a country\'s mitigation obligation that is discharged in other countries is not specified by GDRs, but is rather a result of the international cost and mitigation sharing arrangements that it chooses to participate in.'), $country_name) . '</dd>';
+        $retval .= '<dt class="key-dom"><span></span>';
+        if ($fund_others) {
+            $retval .= _('Domestically-funded mitigation') . '</dt>'; // if we decide to make a distinction, this one would be Domestic mitigation, with its own definition 
+            $retval .= '<dd>'. sprintf(_('Mitigation funded by %s and carried out within its own borders. The fraction of a country\'s mitigation obligation that is discharged domestically is not specified by GDRs, but is rather a result of the international cost and mitigation sharing arrangements that it chooses to participate in.'), $country_name) . '</dd>';
         } else {
-        $retval .= '<dt class="key-sup"><span></span>' . _('Mitigation funded by other countries') . '</dt>';
-        $retval .= '<dd>' . sprintf(_('Mitigation funded other countries, but carried out within the borders of %s. GDRs assigns the "credit" for this mitigation to the funder, but of course the terms of the mitigation would be as negotiated with the host country.'), $country_name) . '</dd>';
+            $retval .= _('Domestically-funded mitigation') . '</dt>';
+            $retval .= '<dd>' . sprintf(_('Mitigation funded by %s and carried out within its own borders. The fraction of a country\'s mitigation obligation that is discharged domestically is not specified by GDRs, but is rather a result of the international cost and mitigation sharing arrangements that it chooses to participate in.'), $country_name) . '</dd>';
+        }
+
+        if ($fund_others) {
+            $retval .= '<dt class="key-intl"><span></span>' . _('Mitigation funded in other countries') . '</dt>';
+            $retval .= '<dd>' . sprintf(_('Mitigation funded by %s and carried out within other countries. The fraction of a country\'s mitigation obligation that is discharged in other countries is not specified by GDRs, but is rather a result of the international cost and mitigation sharing arrangements that it chooses to participate in.'), $country_name) . '</dd>';
+            } else {
+            $retval .= '<dt class="key-sup"><span></span>' . _('Mitigation funded by other countries') . '</dt>';
+            $retval .= '<dd>' . sprintf(_('Mitigation funded other countries, but carried out within the borders of %s. GDRs assigns the "credit" for this mitigation to the funder, but of course the terms of the mitigation would be as negotiated with the host country.'), $country_name) . '</dd>';
+        }
+        $retval .= '<dt class="key-uncond"><span></span>' . _('Unconditional Pledge') . '</dt>';
+        $retval .= '<dd>' . sprintf(_('Emissions consistent with %s&#8217;s pledged emission reductions <em>not</em> conditional on other countries&#8217; actions.'), $country_name) . '</dd>';
+
+        $retval .= '<dt class="key-cond"><span></span>' . _('Conditional Pledge') . '</dt>';
+        $retval .= '<dd>' . sprintf(_('Emissions consistent with %s&#8217;s pledged emission reductions conditional on other countries&#8217; actions.'), $country_name) . '</dd>';
     }
-    $retval .= '<dt class="key-uncond"><span></span>' . _('Unconditional Pledge') . '</dt>';
-    $retval .= '<dd>' . sprintf(_('Emissions consistent with %s&#8217;s pledged emission reductions <em>not</em> conditional on other countries&#8217; actions.'), $country_name) . '</dd>';
-
-    $retval .= '<dt class="key-cond"><span></span>' . _('Conditional Pledge') . '</dt>';
-    $retval .= '<dd>' . sprintf(_('Emissions consistent with %s&#8217;s pledged emission reductions conditional on other countries&#8217; actions.'), $country_name) . '</dd>';
-
     $retval .= '</dl>';
 
 return $retval;

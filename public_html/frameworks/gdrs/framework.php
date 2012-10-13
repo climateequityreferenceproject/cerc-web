@@ -120,7 +120,7 @@
                                 'time_series' => true
                             ),
                             'gdrs_country_report' => array(
-                                'display_name' => 'Country report',
+                                'display_name' => 'Report',
                                 'time_series' => false
                             )
                         );

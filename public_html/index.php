@@ -83,10 +83,17 @@ if (isset($_GET['iso3'])) {
                             <?php echo select_options_list('table_view', $display_params, _("Table view: "), $advanced); ?>
                             <?php echo select_num('display_yr', $display_params, _("Year to display:"), $advanced); ?>
                             <?php
-                                // Choose country to display for country report
-                                echo '<li><label for="display_ctry" class="select" title="' . _("Country to display for country report") . '">' . _("Country to display:") . '</label>';
+                                // Choose country or region to display for country report
+                                echo '<li><label for="display_ctry" class="select" title="' . _("Country or region to display for country report") . '">' . _("Country or region to display:") . '</label>';
                                 echo '<select name="display_ctry" id="display_ctry" action="index.php">';
                                 $valid_countryregion = false;
+                                if ($display_params['display_ctry']['value'] === $world_code) {
+                                    $valid_countryregion = true;
+                                    $selected = ' selected="selected"';
+                                } else {
+                                    $selected = '';
+                                }
+                                echo '<option value="' . $world_code .  '"' . $selected . '>' . _('World') . '</option>';
                                 foreach ($region_list as $item) {
                                     $selected = '';
                                     if ($item['region_code'] === $display_params['display_ctry']['value']) {
@@ -138,7 +145,7 @@ if (isset($_GET['iso3'])) {
                             <li>
                                 <input type="checkbox" name="use_nonco2" id="use_nonco2" class="click" value="1" <?php if ($shared_params["use_nonco2"]['value'])
                                            echo 'checked="checked"'; ?>  />
-                                <label for="use_nonco2" class="click"> Include non-CO2 gases</label>
+                                <label for="use_nonco2" class="click"> Include non-CO<sub>2</sub> gases</label>
                             </li>
                             <li>
                                 <input type="checkbox" name="use_netexports" id="use_netexports" class="click" value="1" <?php if ($shared_params["use_netexports"]['value'])
@@ -256,11 +263,11 @@ if (isset($_GET['iso3'])) {
                                      ?>
 
                                     <div id="calc_parameters">
-                                       <?php echo generate_params_table($display_params, $fw_params, $shared_params, $country_list, $region_list, $table_views); ?>
+                                       <?php echo generate_params_table($display_params, $fw_params, $shared_params, $country_list, $region_list, $table_views, $world_code); ?>
                                     </div><!-- end #calc_parameters -->
 
                                     <div id="calc_results">
-                                       <?php echo generate_results_table($display_params, $shared_params, $country_list, $region_list, $user_db); 
+                                       <?php echo generate_results_table($display_params, $shared_params, $country_list, $region_list, $user_db, $world_code); 
                                         // include("tables/sample_table.php");
                                        ?>
                                     </div><!-- end #calc_results -->

@@ -4,6 +4,9 @@
     include("frameworks/frameworks.php");
     include("tables/table_generator.php");
     
+    // Code to use the for the "world" region
+    $world_code = '_WORLD';
+    
     // Generic cookie array
     $cookie_info=array();
     $cookie_info['time'] = time()+60*60*24*28;
@@ -187,5 +190,5 @@
         // print_r($fw_params);
         // echo("<br /><br />");
         // print_r($display_params);
-        echo generate_table($display_params, $fw_params, $shared_params, $country_list, $region_list, $table_views, $user_db);
+        echo generate_table($display_params, $fw_params, $shared_params, $country_list, $region_list, $table_views, $user_db, $world_code);
     }

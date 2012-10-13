@@ -3,15 +3,21 @@
         return "<td><strong>" . $label . "</strong>" . $val . "</td>\n";
     }
     
-    function get_country_name($display_params, $country_list, $region_list) {
+    function get_country_name($display_params, $country_list, $region_list, $world_code) {
         if ($display_params["table_view"]['value'] === 'gdrs_country_report') {
             $found_it = false;
-            foreach ($country_list as $item) {
-                $selected = '';
-                if ($item['iso3'] === $display_params['display_ctry']['value']) {
-                    $country_name = $item['name'];
-                    $found_it = true;
-                    break;
+            if ($display_params['display_ctry']['value'] === $world_code) {
+                $found_it = true;
+                $country_name = _("World");
+            }
+            if (!$found_it) {
+                foreach ($country_list as $item) {
+                    $selected = '';
+                    if ($item['iso3'] === $display_params['display_ctry']['value']) {
+                        $country_name = $item['name'];
+                        $found_it = true;
+                        break;
+                    }
                 }
             }
             if (!$found_it) {
@@ -28,14 +34,14 @@
         return $country_name;
     }
             
-    function generate_params_table($display_params, $fw_params, $shared_params, $country_list, $region_list, $table_views) {
+    function generate_params_table($display_params, $fw_params, $shared_params, $country_list, $region_list, $table_views, $world_code) {
         $ep_index = $shared_params["emergency_path"]['value'];
         $ep_name = $shared_params["emergency_path"]['list'][$ep_index]['display_name'];
         $table_name = $table_views[$display_params["table_view"]['value']]['display_name'];
         if (!$table_views[$display_params["table_view"]['value']]['time_series']) {
             $table_name = sprintf(_('%1$s in %2$s'), $table_name, $display_params["display_yr"]['value']);
         }
-        $country_name = get_country_name($display_params, $country_list, $region_list);
+        $country_name = get_country_name($display_params, $country_list, $region_list, $world_code);
         if ($country_name != '') {
             $table_name = sprintf(_('%1$s for %2$s'), $table_name, $country_name);
         }
@@ -67,7 +73,7 @@
         $retval .= "<tr>\n";
         $retval .= generate_entry(_("Responsibility weight: "), number_format($fw_params["r_wt"]['value'],1));
         $retval .= generate_entry(_("Include land-use emissions: "), $shared_params["use_lulucf"]['value'] ? _("yes") : _("no"));
-        $retval .= generate_entry(_("Include non-CO2 gases: "), $shared_params["use_nonco2"]['value'] ? _("yes") : _("no"));
+        $retval .= generate_entry(_("Include non-CO<sub>2</sub> gases: "), $shared_params["use_nonco2"]['value'] ? _("yes") : _("no"));
         $retval .= "</tr>\n";
         $retval .= "<tr>\n";
         $retval .= generate_entry(_("Cumulative since: "), $shared_params["cum_since_yr"]['value']);
@@ -98,13 +104,13 @@
         return $retval;
     }
     
-    function generate_results_table($display_params, $shared_params, $country_list, $region_list, $user_db) {
+    function generate_results_table($display_params, $shared_params, $country_list, $region_list, $user_db, $world_code) {
         $disp_year = $display_params["display_yr"]['value'];
         $dec = $display_params["decimal_pl"]['value'];
         $advanced = $display_params['basic_adv']['value'] !== 'basic';
         $ep_start = $shared_params['emergency_program_start']['value'];
         $use_nonco2 = $shared_params['use_nonco2']['value'] == 0 ? FALSE : TRUE;
-        $country_name = get_country_name($display_params, $country_list, $region_list);
+        $country_name = get_country_name($display_params, $country_list, $region_list, $world_code);
         
         switch ($display_params["framework"]['value']) {
             case 'gdrs':
@@ -131,7 +137,7 @@
                         break;
                     case 'gdrs_country_report':
                         include("tables/gdrs_country_report.php");
-                        return gdrs_country_report($user_db, $country_name, $shared_params, $display_params['display_ctry']['value'], $disp_year);
+                        return gdrs_country_report($user_db, $country_name, $shared_params, $display_params['display_ctry']['value'], $disp_year, $world_code);
                         break;
                 }
                 break;
@@ -146,8 +152,8 @@
         }
     }
 
-    function generate_table($display_params, $fw_params, $shared_params, $country_list, $region_list, $table_views, $user_db){
-        $retval = generate_params_table($display_params, $fw_params, $shared_params, $country_list, $region_list, $table_views);
-        $retval .= generate_results_table($display_params, $shared_params, $country_list, $region_list, $user_db);
+    function generate_table($display_params, $fw_params, $shared_params, $country_list, $region_list, $table_views, $user_db, $world_code){
+        $retval = generate_params_table($display_params, $fw_params, $shared_params, $country_list, $region_list, $table_views, $world_code);
+        $retval .= generate_results_table($display_params, $shared_params, $country_list, $region_list, $user_db, $world_code);
         return $retval;
     }
