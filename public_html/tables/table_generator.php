@@ -139,12 +139,11 @@
                 switch($display_params["table_view"]['value']) {
                     case 'percap_alloc':
                         include("tables/percap_alloc.php");
-                        return $retval . percap_alloc($user_db, $display_params["decimal_pl"]['value']);
+                        return percap_alloc($user_db, $display_params["decimal_pl"]['value']);
                         break;
                 }
                 break;
         }
-        return $retval;
     }
 
     function generate_table($display_params, $fw_params, $shared_params, $country_list, $region_list, $table_views, $user_db){
