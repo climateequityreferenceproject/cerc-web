@@ -44,54 +44,54 @@
         $retval .= '<table  id="input_values" class="group" cellspacing="0" cellpadding="0">' . "\n";
         // $retval .= '<caption><a href="#">Show parameters</a></caption><tbody>' ."\n";
         $retval .= "<tr>\n";
-        $retval .= generate_entry("Global mitigation pathway: ", $ep_name);
+        $retval .= generate_entry(_("Global mitigation pathway: "), $ep_name);
         // TODO: add baseline parameter variable and echo value here
-        //$retval .= generate_entry("Baseline: ", "Default");
+        //$retval .= generate_entry(_("Baseline: ", "Default");
         if ($fw_params['use_kab']['value']) {
             if ($fw_params['kab_only_ratified']['value']) {
                 $kab_string = _('only ratifying countries');
             } else {
-                $kab_string = _('all Annex I');
+                $kab_string = _('all Annex 1');
             }
         } else {
             $kab_string = _('none');
         }
-        $retval .= generate_entry("Kyoto adjustment: ", $kab_string);
-        $retval .= generate_entry("Development threshold: ", "\$" . number_format($fw_params["dev_thresh"]['value']));
+        $retval .= generate_entry(_("Kyoto adjustment: "), $kab_string);
+        $retval .= generate_entry(_("Development threshold: "), "\$" . number_format($fw_params["dev_thresh"]['value']));
         $retval .= "</tr>\n";
         $retval .= "<tr>\n";
-        $retval .= generate_entry("Luxury threshold: ", "\$". number_format($fw_params["lux_thresh"]['value']));
-        $retval .= generate_entry("Cap baselines at luxury threshold: ", $fw_params["do_luxcap"]['value'] ? "yes" : "no");
-        $retval .= generate_entry("Progressive between thresholds: ", $fw_params["interp_btwn_thresh"]['value'] ? "yes" : "no");
+        $retval .= generate_entry(_("Luxury threshold: "), "\$". number_format($fw_params["lux_thresh"]['value']));
+        $retval .= generate_entry(_("Cap baselines at luxury threshold: "), $fw_params["do_luxcap"]['value'] ? _("yes") : _("no"));
+        $retval .= generate_entry(_("Progressive between thresholds: "), $fw_params["interp_btwn_thresh"]['value'] ? _("yes") : _("no"));
         $retval .= "</tr>\n";
         $retval .= "<tr>\n";
-        $retval .= generate_entry("Responsibility weight: ", number_format($fw_params["r_wt"]['value'],1));
-        $retval .= generate_entry("Include land-use emissions: ", $shared_params["use_lulucf"]['value'] ? "yes" : "no");
-        $retval .= generate_entry("Include non-CO2 gases: ", $shared_params["use_nonco2"]['value'] ? "yes" : "no");
+        $retval .= generate_entry(_("Responsibility weight: "), number_format($fw_params["r_wt"]['value'],1));
+        $retval .= generate_entry(_("Include land-use emissions: "), $shared_params["use_lulucf"]['value'] ? _("yes") : _("no"));
+        $retval .= generate_entry(_("Include non-CO2 gases: "), $shared_params["use_nonco2"]['value'] ? _("yes") : _("no"));
         $retval .= "</tr>\n";
         $retval .= "<tr>\n";
-        $retval .= generate_entry("Cumulative since: ", $shared_params["cum_since_yr"]['value']);
-        $retval .= generate_entry("Total cost as % GWP: ", number_format($shared_params["percent_gwp"]['value'],1) . "%");
-        $retval .= generate_entry("Emissions elasticity: ", number_format($shared_params["em_elast"]['value'],1));
+        $retval .= generate_entry(_("Cumulative since: "), $shared_params["cum_since_yr"]['value']);
+        $retval .= generate_entry(_("Total cost as % GWP: "), number_format($shared_params["percent_gwp"]['value'],1) . "%");
+        $retval .= generate_entry(_("Emissions elasticity: "), number_format($shared_params["em_elast"]['value'],1));
         $retval .= "</tr>\n";
         if ($shared_params["use_sequencing"]['value']) {
             $retval .= "<tr>\n";
-            $retval .= generate_entry("Use sequencing: ", $shared_params["use_sequencing"]['value'] ? "yes" : "no");
-            $retval .= generate_entry("Annex 1 reduction %: ", $shared_params["percent_a1_rdxn"]['value'] . "%");
-            $retval .= generate_entry("Sequencing base year: ", $shared_params["base_levels_yr"]['value']);
+            $retval .= generate_entry(_("Use sequencing: "), $shared_params["use_sequencing"]['value'] ? _("yes") : _("no"));
+            $retval .= generate_entry(_("Annex 1 reduction %: "), $shared_params["percent_a1_rdxn"]['value'] . "%");
+            $retval .= generate_entry(_("Sequencing base year: "), $shared_params["base_levels_yr"]['value']);
             $retval .= "</tr>\n";
             $retval .= "<tr>\n";
-            $retval .= generate_entry("End of sequencing period: ", $shared_params["end_commitment_period"]['value']);
-            $retval .= generate_entry("A1 transition smoothing: ", $shared_params["a1_smoothing"]['value']);
+            $retval .= generate_entry(_("End of sequencing period: "), $shared_params["end_commitment_period"]['value']);
+            $retval .= generate_entry(_("A1 transition smoothing: "), $shared_params["a1_smoothing"]['value']);
             switch ($shared_params["mit_gap_borne"]['value']) {
                 case "1":
-                    $val = "Annex 1";
+                    $val = _("Annex 1");
                     break;
                 case "2":
-                    $val = "Annex 2";
+                    $val = _("Annex 2");
                     break;
             }
-            $retval .= generate_entry("Mitigation requirement gap borne by: ", $val);
+            $retval .= generate_entry(_("Mitigation requirement gap borne by: "), $val);
             $retval .= "</tr>\n";
         }
         $retval .= '</tbody></table><!-- /input_values -->' . "\n";
