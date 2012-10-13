@@ -147,8 +147,8 @@ if (isset($_GET['iso3'])) {
                             </li>
                             <?php
                                        if ($display_params['framework']['value'] === 'gdrs') {
-                                           echo select_num('dev_thresh', $fw_params, _("Development threshold:"), $advanced);
-                                           echo select_num('lux_thresh', $fw_params, _("Luxury threshold:"), $advanced);
+                                           echo select_num('dev_thresh', $fw_params, _("Development threshold (\$PPP):"), $advanced);
+                                           echo select_num('lux_thresh', $fw_params, _("Luxury threshold (\$MER):"), $advanced);
                                            echo '<li class="advanced">';
                                            echo '<input type="checkbox" name="do_luxcap" id="do_luxcap" class="click" value="1" ' . ($fw_params["do_luxcap"]['value'] ? 'checked="checked"' : '') . '/>';
                                            echo '<label for="do_luxcap" class="click"> ' . _("Cap baselines at luxury threshold") . '</label>';
