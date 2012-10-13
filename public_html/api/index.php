@@ -1,11 +1,12 @@
 <?php
     include("../frameworks/frameworks.php");
+    $msg = array();
     $msg['OK'] = '200 OK';
     $msg['gone'] = '410 Gone';
     $msg['badreq'] = '400 Bad request';
 
     function get_usr_vals(&$array) {
-        foreach($array as $key => $val) {
+        foreach(array_keys($array) as $key) {
             if (isset($_POST[$key])) {
                 $array[$key]['value'] = $_POST[$key];
             }
@@ -192,6 +193,11 @@
             header('Allow: ' . $allow);
         }
         
+        // Remove the file, if not passed as a parameter
+        if (file_exists($user_db) && !$_POST['db']) {
+            unlink($user_db);
+        }
+        
         return array('status' => $status, 'data' => $data);
     }
 
@@ -201,11 +207,6 @@
     #
     ################################################
     $result = process_request();
-    
-    // Remove the file, if not passed as a parameter
-    if (file_exists($user_db) && !$_POST['db']) {
-        unlink($user_db);
-    }
     
     if ($result['status'] != $msg['OK'] || $_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
         header("Content-type: text/plain");
