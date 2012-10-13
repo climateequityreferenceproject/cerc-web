@@ -104,13 +104,13 @@ $(function() {
     $('#mit_gap_borne').change(submit);
     
     // Set the parameters to show or hide
-    $('#input_values caption').click(function() {
-        $('#input_values tbody').toggle(function() {
-            $('#input_values caption a').text(
-              $(this).is(':visible') ? "Hide parameters" : "Show parameters"
-            );
-        });
-    });
+//    $('#input_values caption').click(function() {
+//        $('#input_values tbody').toggle(function() {
+//            $('#input_values caption a').text(
+//              $(this).is(':visible') ? "Hide parameters" : "Show parameters"
+//            );
+//        });
+//    });
     
     //--------------------------------------------------
     // Action on form submit

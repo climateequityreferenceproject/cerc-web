@@ -31,23 +31,32 @@
     function generate_params_table($display_params, $fw_params, $shared_params, $country_list, $region_list, $table_views) {
         $ep_index = $shared_params["emergency_path"]['value'];
         $ep_name = $shared_params["emergency_path"]['list'][$ep_index]['display_name'];
-        $use_nonco2 = $shared_params['use_nonco2']['value'] == 0 ? FALSE : TRUE;
         $table_name = $table_views[$display_params["table_view"]['value']]['display_name'];
         if (!$table_views[$display_params["table_view"]['value']]['time_series']) {
-            $table_name .= " in " . $display_params["display_yr"]['value'];
+            $table_name = sprintf(_('%1$s in %2$s'), $table_name, $display_params["display_yr"]['value']);
         }
         $country_name = get_country_name($display_params, $country_list, $region_list);
         if ($country_name != '') {
-            $table_name .= " for " . $country_name;
+            $table_name = sprintf(_('%1$s for %2$s'), $table_name, $country_name);
         }
         
         $retval = "<h3><!--Table view: -->" . $table_name . "</h3>\n";
         $retval .= '<table  id="input_values" class="group" cellspacing="0" cellpadding="0">' . "\n";
-        $retval .= '<caption><a href="#">Show parameters</a></caption><tbody>' ."\n";
+        // $retval .= '<caption><a href="#">Show parameters</a></caption><tbody>' ."\n";
         $retval .= "<tr>\n";
         $retval .= generate_entry("Global mitigation pathway: ", $ep_name);
         // TODO: add baseline parameter variable and echo value here
-        $retval .= generate_entry("Baseline: ", "Default");
+        //$retval .= generate_entry("Baseline: ", "Default");
+        if ($fw_params['use_kab']['value']) {
+            if ($fw_params['kab_only_ratified']['value']) {
+                $kab_string = _('only ratifying countries');
+            } else {
+                $kab_string = _('all Annex I');
+            }
+        } else {
+            $kab_string = _('none');
+        }
+        $retval .= generate_entry("Kyoto adjustment: ", $kab_string);
         $retval .= generate_entry("Development threshold: ", "\$" . number_format($fw_params["dev_thresh"]['value']));
         $retval .= "</tr>\n";
         $retval .= "<tr>\n";
