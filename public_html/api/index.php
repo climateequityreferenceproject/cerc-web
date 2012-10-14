@@ -194,7 +194,7 @@
         }
         
         // Remove the file, if not passed as a parameter
-        if (file_exists($user_db) && !$_POST['db']) {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && file_exists($user_db) && !$_POST['db']) {
             unlink($user_db);
         }
         
