@@ -264,9 +264,11 @@ EOSQL;
         // A helper function to check for whether a parameter is (most likely) a boolean
         public static function is_bool($param_key, $param_array) {
             $retval = false;
-            if ($param_array[$param_key]['type'] === 'int') {
-                if(($param_array[$param_key]['min'] == 0) && ($param_array[$param_key]['max'] == 1)) {
-                    $retval = true;
+            if (isset($param_array[$param_key]['type'])) {
+                if ($param_array[$param_key]['type'] === 'int') {
+                    if(($param_array[$param_key]['min'] == 0) && ($param_array[$param_key]['max'] == 1)) {
+                        $retval = true;
+                    }
                 }
             }
             return $retval;

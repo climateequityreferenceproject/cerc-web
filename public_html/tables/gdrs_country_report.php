@@ -54,6 +54,7 @@ if (!is_country($iso3)) {
         $flag_string .= '(year=' . $year . ' OR year=1990) AND ';
         $flag_string .= 'flags.value = 1 AND flags.flag = "' . $iso3 . '"';
     }
+    $tax_string = '';
     foreach ($db->query("SELECT seq_no FROM tax_levels;") as $record) {
         $tax_string .= sprintf(', SUM(tax_pop_mln_below_%1$d) AS tax_pop_mln_below_%1$d', $record['seq_no']);
         $tax_string .= sprintf(', SUM(tax_income_mer_dens_%1$d) AS tax_income_mer_dens_%1$d', $record['seq_no']);
@@ -102,7 +103,7 @@ EOSQL;
         $gases = "CO<sub>2</sub>e";
     }
     
-$retval .= <<< EOHTML
+$retval = <<< EOHTML
 <table cellspacing="2" cellpadding="2">
     <tbody>
 EOHTML;
@@ -195,7 +196,7 @@ EOHTML;
      * Tax table
      */
     ;
-    $cost_of_mitigation = 0.01 * $perc_gwp * $world_tot['gdp_mer']/($world_bau - $world_tot['gdrs_alloc_MtCO2']);
+    $cost_of_mitigation = 0.01 * $perc_gwp * $world_tot['gdp_mer']/($world_bau - $world_tot['gdrs_alloc']);
     
 $retval .= <<< EOHTML
     </tbody>

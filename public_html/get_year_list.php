@@ -12,5 +12,7 @@
     
     $shared_params = Framework::get_shared_params($user_db);
     
+    $advanced = true;
+    
     echo select_num('cum_since_yr', $shared_params, "Cumulative since:", $advanced);
 

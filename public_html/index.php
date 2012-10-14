@@ -174,11 +174,11 @@ if (isset($_GET['iso3'])) {
 //                                           echo '<legend class="closed"><span>&nbsp;</span>' . _("Kyoto-adjusted baselines") . '</legend>';
                                            echo '<div><ul id="kab">';
                                            echo "<li>";
-                                           echo '<input type="checkbox" name="use_kab" id="use_kab" class="click" value="1" ' . ($shared_params["use_kab"]['value'] ? 'checked="checked"' : '') . '/>';
+                                           echo '<input type="checkbox" name="use_kab" id="use_kab" class="click" value="1" ' . ($fw_params["use_kab"]['value'] ? 'checked="checked"' : '') . '/>';
                                            echo '<label for="use_kab" class="click"> ' . _("Use Kyoto-adjusted baselines") . '</label>';
                                            echo "</li>";
                                            echo "<li>";
-                                           echo '<input type="checkbox" name="kab_only_ratified" id="kab_only_ratified" class="click" value="1" ' . ($shared_params["kab_only_ratified"]['value'] ? 'checked="checked"' : '') . '/>';
+                                           echo '<input type="checkbox" name="kab_only_ratified" id="kab_only_ratified" class="click" value="1" ' . ($fw_params["kab_only_ratified"]['value'] ? 'checked="checked"' : '') . '/>';
                                            echo '<label for="kab_only_ratified" class="click"> ' . _("But only for ratifying countries") . '</label>';
                                            echo "</li>";
                                            echo '</li><ul>&nbsp;</div><!-- end #kab -->';

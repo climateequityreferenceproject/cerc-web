@@ -445,7 +445,7 @@
         // For wedges, expect series to be in order--can be top-down or bottom-up
         // Colors are the colors of the wedges in sequence
         public function svgplot_wedges($wedges, $params=NULL) {
-            if (!params) {
+            if (!$params) {
                 $params = array(
                     'common_id' => NULL,
                     'vertical_at' => NULL
