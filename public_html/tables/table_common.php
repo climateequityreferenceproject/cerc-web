@@ -26,7 +26,8 @@ $viewquery = <<< EOSQL
             1e-6 * gdrs.pop_above_dl AS gdrs_pop_mln_above_dl,
             1e-6 * gdrs.pop_above_lux AS gdrs_pop_mln_above_lux,
             $CtoCO2 * gdrs.lux_emiss_MtC AS lux_emiss_MtCO2,
-            $CtoCO2 * gdrs.lux_emiss_applied_MtC AS lux_emiss_applied_MtCO2
+            $CtoCO2 * gdrs.lux_emiss_applied_MtC AS lux_emiss_applied_MtCO2,
+            $CtoCO2 * gdrs.kyoto_gap_MtC AS kyoto_gap_MtCO2
             $tax_string
         FROM country, core, gdrs
         WHERE country.iso3 = core.iso3 AND country.iso3 = gdrs.iso3

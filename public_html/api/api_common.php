@@ -19,7 +19,8 @@ $viewquery = <<< EOSQL
             gdrs.rci AS gdrs_rci, 1e-6 * gdrs.pop_above_dl AS gdrs_pop_mln_above_dl,
 			1e-6 * gdrs.pop_above_lux AS gdrs_pop_mln_above_lux,
 			(11.0/3.0) * gdrs.lux_emiss_MtC AS lux_emiss_MtCO2,
-			(11.0/3.0) * gdrs.lux_emiss_applied_MtC AS lux_emiss_applied_MtCO2
+			(11.0/3.0) * gdrs.lux_emiss_applied_MtC AS lux_emiss_applied_MtCO2,
+                        (11.0/3.0) * gdrs.kyoto_gap_MtC AS kyoto_gap_MtCO2
         FROM country, core, gdrs
         WHERE country.iso3 = core.iso3 AND country.iso3 = gdrs.iso3
             AND gdrs.year = core.year AND gdrs.allocation_MtC IS NOT NULL;

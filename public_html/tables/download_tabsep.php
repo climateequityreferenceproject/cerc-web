@@ -1,7 +1,12 @@
 <?php
+if (isset($_GET['debug']) && $_GET['debug'] == 'yes') {
+    ini_set('display_errors',1); 
+    error_reporting(E_ALL);
+}
+
 require_once("table_common.php");
-$include_all_years = false;
-if ($include_all_years) {
+
+if (isset($_GET['allyears']) && $_GET['allyears'] == 'yes') {
     $all_years_condition_string = "";
 } else {
     $all_years_condition_string = "AND combined.gdrs_alloc_MtCO2 IS NOT NULL";
@@ -15,7 +20,7 @@ $viewquery = <<< EOSQL
             vol_rdxn_MtCO2, gdrs_alloc_MtCO2, gdrs_r_MtCO2,
             a1_dom_rdxn_MtCO2, net_import_MtCO2, gdrs_c_blnUSDMER, gdrs_rci,
             gdrs_pop_mln_above_dl, gdrs_pop_mln_above_lux, lux_emiss_MtCO2,
-            lux_emiss_applied_MtCO2
+            lux_emiss_applied_MtCO2, kyoto_gap_MtCO2
             $tax_string_combined
             FROM country,
             (SELECT core.iso3 AS iso3, core.year AS year,
@@ -33,7 +38,8 @@ $viewquery = <<< EOSQL
             gdrs.rci AS gdrs_rci, 1e-6 * gdrs.pop_above_dl AS gdrs_pop_mln_above_dl,
 			1e-6 * gdrs.pop_above_lux AS gdrs_pop_mln_above_lux,
 			(11.0/3.0) * gdrs.lux_emiss_MtC AS lux_emiss_MtCO2,
-			(11.0/3.0) * gdrs.lux_emiss_applied_MtC AS lux_emiss_applied_MtCO2
+			(11.0/3.0) * gdrs.lux_emiss_applied_MtC AS lux_emiss_applied_MtCO2,
+                        (11.0/3.0) * gdrs.kyoto_gap_MtC AS kyoto_gap_MtCO2
                         $tax_string_gdrs
             FROM core LEFT JOIN gdrs ON core.year = gdrs.year AND core.iso3 = gdrs.iso3)
         AS combined WHERE country.iso3 = combined.iso3 $all_years_condition_string;
@@ -58,7 +64,8 @@ if (!is_resource($fp))
 
 // Meta-data
 fwrite($fp, "Greenhouse Development Rights Online Calculator (http://" . $_SERVER['HTTP_HOST'] . ")\n");
-$record = $db->query("SELECT modified FROM meta")->fetchAll();
+// TODO: Get pathways modified also
+$record = $db->query("SELECT data_modified FROM meta")->fetchAll();
 fwrite($fp, "Last modified " . $record[0][0] . "\n");
 $record = $db->query("SELECT calc_version FROM meta")->fetchAll();
 fwrite($fp, "Calculator version " . $record[0][0] . "\n");
