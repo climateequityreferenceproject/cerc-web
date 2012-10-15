@@ -87,13 +87,6 @@ if (isset($_GET['iso3'])) {
                                 echo '<li><label for="display_ctry" class="select" title="' . _("Country or region to display for country report") . '">' . _("Country or region to display:") . '</label>';
                                 echo '<select name="display_ctry" id="display_ctry" action="index.php">';
                                 $valid_countryregion = false;
-                                if ($display_params['display_ctry']['value'] === $world_code) {
-                                    $valid_countryregion = true;
-                                    $selected = ' selected="selected"';
-                                } else {
-                                    $selected = '';
-                                }
-                                echo '<option value="' . $world_code .  '"' . $selected . '>' . _('World') . '</option>';
                                 foreach ($region_list as $item) {
                                     $selected = '';
                                     if ($item['region_code'] === $display_params['display_ctry']['value']) {
@@ -263,11 +256,11 @@ if (isset($_GET['iso3'])) {
                                      ?>
 
                                     <div id="calc_parameters">
-                                       <?php echo generate_params_table($display_params, $fw_params, $shared_params, $country_list, $region_list, $table_views, $world_code); ?>
+                                       <?php echo generate_params_table($display_params, $fw_params, $shared_params, $country_list, $region_list, $table_views); ?>
                                     </div><!-- end #calc_parameters -->
 
                                     <div id="calc_results">
-                                       <?php echo generate_results_table($display_params, $shared_params, $country_list, $region_list, $user_db, $world_code); 
+                                       <?php echo generate_results_table($display_params, $shared_params, $country_list, $region_list, $user_db); 
                                         // include("tables/sample_table.php");
                                        ?>
                                     </div><!-- end #calc_results -->

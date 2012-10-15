@@ -10,6 +10,10 @@
         public static $frameworks = array();
         public static $master_db = "";
         public static $user_db_path = "";
+        private static $world = array(
+            'code' => "world",
+            'name' => "World"
+        );
         
         // -----------------------------------------------------------------
         // Each instance of the class should should have a main file called "framework.php"
@@ -69,6 +73,14 @@
             }
             copy($db_to_copy, $user_db) or die("Couldn't create '" + $user_db + "'");
             return $user_db;
+        }
+        
+        public static function get_world_code() {
+            return self::$world['code'];
+        }
+        
+        public static function get_world_name() {
+            return self::$world['name'];
         }
         
         // This creates a permanent copy of the master database, unless it is overwritten using this command
@@ -212,6 +224,13 @@ EOSQL;
             
             // Close down nicely
             $db_cnx = NULL;
+            
+            $world_result = array(
+                'region_code' => self::$world['code'],
+                'name' => self::$world['name']
+            );
+            // Add $world_result as the first item in the region list
+            array_unshift($query_result, $world_result);
             
             return $query_result;
         }

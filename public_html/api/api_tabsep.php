@@ -30,8 +30,10 @@ $region_sql .= " FROM disp_temp, flags WHERE flags.iso3 = disp_temp.code AND ";
 $region_sql .= "flags.value = 1 AND flags.flag = ? AND " . $yearquery . " GROUP BY year;";
 
 // Global
-if (in_array('world', $countries)) {
-    $row_start = array('code' => "world", 'name' => "World");
+$world_code = Framework::get_world_code();
+$world_name = Framework::get_world_name();
+if (in_array($world_code, $countries)) {
+    $row_start = array('code' => $world_code, 'name' => $world_name);
     foreach ($db->query($global_sql, PDO::FETCH_ASSOC) as $record) {
         $data_array[] = array_merge($row_start, $record);
     }

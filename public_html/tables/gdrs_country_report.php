@@ -23,7 +23,9 @@ function nice_number($prefix, $num, $postfix) {
 }
 
 // TODO: Replace "iso3" with the more generic "code"
-function gdrs_country_report($dbfile, $country_name, $shared_params, $iso3, $year, $world_code='_WORLD') {
+function gdrs_country_report($dbfile, $country_name, $shared_params, $iso3, $year) {
+    $world_code = Framework::get_world_code();
+    
     $viewquery = get_common_table_query($dbfile);
 
     $database = 'sqlite:'.$dbfile;

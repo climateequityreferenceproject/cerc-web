@@ -1,9 +1,12 @@
 <?php
+    require_once "frameworks/frameworks.php";
+    
     function generate_entry($label, $val) {
         return "<td><strong>" . $label . "</strong>" . $val . "</td>\n";
     }
     
-    function get_country_name($display_params, $country_list, $region_list, $world_code) {
+    function get_country_name($display_params, $country_list, $region_list) {
+        $world_code = Framework::get_world_code();
         if ($display_params["table_view"]['value'] === 'gdrs_country_report') {
             $found_it = false;
             if ($display_params['display_ctry']['value'] === $world_code) {
@@ -34,14 +37,15 @@
         return $country_name;
     }
             
-    function generate_params_table($display_params, $fw_params, $shared_params, $country_list, $region_list, $table_views, $world_code) {
+    function generate_params_table($display_params, $fw_params, $shared_params, $country_list, $region_list, $table_views) {
+        $world_code = Framework::get_world_code();
         $ep_index = $shared_params["emergency_path"]['value'];
         $ep_name = $shared_params["emergency_path"]['list'][$ep_index]['display_name'];
         $table_name = $table_views[$display_params["table_view"]['value']]['display_name'];
         if (!$table_views[$display_params["table_view"]['value']]['time_series']) {
             $table_name = sprintf(_('%1$s in %2$s'), $table_name, $display_params["display_yr"]['value']);
         }
-        $country_name = get_country_name($display_params, $country_list, $region_list, $world_code);
+        $country_name = get_country_name($display_params, $country_list, $region_list);
         if ($country_name != '') {
             $table_name = sprintf(_('%1$s for %2$s'), $table_name, $country_name);
         }
@@ -104,13 +108,14 @@
         return $retval;
     }
     
-    function generate_results_table($display_params, $shared_params, $country_list, $region_list, $user_db, $world_code) {
+    function generate_results_table($display_params, $shared_params, $country_list, $region_list, $user_db) {
+        $world_code = Framework::get_world_code();
         $disp_year = $display_params["display_yr"]['value'];
         $dec = $display_params["decimal_pl"]['value'];
         $advanced = $display_params['basic_adv']['value'] !== 'basic';
         $ep_start = $shared_params['emergency_program_start']['value'];
         $use_nonco2 = $shared_params['use_nonco2']['value'] == 0 ? FALSE : TRUE;
-        $country_name = get_country_name($display_params, $country_list, $region_list, $world_code);
+        $country_name = get_country_name($display_params, $country_list, $region_list);
         
         switch ($display_params["framework"]['value']) {
             case 'gdrs':
@@ -137,7 +142,7 @@
                         break;
                     case 'gdrs_country_report':
                         include("tables/gdrs_country_report.php");
-                        return gdrs_country_report($user_db, $country_name, $shared_params, $display_params['display_ctry']['value'], $disp_year, $world_code);
+                        return gdrs_country_report($user_db, $country_name, $shared_params, $display_params['display_ctry']['value'], $disp_year);
                         break;
                 }
                 break;
@@ -152,8 +157,8 @@
         }
     }
 
-    function generate_table($display_params, $fw_params, $shared_params, $country_list, $region_list, $table_views, $user_db, $world_code){
-        $retval = generate_params_table($display_params, $fw_params, $shared_params, $country_list, $region_list, $table_views, $world_code);
-        $retval .= generate_results_table($display_params, $shared_params, $country_list, $region_list, $user_db, $world_code);
+    function generate_table($display_params, $fw_params, $shared_params, $country_list, $region_list, $table_views, $user_db){
+        $retval = generate_params_table($display_params, $fw_params, $shared_params, $country_list, $region_list, $table_views);
+        $retval .= generate_results_table($display_params, $shared_params, $country_list, $region_list, $user_db);
         return $retval;
     }
