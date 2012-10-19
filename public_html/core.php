@@ -158,7 +158,7 @@
     $table_views = $fw->get_table_views();
     $display_params['table_view']['list'] = $table_views;
     
-    if (isset($_POST['forcesubmit'])) {
+    if (isset($_POST['forcesubmit']) || !isset($display_params['table_view']['value'])) {
         $tmp = array_keys($table_views);
         $display_params['table_view']['value'] = $tmp[0];
         setcookie('display_params',serialize($display_params),$cookie_info['time'],"",$cookie_info['server']);
