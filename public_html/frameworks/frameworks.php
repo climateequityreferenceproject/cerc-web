@@ -83,11 +83,16 @@
             return self::$world['name'];
         }
         
+        
+        public static function db_up_to_date($db) {
+            return filemtime($db) > filemtime(self::$master_db);
+        }
+        
         // This creates a permanent copy of the master database, unless it is overwritten using this command
         //    $modifier: text to add to the master database name, in a standard format
         //               calls to this function using the same modifier will point to the same copy
         //    $create:   flag to create the database (if FALSE, this just returns the path)
-        //    $force:    flag to create the database even if a) it exists and b) has the same version number
+        //    $force:    flag to create the database even if a) it exists and b) has the same modified time
         //               as the master. normally this is FALSE
         //
         //    Returns: Array('did_create' => TRUE or FALSE, 'db' => full path to db file)

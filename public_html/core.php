@@ -9,40 +9,33 @@
     $cookie_info['time'] = time()+60*60*24*28;
     $cookie_info['server'] = preg_replace("/^\.|www\./","",$_SERVER['HTTP_HOST']);
     
-    // Check that we're current
-    $up_to_date = FALSE;
-    $ver_info = array();
-    $ver_info['data_ver'] = Framework::get_data_ver();
-    $ver_info['calc_ver'] = Framework::get_calc_ver();
-    if (isset($_COOKIE['ver'])) {
-       $last_ver = unserialize(stripslashes($_COOKIE['ver']));
-       if ($last_ver['data_ver'] === $ver_info['data_ver'] && $last_ver['calc_ver'] === $ver_info['calc_ver']) {
-           $up_to_date = TRUE;
-       }
-    }
-    setcookie('ver',serialize($ver_info),$cookie_info['time'],"",$cookie_info['server']);
-    
     // Always using GDRs framework now
     $shared_params = Framework::get_shared_params();
     $fw = new Framework::$frameworks['gdrs']['class'];
     
     /*** Databases ************************************************************/
     // Create database filename if doesn't already exist
-    $have_db = FALSE;
+    $have_db = false;
+    $up_to_date = false;
     // Future-proof: right now keep the path, but in future might just use basename
-    if (isset($_POST['user_db']) && $_POST['user_db']) {
+    if (isset($_POST['user_db'])) {
         $user_db_nopath = basename($_POST['user_db']);
-    } elseif (isset($_GET['db']) && $_GET['db']) {
+    } elseif (isset($_GET['db'])) {
         $user_db_nopath = basename($_GET['db']);
+    } elseif (isset($_COOKIE['db'])) {
+        $user_db_nopath = unserialize(stripslashes($_COOKIE['db']));
     } else {
-        $user_db_nopath = NULL;
+        $user_db_nopath = null;
     }
     if ($user_db_nopath && Framework::add_user_db_path($user_db_nopath)) {
         $user_db = Framework::add_user_db_path($user_db_nopath);
-        $have_db = TRUE;
-    } elseif (isset($_COOKIE['db']) && $up_to_date) {
-        $user_db = realpath(unserialize(stripslashes($_COOKIE['db'])));
-        $have_db = $user_db; // realpath returns FALSE on failure
+        if (Framework::db_up_to_date($user_db)) {
+            $have_db = true;
+            $up_to_date = true;
+        } else {
+            unlink($user_db);
+            $user_db = null;
+        }
     }
     
     if (!$have_db) {

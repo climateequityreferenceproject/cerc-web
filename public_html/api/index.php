@@ -34,6 +34,9 @@
             } else {
                 $user_db = Framework::add_user_db_path($_GET['db']);
             }
+            if (!Framework::db_up_to_date($user_db)) {
+                $user_db = NULL;
+            }
             if ($user_db) {
                 $shared_params = Framework::get_shared_params($user_db);
                 $fw_params = $fw->get_fw_params($user_db);
