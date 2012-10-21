@@ -1,6 +1,7 @@
 <?php
 // Use the API: over time, will make things more consistent
 require_once "HTTP/Request.php";
+require_once "frameworks/frameworks.php";
 
 function pledge_db_connect() {
     $db = mysql_connect('localhost', 'pledges', '***REMOVED***');
@@ -149,13 +150,17 @@ function is_country($code)
 }
 
 function process_pledges($pledge_info, $pathway, $db) {
-    $api_url = "http://gdrights.org/calculator_dev/api/";
+    if (Framework::is_dev()) {
+        $api_url = "http://gdrights.org/calculator_dev/api/";
+    } else {
+        $api_url = "http://gdrights.org/calculator/api/";
+    }
     // First, get the parameter values used by the database
     $querystring = '?q=params';
     if ($db) {
         $querystring .= '&db=' . $db;
     }
-    $req =& new HTTP_Request($api_url . $querystring);
+    $req = new HTTP_Request($api_url . $querystring);
     $req->setMethod(HTTP_REQUEST_METHOD_GET);
     if (!PEAR::isError($req->sendRequest())) {
          $params = (array) json_decode($req->getResponseBody());
@@ -170,7 +175,7 @@ function process_pledges($pledge_info, $pathway, $db) {
     unset($req);
     
     // Build up API query
-    $req =& new HTTP_Request($api_url);
+    $req = new HTTP_Request($api_url);
     $req->setMethod(HTTP_REQUEST_METHOD_POST);
     if ($pledge_info['rel_to_year']) {
         $years = $pledge_info['rel_to_year'] . "," . $pledge_info['by_year'];

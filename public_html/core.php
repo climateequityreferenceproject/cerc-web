@@ -67,7 +67,7 @@
         $shared_params = Framework::get_shared_params($user_db);
         $fw_params = $fw->get_fw_params($user_db);
     }
-
+    
     /*** Display parameters ****************************************************/
 
     $basic_adv = array (
@@ -150,7 +150,7 @@
     // Redundant but convenient to have both
     $table_views = $fw->get_table_views();
     $display_params['table_view']['list'] = $table_views;
-    
+
     if (isset($_POST['forcesubmit']) || !isset($display_params['table_view']['value'])) {
         $tmp = array_keys($table_views);
         $display_params['table_view']['value'] = $tmp[0];
@@ -163,7 +163,7 @@
     }
 
     $fw->calculate($user_db, $shared_params, $fw_params);
-    
+     
     // Use the most up-to-date parameter list: years might have changed
     $shared_params = Framework::get_shared_params($user_db);
     $fw_params = $fw->get_fw_params($user_db);
