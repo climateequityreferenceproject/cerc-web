@@ -12,6 +12,9 @@ if (isset($_GET['iso3'])) {
     $display_params['display_ctry']['value'] = $_GET['iso3'];
     $display_params['table_view']['value'] = 'gdrs_country_report';
 }
+if (isset($_GET['year'])) {
+    $display_params['display_yr']['value'] = $_GET['year'];
+}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US">
