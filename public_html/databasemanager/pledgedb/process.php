@@ -37,7 +37,9 @@ if (isset($_POST['form']) && !isset($_POST['cancel'])) {
                 if ($value === null) {
                     $new_values[$key] = 'NULL';
                 } elseif (!is_numeric($value)) {
-                    $new_values[$key] = "'" . $value . "'";
+                    // Double up on single quotes if needed; replace any sequence of single quotes, to make
+                    // sure that we don't just keep adding doubled single quotes
+                    $new_values[$key] = "'" . preg_replace("/'+/", "''", $value) . "'";
                 }
             }
             if ($do_replace) {
