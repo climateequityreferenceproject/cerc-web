@@ -25,8 +25,9 @@
         $fw_params_default = $fw->get_fw_params();
         $params_default = array_merge($shared_params_default, $fw_params_default);
         
-        $user_db = NULL;
-        $user_db_exists = TRUE;
+        $user_db = null;
+        $user_db_exists = true;
+        $made_temp_db = false;
         // Note that add_user_db_path will return FALSE if the file doesn't exist
         if ($_POST['db'] || $_GET['db']) {
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -35,22 +36,18 @@
                 $user_db = Framework::add_user_db_path($_GET['db']);
             }
             if (!Framework::db_up_to_date($user_db)) {
-                $user_db = NULL;
+                $user_db = null;
             }
             if ($user_db) {
                 $shared_params = Framework::get_shared_params($user_db);
                 $fw_params = $fw->get_fw_params($user_db);
             } else {
-                $user_db_exists = FALSE;
+                $user_db_exists = false;
             }
         }
         if (!$user_db) {
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                $create = TRUE;
-            } else {
-                $create = FALSE;
-            }
-            $db_array = Framework::dup_master_db('calc', $create);
+            // If already have a duplicated version, use that, otherwise create if needed
+            $db_array = Framework::dup_master_db('calc', true);
             $master_db = $db_array['db'];
             if ($db_array['did_create']) {
                 // Created a new one, so run it
@@ -58,6 +55,10 @@
             }
             // Copy an already calculated database (if it exists)
             $user_db = Framework::get_user_db($master_db);
+            if ($user_db) {
+                // This will be a temp DB unless used GET to request a new one; that case is handled below
+                $made_temp_db = true;
+            }
             $shared_params = $shared_params_default;
             $fw_params = $fw_params_default;
         }
@@ -77,6 +78,7 @@
                     if ($_GET['q'] === 'new_db') {
                         $data = json_encode(array('db' => Framework::get_db_name($user_db)));
                         $status = $msg['OK'];
+                        $made_temp_db = false;
                     } elseif ($_GET['q'] === 'params') {
                         if ($_GET['db']) {
                             $data = json_encode($params);
@@ -197,7 +199,7 @@
         }
         
         // Remove the file, if not passed as a parameter
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && file_exists($user_db) && !$_POST['db']) {
+        if ($made_temp_db && file_exists($user_db)) {
             unlink($user_db);
         }
         
