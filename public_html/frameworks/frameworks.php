@@ -85,7 +85,11 @@
         
         
         public static function db_up_to_date($db) {
-            return filemtime($db) > filemtime(self::$master_db);
+            if (file_exists($db)) {
+                return filemtime($db) > filemtime(self::$master_db);
+            } else {
+                return false;
+            }
         }
         
         // This creates a permanent copy of the master database, unless it is overwritten using this command
