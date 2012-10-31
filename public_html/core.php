@@ -4,6 +4,12 @@
     include("frameworks/frameworks.php");
     include("tables/table_generator.php");
     
+    if ((isset($_GET['copydb']) && $_GET['copydb'] === "yes") || (isset($_POST['copydb']) && $_POST['copydb'] === "yes")) {
+        $copydb = true;
+    } else {
+        $copydb = false;
+    }
+    
     // Generic cookie array
     $cookie_info=array();
     $cookie_info['time'] = time()+60*60*24*28;
@@ -46,6 +52,9 @@
             $fw->calculate($master_db, $shared_params, $fw->get_fw_params());
         }
         $user_db = Framework::get_user_db($master_db);
+    } else if ($copydb) {
+        // This will make a copy of the user_db
+        $user_db = Framework::get_user_db($user_db);
     }
     $fw_params = $fw->get_fw_params($user_db);
     setcookie('db',serialize(Framework::get_db_name($user_db)),$cookie_info['time'],"",$cookie_info['server']);
