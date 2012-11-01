@@ -120,13 +120,13 @@
             }
         }
         
-        public function add_glyph($x, $y, $id, $type, $size = 6, $style = null) {
+        public function add_glyph($x, $y, $class, $id, $type, $size = 6, $style = null) {
             $margin = $this->get_margins();
             
             $xtransf = $this->xaxis->transf_coord($x, $margin['left'], $margin['right']);
             $ytransf = $this->yaxis->transf_coord($y, $margin['bottom'], $margin['top']);
             
-            $glyph_string = self::make_glyph($id, $type, $size, $style);
+            $glyph_string = self::make_glyph($class, $id, $type, $size, $style);
             
             $this->glyphs[$id] = array(
                 'xtrans' => $xtransf,
@@ -135,7 +135,7 @@
             );
         }
         
-        private static function make_glyph($id, $type, $size, $style) {
+        private static function make_glyph($class, $id, $type, $size, $style) {
             // Have to specify by half-width, radius, etc., so effectively round down to nearest even value
             $half_size = (int) $size / 2;
             $full_size = 2 * $half_size;
@@ -173,7 +173,7 @@
             } else {
                 $style_string = '';
             }
-            return '<' . $shape . ' id="' . $id . '" ' . $attr . ' ' . $style_string . ' />';
+            return '<' . $shape . ' class="' . $class . '" id="' . $id . '" ' . $attr . ' ' . $style_string . ' />';
         }
         
         protected static function dec($num) {

@@ -108,8 +108,6 @@ EOSQL;
             $use_nonco2 * $ctry_val[$y]['NonCO2_MtCO2e'] + 
             $use_lulucf * $ctry_val[$y]['LULUCF_MtCO2'];
     }
-//    $bau_1990 = $ctry_val_1990['fossil_CO2_MtCO2'];
-//    $bau = $ctry_val['fossil_CO2_MtCO2'];
     $world_bau = $world_tot['fossil_CO2'] + 
         $use_nonco2 * $world_tot['NonCO2'] + 
         $use_lulucf * $world_tot['LULUCF'];
@@ -246,39 +244,39 @@ $retval .= <<< EOHTML
     <tbody>
 EOHTML;
     $dom_pledges = get_processed_pledges($iso3, $shared_params, $dbfile);
-    if ($dom_pledges['unconditional']) {
+    foreach ($dom_pledges['unconditional'] as $pledge_year => $pledge_info) {
         $common_str = 'Unconditional pledged domestic action to ';
-        $common_str .= $dom_pledges['unconditional']['pledge_info']['description'];
-        $common_str .= ' by ' . $dom_pledges['unconditional']['year'];
+        $common_str .= $pledge_info['description'];
+        $common_str .= ' by ' . $pledge_year;
         $retval .= '<tr><td class="lj" colspan="2">' . $common_str . '</td></tr>';
         // Total
         $retval .= "<tr>";
         $retval .= "<td class=\"lj level2\">As Mt" . $gases . "</td>";
-        $val = $dom_pledges['unconditional']['pledge_info']['pledge'];
+        $val = $pledge_info['pledge'];
         $retval .= "<td>" . nice_number('', $val, '') . "</td>";
         $retval .= "</tr>";
         // Percent
         $retval .= "<tr>";
-        $retval .= "<td class=\"lj level2\">As share of " . $year . " mitigation obligation</td>";
-        $val = 100 * $dom_pledges['unconditional']['pledge_info']['pledge']/($bau[$year] - $ctry_val[$year]["gdrs_alloc_MtCO2"]);
+        $retval .= "<td class=\"lj level2\">As share of " . $pledge_year . " mitigation obligation</td>";
+        $val = 100 * $pledge_info['pledge']/($bau[$pledge_year] - $ctry_val[$pledge_year]["gdrs_alloc_MtCO2"]);
         $retval .= "<td>" . nice_number('', $val, '%') . "</td>";
         $retval .= "</tr>";
     }
-    if ($dom_pledges['conditional']) {
+    foreach ($dom_pledges['conditional'] as $pledge_year => $pledge_info) {
         $common_str = 'Conditional pledged domestic action to ';
-        $common_str .= $dom_pledges['conditional']['pledge_info']['description'];
-        $common_str .= ' by ' . $dom_pledges['conditional']['year'];
+        $common_str .= $pledge_info['description'];
+        $common_str .= ' by ' . $pledge_year;
         $retval .= '<tr><td class="lj" colspan="2">' . $common_str . '</td></tr>';
         // Total
         $retval .= "<tr>";
         $retval .= "<td class=\"lj level2\">As Mt" . $gases . "</td>";
-        $val = $dom_pledges['conditional']['pledge_info']['pledge'];
+        $val = $pledge_info['pledge'];
         $retval .= "<td>" . nice_number('', $val, '') . "</td>";
         $retval .= "</tr>";
         // Percent
         $retval .= "<tr>";
-        $retval .= "<td class=\"lj level2\">As share of " . $year . " mitigation obligation</td>";
-        $val = 100 * $dom_pledges['conditional']['pledge_info']['pledge']/($bau[$year] - $ctry_val[$year]["gdrs_alloc_MtCO2"]);
+        $retval .= "<td class=\"lj level2\">As share of " . $pledge_year . " mitigation obligation</td>";
+        $val = 100 * $pledge_info['pledge']/($bau[$pledge_year] - $ctry_val[$pledge_year]["gdrs_alloc_MtCO2"]);
         $retval .= "<td>" . nice_number('', $val, '%') . "</td>";
         $retval .= "</tr>";
     }
@@ -363,18 +361,19 @@ EOSQL;
     $graph->add_series($bau_series, "bau");
     $graph->add_series($dulline_series, "physical");
     $graph->add_series($alloc_series, "gdrsalloc");
-    if ($dom_pledges['conditional']) {
-        $yr_ndx = $dom_pledges['conditional']['year'];
+    $glyph_id = 0;
+    foreach ($dom_pledges['conditional'] as $pledge_year => $pledge_info) {
+        $yr_ndx = $pledge_year;
         $graph->add_glyph($yr_ndx,
-                $bau_series[$yr_ndx] - $dom_pledges['conditional']['pledge_info']['pledge'],
-                'cond-glyph',
+                $bau_series[$yr_ndx] - $pledge_info['pledge'],
+                'cond-glyph', 'cond-glyph-' . $glyph_id++,
                 'circle', 10);
     }
-    if ($dom_pledges['unconditional']) {
-        $yr_ndx = $dom_pledges['unconditional']['year'];
+    foreach ($dom_pledges['unconditional'] as $pledge_year => $pledge_info) {
+        $yr_ndx = $pledge_year;
         $graph->add_glyph($yr_ndx,
-                $bau_series[$yr_ndx] - $dom_pledges['unconditional']['pledge_info']['pledge'],
-                'uncond-glyph',
+                $bau_series[$yr_ndx] - $pledge_info['pledge'],
+                'uncond-glyph', 'uncond-glyph-' . $glyph_id++,
                 'diamond', 12);
     }
 

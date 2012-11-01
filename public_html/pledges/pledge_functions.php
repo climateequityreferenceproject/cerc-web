@@ -100,14 +100,20 @@ function get_pledge_information($code, $conditional, $year) {
     return $row;
 }
 
-function get_pledge_years($code) {
+function get_pledge_years($code, $conditional=null) {
+    if ($conditional !== null) {
+        $conditional_bool = $conditional ? 1 : 0;
+        $conditional_string = 'conditional=' . $conditional_bool . ' AND ';
+    } else {
+        $conditional_string = ''; 
+    }
     if (is_country($code)) {
         $ctryrgn_str = 'iso3="' . $code . '"';
     } else {
         $ctryrgn_str = 'region="' . $code . '"';
     }
     // Todo: replace 2030 with an extracted value
-    $sql = 'SELECT by_year FROM pledge WHERE ' . $ctryrgn_str . ' AND by_year<=2030;';
+    $sql = 'SELECT by_year FROM pledge WHERE ' . $conditional_string . $ctryrgn_str . ' AND by_year<=2030;';
     $result = pledge_query_db($sql);
     $years = array();
     while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
@@ -129,25 +135,25 @@ function get_processed_pledges($iso3, $shared_params, $dbfile=NULL) {
         $db = NULL;
     }
     
-    $year = get_min_target_year($iso3, true);
-    if ($year) {
-        $retval['conditional']['year'] = $year;
-        $pledge_info = get_pledge_information($iso3, true, $year);
-        $retval['conditional']['pledge_info'] = process_pledges($pledge_info, $pathway, $db);
+    $pledge_years = get_pledge_years($iso3, true);
+    if (count($pledge_years) > 0) {
+        foreach ($pledge_years as $year) {
+            $pledge_info = get_pledge_information($iso3, true, $year);
+            $retval['conditional'][$year] = process_pledges($pledge_info, $pathway, $db);
+        }
     } else {
-        $retval['conditional'] = NULL;
+        $retval['conditional'] = array();
     }
     
-    $year = get_min_target_year($iso3, false);
-    if ($year) {
-        $retval['unconditional']['year'] = $year;
-        $retval['unconditional']['year'] = $year;
-        $pledge_info = get_pledge_information($iso3, false, $year);
-        $retval['unconditional']['pledge_info'] = process_pledges($pledge_info, $pathway, $db);
+    $pledge_years = get_pledge_years($iso3, false);
+    if (count($pledge_years) > 0) {
+        foreach ($pledge_years as $year) {
+            $pledge_info = get_pledge_information($iso3, false, $year);
+            $retval['unconditional'][$year] = process_pledges($pledge_info, $pathway, $db);
+        }
     } else {
-        $retval['unconditional'] = NULL;
+        $retval['unconditional'] = array();
     }
-    
     return $retval;
 }
 

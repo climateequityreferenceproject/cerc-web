@@ -17,8 +17,8 @@ polygon#intloblig {fill:#e6b350;}
 polygon#intloblig {fill:url(#intlobligstripes);}
 pattern#intlobligstripes line.stripe {stroke:#c2823e; stroke-width:10;}
 polygon#supportedmit {fill:#e6e6e6;}
-#uncond-glyph {stroke:#000;stroke-width:1px;fill:#ff3c3c;}
-#cond-glyph {stroke:#000;stroke-width:1px;fill:#96dcff;}
+.uncond-glyph {stroke:#000;stroke-width:1px;fill:#ff3c3c;}
+.cond-glyph {stroke:#000;stroke-width:1px;fill:#96dcff;}
 
 /* colors *******************
   #e6b350 ochre 100% (domestic mitigation before opacity reduction)
