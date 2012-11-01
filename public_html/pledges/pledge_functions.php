@@ -100,6 +100,24 @@ function get_pledge_information($code, $conditional, $year) {
     return $row;
 }
 
+function get_pledge_years($code) {
+    if (is_country($code)) {
+        $ctryrgn_str = 'iso3="' . $code . '"';
+    } else {
+        $ctryrgn_str = 'region="' . $code . '"';
+    }
+    // Todo: replace 2030 with an extracted value
+    $sql = 'SELECT by_year FROM pledge WHERE ' . $ctryrgn_str . ' AND by_year<=2030;';
+    $result = pledge_query_db($sql);
+    $years = array();
+    while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+        $years[] = $row['by_year'];
+    }
+    sort($years, SORT_NUMERIC);
+    mysql_free_result($result);
+    return array_unique($years, SORT_NUMERIC);
+}
+
 function get_processed_pledges($iso3, $shared_params, $dbfile=NULL) {
     $retval = array();
     
