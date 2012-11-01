@@ -108,6 +108,11 @@ $(function() {
     $('#a1_smoothing').change(submit);
     $('#mit_gap_borne').change(submit);
     
+    // If in advanced view then put the dev threshold inside the progressivity box
+    if ($('input:radio[name=basic_adv]:checked').val() == 'adv') {
+        $('#dev_thresh').parent().detach().prependTo("fieldset.progressivity ul");
+    }
+    
     // Set the parameters to show or hide
 //    $('#input_values caption').click(function() {
 //        $('#input_values tbody').toggle(function() {
@@ -241,6 +246,12 @@ function set_display() {
     } else {
         $('.advanced').show();
     }
+    
+    // If in advanced view then put the dev threshold inside the progressivity box
+    if ($('input:radio[name=basic_adv]:checked').val() == 'adv') {
+        $('#dev_thresh').parent().detach().prependTo("fieldset.progressivity ul");
+    }
+
 }
 
 function uniqid()

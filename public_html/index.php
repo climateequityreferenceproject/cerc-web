@@ -150,7 +150,15 @@ if (isset($_GET['year'])) {
                             </li>
                             <?php
                                        if ($display_params['framework']['value'] === 'gdrs') {
-                                           echo select_num('dev_thresh', $fw_params, _("Development threshold (\$PPP):"), $advanced);
+                                           echo select_num('r_wt', $fw_params, _("Responsibility weight:"), $advanced);
+                                       }
+                                       echo select_num('percent_gwp', $shared_params, _("Total cost as % GWP:"), $advanced);
+                                       echo select_num('em_elast', $shared_params, _("Emissions elasticity:"), $advanced);
+                                       echo select_num('dev_thresh', $fw_params, _("Development threshold (\$PPP):"), $advanced);
+                                       if ($display_params['framework']['value'] === 'gdrs') {
+                                           echo '<li class="advanced"><fieldset class="progressivity">';
+                                           echo '<legend class="open"><span>&nbsp;</span>' . _("Progressivity") . '</legend>';
+                                           echo '<ul>';
                                            echo select_num('lux_thresh', $fw_params, _("Luxury threshold (\$MER):"), $advanced);
                                            echo '<li class="advanced">';
                                            echo '<input type="checkbox" name="do_luxcap" id="do_luxcap" class="click" value="1" ' . ($fw_params["do_luxcap"]['value'] ? 'checked="checked"' : '') . '/>';
@@ -159,27 +167,22 @@ if (isset($_GET['year'])) {
                                            echo '<li class="advanced">';
                                            echo '<input type="checkbox" name="interp_btwn_thresh" id="interp_btwn_thresh" class="click" value="1" ' . ($fw_params["interp_btwn_thresh"]['value'] ? 'checked="checked"' : '') . '/>';
                                            echo '<label for="interp_btwn_thresh" class="click"> ' . _("Progressive between thresholds") . '</label>';
-                                           echo "</li>";
-                                           echo select_num('r_wt', $fw_params, _("Responsibility weight:"), $advanced);
+                                           echo "</li></ul>";
+                                           echo '</fieldset></li>';
                                        }
-                                       echo select_num('percent_gwp', $shared_params, _("Total cost as % GWP:"), $advanced);
-                                       echo select_num('em_elast', $shared_params, _("Emissions elasticity:"), $advanced);
-                                       // Later, other frameworks may use these. But right now only GDRs
-                                       if ($display_params['framework']['value'] === 'gdrs') {
-//                                           echo '<li class="advanced"><fieldset>';
-//                                           echo '<legend class="closed"><span>&nbsp;</span>' . _("Kyoto-adjusted baselines") . '</legend>';
-                                           echo '<div><ul id="kab">';
-                                           echo "<li>";
-                                           echo '<input type="checkbox" name="use_kab" id="use_kab" class="click" value="1" ' . ($fw_params["use_kab"]['value'] ? 'checked="checked"' : '') . '/>';
-                                           echo '<label for="use_kab" class="click"> ' . _("Use Kyoto-adjusted baselines") . '</label>';
-                                           echo "</li>";
-                                           echo "<li>";
-                                           echo '<input type="checkbox" name="kab_only_ratified" id="kab_only_ratified" class="click" value="1" ' . ($fw_params["kab_only_ratified"]['value'] ? 'checked="checked"' : '') . '/>';
-                                           echo '<label for="kab_only_ratified" class="click"> ' . _("But only for ratifying countries") . '</label>';
-                                           echo "</li>";
-                                           echo '</li><ul>&nbsp;</div><!-- end #kab -->';
-//                                           echo '</fieldset></li>';
-                                       }
+                                       echo '<li class="advanced"><fieldset>';
+                                       echo '<legend class="open"><span>&nbsp;</span>' . _("Kyoto compliance") . '</legend>';
+                                       echo '<div><ul id="kab">';
+                                       echo "<li>";
+                                       echo '<input type="checkbox" name="use_kab" id="use_kab" class="click" value="1" ' . ($fw_params["use_kab"]['value'] ? 'checked="checked"' : '') . '/>';
+                                       echo '<label for="use_kab" class="click"> ' . _("Use Kyoto-adjusted baselines") . '</label>';
+                                       echo "</li>";
+                                       echo "<li>";
+                                       echo '<input type="checkbox" name="kab_only_ratified" id="kab_only_ratified" class="click" value="1" ' . ($fw_params["kab_only_ratified"]['value'] ? 'checked="checked"' : '') . '/>';
+                                       echo '<label for="kab_only_ratified" class="click"> ' . _("But only for ratifying countries") . '</label>';
+                                       echo "</li>";
+                                       echo '</li><ul>&nbsp;</div><!-- end #kab -->';
+                                       echo '</fieldset></li>';
 //                                       if ($display_params['framework']['value'] === 'gdrs') {
 //                                           echo '<li class="advanced"><fieldset>';
 //                                           echo '<legend class="closed"><span>&nbsp;</span>' . _("Sequencing") . '</legend>';
