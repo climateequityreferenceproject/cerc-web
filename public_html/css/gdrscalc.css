@@ -87,9 +87,9 @@ body>#container, body>#footer {
 #input_values caption {
     text-align: left;
 }
-/*#input_values tbody {
+#input_values tbody {
     display: none;
-}*/
+}
 td, th {
     border:1px solid;
     border-left:0;

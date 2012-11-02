@@ -114,13 +114,13 @@ $(function() {
     }
     
     // Set the parameters to show or hide
-//    $('#input_values caption').click(function() {
-//        $('#input_values tbody').toggle(function() {
-//            $('#input_values caption a').text(
-//              $(this).is(':visible') ? "Hide parameters" : "Show parameters"
-//            );
-//        });
-//    });
+    $('#input_values caption').click(function() {
+        $('#input_values tbody').toggle(function() {
+            $('#input_values caption a').text(
+              $(this).is(':visible') ? "Hide parameters" : "Show parameters"
+            );
+        });
+    });
     
     //--------------------------------------------------
     // Action on form submit
@@ -279,20 +279,10 @@ function spinoff_window() {
     '   </head>\n' +
     '   <body id="spinoff">\n' +
     '      <div id="calc_container" class="group">\n' +
-    '         <div id="data" class="group">\n' +
-    '             <div id="calc_parameters" class="group">\n';
-//    html +=  $.post(
-//            "core.php",
-//            $('#form1').serialize() + "&submit=submit&ajax=ajax",
-//            function(data) {
-//                $('#calc_parameters').html(data);
-
-    '             </div>\n' +
-    '             <div id="calc_results" class="group">\n';
-    html += $('#calc_results').html();
+    '         <div id="data" class="group">\n';
+    html += $('#data').html();
     var d = new Date();
-    '             </div>\n' +
-    '         </div>\n' +
+    html += '         </div>\n' +
     '      </div>\n' +
     '      <div id="footer">\n' +
     '           <p><strong>Greenhouse Development Rights</strong> is a project of <a href="http://www.ecoequity.org/">EcoEquity</a> and the <a href="http://www.sei-international.org">Stockholm Environment Institute</a> &#169; 2008-' + d.getFullYear() + ' </p>\n' +
