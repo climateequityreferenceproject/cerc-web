@@ -466,9 +466,9 @@ EOHTML;
         foreach ($pledges as $pledge_year => $pledge_info) {
             $mit_oblig = $bau[$pledge_year] - $ctry_val[$pledge_year]["gdrs_alloc_MtCO2"];
             if ($condl === 'conditional') {
-                $common_str = _('Unconditional pledged domestic action to ');
-            } else {
                 $common_str = _('Conditional pledged domestic action to ');
+            } else {
+                $common_str = _('Unconditional pledged domestic action to ');
             }
             $common_str .= $pledge_info['description'];
             $common_str .= ' by ' . $pledge_year;
