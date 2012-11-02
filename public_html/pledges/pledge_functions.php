@@ -242,10 +242,8 @@ function process_pledges($pledge_info, $pathway, $db) {
         if ($use_nonco2['value']) {
             $bau[$year] += $year_data['NonCO2_MtCO2e'];
         }
-        $alloc[$year] = $year_data['gdrs_alloc_MtCO2'];
     }
     
-    $gdrs_reduction = $bau[$pledge_info['by_year']] - $alloc[$pledge_info['by_year']];
     switch ($pledge_info['rel_to']) {
         case 'below':
             $factor = 1 - $pledge_info['reduction_percent']/100.0;
