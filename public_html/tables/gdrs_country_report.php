@@ -262,7 +262,7 @@ $retval .= <<< EOHTML
 </object>
 EOHTML;
     
-    $retval .= '<h3 id="toggle-key">' . _('Show graph key') . '</h3>';
+    $retval .= '<p id="toggle-key">' . _('Show graph key') . '</p>';
     $retval .= '<dl id="ctry_report_legend">';
     $retval .= '<dt class="key-bau"><span></span>' . _('Business as Usual') . '</dt>';
     $retval .= '<dd>' . _('GHG emissions baselines (“BAU”) are based on projected emissions growth rates from McKinsey and Co\'s projections (Version 2.1) applied to the most current available annual emissions data (CO<sub>2</sub> from fossil fuels from CDIAC\'s 2010 estimates); CO<sub>2</sub> from land use is projected constant at 2005 levels and non-CO<sub>2</sub> GHGs are a constant proportion relative to Fossil CO<sub>2</sub> emissions at 2005 levels.') . '</dd>';

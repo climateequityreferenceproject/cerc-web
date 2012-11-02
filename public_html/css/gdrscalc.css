@@ -82,14 +82,17 @@ body>#container, body>#footer {
     float:left; 
     list-style:none; 
     padding-right:3%; 
-    width:30%; 
+    width:30%;
 }
-#input_values caption {
+#input_values caption, #toggle-key {
     text-align: left;
     font-weight: normal;
     font-size: 1.0em;
 }
-#input_values tbody {
+#toggle-key {
+    width: 8em;
+}
+#input_values tbody, #ctry_report_legend {
     display: none;
 }
 td, th {
@@ -240,7 +243,7 @@ body#spinoff>#calc_container #data, body#spinoff>#footer {
 .alert { color: red; }
 
 /*** Country graph legend ***/
-h3#toggle-key + dl {display:none;}
+#toggle-key + dl {display:none;}
 dl#ctry_report_legend { line-height: 1.3;}
 dl#ctry_report_legend dt { font-weight:bold; margin-top:1em;}
 dl#ctry_report_legend dd { padding-left:25px;}
@@ -288,7 +291,7 @@ p {
     line-height:1.6;
     padding-top:0.8em;
 }
-a, a:link, a:visited, a:hover, a:active { 
+a, a:link, a:visited, a:hover, a:active, #toggle-key { 
     border-bottom:1px dotted;
     font-weight:bold;
     text-decoration:none;
@@ -351,7 +354,7 @@ body {
 }
 h1, h2 { color:#221e6b; } /* blue */
 h3 { color:#40822e; } /* green */
-a, a:link, a:visited, a:hover, a:active {
+a, a:link, a:visited, a:hover, a:active, #toggle-key {
     border-bottom-color:#050556;
     color:#40822e;
 }
