@@ -1,9 +1,9 @@
 var regionCountryData;
 
 $(function() {
-    // Make table sortable
-    $(".tablesorter").tablesorter();
-
+    
+    init_calc_behavior();
+    
     // fieldset show/hide
     $("legend").click(function() {
         $(this).siblings().toggle("fast");
@@ -17,13 +17,6 @@ $(function() {
         }
     });
 	
-    // hand cursor for hover on legend of fieldset, or input values caption
-    $("legend, #input_values caption").hover(function() {
-        $(this).addClass('pretty-hover');
-    }, function() {
-        $(this).removeClass('pretty-hover');
-    });
-    
     $("#country_list_button button").click(function() {
         $('#filterDiv').dialog('open');
     });
@@ -113,15 +106,6 @@ $(function() {
         $('#dev_thresh').parent().detach().prependTo("fieldset.progressivity ul");
     }
     
-    // Set the parameters to show or hide
-    $('#input_values caption').click(function() {
-        $('#input_values tbody').toggle(function() {
-            $('#input_values caption a').text(
-              $(this).is(':visible') ? "Hide parameters" : "Show parameters"
-            );
-        });
-    });
-    
     //--------------------------------------------------
     // Action on form submit
     //--------------------------------------------------
@@ -136,18 +120,7 @@ $(function() {
             $('#form1').serialize() + "&submit=submit&ajax=ajax",
             function(data) {
                 $('#data').html(data);
-		// Make table sortable
-                $(".tablesorter").tablesorter();
-                // Set the parameters to show or hide
-                $("#input_values caption").hover(function() {
-                    $(this).addClass('pretty-hover');
-                }, function() {
-                    $(this).removeClass('pretty-hover');
-                });
-                $('#input_values caption').click(function() {
-                    $('#input_values tbody').toggle();
-                });
-                
+                init_calc_behavior();
                 // hide spinner
                 $('#loading').hide();
 
@@ -213,6 +186,34 @@ $(function() {
     }, 'json');
 
 });
+
+function init_calc_behavior() {
+    // Make table sortable
+    $(".tablesorter").tablesorter();
+    // Set the parameters to show or hide
+    $("#input_values caption").hover(function() {
+        $(this).addClass('pretty-hover');
+    }, function() {
+        $(this).removeClass('pretty-hover');
+    });
+    // Set the parameters to show or hide
+    $('#input_values caption').click(function() {
+        $('#input_values tbody').toggle(function() {
+            $('#input_values caption a').text(
+              $(this).is(':visible') ? "Hide parameters" : "Show parameters"
+            );
+        });
+    });
+    $('dl#ctry_report_legend dt').click(function() {
+        $(this).nextUntil("dt").toggle();
+    });
+    $('dl#ctry_report_legend dt').hover(function() {
+        $(this).addClass('pretty-hover');
+    }, function() {
+        $(this).removeClass('pretty-hover');
+    });    
+}
+    
 
 function testajax() { 
     $.post('js/testajax.php', function(data) {

@@ -481,11 +481,14 @@ EOHTML;
             $retval .= '<dt class="key-sup"><span></span>' . _('Mitigation funded by other countries') . '</dt>';
             $retval .= '<dd>' . sprintf(_('Mitigation funded other countries, but carried out within the borders of %s. GDRs assigns the "credit" for this mitigation to the funder, but of course the terms of the mitigation would be as negotiated with the host country.'), $country_name) . '</dd>';
         }
-        $retval .= '<dt class="key-uncond"><span></span>' . _('Unconditional Pledge') . '</dt>';
-        $retval .= '<dd>' . sprintf(_('Emissions consistent with %s&#8217;s pledged emission reductions <em>not</em> conditional on other countries&#8217; actions.'), $country_name) . '</dd>';
-
-        $retval .= '<dt class="key-cond"><span></span>' . _('Conditional Pledge') . '</dt>';
-        $retval .= '<dd>' . sprintf(_('Emissions consistent with %s&#8217;s pledged emission reductions conditional on other countries&#8217; actions.'), $country_name) . '</dd>';
+        if (!empty($dom_pledges['unconditional'])) {
+            $retval .= '<dt class="key-uncond"><span></span>' . _('Unconditional Pledge') . '</dt>';
+            $retval .= '<dd>' . sprintf(_('Emissions consistent with %s&#8217;s pledged emission reductions <em>not</em> conditional on other countries&#8217; actions.'), $country_name) . '</dd>';
+        }
+        if (!empty($dom_pledges['conditional'])) {
+            $retval .= '<dt class="key-cond"><span></span>' . _('Conditional Pledge') . '</dt>';
+            $retval .= '<dd>' . sprintf(_('Emissions consistent with %s&#8217;s pledged emission reductions conditional on other countries&#8217; actions.'), $country_name) . '</dd>';
+        }
     }
     $retval .= '</dl>';
 
