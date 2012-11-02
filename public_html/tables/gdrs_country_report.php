@@ -463,20 +463,35 @@ $retval .= <<< EOHTML
     <tbody>
 EOHTML;
     foreach ($dom_pledges['unconditional'] as $pledge_year => $pledge_info) {
+        $mit_oblig = $bau[$pledge_year] - $ctry_val[$pledge_year]["gdrs_alloc_MtCO2"];
         $common_str = 'Unconditional pledged domestic action to ';
         $common_str .= $pledge_info['description'];
         $common_str .= ' by ' . $pledge_year;
         $retval .= '<tr><td class="lj" colspan="2">' . $common_str . '</td></tr>';
         // Total
         $retval .= "<tr>";
-        $retval .= "<td class=\"lj level2\">As Mt" . $gases . "</td>";
+        $retval .= "<td class=\"lj level2\">As tons</td>";
         $val = $pledge_info['pledge'];
-        $retval .= "<td>" . nice_number('', $val, '') . "</td>";
+        $retval .= "<td>" . nice_number('', $val, '') . ' Mt' . $gases . "</td>";
         $retval .= "</tr>";
         // Percent
         $retval .= "<tr>";
         $retval .= "<td class=\"lj level2\">As share of " . $pledge_year . " mitigation obligation</td>";
-        $val = 100 * $pledge_info['pledge']/($bau[$pledge_year] - $ctry_val[$pledge_year]["gdrs_alloc_MtCO2"]);
+        $val = 100 * $pledge_info['pledge']/$mit_oblig;
+        $retval .= "<td>" . nice_number('', $val, '%') . "</td>";
+        $retval .= "</tr>";
+        if ($pledge_info['pledge'] < $mit_oblig) {
+            // Shortfall
+            $retval .= "<tr>";
+            $retval .= "<td class=\"lj level2\">Shortfall, as tons</td>";
+            $val = $mit_oblig - $pledge_info['pledge'];
+            $retval .= "<td>" . nice_number('', $val, '') . ' Mt' . $gases . "</td>";
+            $retval .= "</tr>";
+        }
+        // Score
+        $retval .= "<tr>";
+        $retval .= "<td class=\"lj level2\">" . _('Percent of business-as-usual emissions by which pledge must be raised to meet mitigation obligation') . "</td>";
+        $val = 100 * (1 - ($mit_oblig - $pledge_info['pledge']))/$bau[$pledge_year];
         $retval .= "<td>" . nice_number('', $val, '%') . "</td>";
         $retval .= "</tr>";
     }
@@ -487,9 +502,9 @@ EOHTML;
         $retval .= '<tr><td class="lj" colspan="2">' . $common_str . '</td></tr>';
         // Total
         $retval .= "<tr>";
-        $retval .= "<td class=\"lj level2\">As Mt" . $gases . "</td>";
+        $retval .= "<td class=\"lj level2\">As tons</td>";
         $val = $pledge_info['pledge'];
-        $retval .= "<td>" . nice_number('', $val, '') . "</td>";
+        $retval .= "<td>" . nice_number('', $val, '')  . ' Mt' . $gases . "</td>";
         $retval .= "</tr>";
         // Percent
         $retval .= "<tr>";
