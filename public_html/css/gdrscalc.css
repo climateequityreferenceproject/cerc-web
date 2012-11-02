@@ -86,6 +86,8 @@ body>#container, body>#footer {
 }
 #input_values caption {
     text-align: left;
+    font-weight: normal;
+    font-size: 1.0em;
 }
 #input_values tbody {
     display: none;
@@ -324,6 +326,12 @@ select, input, select.short { font-size:95%; }
 /*** table ****************************************************/
 td.level2 {
     padding-left: 2em;
+}
+
+table caption {
+    text-align: left;
+    font-weight: bold;
+    font-size: 1.2em;
 }
 
 /*** color ****************************************************/

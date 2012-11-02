@@ -200,114 +200,10 @@ EOHTML;
     $retval .= '<br />';
     
     /*
-     * Tax table
-     */
-    // First a mini-table
-    $retval .= '<table><tbody>';
-    // year Mitigation obligation as PC tax (collecting x% of global GWP)
-    $retval .= "<tr>";
-    $retval .= "<td class=\"lj\">" . sprintf(_('Per capita tax (assuming global mitigation costs = %s%% of global GWP)'), nice_number('', $perc_gwp, '')) . "</td>";
-    $val = 1000 * $world_tot['gdp_mer'] * 0.01 * $perc_gwp * $ctry_val[$year]["gdrs_rci"]/$ctry_val[$year]['pop_mln'];
-    $retval .= "<td>" . nice_number('$', $val, '') . "</td>";
-    $retval .= "</tr>";
-    // Close mini-table
-    $retval .= '</tbody></table>';
-
-    $cost_of_mitigation = 0.01 * $perc_gwp * $world_tot['gdp_mer']/($world_bau - $world_tot['gdrs_alloc']);
-    
-$retval .= <<< EOHTML
-<table cellspacing="2" cellpadding="2">
-    <tbody>
-    <thead>
-    <tr>
-        <th>Income level<br/>(\$US/cap)</th>
-        <th>Income level<br/>(in PPP terms)</th>
-        <th class="lj"></th>
-        <th>&#8220Tax rate&#8221<br/>(% income)</th>
-        <th>Population above<br/>tax level (% pop.)</th>
-        <th>Per-capita obligation<br/>(kt$gases/cap)</th>
-    </tr>
-EOHTML;
-    foreach ($db->query("SELECT seq_no, label, value, ppp FROM tax_levels ORDER BY seq_no;") as $record) {
-        $retval .= '<tr>';
-        if (!$record['value']) {
-            $description = '(' . $record['label'] . ')';
-        } else {
-            $description = '';
-        }
-        $val = $ctry_val[$year]['tax_income_mer_dens_' . $record['seq_no']]/$ctry_val[$year]['tax_pop_dens_' . $record['seq_no']];
-        $retval .= '<td>' . nice_number('', $val, '') . '</td>';
-        $val = $ctry_val[$year]['tax_income_ppp_dens_' . $record['seq_no']]/$ctry_val[$year]['tax_pop_dens_' . $record['seq_no']];
-        $retval .= '<td>' . nice_number('', $val, '') . '</td>';
-        $retval .= '<td class="lj">' . $description . '</td>';
-        if ($record['ppp']) {
-            $val = 100 * $ctry_val[$year]['tax_revenue_ppp_dens_' . $record['seq_no']]/$ctry_val[$year]['tax_income_ppp_dens_' . $record['seq_no']];
-        } else {
-            $val = 100 * $ctry_val[$year]['tax_revenue_mer_dens_' . $record['seq_no']]/$ctry_val[$year]['tax_income_mer_dens_' . $record['seq_no']];
-        }
-        $retval .= "<td>" . nice_number('', $val, '') . "</td>";
-        $val = 100 * (1 - $ctry_val[$year]['tax_pop_mln_below_' . $record['seq_no']]/$ctry_val[$year]['pop_mln']);
-        $retval .= "<td>" . nice_number('', $val, '') . "</td>";
-        $val = 0.001 * (1/$cost_of_mitigation) * $ctry_val[$year]['tax_revenue_mer_dens_' . $record['seq_no']]/$ctry_val[$year]['tax_pop_dens_' . $record['seq_no']];        
-        $retval .= "<td>" . nice_number('', $val, '') . "</td>";
-        $retval .= '</tr>';
-    }
-$retval .= <<< EOHTML
-    </tbody>
-</table>
-EOHTML;
-    
-    /*
-     * Pledge table
-     */
-$retval .= <<< EOHTML
-    </tbody>
-</table>
-<br />
-<table cellspacing="2" cellpadding="2">
-    <tbody>
-EOHTML;
-    $dom_pledges = get_processed_pledges($iso3, $shared_params, $dbfile);
-    foreach ($dom_pledges['unconditional'] as $pledge_year => $pledge_info) {
-        $common_str = 'Unconditional pledged domestic action to ';
-        $common_str .= $pledge_info['description'];
-        $common_str .= ' by ' . $pledge_year;
-        $retval .= '<tr><td class="lj" colspan="2">' . $common_str . '</td></tr>';
-        // Total
-        $retval .= "<tr>";
-        $retval .= "<td class=\"lj level2\">As Mt" . $gases . "</td>";
-        $val = $pledge_info['pledge'];
-        $retval .= "<td>" . nice_number('', $val, '') . "</td>";
-        $retval .= "</tr>";
-        // Percent
-        $retval .= "<tr>";
-        $retval .= "<td class=\"lj level2\">As share of " . $pledge_year . " mitigation obligation</td>";
-        $val = 100 * $pledge_info['pledge']/($bau[$pledge_year] - $ctry_val[$pledge_year]["gdrs_alloc_MtCO2"]);
-        $retval .= "<td>" . nice_number('', $val, '%') . "</td>";
-        $retval .= "</tr>";
-    }
-    foreach ($dom_pledges['conditional'] as $pledge_year => $pledge_info) {
-        $common_str = 'Conditional pledged domestic action to ';
-        $common_str .= $pledge_info['description'];
-        $common_str .= ' by ' . $pledge_year;
-        $retval .= '<tr><td class="lj" colspan="2">' . $common_str . '</td></tr>';
-        // Total
-        $retval .= "<tr>";
-        $retval .= "<td class=\"lj level2\">As Mt" . $gases . "</td>";
-        $val = $pledge_info['pledge'];
-        $retval .= "<td>" . nice_number('', $val, '') . "</td>";
-        $retval .= "</tr>";
-        // Percent
-        $retval .= "<tr>";
-        $retval .= "<td class=\"lj level2\">As share of " . $pledge_year . " mitigation obligation</td>";
-        $val = 100 * $pledge_info['pledge']/($bau[$pledge_year] - $ctry_val[$pledge_year]["gdrs_alloc_MtCO2"]);
-        $retval .= "<td>" . nice_number('', $val, '%') . "</td>";
-        $retval .= "</tr>";
-    }
-
-    /*
      * Generate graphs
      */
+    $dom_pledges = get_processed_pledges($iso3, $shared_params, $dbfile);
+    
 $query = <<< EOSQL
 SELECT year, SUM(gdrs_alloc_MtCO2) AS gdrs_alloc_MtCO2, SUM(fossil_CO2_MtCO2) AS fossil_CO2_MtCO2,
        SUM(LULUCF_MtCO2) AS LULUCF_MtCO2, SUM(NonCO2_MtCO2e) AS NonCO2_MtCO2e FROM disp_temp
@@ -491,6 +387,109 @@ EOHTML;
         }
     }
     $retval .= '</dl>';
+    
+    /*
+     * Tax table
+     */
+    $cost_of_mitigation = 0.01 * $perc_gwp * $world_tot['gdp_mer']/($world_bau - $world_tot['gdrs_alloc']);
+    
+$retval .= <<< EOHTML
+<br />
+<table cellspacing="2" cellpadding="2">
+    <caption>Tax table</caption>
+    <tbody>
+    <thead>
+    <tr>
+        <th>Income level<br/>(\$US/cap)</th>
+        <th>Income level<br/>(in PPP terms)</th>
+        <th class="lj"></th>
+        <th>&#8220Tax rate&#8221<br/>(% income)</th>
+        <th>Population above<br/>tax level (% pop.)</th>
+        <th>Per-capita obligation<br/>(kt$gases/cap)</th>
+    </tr>
+EOHTML;
+    foreach ($db->query("SELECT seq_no, label, value, ppp FROM tax_levels ORDER BY seq_no;") as $record) {
+        $retval .= '<tr>';
+        if (!$record['value']) {
+            $description = '(' . $record['label'] . ')';
+        } else {
+            $description = '';
+        }
+        $val = $ctry_val[$year]['tax_income_mer_dens_' . $record['seq_no']]/$ctry_val[$year]['tax_pop_dens_' . $record['seq_no']];
+        $retval .= '<td>' . nice_number('', $val, '') . '</td>';
+        $val = $ctry_val[$year]['tax_income_ppp_dens_' . $record['seq_no']]/$ctry_val[$year]['tax_pop_dens_' . $record['seq_no']];
+        $retval .= '<td>' . nice_number('', $val, '') . '</td>';
+        $retval .= '<td class="lj">' . $description . '</td>';
+        if ($record['ppp']) {
+            $val = 100 * $ctry_val[$year]['tax_revenue_ppp_dens_' . $record['seq_no']]/$ctry_val[$year]['tax_income_ppp_dens_' . $record['seq_no']];
+        } else {
+            $val = 100 * $ctry_val[$year]['tax_revenue_mer_dens_' . $record['seq_no']]/$ctry_val[$year]['tax_income_mer_dens_' . $record['seq_no']];
+        }
+        $retval .= "<td>" . nice_number('', $val, '') . "</td>";
+        $val = 100 * (1 - $ctry_val[$year]['tax_pop_mln_below_' . $record['seq_no']]/$ctry_val[$year]['pop_mln']);
+        $retval .= "<td>" . nice_number('', $val, '') . "</td>";
+        $val = 0.001 * (1/$cost_of_mitigation) * $ctry_val[$year]['tax_revenue_mer_dens_' . $record['seq_no']]/$ctry_val[$year]['tax_pop_dens_' . $record['seq_no']];        
+        $retval .= "<td>" . nice_number('', $val, '') . "</td>";
+        $retval .= '</tr>';
+    }
+    $retval .= '<tr>';
+    $retval .= "<td colspan=\"5\" class=\"lj\">" . sprintf(_('Per capita tax (assuming global mitigation costs = %s%% of global GWP)'), nice_number('', $perc_gwp, '')) . "</td>";
+    $val = 1000 * $world_tot['gdp_mer'] * 0.01 * $perc_gwp * $ctry_val[$year]["gdrs_rci"]/$ctry_val[$year]['pop_mln'];
+    $retval .= "<td>" . nice_number('$', $val, '') . "</td>";
+    $retval .= "</tr>";
 
+$retval .= <<< EOHTML
+    </tbody>
+</table>
+EOHTML;
+    
+    /*
+     * Pledge table
+     */
+$retval .= <<< EOHTML
+<br />
+<table cellspacing="2" cellpadding="2">
+<caption>Pledge table</caption>
+    <tbody>
+EOHTML;
+    foreach ($dom_pledges['unconditional'] as $pledge_year => $pledge_info) {
+        $common_str = 'Unconditional pledged domestic action to ';
+        $common_str .= $pledge_info['description'];
+        $common_str .= ' by ' . $pledge_year;
+        $retval .= '<tr><td class="lj" colspan="2">' . $common_str . '</td></tr>';
+        // Total
+        $retval .= "<tr>";
+        $retval .= "<td class=\"lj level2\">As Mt" . $gases . "</td>";
+        $val = $pledge_info['pledge'];
+        $retval .= "<td>" . nice_number('', $val, '') . "</td>";
+        $retval .= "</tr>";
+        // Percent
+        $retval .= "<tr>";
+        $retval .= "<td class=\"lj level2\">As share of " . $pledge_year . " mitigation obligation</td>";
+        $val = 100 * $pledge_info['pledge']/($bau[$pledge_year] - $ctry_val[$pledge_year]["gdrs_alloc_MtCO2"]);
+        $retval .= "<td>" . nice_number('', $val, '%') . "</td>";
+        $retval .= "</tr>";
+    }
+    foreach ($dom_pledges['conditional'] as $pledge_year => $pledge_info) {
+        $common_str = 'Conditional pledged domestic action to ';
+        $common_str .= $pledge_info['description'];
+        $common_str .= ' by ' . $pledge_year;
+        $retval .= '<tr><td class="lj" colspan="2">' . $common_str . '</td></tr>';
+        // Total
+        $retval .= "<tr>";
+        $retval .= "<td class=\"lj level2\">As Mt" . $gases . "</td>";
+        $val = $pledge_info['pledge'];
+        $retval .= "<td>" . nice_number('', $val, '') . "</td>";
+        $retval .= "</tr>";
+        // Percent
+        $retval .= "<tr>";
+        $retval .= "<td class=\"lj level2\">As share of " . $pledge_year . " mitigation obligation</td>";
+        $val = 100 * $pledge_info['pledge']/($bau[$pledge_year] - $ctry_val[$pledge_year]["gdrs_alloc_MtCO2"]);
+        $retval .= "<td>" . nice_number('', $val, '%') . "</td>";
+        $retval .= "</tr>";
+    }
+    // Close the table
+    $retval .= '</tbody></table>';
+   
 return $retval;
 }
