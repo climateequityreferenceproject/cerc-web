@@ -240,9 +240,11 @@ body#spinoff>#calc_container #data, body#spinoff>#footer {
 .alert { color: red; }
 
 /*** Country graph legend ***/
+h3#toggle-key + dl {display:none;}
 dl#ctry_report_legend { line-height: 1.3;}
 dl#ctry_report_legend dt { font-weight:bold; margin-top:1em;}
-dl#ctry_report_legend dd { padding-left:25px; display: none;}
+dl#ctry_report_legend dd { padding-left:25px;}
+/*dl#ctry_report_legend dd { display: none;}*/
 dl#ctry_report_legend dt span {
     background:url(../img/graph_leg_sprite.png) no-repeat;
     display:block;

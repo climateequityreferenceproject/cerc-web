@@ -204,14 +204,22 @@ function init_calc_behavior() {
             );
         });
     });
-    $('dl#ctry_report_legend dt').click(function() {
-        $(this).nextUntil("dt").toggle();
+    // Set the graph key to show or hide
+    $('#toggle-key').click(function() {
+        $(this).next().toggle(function() {
+            $('#toggle-key').text(
+              $('#toggle-key').next().is(':visible') ? "Hide graph key" : "Show graph key"
+            );
+        });
     });
-    $('dl#ctry_report_legend dt').hover(function() {
-        $(this).addClass('pretty-hover');
-    }, function() {
-        $(this).removeClass('pretty-hover');
-    });    
+//    $('dl#ctry_report_legend dt').click(function() {
+//        $(this).nextUntil("dt").toggle();
+//    });
+//    $('dl#ctry_report_legend dt').hover(function() {
+//        $(this).addClass('pretty-hover');
+//    }, function() {
+//        $(this).removeClass('pretty-hover');
+//    });    
 }
     
 
