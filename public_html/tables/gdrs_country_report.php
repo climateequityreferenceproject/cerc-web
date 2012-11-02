@@ -351,7 +351,7 @@ EOHTML;
 
     $retval .= '<dl id="ctry_report_legend">';
     $retval .= '<dt class="key-bau"><span></span>' . _('Business as Usual') . '</dt>';
-    $retval .= '<dd>' . _('GHG emissions baselines (“BAU”) are based on projected emissions growth rates from McKinsey and Co\'s projections (Version 2.1) applied to the most current available annual emissions data (CO2 from fossil fuels from CDIAC\'s 2010 estimates); CO2 from land use is projected constant at 2005 levels and non-CO2 GHGs are a constant proportion relative to Fossil CO2 emissions at 2005 levels.') . '</dd>';
+    $retval .= '<dd>' . _('GHG emissions baselines (“BAU”) are based on projected emissions growth rates from McKinsey and Co\'s projections (Version 2.1) applied to the most current available annual emissions data (CO<sub>2</sub> from fossil fuels from CDIAC\'s 2010 estimates); CO<sub>2</sub> from land use is projected constant at 2005 levels and non-CO<sub>2</sub> GHGs are a constant proportion relative to Fossil CO<sub>2</sub> emissions at 2005 levels.') . '</dd>';
 
     $retval .= '<dt class="key-gdrs"><span></span>' . _('GDRs "fair share" allocation') . '</dt>';
     $retval .= '<dd>' . sprintf(_('National allocation trajectory, as calculated by GDRs for %s using the specified pathways and parameters. The mitigation implied by this allocation can be either domestic or international &#8211; GDRs in itself says nothing about how or where it occurs.'), $country_name) . '</dd>';
