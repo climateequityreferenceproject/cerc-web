@@ -327,6 +327,7 @@ legend {
 select, input, select.short { font-size:95%; }
 #data td, #data th { text-align:right; }
 #input_values td, #input_values th, #data td.lj, #data th.lj { text-align:left; }
+#data td.cj, #data th.cj { text-align:center; }
 
 /*** table ****************************************************/
 td.level2 {
@@ -337,6 +338,11 @@ table caption {
     text-align: left;
     font-weight: bold;
     font-size: 1.2em;
+}
+
+tr.blank {
+    line-height: 0.25em;
+    background: #ccc;
 }
 
 /*** color ****************************************************/

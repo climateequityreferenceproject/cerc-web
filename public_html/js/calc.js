@@ -191,7 +191,7 @@ function init_calc_behavior() {
     // Make table sortable
     $(".tablesorter").tablesorter();
     // Set the parameters to show or hide
-    $("#input_values caption").hover(function() {
+    $("#input_values caption, #toggle-key").hover(function() {
         $(this).addClass('pretty-hover');
     }, function() {
         $(this).removeClass('pretty-hover');

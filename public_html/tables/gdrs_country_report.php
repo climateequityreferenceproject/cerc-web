@@ -2,6 +2,7 @@
 require_once("graphs/graph_core.php");
 require_once("pledges/pledge_functions.php");
 require_once("table_common.php");
+require_once("frameworks/frameworks.php");
 
 function dec($num) {
     return max(0, 1 - floor(log10(abs($num))));
@@ -311,82 +312,133 @@ $retval .= <<< EOHTML
     <tbody>
 EOHTML;
     
+    // BAU emissions
+    $retval .= "<tr>";
+    $retval .= "<td class=\"lj\">" . sprintf(_('%1$s business-as-usual emissions, projected to %2$d'), $country_name, $year) . "</td>";
+    $val = $bau[$year];
+    $retval .= '<td class="cj">&nbsp;</td>';
+    $retval .= "<td>" . nice_number('', $val, '') . ' Mt' . $gases . "</td>";
+    $retval .= "</tr>";
     // year Global mitigation obligation as MtCO2e below BAU
     $retval .= "<tr>";
     $retval .= "<td class=\"lj\">" . sprintf(_("Global mitigation requirement below business-as-usual, projected to %d"), $year) . "</td>";
+    $retval .= '<td class="cj">(A)</td>';
     $val = $world_bau - $world_tot["gdrs_alloc"];
     $retval .= "<td>" . nice_number('', $val, '') . ' Mt' . $gases . "</td>";
     $retval .= "</tr>";
     // Share of global RCI in year
     $retval .= "<tr>";
     $retval .= "<td class=\"lj\">" . sprintf(_('%1$s share of global Responsibility Capacity Index, projected to %2$d'), $country_name, $year) . "</td>";
+    $retval .= '<td class="cj">(B)</td>';
     $val = 100.0 * $ctry_val[$year]["gdrs_rci"];
-    $retval .= "<td>&#215; " . nice_number('', $val, '%') . "</td>";
+    $retval .= "<td>" . nice_number('', $val, '%') . "</td>";
+    $retval .= "</tr>";
+    // National mitigation obligation (group)
+    $retval .= "<tr>";
+    $retval .= "<td class=\"lj\">" . sprintf(_('%1$s mitigation obligation, projected to %2$d'), $country_name, $year) . "</td>";
+    $retval .= '<td class="cj">(A &#215; B)</td>';
+    $retval .= "<td>&nbsp;</td>";
     $retval .= "</tr>";
     // National mitigation obligation as MtCO2e below BAU
     $retval .= "<tr>";
-    $retval .= "<td class=\"lj\">" . sprintf(_('%1$s mitigation obligation, projected to %2$d'), $country_name, $year) . "</td>";
-    $val = $bau[$year] - $ctry_val[$year]["gdrs_alloc_MtCO2"];
-    $retval .= "<td>= " . nice_number('', $val, '') . ' Mt' . $gases . "</td>";
-    $retval .= "</tr>";
-    // Blank line
-    $retval .= "<tr><td>&nbsp;</td><td>&nbsp;</td></tr>";
-    // BAU emissions
-    $retval .= "<tr>";
-    $retval .= "<td class=\"lj\">" . sprintf(_('%1$s business-as-usual emissions, projected to %2$d'), $country_name, $year) . "</td>";
-    $val = $bau[$year];
-    $retval .= "<td>" . nice_number('', $val, '') . ' Mt' . $gases . "</td>";
-    $retval .= "</tr>";
-    // Blank line
-    $retval .= "<tr><td>&nbsp;</td><td>&nbsp;</td></tr>";
-    // year National mitigation obligation
-    $retval .= "<tr>";
-    $retval .= "<td class=\"lj\">" . sprintf(_('%1$s mitigation obligation, projected to %2$d'), $country_name, $year) . "</td>";
-    $retval .= "<td></td>";
-    $retval .= "</tr>";
-    // National mitigation obligation as MtCO2e below BAU
-    $retval .= "<tr>";
-    $retval .= "<td class=\"lj level2\">" . _("As tons below business-as-usual") . "</td>";
+    $retval .= "<td class=\"lj level2\">" . _("as tons below business-as-usual") . "</td>";
+    $retval .= '<td class="cj">&nbsp;</td>';
     $val = $bau[$year] - $ctry_val[$year]["gdrs_alloc_MtCO2"];
     $retval .= "<td>" . nice_number('', $val, '') . ' Mt' . $gases . "</td>";
     $retval .= "</tr>";
     // National mitigation obligation as % below BAU
     $retval .= "<tr>";
-    $retval .= "<td class=\"lj level2\">" . _("As percent below business-as-usual") . "</td>";
+    $retval .= "<td class=\"lj level2\">" . _("as percent below business-as-usual") . "</td>";
+    $retval .= '<td class="cj">&nbsp;</td>';
     $val = 100 * (1 - $ctry_val[$year]["gdrs_alloc_MtCO2"]/$bau[$year]);
     $retval .= "<td>" . nice_number('', $val, '%') . "</td>";
     $retval .= "</tr>";
+    // Climate tax
+    $climate_tax_link = '<a href="#tax-table">' . _('climate tax') . '</a>';
+    $retval .= '<tr>';
+    $retval .= "<td class=\"lj level2\">" . sprintf(_('as per-capita %1$s (assuming global mitigation costs = %2$s%% of global GWP)'), $climate_tax_link, nice_number('', $perc_gwp, '')) . "</td>";
+    $retval .= '<td class="cj">&nbsp;</td>';
+    $val = 1000 * $world_tot['gdp_mer'] * 0.01 * $perc_gwp * $ctry_val[$year]["gdrs_rci"]/$ctry_val[$year]['pop_mln'];
+    $retval .= "<td>" . nice_number('$', $val, '') . "</td>";
+    $retval .= "</tr>";
     // Blank line
-    $retval .= "<tr><td>&nbsp;</td><td>&nbsp;</td></tr>";
+    $retval .= "<tr class=\"blank\"><td colspan=\"3\">&nbsp;</td></tr>";
+    // Emissions in 1990
+    $retval .= "<tr>";
+    $retval .= "<td class=\"lj\">" . sprintf(_('%s 1990 emissions'), $country_name) . "</td>";
+    $retval .= '<td class="cj">&nbsp;</td>';
+    $val = $bau[1990];
+    $retval .= "<td>" . nice_number('', $val, '') . ' Mt' . $gases . "</td>";
+    $retval .= "</tr>";
     // GDRs allocation
     $retval .= "<tr>";
     $retval .= "<td class=\"lj\">" . sprintf(_('%1$s emissions allocation, projected to %2$d'), $country_name, $year) . "</td>";
-    $retval .= "<td></td>";
+    $retval .= '<td class="cj">&nbsp;</td>';
+    $retval .= '<td>&nbsp;</td>';
     $retval .= "</tr>";
     // GDRs 2020 allocation as MtCO2e
     $retval .= "<tr>";
-    $retval .= "<td class=\"lj level2\">" . _("As tons") . "</td>";
+    $retval .= "<td class=\"lj level2\">" . _("as tons") . "</td>";
+    $retval .= '<td class="cj">&nbsp;</td>';
     $val = $ctry_val[$year]["gdrs_alloc_MtCO2"];
     $retval .= "<td>" . nice_number('', $val, '') . ' Mt' . $gases . "</td>";
     $retval .= "</tr>";
-    // Emissions in 1990
-    $retval .= "<tr>";
-    $retval .= "<td class=\"lj level2\">" . _("&nbsp;&nbsp;&nbsp;&nbsp;Divided by 1990 emissions") . "</td>";
-    $val = $bau[1990];
-    $retval .= "<td>&#247; " . nice_number('', $val, '') . ' Mt' . $gases . "</td>";
-    $retval .= "</tr>";
     // GDRs 2020 allocation as percent of 1990 emissions
     $retval .= "<tr>";
-    $retval .= "<td class=\"lj level2\">" . _("As percent of 1990 emissions") . "</td>";
+    $retval .= "<td class=\"lj level2\">" . _("as percent of 1990 emissions") . "</td>";
+    $retval .= '<td class="cj">&nbsp;</td>';
     $val = 100.0 * $ctry_val[$year]["gdrs_alloc_MtCO2"]/$bau[1990];
-    $retval .= "<td>= " . nice_number('', $val, '%') . "</td>";
+    $retval .= "<td>" . nice_number('', $val, '%') . "</td>";
     $retval .= "</tr>";
     // GDRs 2020 allocation as percent reduction of 1990 emissions 
     $retval .= "<tr>";
-    $retval .= "<td class=\"lj level2\">" . _("As percent below 1990 emissions") . "</td>";
+    $retval .= "<td class=\"lj level2\">" . _("as percent below 1990 emissions") . "</td>";
+    $retval .= '<td class="cj">&nbsp;</td>';
     $val = 100.0 * (1 - $ctry_val[$year]["gdrs_alloc_MtCO2"]/$bau[1990]);
     $retval .= "<td>" . nice_number('', $val, '%') . "</td>";
-    $retval .= "</tr>"; 
+    $retval .= "</tr>";
+    // Blank line
+    $retval .= "<tr class=\"blank\"><td colspan=\"3\">&nbsp;</td></tr>";
+    if (Framework::is_dev()) {
+        $scorecard_url = 'http://www.gdrights.org/scorecard/';
+    } else {
+        $scorecard_url = 'http://www.gdrights.org/scorecard_dev/';
+    }
+    $scorecard_link = '<a href="' . $scorecard_url . '">' . _('Climate Equity Scorecard') . '</a>';
+    $condl_term = array('conditional' => _('conditional'), 'unconditional' => _('unconditional'));
+    foreach (array('unconditional', 'conditional') as $condl) {
+        $pledges = $dom_pledges[$condl];
+        foreach ($pledges as $pledge_year => $pledge_info) {
+            $mit_oblig = $bau[$pledge_year] - $ctry_val[$pledge_year]["gdrs_alloc_MtCO2"];
+            $common_str = sprintf(_('%1$s %2$s pledge: %3$s by %4$d'),
+                    $country_name,
+                    $condl_term[$condl],
+                    $pledge_info['description'],
+                    $pledge_year);
+            $retval .= '<tr><td class="lj" colspan="3">' . $common_str . '</td></tr>';
+            // Total
+            $retval .= "<tr>";
+            $retval .= "<td class=\"lj level2\">as tons</td>";
+            $retval .= '<td class="cj">&nbsp;</td>';
+            $val = $pledge_info['pledge'];
+            $retval .= "<td>" . nice_number('', $val, '') . ' Mt' . $gases . "</td>";
+            $retval .= "</tr>";
+            // % below BAU
+            $retval .= "<tr>";
+            $retval .= "<td class=\"lj level2\">" . _('as percent below business-as-usual') . "</td>";
+            $retval .= '<td class="cj">&nbsp;</td>';
+            $val = 100 * $pledge_info['pledge']/$bau[$pledge_year];
+            $retval .= "<td>" . nice_number('', $val, '%') . "</td>";
+            $retval .= "</tr>";
+            // Score
+            $retval .= "<tr>";
+            $retval .= "<td class=\"lj level2\">" . sprintf(_('as %s-style score'), $scorecard_link) . "</td>";
+            $retval .= '<td class="cj">&nbsp;</td>';
+            $val = 100 * ($pledge_info['pledge'] - $mit_oblig)/$bau[$pledge_year];
+            $retval .= "<td>" . nice_number('', $val, '') . "</td>";
+            $retval .= "</tr>";
+        }
+    }
     
     // Close the table
     $retval .= '</tbody></table>';
@@ -399,17 +451,13 @@ EOHTML;
     $cost_of_mitigation = 0.01 * $perc_gwp * $world_tot['gdp_mer']/($world_bau - $world_tot['gdrs_alloc']);
     
 $retval .= <<< EOHTML
+<a name="tax-table"></a>
 <br />
 <table cellspacing="2" cellpadding="2">
     <caption>Tax table</caption>
     <thead>
 EOHTML;
 
-    $retval .= '<tr>';
-    $retval .= "<td colspan=\"5\" class=\"lj\">" . sprintf(_('Per capita tax (assuming global mitigation costs = %s%% of global GWP)'), nice_number('', $perc_gwp, '')) . "</td>";
-    $val = 1000 * $world_tot['gdp_mer'] * 0.01 * $perc_gwp * $ctry_val[$year]["gdrs_rci"]/$ctry_val[$year]['pop_mln'];
-    $retval .= "<td>" . nice_number('$', $val, '') . "</td>";
-    $retval .= "</tr>";
 
 $retval .= <<< EOHTML
     <tr>
@@ -456,49 +504,6 @@ EOHTML;
     /*
      * Pledge table
      */
-$retval .= <<< EOHTML
-<br />
-<table cellspacing="2" cellpadding="2">
-<caption>Pledge table</caption>
-    <tbody>
-EOHTML;
-    foreach ($dom_pledges as $condl => $pledges) {
-        foreach ($pledges as $pledge_year => $pledge_info) {
-            $mit_oblig = $bau[$pledge_year] - $ctry_val[$pledge_year]["gdrs_alloc_MtCO2"];
-            if ($condl === 'conditional') {
-                $common_str = _('Conditional pledged domestic action to ');
-            } else {
-                $common_str = _('Unconditional pledged domestic action to ');
-            }
-            $common_str .= $pledge_info['description'];
-            $common_str .= ' by ' . $pledge_year;
-            $retval .= '<tr><td class="lj" colspan="2">' . $common_str . '</td></tr>';
-            // Total
-            $retval .= "<tr>";
-            $retval .= "<td class=\"lj level2\">As tons</td>";
-            $val = $pledge_info['pledge'];
-            $retval .= "<td>" . nice_number('', $val, '') . ' Mt' . $gases . "</td>";
-            $retval .= "</tr>";
-            // Percent
-            $retval .= "<tr>";
-            $retval .= "<td class=\"lj level2\">As share of " . $pledge_year . " mitigation obligation</td>";
-            $val = 100 * $pledge_info['pledge']/$mit_oblig;
-            $retval .= "<td>" . nice_number('', $val, '%') . "</td>";
-            $retval .= "</tr>";
-            // Shortfall
-            $retval .= "<tr>";
-            $retval .= "<td class=\"lj level2\">Shortfall as tons</td>";
-            $val = max(0,$mit_oblig - $pledge_info['pledge']);
-            $retval .= "<td>" . nice_number('', $val, '') . ' Mt' . $gases . "</td>";
-            $retval .= "</tr>";
-            // Score
-            $retval .= "<tr>";
-            $retval .= "<td class=\"lj level2\">" . _('Percent of business-as-usual emissions by which pledge exceeds mitigation obligation') . "</td>";
-            $val = 100 * ($pledge_info['pledge'] - $mit_oblig)/$bau[$pledge_year];
-            $retval .= "<td>" . nice_number('', $val, '%') . "</td>";
-            $retval .= "</tr>";
-        }
-    }
 //    foreach ($dom_pledges['conditional'] as $pledge_year => $pledge_info) {
 //        $common_str = 'Conditional pledged domestic action to ';
 //        $common_str .= $pledge_info['description'];
@@ -518,7 +523,6 @@ EOHTML;
 //        $retval .= "</tr>";
 //    }
     // Close the table
-    $retval .= '</tbody></table>';
    
 return $retval;
 }
