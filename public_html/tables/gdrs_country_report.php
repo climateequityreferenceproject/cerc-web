@@ -23,6 +23,28 @@ function nice_number($prefix, $num, $postfix) {
     return $retval;
 }
 
+function get_free_rider_adj($db, $iso3) {
+    $retval = 0;
+    
+    $sql = "SELECT int_val FROM params WHERE param_id='use_kab'";
+    $record = $db->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+    if ($record[0]['int_val']) {
+    
+$sql = <<<EOSQL
+       SELECT commitment_percent FROM country LEFT OUTER JOIN
+    (SELECT iso3, commitment_percent FROM kyoto_info, params WHERE
+       param_id='kab_only_ratified' AND (int_val=0 OR ratified=1)) AS temp
+       ON country.iso3 = temp.iso3 WHERE country.iso3='$iso3';
+EOSQL;
+        $record = $db->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+        if ($record[0]['commitment_percent']) {
+            $retval = 0.01 * max(0, 100 - $record[0]['commitment_percent']);
+        }
+    }
+    
+    return $retval;
+}
+
 // TODO: Replace "iso3" with the more generic "code"
 function gdrs_country_report($dbfile, $country_name, $shared_params, $iso3, $year) {
     $year_list = get_pledge_years($iso3);
@@ -39,7 +61,7 @@ function gdrs_country_report($dbfile, $country_name, $shared_params, $iso3, $yea
     $database = 'sqlite:'.$dbfile;
 
     $db = new PDO($database) OR die("<p>Can't open database</p>");
-    
+        
     // Get value for percent of GWP as a convenience -- used in a couple of places
     $perc_gwp = $shared_params['percent_gwp']['value'];
 
@@ -404,6 +426,10 @@ EOHTML;
     } else {
         $scorecard_url = 'http://www.gdrights.org/scorecard_dev/';
     }
+    
+    // Pledges
+    $free_rider_adj = get_free_rider_adj($db, $iso3);
+
     $scorecard_link = '<a href="' . $scorecard_url . '">' . _('Climate Equity Scorecard') . '</a>';
     $condl_term = array('conditional' => _('conditional'), 'unconditional' => _('unconditional'));
     foreach (array('unconditional', 'conditional') as $condl) {
@@ -434,7 +460,7 @@ EOHTML;
             $retval .= "<tr>";
             $retval .= "<td class=\"lj level2\">" . sprintf(_('as %s-style score'), $scorecard_link) . "</td>";
             $retval .= '<td class="cj">&nbsp;</td>';
-            $val = 100 * ($pledge_info['pledge'] - $mit_oblig)/$bau[$pledge_year];
+            $val = 100 * ($pledge_info['pledge'] - $mit_oblig)/($bau[$pledge_year] * (1 - $free_rider_adj));
             $retval .= "<td>" . nice_number('', $val, '') . "</td>";
             $retval .= "</tr>";
         }
