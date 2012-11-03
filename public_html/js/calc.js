@@ -69,6 +69,13 @@ $(function() {
             $('#region_country_filter').show();
         }
     });
+    
+    // Toggle lux threshold
+    $('#do_luxcap, #interp_btwn_thresh').click(lux_thresh_activate);
+    
+    // Toggle KAB dependencies
+    $('#use_kab').click(kab_activate);
+    
     $('#display_yr').change(submit);
     $('#display_ctry').change(submit);
     $('#decimal_pl').change(submit);
@@ -187,9 +194,28 @@ $(function() {
 
 });
 
+function lux_thresh_activate() {
+    if ($('#do_luxcap').is(':checked') || $('#interp_btwn_thresh').is(':checked')) {
+        $('#lux_thresh').removeAttr("disabled");
+    } else {
+        $('#lux_thresh').attr("disabled",true);
+    }
+}
+
+function kab_activate() {
+    if ($('#use_kab').is(':checked')) {
+        $('#kab_only_ratified').removeAttr("disabled");
+    } else {
+        $('#kab_only_ratified').attr("disabled",true);
+    }
+}
+
 function init_calc_behavior() {
     // Make table sortable
     $(".tablesorter").tablesorter();
+    // Set state of dependent form elements appropriately
+    lux_thresh_activate();
+    kab_activate();
     // Set the parameters to show or hide
     $("#input_values caption, #toggle-key").hover(function() {
         $(this).addClass('pretty-hover');
@@ -221,9 +247,8 @@ function init_calc_behavior() {
 //        $(this).removeClass('pretty-hover');
 //    });    
 }
-    
 
-function testajax() { 
+function testajax() {
     $.post('js/testajax.php', function(data) {
         $('#testajax').html(data);
     });

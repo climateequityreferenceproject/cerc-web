@@ -159,7 +159,7 @@ if (isset($_GET['year'])) {
                                            echo '<li class="advanced"><fieldset class="progressivity">';
                                            echo '<legend class="open"><span>&nbsp;</span>' . _("Progressivity") . '</legend>';
                                            echo '<ul>';
-                                           echo select_num('lux_thresh', $fw_params, _("Luxury threshold (\$MER):"), $advanced);
+                                           echo '<li class="separator"></li>';
                                            echo '<li class="advanced">';
                                            echo '<input type="checkbox" name="do_luxcap" id="do_luxcap" class="click" value="1" ' . ($fw_params["do_luxcap"]['value'] ? 'checked="checked"' : '') . '/>';
                                            echo '<label for="do_luxcap" class="click"> ' . _("Cap baselines at luxury threshold") . '</label>';
@@ -167,8 +167,9 @@ if (isset($_GET['year'])) {
                                            echo '<li class="advanced">';
                                            echo '<input type="checkbox" name="interp_btwn_thresh" id="interp_btwn_thresh" class="click" value="1" ' . ($fw_params["interp_btwn_thresh"]['value'] ? 'checked="checked"' : '') . '/>';
                                            echo '<label for="interp_btwn_thresh" class="click"> ' . _("Progressive between thresholds") . '</label>';
-                                           echo "</li></ul>";
-                                           echo '</fieldset></li>';
+                                           echo "</li>";
+                                           echo select_num('lux_thresh', $fw_params, _("Luxury threshold (\$MER):"), $advanced);
+                                           echo '</ul></fieldset></li>';
                                        }
                                        echo '<li class="advanced"><fieldset>';
                                        echo '<legend class="open"><span>&nbsp;</span>' . _("Kyoto compliance") . '</legend>';

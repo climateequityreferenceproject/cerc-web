@@ -413,6 +413,10 @@ img.float-right {
     margin:0 0 5px 15px;
 }
 
+li.separator {
+    border-top: 1px solid #999;
+}
+
 #spinoff_button { display: block;text-indent: -5000px;width: 300px!important;height: 28px;background-image:url(../img/spinoff-button-sprite.png)!important;background-repeat: no-repeat;border:0px!important;padding:0px!important; }
 #spinoff_button { background-position:0 0; }
 #spinoff_button:hover { background-position:0 -47px; }
