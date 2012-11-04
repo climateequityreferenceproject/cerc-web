@@ -194,6 +194,24 @@ $(function() {
 
 });
 
+function get_def_by_id(e) {
+    href = $(e.currentTarget).attr("href");
+    def_id = href.substr(href.lastIndexOf('#') + 1);
+    
+    $.getJSON('glossary_array.php', {id: def_id}, function(definition){
+       $('#popup').html(definition.text).dialog({
+            autoOpen: false,
+            title: definition.label,
+            width: 500,
+            height: 300
+       });
+       
+       $('#popup').dialog('open');
+
+    });
+    e.preventDefault();
+}
+
 function lux_thresh_activate() {
     if ($('#do_luxcap').is(':checked') || $('#interp_btwn_thresh').is(':checked')) {
         $('#lux_thresh').removeAttr("disabled");
@@ -238,6 +256,10 @@ function init_calc_behavior() {
             );
         });
     });
+    // Enable help links
+    $('a.def_link').click(
+        get_def_by_id
+    );
 //    $('dl#ctry_report_legend dt').click(function() {
 //        $(this).nextUntil("dt").toggle();
 //    });

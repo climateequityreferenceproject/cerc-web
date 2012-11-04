@@ -20,6 +20,7 @@ if (isset($_GET['year'])) {
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US">
     <head profile="http://gmpg.org/xfn/11">
         <link type="text/css" href="css/smoothness/jquery-ui-1.8.9.custom.css" rel="Stylesheet" />
+<!--        <link type="text/css" href="css/smoothness/jquery-ui-1.8.16.custom.css" rel="Stylesheet" />-->
         <?php
         echo get_head("Greenhouse Development Rights online calculator", array(array('href' => "css/gdrscalc.css", 'media' => "all"), array('href' => "css/tablesorter.css", 'media' => "all")));
         ?>
@@ -32,6 +33,7 @@ if (isset($_GET['year'])) {
         <!--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>-->
         <script type="text/javascript" src="js/jquery-1.4.4.min.js"></script>
         <script type="text/javascript" src="js/jquery-ui-1.8.9.custom.min.js"></script>
+<!--        <script type="text/javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>-->
         <script type="text/javascript" src="js/jquery.tablesorter.js"></script>
         <script type="text/javascript" src="js/calc.js"></script>
     </head>
@@ -123,7 +125,7 @@ if (isset($_GET['year'])) {
                         <legend class="open"><span>&nbsp;</span>Calculator settings</legend>
                         <div>
                             <ul>
-                            <?php echo select_options_list('emergency_path', $shared_params, _("Global mitigation pathway: "), $advanced); ?>
+                            <?php echo select_options_list('emergency_path', $shared_params, $glossary->getLink('gloss_path', false, _("Global mitigation pathway")) . ": ", $advanced); ?>
                                 <!--<li>
                                     <label for="baseline" class="select">Baseline: </label>
                                     <select name="baseline" id="baseline">
@@ -131,33 +133,33 @@ if (isset($_GET['year'])) {
                                     </select>
                                 </li>-->
                                 <div id="cum_since_yr_wrapper">
-                            <?php echo select_num('cum_since_yr', $shared_params, _("Cumulative since:"), $advanced); ?>
+                            <?php echo select_num('cum_since_yr', $shared_params, $glossary->getLink('cum_respons', false, _('Cumulative since')) . ": ", $advanced); ?>
                                 </div>
                                 <li>
                                     <input type="checkbox" name="use_lulucf" id="use_lulucf" class="click" value="1" <?php if ($shared_params["use_lulucf"]['value'])
                                     echo 'checked="checked"'; ?>  />
-                                <label for="use_lulucf" class="click"> Include land-use emissions</label>
+                                <label for="use_lulucf" class="click"> <?php echo sprintf(_('Include %s'), $glossary->getLink('lu_emissions', false, _('land-use emissions'))); ?></label>
                             </li>
                             <li>
                                 <input type="checkbox" name="use_nonco2" id="use_nonco2" class="click" value="1" <?php if ($shared_params["use_nonco2"]['value'])
                                            echo 'checked="checked"'; ?>  />
-                                <label for="use_nonco2" class="click"> Include non-CO<sub>2</sub> gases</label>
+                                <label for="use_nonco2" class="click"> <?php echo sprintf(_('Include %s'), $glossary->getLink('non_co2_gases', false, _('non-CO<sub>2</sub> gases')));?></label>
                             </li>
                             <li>
                                 <input type="checkbox" name="use_netexports" id="use_netexports" class="click" value="1" <?php if ($shared_params["use_netexports"]['value'])
                                            echo 'checked="checked"'; ?>  />
-                                <label for="use_netexports" class="click"> Include emissions embodied in trade</label>
+                                <label for="use_netexports" class="click"> <?php echo sprintf(_('Include %s'), $glossary->getLink('embodied_emissions', false, _('emissions embodied in trade'))); ?></label>
                             </li>
                             <?php
                                        if ($display_params['framework']['value'] === 'gdrs') {
-                                           echo select_num('r_wt', $fw_params, _("Responsibility weight:"), $advanced);
+                                           echo select_num('r_wt', $fw_params, $glossary->getLink('r_weight', false, _('Responsibility weight')) . ":", $advanced);
                                        }
-                                       echo select_num('percent_gwp', $shared_params, _("Total cost as % GWP:"), $advanced);
-                                       echo select_num('em_elast', $shared_params, _("Emissions elasticity:"), $advanced);
-                                       echo select_num('dev_thresh', $fw_params, _("Development threshold (\$PPP):"), $advanced);
+                                       echo select_num('percent_gwp', $shared_params,$glossary->getLink('total_cost', false, _('Total cost as % GWP')) . ":", $advanced);
+                                       echo select_num('em_elast', $shared_params, $glossary->getLink('emiss_elast', false, _('Emissions elasticity')) . ":", $advanced);
+                                       echo select_num('dev_thresh', $fw_params, $glossary->getLink('gloss_dev_threshold', false, _('Development threshold ($PPP)')) . ":", $advanced);
                                        if ($display_params['framework']['value'] === 'gdrs') {
                                            echo '<li class="advanced"><fieldset class="progressivity">';
-                                           echo '<legend class="open"><span>&nbsp;</span>' . _("Progressivity") . '</legend>';
+                                           echo '<legend class="open"><span>&nbsp;</span>' . $glossary->getLink('progressivity', false, _('Progressivity')) . '</legend>';
                                            echo '<ul>';
                                            echo '<li class="separator"></li>';
                                            echo '<li class="advanced">';
@@ -168,15 +170,15 @@ if (isset($_GET['year'])) {
                                            echo '<input type="checkbox" name="interp_btwn_thresh" id="interp_btwn_thresh" class="click" value="1" ' . ($fw_params["interp_btwn_thresh"]['value'] ? 'checked="checked"' : '') . '/>';
                                            echo '<label for="interp_btwn_thresh" class="click"> ' . _("Progressive between thresholds") . '</label>';
                                            echo "</li>";
-                                           echo select_num('lux_thresh', $fw_params, _("Luxury threshold (\$MER):"), $advanced);
+                                           echo select_num('lux_thresh', $fw_params, $glossary->getLink('lux_threshold', false, _('Luxury threshold ($MER)')) . ":", $advanced);
                                            echo '</ul></fieldset></li>';
                                        }
                                        echo '<li class="advanced"><fieldset>';
-                                       echo '<legend class="open"><span>&nbsp;</span>' . _("Kyoto compliance") . '</legend>';
+                                       echo '<legend class="open"><span>&nbsp;</span>' . $glossary->getLink('kyoto', false, _('Kyoto compliance')) . '</legend>';
                                        echo '<div><ul id="kab">';
                                        echo "<li>";
                                        echo '<input type="checkbox" name="use_kab" id="use_kab" class="click" value="1" ' . ($fw_params["use_kab"]['value'] ? 'checked="checked"' : '') . '/>';
-                                       echo '<label for="use_kab" class="click"> ' . _("Use Kyoto-adjusted baselines") . '</label>';
+                                       echo '<label for="use_kab" class="click"> ' . sprintf(_("Use %s"), $glossary->getLink('gloss_kab', false, _('Kyoto-adjusted baselines'))) . '</label>';
                                        echo "</li>";
                                        echo "<li>";
                                        echo '<input type="checkbox" name="kab_only_ratified" id="kab_only_ratified" class="click" value="1" ' . ($fw_params["kab_only_ratified"]['value'] ? 'checked="checked"' : '') . '/>';
@@ -241,7 +243,7 @@ if (isset($_GET['year'])) {
                                          <p><?php print_r($display_params); ?></p>--><?php */ ?>
                                        <p><?php
                                        $welcome_string = _('Welcome to the Greenhouse Development Rights Calculator.');
-                                       $welcome_string .= ' ' . _('Use the controls to the left to change the parameters in the GDRs framework and see the implications for the Responsibility and Capacity Index (RCI) and other indicators.');
+                                       $welcome_string .= ' ' . sprintf(_('Use the controls to the left to change the parameters in the %1$s and see the implications for the %2$s and other indicators.'), $glossary->getLink('def_gdrs', false, _('GDRs framework')), $glossary->getLink('gloss_rci', false, _('Responsibility and Capacity Index (RCI)')));
                                        echo $welcome_string;
                                        ?></p>
                                        <div id="save">
@@ -273,6 +275,7 @@ if (isset($_GET['year'])) {
                                     </div><!-- end #calc_results -->
                                </div><!-- end #data -->
                            </div><!-- end #calc_container -->
+                           <div id="popup"></div><!-- help #popup window -->
         <?php echo get_footer(Framework::get_data_ver(), Framework::get_calc_ver()); ?>
     </body>
 </html>

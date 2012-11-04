@@ -1,8 +1,11 @@
 <?php
     require_once('i18n.php');
 
-    include("frameworks/frameworks.php");
-    include("tables/table_generator.php");
+    include_once("help/HWTHelp/HWTHelp.php");
+    require_once("frameworks/frameworks.php");
+    require_once("tables/table_generator.php");
+    
+    $glossary = new HWTHelp('def_link', 'glossary.php', 'calc_gloss');
     
     if ((isset($_GET['copydb']) && $_GET['copydb'] === "yes") || (isset($_POST['copydb']) && $_POST['copydb'] === "yes")) {
         $copydb = true;
