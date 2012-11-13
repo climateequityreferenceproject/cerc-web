@@ -20,7 +20,6 @@ if (isset($_GET['year'])) {
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US">
     <head profile="http://gmpg.org/xfn/11">
         <link type="text/css" href="css/smoothness/jquery-ui-1.8.9.custom.css" rel="Stylesheet" />
-<!--        <link type="text/css" href="css/smoothness/jquery-ui-1.8.16.custom.css" rel="Stylesheet" />-->
         <?php
         echo get_head("Greenhouse Development Rights online calculator", array(array('href' => "css/gdrscalc.css", 'media' => "all"), array('href' => "css/tablesorter.css", 'media' => "all")));
         ?>
@@ -33,7 +32,6 @@ if (isset($_GET['year'])) {
         <!--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>-->
         <script type="text/javascript" src="js/jquery-1.4.4.min.js"></script>
         <script type="text/javascript" src="js/jquery-ui-1.8.9.custom.min.js"></script>
-<!--        <script type="text/javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>-->
         <script type="text/javascript" src="js/jquery.tablesorter.js"></script>
         <script type="text/javascript" src="js/calc.js"></script>
     </head>

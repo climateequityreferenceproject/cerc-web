@@ -390,6 +390,18 @@ img.float-left, img.float-right { border:1px solid #000; }
 
 .num_negative { color: #c00; }
 
+
+/*** glossary *********************************************/
+a.def_link, a.def_link:link, a.def_link:visited, a.def_link:hover, a.def_link:active {
+    border-bottom-color:#050556;
+    color:#507346;
+}
+a.def_link, a.def_link:link, a.def_link:visited, a.def_link:hover, a.def_link:active { 
+    border-bottom:1px dotted;
+    font-weight:normal;
+    text-decoration:none;
+}
+
 /*** misc classes *********************************************/
 .clear {
     clear: both; 
