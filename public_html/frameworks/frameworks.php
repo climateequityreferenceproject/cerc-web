@@ -92,6 +92,29 @@
             }
         }
         
+        public static function get_good_db() {
+            // Future-proof: right now keep the path, but in future might just use basename
+            if (isset($_POST['user_db'])) {
+                $user_db_nopath = basename($_POST['user_db']);
+            } elseif (isset($_GET['db'])) {
+                $user_db_nopath = basename($_GET['db']);
+            } elseif (isset($_COOKIE['db'])) {
+                $user_db_nopath = unserialize(stripslashes($_COOKIE['db']));
+            } else {
+                $user_db_nopath = null;
+            }
+            if ($user_db_nopath && self::add_user_db_path($user_db_nopath)) {
+                $user_db = self::add_user_db_path($user_db_nopath);
+                if (!self::db_up_to_date($user_db)) {
+                    unlink($user_db);
+                    $user_db = null;
+                }
+            }
+            
+            return $user_db;
+
+        }
+        
         // This creates a permanent copy of the master database, unless it is overwritten using this command
         //    $modifier: text to add to the master database name, in a standard format
         //               calls to this function using the same modifier will point to the same copy

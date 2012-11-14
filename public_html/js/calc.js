@@ -121,28 +121,35 @@ $(function() {
         $('#loading').show();
         // Get current year
         var curr_year = $('#cum_since_yr').val();
-		
+        
         $.post(
             "core.php",
-            $('#form1').serialize() + "&submit=submit&ajax=ajax",
-            function(data) {
-                $('#data').html(data);
-                init_calc_behavior();
-                // hide spinner
-                $('#loading').hide();
+            "getdb=yes",
+            function(dbname) {
+                $('#user_db').val(dbname);
+                $.post(
+                    "core.php",
+                    $('#form1').serialize() + "&submit=submit&ajax=ajax",
+                    function(data) {
+                        $('#data').html(data);
+                        init_calc_behavior();
+                        // hide spinner
+                        $('#loading').hide();
 
-                //filter result
-                filterResult();
-                
-                // Update year list
-                $('#cum_since_yr').load('get_year_list.php option', $('#form1').serialize(), function(){
-                    var min_year = $('#cum_since_yr option').attr('value');
-                    var new_year = Math.max(curr_year, min_year);
-                    $('#cum_since_yr').val(new_year);
-                    if (new_year != curr_year) {
-                        alert("With this choice of baseline there is no data for " + curr_year + ":\nusing " + new_year + " for the start of historical responsibility");
+                        //filter result
+                        filterResult();
+
+                        // Update year list
+                        $('#cum_since_yr').load('get_year_list.php option', $('#form1').serialize(), function(){
+                            var min_year = $('#cum_since_yr option').attr('value');
+                            var new_year = Math.max(curr_year, min_year);
+                            $('#cum_since_yr').val(new_year);
+                            if (new_year != curr_year) {
+                                alert("With this choice of baseline there is no data for " + curr_year + ":\nusing " + new_year + " for the start of historical responsibility");
+                            }
+                        });
                     }
-                });
+                );
             }
         );
 

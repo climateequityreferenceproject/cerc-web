@@ -23,31 +23,12 @@
     $fw = new Framework::$frameworks['gdrs']['class'];
     
     /*** Databases ************************************************************/
-    // Create database filename if doesn't already exist
-    $have_db = false;
-    $up_to_date = false;
-    // Future-proof: right now keep the path, but in future might just use basename
-    if (isset($_POST['user_db'])) {
-        $user_db_nopath = basename($_POST['user_db']);
-    } elseif (isset($_GET['db'])) {
-        $user_db_nopath = basename($_GET['db']);
-    } elseif (isset($_COOKIE['db'])) {
-        $user_db_nopath = unserialize(stripslashes($_COOKIE['db']));
-    } else {
-        $user_db_nopath = null;
-    }
-    if ($user_db_nopath && Framework::add_user_db_path($user_db_nopath)) {
-        $user_db = Framework::add_user_db_path($user_db_nopath);
-        if (Framework::db_up_to_date($user_db)) {
-            $have_db = true;
-            $up_to_date = true;
-        } else {
-            unlink($user_db);
-            $user_db = null;
-        }
-    }
     
-    if (!$have_db) {
+    $user_db = Framework::get_good_db();
+    $up_to_date = true;
+    
+    if (!$user_db) {
+        $up_to_date = false;
         $db_array = Framework::dup_master_db('calc', TRUE);
         $master_db = $db_array['db'];
         if ($db_array['did_create']) {
@@ -61,6 +42,11 @@
     }
     $fw_params = $fw->get_fw_params($user_db);
     setcookie('db',serialize(Framework::get_db_name($user_db)),$cookie_info['time'],"",$cookie_info['server']);
+
+    if ((isset($_GET['getdb']) && $_GET['getdb'] === "yes") || (isset($_POST['getdb']) && $_POST['getdb'] === "yes")) {
+        echo $user_db;
+        exit;
+    }
 
     // Function to update parameters array with last user values, if any
     function get_usr_vals(&$array) {

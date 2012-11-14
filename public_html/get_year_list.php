@@ -2,13 +2,13 @@
     include("frameworks/frameworks.php");
     include("form_functions.php");
     
-    $user_db = NULL;
-    if ($_POST['user_db']) {
-        $user_db = $_POST['user_db'];
+    $user_db = Framework::get_good_db();
+    
+    if (!$user_db) {
+        $db_array = Framework::dup_master_db('calc', true);
+        $master_db = $db_array['db'];
+        $user_db = Framework::get_user_db($master_db);
     }
-    if ($_GET['user_db']) {
-        $user_db = $_GET['user_db'];
-    }    
     
     $shared_params = Framework::get_shared_params($user_db);
     
