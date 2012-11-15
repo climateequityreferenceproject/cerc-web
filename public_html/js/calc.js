@@ -51,11 +51,7 @@ $(function() {
     //--------------------------------------------------
     // User actions that result in a refresh of the page
     //--------------------------------------------------
-    $('#basic').click(function() {
-        $('#reset').click();
-    });
-
-    $('#adv').click(function() {
+    $('#basic, #adv').click(function() {
         set_display();
         submit();
     });
@@ -156,7 +152,7 @@ $(function() {
         // Short-circuit form submission
         return false;
     });
-    
+        
     $('#spinoff_button').click(function() {
         spinoff_window();
     });
