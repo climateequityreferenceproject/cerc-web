@@ -253,8 +253,8 @@ EOSQL;
             $db_cnx = self::db_cnx($user_db);
             
             if ($iso3) {
-                $query = 'SELECT flags.flag AS region_code, long_name AS name FROM flags, flag_names ';
-                $query .= 'WHERE iso3 = ' . $iso3 . '  AND value = 1 AND flag_names.flag = flags.flag';
+                $query = "SELECT flags.flag AS region_code, long_name AS name FROM flags, flag_names ";
+                $query .= "WHERE iso3 = '" . $iso3 . "'  AND value = 1 AND flag_names.flag = flags.flag";
                 $query_result = $db_cnx->query($query)->fetchAll(PDO::FETCH_ASSOC);
             } else {
                 $query_result = $db_cnx->query('SELECT flag AS region_code, long_name AS name FROM flag_names;')->fetchAll(PDO::FETCH_ASSOC);
