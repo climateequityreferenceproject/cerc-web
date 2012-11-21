@@ -249,21 +249,27 @@ EOSQL;
         }
 
         
-        public static function get_region_list($user_db = NULL) {
+        public static function get_region_list($iso3, $user_db = NULL) {
             $db_cnx = self::db_cnx($user_db);
             
-            $query_result = $db_cnx->query('SELECT flag AS region_code, long_name AS name FROM flag_names;')->fetchAll(PDO::FETCH_ASSOC);
+            if ($iso3) {
+                $query = 'SELECT flags.flag AS region_code, long_name AS name FROM flags, flag_names ';
+                $query .= 'WHERE iso3 = ' . $iso3 . '  AND value = 1 AND flag_names.flag = flags.flag';
+                $query_result = $db_cnx->query($query)->fetchAll(PDO::FETCH_ASSOC);
+            } else {
+                $query_result = $db_cnx->query('SELECT flag AS region_code, long_name AS name FROM flag_names;')->fetchAll(PDO::FETCH_ASSOC);
+
+                $world_result = array(
+                    'region_code' => self::$world['code'],
+                    'name' => self::$world['name']
+                );
+                // Add $world_result as the first item in the region list
+                array_unshift($query_result, $world_result);
+            }
             
             // Close down nicely
             $db_cnx = NULL;
-            
-            $world_result = array(
-                'region_code' => self::$world['code'],
-                'name' => self::$world['name']
-            );
-            // Add $world_result as the first item in the region list
-            array_unshift($query_result, $world_result);
-            
+
             return $query_result;
         }
         

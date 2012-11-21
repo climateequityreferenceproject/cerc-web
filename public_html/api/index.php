@@ -122,17 +122,22 @@
                         }
                         $status = $msg['OK'];
                     } elseif ($_GET['q'] === 'regions') {
-                        if ($_GET['db']) {
-                            $data = json_encode(Framework::get_region_list($user_db));
+                        if (isset($_GET['country'])) {
+                            $iso3 = $_GET['country'];
                         } else {
-                            $data = json_encode(Framework::get_region_list());
+                            $iso3 = null;
+                        }
+                        if ($_GET['db']) {
+                            $data = json_encode(Framework::get_region_list($iso3, $user_db));
+                        } else {
+                            $data = json_encode(Framework::get_region_list($iso3));
                         }
                         $status = $msg['OK'];
                     } else {
                         $data = "GET: Must be one of 'q=new_db', 'q=params', 'q=params&db=dbname' ";
                         $data .= "'q=data_ver', 'q=data_ver&db=dbname', 'q=calc_ver', 'q=calc_ver&db=db_name' ";
                         $data .= "'q=pathways', 'q=pathways&db=dbname', 'q=countries', 'q=countries&db=dbname'";
-                        $data .= "'q=regions', 'q=regions&db=dbname'";
+                        $data .= "'q=regions', 'q=regions&db=dbname', 'q=regions&country=iso3', 'q=regions&country=iso3&db=dbname'";
                         $status = $msg['badreq'];
                     }
                 } else {
