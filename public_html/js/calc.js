@@ -331,6 +331,9 @@ function spinoff_window() {
     '         #input_values caption {' +
     '           display:none;' +
     '         }' +
+    '         #toggle-key {' +
+    '           visibility:hidden;' +
+    '         }' +
     '         #spinoff #input_values tbody {' +
     '           display:inline;' +
     '         }' +
