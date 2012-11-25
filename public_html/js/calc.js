@@ -210,10 +210,25 @@ function get_def_by_id(e) {
        });
        
        $('#popup').dialog('open');
+       
+       $('#popup').find('a').each(function() {
+            if ($(this).attr('target') == '_self') {
+                $(this).addClass('def_link');
+                $(this).click(get_def_by_id);
+            }
+        });
 
     });
     e.preventDefault();
 }
+
+    // Help dialog behavior
+    $('#popup a').click(function() {
+        $(this).parent().load('glossary.php#gloss_responsibility');
+        return false;
+    });
+    
+
 
 function lux_thresh_activate() {
     if ($('#do_luxcap').is(':checked') || $('#interp_btwn_thresh').is(':checked')) {
