@@ -222,14 +222,6 @@ function get_def_by_id(e) {
     e.preventDefault();
 }
 
-    // Help dialog behavior
-    $('#popup a').click(function() {
-        $(this).parent().load('glossary.php#gloss_responsibility');
-        return false;
-    });
-    
-
-
 function lux_thresh_activate() {
     if ($('#do_luxcap').is(':checked') || $('#interp_btwn_thresh').is(':checked')) {
         $('#lux_thresh').removeAttr("disabled");
