@@ -24,11 +24,17 @@
     
     /*** Databases ************************************************************/
     
-    $user_db = Framework::get_good_db();
-    $up_to_date = true;
+    if (isset($_POST['reset'])) {
+        $user_db = null;
+    } else {
+        $user_db = Framework::get_good_db();
+    }
     
+    $up_to_date = true;
     if (!$user_db) {
-        $up_to_date = false;
+        if (!isset($_POST['reset'])) {
+            $up_to_date = false;
+        }
         $db_array = Framework::dup_master_db('calc', TRUE);
         $master_db = $db_array['db'];
         if ($db_array['did_create']) {
@@ -61,10 +67,8 @@
     }
     
     // Reload parameters--might be different from defaults
-    if (!isset($_POST['reset']) || !$_POST['reset']) {
-        $shared_params = Framework::get_shared_params($user_db);
-        $fw_params = $fw->get_fw_params($user_db);
-    }
+    $shared_params = Framework::get_shared_params($user_db);
+    $fw_params = $fw->get_fw_params($user_db);
     
     /*** Display parameters ****************************************************/
 
@@ -137,7 +141,7 @@
                             )
                         );
     
-    if (!isset($_POST['reset']) || !$_POST['reset']) {
+    if (!isset($_POST['reset'])) {
         if (isset($_COOKIE['display_params']) && $up_to_date) {
             $display_params = unserialize(stripslashes($_COOKIE['display_params']));    
         }
@@ -155,7 +159,7 @@
         setcookie('display_params',serialize($display_params),$cookie_info['time'],"",$cookie_info['server']);
     }
     
-    if (!isset($_POST['reset']) || !$_POST['reset']) {
+    if (!isset($_POST['reset'])) {
         get_usr_vals($shared_params);
         get_usr_vals($fw_params);
     }
