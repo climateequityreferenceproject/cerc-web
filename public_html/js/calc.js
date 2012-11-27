@@ -205,8 +205,9 @@ function get_def_by_id(e) {
        $('#popup').html(definition.text).dialog({
             autoOpen: false,
             title: definition.label,
-            width: 500,
-            height: 300
+            // The -20 takes care of the border
+            width: Math.min(500, screen.width - 20),
+            height: Math.min(300, screen.height - 20)
        });
        
        $('#popup').dialog('open');
