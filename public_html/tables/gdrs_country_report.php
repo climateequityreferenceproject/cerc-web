@@ -492,6 +492,7 @@ $retval .= <<< EOHTML
         <th class="lj"></th>
         <th>&#8220Tax rate&#8221<br/>(% income)</th>
         <th>Population above<br/>tax level (% pop.)</th>
+        <th>Per-capita obligation<br/>(\$US/cap)</th>
         <th>Per-capita obligation<br/>(kt$gases/cap)</th>
     </tr>
     </thead>
@@ -505,6 +506,7 @@ EOHTML;
             $description = '';
         }
         $val = $ctry_val[$year]['tax_income_mer_dens_' . $record['seq_no']]/$ctry_val[$year]['tax_pop_dens_' . $record['seq_no']];
+        $income_tmp = $val;
         $retval .= '<td>' . nice_number('', $val, '') . '</td>';
         $val = $ctry_val[$year]['tax_income_ppp_dens_' . $record['seq_no']]/$ctry_val[$year]['tax_pop_dens_' . $record['seq_no']];
         $retval .= '<td>' . nice_number('', $val, '') . '</td>';
@@ -514,9 +516,12 @@ EOHTML;
         } else {
             $val = 100 * $ctry_val[$year]['tax_revenue_mer_dens_' . $record['seq_no']]/$ctry_val[$year]['tax_income_mer_dens_' . $record['seq_no']];
         }
+        $per_cap_tax = 0.01 * $val * $income_tmp;
         $retval .= "<td>" . nice_number('', $val, '') . "</td>";
         $val = 100 * (1 - $ctry_val[$year]['tax_pop_mln_below_' . $record['seq_no']]/$ctry_val[$year]['pop_mln']);
         $retval .= "<td>" . nice_number('', $val, '') . "</td>";
+        // This was calculated above as tax (% income) * income
+        $retval .= "<td>" . nice_number('', $per_cap_tax, '') . "</td>";
         $val = 0.001 * (1/$cost_of_mitigation) * $ctry_val[$year]['tax_revenue_mer_dens_' . $record['seq_no']]/$ctry_val[$year]['tax_pop_dens_' . $record['seq_no']];        
         $retval .= "<td>" . nice_number('', $val, '') . "</td>";
         $retval .= '</tr>';
