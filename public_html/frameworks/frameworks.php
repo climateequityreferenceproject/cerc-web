@@ -109,6 +109,8 @@
                     unlink($user_db);
                     $user_db = null;
                 }
+            } else {
+                $user_db = null;
             }
             
             return $user_db;
