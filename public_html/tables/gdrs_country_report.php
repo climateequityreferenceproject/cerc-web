@@ -119,10 +119,11 @@ EOSQL;
     
     $use_nonco2 = $shared_params['use_nonco2']['value'];
     $use_lulucf = $shared_params['use_lulucf']['value'];
+    $gases = "CO<sub>2</sub>";
+    $gases_svg = 'CO<tspan dy="3" font-size="10">2</tspan>';
     if ($use_nonco2) {
-        $gases = "CO<sub>2</sub>e";
-    } else {
-        $gases = "CO<sub>2</sub>";
+        $gases .= "e";
+        $gases_svg .= '<tspan dy="-3">e</tspan>';
     }
     $i = 0;
     foreach ($year_list as $y) {
@@ -216,7 +217,7 @@ EOSQL;
                 );
     // The TRUE means use the specified limits for the graph; the FALSE means don't format numbers
     $graph->set_xaxis(1990, 2030, "", "", TRUE, FALSE);
-    $graph->set_yaxis($min, $max, "Mt" . $gases, "");
+    $graph->set_yaxis($min, $max, "Mt" . $gases_svg, "");
     $graph->add_series($bau_series, "bau");
     $graph->add_series($dulline_series, "physical");
     $graph->add_series($alloc_series, "gdrsalloc");
