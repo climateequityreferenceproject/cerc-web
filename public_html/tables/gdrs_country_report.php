@@ -430,17 +430,17 @@ EOHTML;
     }
     
     // Pledges
-    $free_rider_adj = get_kyoto_commitment($db, $iso3);
-    if (is_null($free_rider_adj)) {
-        $free_rider_adj = 0;
-    } else {
-        $free_rider_adj *= $bau[1990]/$bau[2012];
-        if ($free_rider_adj > 1) {
-            $free_rider_adj = 0;
-        } else {
-            $free_rider_adj = 1 - $free_rider_adj;
-        }
-    }
+//    $free_rider_adj = get_kyoto_commitment($db, $iso3);
+//    if (is_null($free_rider_adj)) {
+//        $free_rider_adj = 0;
+//    } else {
+//        $free_rider_adj *= $bau[1990]/$bau[2012];
+//        if ($free_rider_adj > 1) {
+//            $free_rider_adj = 0;
+//        } else {
+//            $free_rider_adj = 1 - $free_rider_adj;
+//        }
+//    }
     
 
     $scorecard_link = '<a href="' . $scorecard_url . '">' . _('Climate Equity Scorecard') . '</a>';
@@ -473,8 +473,7 @@ EOHTML;
             $retval .= "<tr>";
             $retval .= "<td class=\"lj level2\">" . sprintf(_('as %s-style score'), $scorecard_link) . "</td>";
             $retval .= '<td class="cj">&nbsp;</td>';
-            $gap = $free_rider_adj * $bau[2012]; // If this is $bau[$pledge_year], then the "kab slab" expands; if $bau[2012] it's fixed
-            $val = 100 * ($pledge_info['pledge'] - $mit_oblig)/($bau[$pledge_year] - $gap);
+            $val = 100 * ($pledge_info['pledge'] - $mit_oblig)/$bau[$pledge_year];
             $retval .= "<td>" . nice_number('', $val, '') . "</td>";
             $retval .= "</tr>";
         }
