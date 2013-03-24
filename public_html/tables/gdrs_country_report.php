@@ -23,8 +23,8 @@ function nice_number($prefix, $num, $postfix) {
     return $retval;
 }
 
-function get_free_rider_adj($db, $iso3) {
-    $retval = 0;
+function get_kyoto_commitment($db, $iso3) {
+    $retval = null;
     
     $sql = "SELECT int_val FROM params WHERE param_id='use_kab'";
     $record = $db->query($sql)->fetchAll(PDO::FETCH_ASSOC);
@@ -38,7 +38,7 @@ $sql = <<<EOSQL
 EOSQL;
         $record = $db->query($sql)->fetchAll(PDO::FETCH_ASSOC);
         if ($record[0]['commitment_percent']) {
-            $retval = 0.01 * max(0, 100 - $record[0]['commitment_percent']);
+            $retval = 0.01 * $record[0]['commitment_percent'];
         }
     }
     
@@ -50,6 +50,7 @@ function gdrs_country_report($dbfile, $country_name, $shared_params, $iso3, $yea
     $year_list = get_pledge_years($iso3);
     $year_list[] = $year;
     $year_list[] = 1990;
+    $year_list[] = 2012;
     sort($year_list, SORT_NUMERIC);
     $year_list = array_unique($year_list, SORT_NUMERIC);
     $year_list_string = 'year=' . implode(' OR year=', $year_list);
@@ -429,7 +430,18 @@ EOHTML;
     }
     
     // Pledges
-    $free_rider_adj = get_free_rider_adj($db, $iso3);
+    $free_rider_adj = get_kyoto_commitment($db, $iso3);
+    if (is_null($free_rider_adj)) {
+        $free_rider_adj = 0;
+    } else {
+        $free_rider_adj *= $bau[1990]/$bau[2012];
+        if ($free_rider_adj > 1) {
+            $free_rider_adj = 0;
+        } else {
+            $free_rider_adj = 1 - $free_rider_adj;
+        }
+    }
+    
 
     $scorecard_link = '<a href="' . $scorecard_url . '">' . _('Climate Equity Scorecard') . '</a>';
     $condl_term = array('conditional' => _('conditional'), 'unconditional' => _('unconditional'));
@@ -470,7 +482,6 @@ EOHTML;
     // Close the table
     $retval .= '</tbody></table>';
     $retval .= '<br />';
-    
     
     /*
      * Tax table
