@@ -473,7 +473,8 @@ EOHTML;
             $retval .= "<tr>";
             $retval .= "<td class=\"lj level2\">" . sprintf(_('as %s-style score'), $scorecard_link) . "</td>";
             $retval .= '<td class="cj">&nbsp;</td>';
-            $val = 100 * ($pledge_info['pledge'] - $mit_oblig)/($bau[$pledge_year] * (1 - $free_rider_adj));
+            $gap = $free_rider_adj * $bau[2012]; // If this is $bau[$pledge_year], then the "kab slab" expands; if $bau[2012] it's fixed
+            $val = 100 * ($pledge_info['pledge'] - $mit_oblig)/($bau[$pledge_year] - $gap);
             $retval .= "<td>" . nice_number('', $val, '') . "</td>";
             $retval .= "</tr>";
         }
