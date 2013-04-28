@@ -172,7 +172,7 @@ if (isset($_GET['year'])) {
                                            echo '</ul></fieldset></li>';
                                        }
                                        echo '<li class="advanced"><fieldset>';
-                                       echo '<legend class="open"><span>&nbsp;</span>' . $glossary->getLink('kyoto', false, _('Kyoto obligations')) . '</legend>';
+                                       echo '<legend class="open"><span>&nbsp;</span>' . $glossary->getLink('gloss_kyoto', false, _('Kyoto obligations')) . '</legend>';
                                        echo '<div><ul id="kab">';
                                        echo "<li>";
                                        echo '<input type="radio" name="use_kab_radio" id="use_kab" class="click" value="use_kab" ' . ($fw_params["use_kab"]['value'] && !$fw_params["kab_only_ratified"]['value'] ? 'checked="checked"' : '') . '/>';
