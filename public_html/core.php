@@ -64,6 +64,31 @@
                 $array[$key]['value'] = 0;
             }
         }
+        // Special case
+        if (isset($_POST['use_kab_radio'])) {
+            switch ($_POST['use_kab_radio']) {
+                case 'use_kab':
+                    $use_kab = 1;
+                    $kab_only_ratified = 0;
+                    break;
+                case 'dont_use_kab':
+                    $use_kab = 0;
+                    $kab_only_ratified = 0;
+                    break;
+                case 'kab_only_ratified':
+                    $use_kab = 1;
+                    $kab_only_ratified = 1;
+                    break;
+                default:
+                    break;
+            }
+            if (array_key_exists('use_kab', $array)) {
+                $array['use_kab']['value'] = $use_kab;
+            }
+            if (array_key_exists('kab_only_ratified', $array)) {
+                $array['kab_only_ratified']['value'] = $kab_only_ratified;
+            }
+        }
     }
     
     // Reload parameters--might be different from defaults

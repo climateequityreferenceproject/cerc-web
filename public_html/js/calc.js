@@ -1,4 +1,5 @@
 var regionCountryData;
+var clickedDef = false;
 
 $(function() {
     
@@ -6,14 +7,15 @@ $(function() {
     
     // fieldset show/hide
     $("legend").click(function() {
-        $(this).siblings().toggle("fast");
-		
-        if($(this).hasClass('open')) {
-            $(this).removeClass('open');
-            $(this).addClass('closed');
-        } else if($(this).hasClass('closed')) {
-            $(this).removeClass('closed');
-            $(this).addClass('open');
+        if (!clickedDef) {
+            $(this).siblings().toggle("fast");
+            if($(this).hasClass('open')) {
+                $(this).removeClass('open');
+                $(this).addClass('closed');
+            } else if($(this).hasClass('closed')) {
+                $(this).removeClass('closed');
+                $(this).addClass('open');
+            }
         }
     });
 	
@@ -69,9 +71,6 @@ $(function() {
     // Toggle lux threshold
     $('#do_luxcap, #interp_btwn_thresh').click(lux_thresh_activate);
     
-    // Toggle KAB dependencies
-    $('#use_kab').click(kab_activate);
-    
     $('#display_yr').change(submit);
     $('#display_ctry').change(submit);
     $('#decimal_pl').change(submit);
@@ -93,7 +92,7 @@ $(function() {
     $('#em_elast').change(submit);
     
     $('#use_kab').change(submit);
-    // TODO: This should not run if "use_kab" is not checked
+    $('#dont_use_kab').change(submit);
     $('#kab_only_ratified').change(submit);
     
     $('#use_sequencing').change(submit);
@@ -198,6 +197,9 @@ $(function() {
 });
 
 function get_def_by_id(e) {
+    // Hacky but effective
+    clickedDef = true;
+    setTimeout(function() {clickedDef = false;},10);
     href = $(e.currentTarget).attr("href");
     def_id = href.substr(href.lastIndexOf('#') + 1);
     
@@ -231,20 +233,11 @@ function lux_thresh_activate() {
     }
 }
 
-function kab_activate() {
-    if ($('#use_kab').is(':checked')) {
-        $('#kab_only_ratified').removeAttr("disabled");
-    } else {
-        $('#kab_only_ratified').attr("disabled",true);
-    }
-}
-
 function init_calc_behavior() {
     // Make table sortable
     $(".tablesorter").tablesorter();
     // Set state of dependent form elements appropriately
     lux_thresh_activate();
-    kab_activate();
     // Set the parameters to show or hide
     $("#input_values caption, #toggle-key").hover(function() {
         $(this).addClass('pretty-hover');

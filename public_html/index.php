@@ -172,15 +172,19 @@ if (isset($_GET['year'])) {
                                            echo '</ul></fieldset></li>';
                                        }
                                        echo '<li class="advanced"><fieldset>';
-                                       echo '<legend class="open"><span>&nbsp;</span>' . $glossary->getLink('kyoto', false, _('Kyoto compliance')) . '</legend>';
+                                       echo '<legend class="open"><span>&nbsp;</span>' . $glossary->getLink('kyoto', false, _('Kyoto obligations')) . '</legend>';
                                        echo '<div><ul id="kab">';
                                        echo "<li>";
-                                       echo '<input type="checkbox" name="use_kab" id="use_kab" class="click" value="1" ' . ($fw_params["use_kab"]['value'] ? 'checked="checked"' : '') . '/>';
-                                       echo '<label for="use_kab" class="click"> ' . sprintf(_("Use %s"), $glossary->getLink('gloss_kab', false, _('Kyoto-adjusted baselines'))) . '</label>';
+                                       echo '<input type="radio" name="use_kab_radio" id="use_kab" class="click" value="use_kab" ' . ($fw_params["use_kab"]['value'] && !$fw_params["kab_only_ratified"]['value'] ? 'checked="checked"' : '') . '/>';
+                                       echo '<label for="use_kab" class="click"> ' . _("Include Kyoto obligations") . '</label>';
                                        echo "</li>";
                                        echo "<li>";
-                                       echo '<input type="checkbox" name="kab_only_ratified" id="kab_only_ratified" class="click" value="1" ' . ($fw_params["kab_only_ratified"]['value'] ? 'checked="checked"' : '') . '/>';
-                                       echo '<label for="kab_only_ratified" class="click"> ' . _("But only for ratifying countries") . '</label>';
+                                       echo '<input type="radio" name="use_kab_radio" id="dont_use_kab" class="click" value="dont_use_kab" ' . (!$fw_params["use_kab"]['value'] ? 'checked="checked"' : '') . '/>';
+                                       echo '<label for="use_kab" class="click"> ' . _("Exclude Kyoto obligations") . '</label>';
+                                       echo "</li>";
+                                       echo "<li>";
+                                       echo '<input type="radio" name="use_kab_radio" id="kab_only_ratified" class="click" value="kab_only_ratified" ' . ($fw_params["use_kab"]['value'] && $fw_params["kab_only_ratified"]['value'] ? 'checked="checked"' : '') . '/>';
+                                       echo '<label for="kab_only_ratified" class="click"> ' . _("Exclude for only US &#38; Canada") . '</label>';
                                        echo "</li>";
                                        echo '</li><ul>&nbsp;</div><!-- end #kab -->';
                                        echo '</fieldset></li>';
