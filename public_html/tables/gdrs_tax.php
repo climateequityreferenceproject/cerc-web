@@ -17,8 +17,8 @@ function gdrs_tax($dbfile, $year, $ep_start, $dec) {
     $record = $db->query("SELECT int_val FROM params WHERE param_id='usesequence'")->fetchAll();
     $flag_use_sequence = $record[0]["int_val"];
     if ($year >= $ep_start) {
-        $record = $db->query("SELECT real_val FROM params WHERE param_id='billpercgwp'")->fetchAll();
-        $billfracgwp = 0.01 * $record[0]["real_val"];
+        $record = $db->query("SELECT real_val FROM params WHERE param_id='billpercgwp_mit' OR param_id='billpercgwp_adapt'")->fetchAll();
+        $billfracgwp = 0.01 * ($record[0]["real_val"] + $record[1]["real_val"]);
         $oblfactor = 1.0;
     } else {
         // If the emergency program hasn't started, then no obligations
