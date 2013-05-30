@@ -10,9 +10,9 @@ function gdrs_alloc($dbfile, $dec, $mode, $non_co2 = FALSE) {
     $db = new PDO($database) OR die("<p>Can't open database</p>");
     
     if ($non_co2) {
-        $gases = "CO2e";
+        $gases = "CO<sub>2</sub>e";
     } else {
-        $gases = "CO2";
+        $gases = "CO<sub>2</sub>";
     }
     $units = "Mt" . $gases;
     if ($mode === 'percap') {

@@ -83,8 +83,8 @@ if (isset($_GET['year'])) {
                     <legend class="open"><span>&nbsp;</span><?php echo _("Display settings");?></legend>
                     <div>
                         <ul>
-                            <?php echo select_options_list('table_view', $display_params, _("Table view: "), $advanced); ?>
-                            <?php echo select_num('display_yr', $display_params, _("Year to display:"), $advanced); ?>
+                            <?php echo select_options_list('table_view', $display_params, _("Table view: ")); ?>
+                            <?php echo select_num('display_yr', $display_params, _("Year to display:")); ?>
                             <?php
                                 // Choose country or region to display for country report
                                 echo '<li><label for="display_ctry" class="select" title="' . _("Country or region to display for country report") . '">' . _("Country or region to display:") . '</label>';
@@ -114,7 +114,7 @@ if (isset($_GET['year'])) {
                                 }
                             ?>
                             
-                            <?php echo select_num('decimal_pl', $display_params, _("Decimal places:"), $advanced); ?>
+                            <?php echo select_num('decimal_pl', $display_params, _("Decimal places:")); ?>
                             </ul>&nbsp;
                         </div>
                     </fieldset>
@@ -123,7 +123,7 @@ if (isset($_GET['year'])) {
                         <legend class="open"><span>&nbsp;</span>Calculator settings</legend>
                         <div>
                             <ul>
-                            <?php echo select_options_list('emergency_path', $shared_params, $glossary->getLink('gloss_path', false, _("Global mitigation pathway")) . ": ", $advanced); ?>
+                            <?php echo select_options_list('emergency_path', $shared_params, $glossary->getLink('gloss_path', false, _("Global mitigation pathway")) . ": "); ?>
                                 <!--<li>
                                     <label for="baseline" class="select">Baseline: </label>
                                     <select name="baseline" id="baseline">
@@ -131,7 +131,7 @@ if (isset($_GET['year'])) {
                                     </select>
                                 </li>-->
                                 <div id="cum_since_yr_wrapper">
-                            <?php echo select_num('cum_since_yr', $shared_params, $glossary->getLink('cum_respons', false, _('Cumulative since')) . ": ", $advanced); ?>
+                            <?php echo select_num('cum_since_yr', $shared_params, $glossary->getLink('cum_respons', false, _('Cumulative since')) . ": "); ?>
                                 </div>
                                 <li>
                                     <input type="checkbox" name="use_lulucf" id="use_lulucf" class="click" value="1" <?php if ($shared_params["use_lulucf"]['value'])
@@ -150,12 +150,12 @@ if (isset($_GET['year'])) {
                             </li>
                             <?php
                                        if ($display_params['framework']['value'] === 'gdrs') {
-                                           echo select_num('r_wt', $fw_params, $glossary->getLink('r_weight', false, _('Responsibility weight')) . ":", $advanced);
+                                           echo select_num('r_wt', $fw_params, $glossary->getLink('r_weight', false, _('Responsibility weight')) . ":");
                                        }
-                                       echo select_num('percent_gwp_MITIGATION', $shared_params,$glossary->getLink('total_cost', false, _('Mitigation cost as % GWP')) . ":", $advanced);
-                                       echo select_num('percent_gwp_ADAPTATION', $shared_params,$glossary->getLink('total_cost', false, _('Adaptation cost as % GWP')) . ":", $advanced);
-                                       echo select_num('em_elast', $shared_params, $glossary->getLink('emiss_elast', false, _('Emissions elasticity')) . ":", $advanced);
-                                       echo select_num('dev_thresh', $fw_params, $glossary->getLink('gloss_dev_threshold', false, _('Development threshold ($PPP)')) . ":", $advanced);
+                                       echo select_num('percent_gwp_MITIGATION', $shared_params,$glossary->getLink('total_cost', false, _('Mitigation cost as % GWP')) . ":");
+                                       echo select_num('percent_gwp_ADAPTATION', $shared_params,$glossary->getLink('total_cost', false, _('Adaptation cost as % GWP')) . ":");
+                                       echo select_num('em_elast', $shared_params, $glossary->getLink('emiss_elast', false, _('Emissions elasticity')) . ":");
+                                       echo select_num('dev_thresh', $fw_params, $glossary->getLink('gloss_dev_threshold', false, _('Development threshold ($PPP)')) . ":");
                                        if ($display_params['framework']['value'] === 'gdrs') {
                                            echo '<li class="advanced"><fieldset class="progressivity">';
                                            echo '<legend class="open"><span>&nbsp;</span>' . $glossary->getLink('progressivity', false, _('Progressivity')) . '</legend>';
@@ -169,7 +169,7 @@ if (isset($_GET['year'])) {
                                            echo '<input type="checkbox" name="interp_btwn_thresh" id="interp_btwn_thresh" class="click" value="1" ' . ($fw_params["interp_btwn_thresh"]['value'] ? 'checked="checked"' : '') . '/>';
                                            echo '<label for="interp_btwn_thresh" class="click"> ' . _("Progressive between thresholds") . '</label>';
                                            echo "</li>";
-                                           echo select_num('lux_thresh', $fw_params, $glossary->getLink('lux_threshold', false, _('Luxury threshold ($MER)')) . ":", $advanced);
+                                           echo select_num('lux_thresh', $fw_params, $glossary->getLink('lux_threshold', false, _('Luxury threshold ($MER)')) . ":");
                                            echo '</ul></fieldset></li>';
                                        }
                                        echo '<li class="advanced"><fieldset>';
@@ -197,10 +197,10 @@ if (isset($_GET['year'])) {
 //                                           echo '<input type="checkbox" name="use_sequencing" id="use_sequencing" class="click" value="1" ' . ($shared_params["use_sequencing"]['value'] ? 'checked="checked"' : '') . '/>';
 //                                           echo '<label for="use_sequencing" class="click"> ' . _("Use sequencing") . '</label>';
 //                                           echo "</li>";
-//                                           echo select_num('percent_a1_rdxn', $shared_params, _("A1 reduction %:"), $advanced);
-//                                           echo select_num('base_levels_yr', $shared_params, _("Sequencing base yr:"), $advanced);
-//                                           echo select_num('end_commitment_period', $shared_params, _("End of period:"), $advanced);
-//                                           echo select_num('a1_smoothing', $shared_params, _("A1 smoothing:"), $advanced);
+//                                           echo select_num('percent_a1_rdxn', $shared_params, _("A1 reduction %:"));
+//                                           echo select_num('base_levels_yr', $shared_params, _("Sequencing base yr:"));
+//                                           echo select_num('end_commitment_period', $shared_params, _("End of period:"));
+//                                           echo select_num('a1_smoothing', $shared_params, _("A1 smoothing:"));
 //                                           echo "<li>";
 //                                           echo '<p>' . _("Mitigation requirement gap borne by: ") . '</p><ul><li>';
 //                                           echo '<input type="radio" name="mit_gap_borne" id="annex1" class="click" value="1" ' . ($shared_params["mit_gap_borne"]['value'] == "1" ? 'checked="checked"' : '') . "/>";

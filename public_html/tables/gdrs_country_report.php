@@ -457,7 +457,7 @@ EOHTML;
             $retval .= '<tr><td class="lj" colspan="3">' . $common_str . '</td></tr>';
             // Total
             $retval .= "<tr>";
-            $retval .= "<td class=\"lj level2\">as tons</td>";
+            $retval .= "<td class=\"lj level2\">in tons below business-as-usual</td>";
             $retval .= '<td class="cj">&nbsp;</td>';
             $val = $pledge_info['pledge'];
             $retval .= "<td>" . nice_number('', $val, '') . ' Mt' . $gases . "</td>";
@@ -508,13 +508,13 @@ $retval .= <<< EOHTML
         <th colspan="2" style="text-align:center">Per-capita obligation</th>
     </tr>
     <tr>
-        <th>Income level<br/>(\$US/cap)</th>
+        <th>Income level<br/>(2005 \$US/cap)</th>
         <th>Income level<br/>(in PPP terms)</th>
         <th class="lj"></th>
         <th>&#8220Tax rate&#8221<br/>(% income)</th>
         <th>Population above<br/>tax level (% pop.)</th>
         <th style="border: none;">&nbsp;</th>
-        <th><br/>as \$US/cap</th>
+        <th><br/>as 2005 \$US/cap</th>
         <th><br/>as kt$gases/cap</th>
     </tr>
     </thead>

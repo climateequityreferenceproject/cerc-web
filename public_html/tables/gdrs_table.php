@@ -18,8 +18,8 @@ $retval = <<< EOHTML
             <th>Population<br/>(% of global)</th>
             <th>GDP<br/>(billion \$US)</th>
             <th>GDP<br/>(% of global)</th>
-            <th>Income<br/>(\$US/cap)</th>
-            <th>Income<br/>(\$US PPP/cap)</th>
+            <th>Income<br/>(2005 \$US/cap)</th>
+            <th>Income<br/>(2005 \$US PPP/cap)</th>
             <th>Capacity<br/>(billion \$US)</th>
             <th>Capacity<br/>(% of global)</th>
             <th>Responsibility<br/>(% of global)</th>
@@ -38,7 +38,7 @@ $retval = <<< EOHTML
             <th class="lj">Country or Group</th>
             <th>Population<br/>(% of global)</th>
             <th>GDP<br/>(% of global)</th>
-            <th>Income<br/>(\$US PPP/cap)</th>
+            <th>Income<br/>(2005 \$US PPP/cap)</th>
             <th>Capacity<br/>(% of global)</th>
             <th>Responsibility<br/>(% of global)</th>
             <th>RCI</th>

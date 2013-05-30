@@ -1,7 +1,7 @@
 <?php
 /*** Markup functions ************************************************************/
 // Print options list for select input field with consecutive integer values
-function select_num($param, $param_list, $label, $advanced) {
+function select_num($param, $param_list, $label) {
     // Prepare some variables
     $low = $param_list[$param]['min'];
     $high = $param_list[$param]['max'];
@@ -75,7 +75,7 @@ function select_num($param, $param_list, $label, $advanced) {
 }
 
 // Print options list for select input field with a list of text values (option names)
-function select_options_list($param, $param_list, $label, $advanced) {
+function select_options_list($param, $param_list, $label) {
     $option_list = $param_list[$param]['list'];
     if (!isset($param_list[$param]['description'])) {
         $param_list[$param]['description'] = '';
@@ -83,14 +83,14 @@ function select_options_list($param, $param_list, $label, $advanced) {
     // otherwise print the select field with its label, all between <li></li> tags, 
     // flagging the selected value in the option list
     
-    if ($advanced) {
+    if ($param_list[$param]['advanced']) {
         $class = 'class="select advanced"';
     } else {
         $class = 'class="select"';
     }
     $retval = '<li><label for="' . $param . '" ' . $class . ' title="' . $param_list[$param]['description'] . '">' . $label . " </label>\n";
 
-    if ($advanced) {
+    if ($param_list[$param]['advanced']) {
         $class = ' class="advanced"';
     } else {
         $class = '';

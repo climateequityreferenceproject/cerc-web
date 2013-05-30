@@ -14,5 +14,5 @@
     
     $advanced = true;
     
-    echo select_num('cum_since_yr', $shared_params, "Cumulative since:", $advanced);
+    echo select_num('cum_since_yr', $shared_params, "Cumulative since:");
 
