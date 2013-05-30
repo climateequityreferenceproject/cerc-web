@@ -88,7 +88,9 @@ $(function() {
     $('#interp_btwn_thresh').change(submit);
     
     $('#r_wt').change(submit);
-    $('#percent_gwp').change(submit);
+    // $('#percent_gwp').change(submit);
+    $('#percent_gwp_MITIGATION').change(submit);
+    $('#percent_gwp_ADAPTATION').change(submit);
     $('#em_elast').change(submit);
     
     $('#use_kab').change(submit);

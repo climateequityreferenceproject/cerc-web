@@ -380,7 +380,7 @@ EOHTML;
     // Climate tax
     $climate_tax_link = '<a href="#tax-table">' . _('climate tax') . '</a>';
     $retval .= '<tr>';
-    $retval .= "<td class=\"lj level2\">" . sprintf(_('as per-capita %1$s (assuming global mitigation costs = %2$s%% of global GWP)'), $climate_tax_link, nice_number('', $perc_gwp, '')) . "</td>";
+    $retval .= "<td class=\"lj level2\">" . sprintf(_('as per-capita %1$s (assuming global mitigation and adaptation costs = %2$s%% of global GWP)'), $climate_tax_link, nice_number('', $perc_gwp, '')) . "</td>";
     $retval .= '<td class="cj">&nbsp;</td>';
     $val = 1000 * $world_tot['gdp_mer'] * 0.01 * $perc_gwp * $ctry_val[$year]["gdrs_rci"]/$ctry_val[$year]['pop_mln'];
     $retval .= "<td>" . nice_number('$', $val, '') . "</td>";

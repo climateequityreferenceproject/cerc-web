@@ -53,7 +53,7 @@
         echo $user_db;
         exit;
     }
-
+    
     // Function to update parameters array with last user values, if any
     function get_usr_vals(&$array) {
         foreach(array_keys($array) as $key) {
@@ -63,6 +63,10 @@
                 // This is a checkbox: if not checked, it does not exist in $_POST
                 $array[$key]['value'] = 0;
             }
+        }
+        // Special case
+        if (isset($array['percent_gwp_MITIGATION']) && isset($array['percent_gwp_ADAPTATION'])) {
+            $array['percent_gwp']['value'] = $array['percent_gwp_MITIGATION']['value'] + $array['percent_gwp_ADAPTATION']['value'];
         }
         // Special case
         if (isset($_POST['use_kab_radio'])) {
@@ -94,6 +98,9 @@
     // Reload parameters--might be different from defaults
     $shared_params = Framework::get_shared_params($user_db);
     $fw_params = $fw->get_fw_params($user_db);
+    
+    // Special case
+    $shared_params['percent_gwp']['value'] = $shared_params['percent_gwp_MITIGATION']['value'] + $shared_params['percent_gwp_ADAPTATION']['value'];
     
     /*** Display parameters ****************************************************/
 
@@ -194,6 +201,9 @@
     // Use the most up-to-date parameter list: years might have changed
     $shared_params = Framework::get_shared_params($user_db);
     $fw_params = $fw->get_fw_params($user_db);
+        
+    // Special case
+    $shared_params['percent_gwp']['value'] = $shared_params['percent_gwp_MITIGATION']['value'] + $shared_params['percent_gwp_ADAPTATION']['value'];
     
     /*** Cleanup ************************************************************/
     // Just to be sure, explicitly delete the object

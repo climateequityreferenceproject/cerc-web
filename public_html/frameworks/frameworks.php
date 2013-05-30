@@ -423,7 +423,29 @@ EOSQL;
                             'percent_gwp' => array(
                                 'description' => 'The total annual cost of mitigation and adaptation as % GDP',
                                 'advanced' => false,
-                                'db_param' => 'billpercgwp',
+                                'db_param' => NULL,
+                                'value' => NULL,
+                                'min' => 0.0,
+                                'max' => 100.0,
+                                'step' => 0.5,
+                                'list' => NULL,
+                                'type' => 'real'
+                            ),
+                            'percent_gwp_MITIGATION' => array(
+                                'description' => 'Annual cost of mitigation as % GDP',
+                                'advanced' => false,
+                                'db_param' => 'billpercgwp_mit',
+                                'value' => NULL,
+                                'min' => 0.0,
+                                'max' => 100.0,
+                                'step' => 0.5,
+                                'list' => NULL,
+                                'type' => 'real'
+                            ),
+                            'percent_gwp_ADAPTATION' => array(
+                                'description' => 'Annual cost of adaptation as % GDP',
+                                'advanced' => false,
+                                'db_param' => 'billpercgwp_adapt',
                                 'value' => NULL,
                                 'min' => 0.0,
                                 'max' => 100.0,
