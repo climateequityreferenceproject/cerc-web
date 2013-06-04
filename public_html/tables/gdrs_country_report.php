@@ -290,15 +290,22 @@ EOHTML;
     $retval .= '<p id="toggle-key">' . _('Show graph key') . '</p>';
     $retval .= '<dl id="ctry_report_legend">';
     $retval .= '<dt class="key-bau"><span></span>' . _('Business as Usual') . '</dt>';
-    $retval .= '<dd>' . _('GHG emissions baselines (“BAU”) are based on projected emissions growth rates from McKinsey and Co\'s projections (Version 2.1) applied to the most current available annual emissions data (CO<sub>2</sub> from fossil fuels from CDIAC\'s 2010 estimates); CO<sub>2</sub> from land use is projected constant at 2005 levels and non-CO<sub>2</sub> GHGs are a constant proportion relative to Fossil CO<sub>2</sub> emissions at 2005 levels.') . '</dd>';
+    $retval .= '<dd>' . _('GHG emissions baselines (or BAU trajectories) are calculated based on 
+        convergence from recent historical growth rates to long-term (2030) growth rates 
+        from the projections of McKinsey and Co. (Version 2.1). CO<sub>2</sub> from land use is projected 
+        constant at 2005 levels. GDP estimates are taken from IMF (WEO2013) through the year 2018 
+        and converge to growth rates from McKinsey and Co. in 2030. See the 
+        <a href="http://gdrights.org/gdrs-scorecard-calculator-information/gdp-and-emissions-baselines-in-the-gdrs-framework/">
+        GDRs baseline documentation</a> for details.') . '</dd>';
 
     $retval .= '<dt class="key-gdrs"><span></span>' . _('GDRs "fair share" allocation') . '</dt>';
-    $retval .= '<dd>' . sprintf(_('National allocation trajectory, as calculated by GDRs for %s using the specified pathways and parameters. The mitigation implied by this allocation can be either domestic or international &#8211; GDRs in itself says nothing about how or where it occurs.'), $country_name) . '</dd>';
+    $retval .= '<dd>' . sprintf(_('National allocation trajectory, as calculated by GDRs for %s using the specified pathways and parameters. 
+        The mitigation implied by this allocation can be either domestic or international &#8211; GDRs in itself says nothing about how or where it occurs.'), $country_name) . '</dd>';
     
     if ($iso3 != $world_code) {
         $retval .= '<dt class="key-phys"><span></span>' . _('Domestic emissions') . '</dt>';
-        $retval .= '<dd>' . sprintf(_('An example of an emissions trajectory for %s that is consistent with the specified pathways and parameters.'), $country_name);
-        $retval .= sprintf(_('The actual domestic emissions trajectory would depend on the international cost and mitigation sharing that %s chooses to participate in. GDRs assigns each country a mitigation obligation. It does not specify how or where that obligation should be discharged.'), $country_name) . '</dd>';
+        $retval .= '<dd>' . sprintf(_('An example of a domestic emissions trajectory for %s that is consistent with the specified pathways and parameters. '), $country_name);
+        $retval .= sprintf(_('GDRs assigns each country a mitigation obligation (emissions allocation); it does not specify how or where that obligation should be discharged. The actual domestic emissions trajectory would depend on the international cost and mitigation sharing that %s chooses to participate in. Here we assume all countries reduce domestic emissions at the same percentage rate from BAU.'), $country_name) . '</dd>';
 
         $retval .= '<dt class="key-dom"><span></span>';
         if ($fund_others) {
