@@ -140,7 +140,7 @@
                                 'list'=>NULL
                             ),
                              'decimal_pl' => array(
-                                'value'=>2,
+                                'value'=>1,
                                 'advanced'=>false,
                                 'min'=>0,
                                 'max'=>6,
