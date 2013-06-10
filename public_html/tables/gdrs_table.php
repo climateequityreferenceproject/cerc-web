@@ -16,11 +16,11 @@ $retval = <<< EOHTML
             <th class="lj">Country or Group</th>
             <th>Population<br/>(million)</th>
             <th>Population<br/>(% of global)</th>
-            <th>GDP<br/>(billion \$US)</th>
+            <th>GDP<br/>(billion 2010 \$US MER)</th>
             <th>GDP<br/>(% of global)</th>
-            <th>Income<br/>(2005 \$US/cap)</th>
+            <th>Income<br/>(2010 \$US MER/cap)</th>
             <th>Income<br/>(2005 \$US PPP/cap)</th>
-            <th>Capacity<br/>(billion \$US)</th>
+            <th>Capacity<br/>(billion 2010 \$US MER)</th>
             <th>Capacity<br/>(% of global)</th>
             <th>Responsibility<br/>(% of global)</th>
             <th>RCI</th>

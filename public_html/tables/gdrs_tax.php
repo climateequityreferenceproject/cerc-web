@@ -32,10 +32,10 @@ $retval = <<< EOHTML
         <tr>
             <th class="lj">Country or Group</th>
             <th>Obligation<br/>to pay<br/>(% of total)</th>
-            <th>Obligation<br/>to pay<br/>(billion \$US)</th>
+            <th>Obligation<br/>to pay<br/>(billion 2010 \$US MER)</th>
             <th>Obligation<br/>to pay<br/>(% GDP)</th>
-            <th>Obligation<br/>per capita<br/>(\$US/cap)</th>
-            <th>Obligation per person<br/>above development<br/>threshold (\$US/cap)</th>
+            <th>Obligation<br/>per capita<br/>(2010 \$US MER/cap)</th>
+            <th>Obligation per person<br/>above development<br/>threshold (2010 \$US MER/cap)</th>
         </tr>
     </thead>
     <tbody>
@@ -46,7 +46,7 @@ EOHTML;
     
     // Total GWP, to get the "bill"
     $record = $db->query("SELECT SUM(gdp_blnUSDPPP) AS gdp_ppp, SUM(gdp_blnUSDMER) AS gdp_mer FROM disp_temp WHERE year = " . $year)->fetchAll();
-    $gwp_ppp = $record[0]["gdp_ppp"];
+    // $gwp_ppp = $record[0]["gdp_ppp"];
     $gwp_mer = $record[0]["gdp_mer"];
 
     // Make a new query for this table

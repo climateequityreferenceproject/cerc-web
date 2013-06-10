@@ -515,13 +515,13 @@ $retval .= <<< EOHTML
         <th colspan="2" style="text-align:center">Per-capita obligation</th>
     </tr>
     <tr>
-        <th>Income level<br/>(2005 \$US/cap)</th>
-        <th>Income level<br/>(in PPP terms)</th>
+        <th>Income level<br/>(2010 \$US MER/cap)</th>
+        <th>Income level<br/>(2005 \$US PPP/cap)</th>
         <th class="lj"></th>
         <th>&#8220Tax rate&#8221<br/>(% income)</th>
         <th>Population above<br/>tax level (% pop.)</th>
         <th style="border: none;">&nbsp;</th>
-        <th><br/>as 2005 \$US/cap</th>
+        <th><br/>as 2010 \$US MER/cap</th>
         <th><br/>as kt$gases/cap</th>
     </tr>
     </thead>

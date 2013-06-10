@@ -6,7 +6,7 @@
         <tr>
             <th>Country or<br/>Group</th>
             <th>Population<br/>(% of global)</th>
-            <th>GDP<br/>per capita<br/>($US PPP)</th>
+            <th>GDP<br/>per capita<br/>(2005 $US PPP)</th>
             <th>Capacity<br/>(% of global)</th>
             <th>Responsibility<br/>(% of global)</th>
             <th>RCI<br/>(% of global)</th>
