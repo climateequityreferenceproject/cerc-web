@@ -1,0 +1,83 @@
+@charset "UTF-8";
+/* CSS Document */
+body { 
+	color: #555; 
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 100%;
+	line-height: 1.4;
+}
+.wrapper {
+	margin: 1em auto;
+	padding: 1em 1em 2em 1em;
+	width: 80%;
+}
+h1 { font-size: 200%; font-weight: normal; }
+h3 { margin-bottom: 0; }
+p { margin: 1em 0; }
+fieldset { padding: 1em 1em 2em 1em }
+legend { font-size: 200%; }
+label, label span {
+	clear: both;
+	display: block;
+	float: left;
+}
+label { margin-top: 2em; width: 100%; }
+label span { margin-right: 1em; text-align: right; width: 24%; }
+input#entry_title, textarea#entry_text { width: 70%; }
+input#code_id { width: 18em; }
+input.submit { 
+	display: block; 
+	font-size: 105%; 
+	float: left; 
+	margin: 1em 1em 0 0; 
+	width: 6em; 
+}
+.entry_form input.submit, .confirm_form input.submit { width: 9em; }
+.search_form input.submit { margin-top: 0.25em }
+.search_form label { margin-top: 0; }
+.entry { 
+	border-top: 1px solid #ccc; 
+	margin-top: 1em;
+	padding: 0.5em 0; 
+}
+.code_id { 
+	color: #777; 
+	font-family: "Lucida Console", Monaco, monospace;
+	margin-top: 0.5em; 
+}
+
+.group:before, .group:after { content: "\0020"; display: block; height: 0; overflow: hidden; }
+.group:after { clear: both; }
+.group { zoom: 1; }
+
+@font-face {
+    font-family: 'ProximaNova';
+    src: url('/fonts/proximanova-bold-webfont.eot');
+    src: url('/fonts/proximanova-bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/fonts/proximanova-bold-webfont.woff') format('woff'),
+         url('/fonts/proximanova-bold-webfont.ttf') format('truetype'),
+         url('/fonts/proximanova-bold-webfont.svg#ProximaNovaBold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'ProximaNova';
+    src: url('/fonts/proximanova-boldit-webfont.eot');
+    src: url('/fonts/proximanova-boldit-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/fonts/proximanova-boldit-webfont.woff') format('woff'),
+         url('/fonts/proximanova-boldit-webfont.ttf') format('truetype'),
+         url('/fonts/proximanova-boldit-webfont.svg#ProximaNovaBoldItalic') format('svg');
+    font-weight: bold;
+    font-style: italic;
+}
+h1, h2, h3, h4 {
+	font-family: ProximaNova, Arial, "Helvetica Neue", Helvetica, sans-serif; 
+	font-weight: bold;
+}
+
+@media screen and (max-device-width: 480px) {
+	label span { 
+		text-align: left; 
+		width: 100%; 
+	}
+}
