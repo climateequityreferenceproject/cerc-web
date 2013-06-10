@@ -202,25 +202,38 @@ if ((isset($_GET['action']) and $_GET['action'] == 'search') or (isset($_POST['a
   $from   = ' FROM entry';
   $where  = ' WHERE TRUE';
 
-  $placeholders = array();
+  $placeholders1 = array();
+  $placeholders2 = array();
 
   if ($_GET['text'] != '') // Some search text was specified
   {
-    $where .= " AND entry_text LIKE :entry_text";
-    $placeholders[':entry_text'] = '%' . $_GET['text'] . '%';
+    $have_search_text = true;
+    $where .= " AND";
+    
+    $where1 = " (code_id LIKE :code_id";
+    $placeholders1[':code_id'] = '%' . $_GET['text'] . '%';
+    $placeholders2[':code_id'] = $placeholders1[':code_id'];
 
-    $where .= " AND entry_title LIKE :entry_title";
-    $placeholders[':entry_title'] = '%' . $_GET['text'] . '%';
+    $where1 .= " OR entry_title LIKE :entry_title)";
+    $placeholders1[':entry_title'] = '%' . $_GET['text'] . '%';
+    $placeholders2[':entry_title'] = $placeholders1[':entry_title'];
+    
+    $where2 = " entry_text LIKE :entry_text";
+    $placeholders2[':entry_text'] = '%' . $_GET['text'] . '%';
+    
+    $where2 .= " AND NOT" . $where1;
+
   }
   
-  // TODO add entry sorting (alpha?), 
-  // and/or add a way for editors to set order in which entries appear
+  $order_by = ' ORDER BY entry_title';
+  
+  // Find in title or code first, and alphabetize by title
 
   try
   {
-    $sql = $select . $from . $where;
+    $sql = $select . $from . $where . $where1 . $order_by;
     $s = $pdo->prepare($sql);
-    $s->execute($placeholders);
+    $s->execute($placeholders1);
   }
   catch (PDOException $e)
   {
@@ -239,6 +252,34 @@ if ((isset($_GET['action']) and $_GET['action'] == 'search') or (isset($_POST['a
 	  'calc_gloss'  => $row['calc_gloss'], 
 	  'entry_title' => $row['entry_title'], 
 	  'entry_text'  => $row['entry_text']);
+  }
+  
+  // Next, find it in text, and add (alphabetized separately)
+  if ($have_search_text) {
+    try
+    {
+        $sql = $select . $from . $where . $where2 . $order_by;
+        $s = $pdo->prepare($sql);
+        $s->execute($placeholders2);
+    }
+    catch (PDOException $e)
+    {
+        $error = 'Error fetching entries.';
+        include 'error.html.php';
+        exit();
+    }
+
+    //// ... store results of query in an array ...
+    foreach ($s as $row)
+    {
+        $entries[] = array(
+            'id'          => $row['id'], 
+            'code_id'     => $row['code_id'], 
+            'sc_gloss'    => $row['sc_gloss'], 
+            'calc_gloss'  => $row['calc_gloss'], 
+            'entry_title' => $row['entry_title'], 
+            'entry_text'  => $row['entry_text']);
+    }
   }
 
   include 'entries.html.php';
