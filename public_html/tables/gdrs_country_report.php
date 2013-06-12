@@ -294,9 +294,9 @@ EOHTML;
         convergence from recent historical growth rates to long-term (2030) growth rates 
         from the projections of McKinsey and Co. (Version 2.1). CO<sub>2</sub> from land use is projected 
         constant at 2005 levels. GDP estimates are taken from IMF (WEO2013) through the year 2018 
-        and converge to growth rates from McKinsey and Co. in 2030. See the 
+        and converge to growth rates from McKinsey and Co. in 2030. See 
         <a href="http://gdrights.org/gdrs-scorecard-calculator-information/gdp-and-emissions-baselines-in-the-gdrs-framework/">
-        GDRs baseline documentation</a> for details.') . '</dd>';
+        GDP and emissions baselines in the GDRs framework</a> for details.') . '</dd>';
 
     $retval .= '<dt class="key-gdrs"><span></span>' . _('GDRs "fair share" allocation') . '</dt>';
     $retval .= '<dd>' . sprintf(_('National allocation trajectory, as calculated by GDRs for %s using the specified pathways and parameters. 
@@ -305,7 +305,7 @@ EOHTML;
     if ($iso3 != $world_code) {
         $retval .= '<dt class="key-phys"><span></span>' . _('Domestic emissions') . '</dt>';
         $retval .= '<dd>' . sprintf(_('An example of a domestic emissions trajectory for %s that is consistent with the specified pathways and parameters. '), $country_name);
-        $retval .= sprintf(_('GDRs assigns each country a mitigation obligation (emissions allocation); it does not specify how or where that obligation should be discharged. The actual domestic emissions trajectory would depend on the international cost and mitigation sharing that %s chooses to participate in. Here we assume all countries reduce domestic emissions at the same percentage rate from BAU.'), $country_name) . '</dd>';
+        $retval .= sprintf(_('This pathway is not part of GDRs proper, for while GDRs assigns each country a mitigation obligation, it does not specify how or where that obligation should be discharged. The domestic emissions pathway is estimated by tracing a pathway that tracks the selected global mitigation pathway. That is, the annual rate of emission reduction below BAU is the same in all countries and equal to the global reduction rate. For more information, see <a href="http://gdrights.org/gdrs-scorecard-calculator-information/gdrs-obligations/">On domestic action in a global crisis</a>.'), $country_name) . '</dd>';
 
         $retval .= '<dt class="key-dom"><span></span>';
         if ($fund_others) {
