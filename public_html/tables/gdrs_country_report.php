@@ -421,12 +421,17 @@ EOHTML;
     $val = 100.0 * $ctry_val[$year]["gdrs_alloc_MtCO2"]/$bau[1990];
     $retval .= "<td>" . nice_number('', $val, '%') . "</td>";
     $retval .= "</tr>";
-    // GDRs 2020 allocation as percent reduction of 1990 emissions 
-    $retval .= "<tr>";
-    $retval .= "<td class=\"lj level2\">" . _("as percent below 1990 emissions") . "</td>";
-    $retval .= '<td class="cj">&nbsp;</td>';
+    // GDRs 2020 allocation as percent reduction of 1990 emissions
     $val = 100.0 * (1 - $ctry_val[$year]["gdrs_alloc_MtCO2"]/$bau[1990]);
-    $retval .= "<td>" . nice_number('', $val, '%') . "</td>";
+    if ($val >= 0) {
+        $string = _("as percent below 1990 emissions");
+    } else {
+        $string = _("as percent above 1990 emissions");
+    }
+    $retval .= "<tr>";
+    $retval .= "<td class=\"lj level2\">" . $string . "</td>";
+    $retval .= '<td class="cj">&nbsp;</td>';
+    $retval .= "<td>" . nice_number('', abs($val), '%') . "</td>";
     $retval .= "</tr>";
     // Blank line
     $retval .= "<tr class=\"blank\"><td colspan=\"3\">&nbsp;</td></tr>";
