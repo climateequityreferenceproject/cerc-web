@@ -71,11 +71,12 @@ include_once 'process.php';
                     </td>
                     <td>to</td>
                     <td>
-                        <select name="reduction_percent" id="reduction_percent">
+<!--                        <select name="reduction_percent" id="reduction_percent">
                         <?php
-                        option_number(1, 100, 1, get_reduction_percent($edit_array));
+                        // option_number(1, 100, 1, get_reduction_percent($edit_array));
                         ?>
-                        </select>%
+                        </select>-->
+                        <input type="text" style="width:5em;"><?php echo get_reduction_percent($edit_array); ?></a>%
                     </td>
                     <td>
                         <?php
