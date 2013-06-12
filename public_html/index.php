@@ -155,6 +155,7 @@ if (isset($_GET['year'])) {
                                        echo select_num('percent_gwp_MITIGATION', $shared_params,$glossary->getLink('total_cost', false, _('Mitigation cost as % GWP')) . ":");
                                        echo select_num('percent_gwp_ADAPTATION', $shared_params,$glossary->getLink('total_cost', false, _('Adaptation cost as % GWP')) . ":");
                                        echo select_num('em_elast', $shared_params, $glossary->getLink('emiss_elast', false, _('Emissions elasticity')) . ":");
+                                       echo '<span id="dev_thresh_anchor" style="display: none;"></span>';
                                        echo select_num('dev_thresh', $fw_params, $glossary->getLink('gloss_dev_threshold', false, _('Development threshold ($PPP)')) . ":");
                                        if ($display_params['framework']['value'] === 'gdrs') {
                                            echo '<li class="advanced"><fieldset class="progressivity">';

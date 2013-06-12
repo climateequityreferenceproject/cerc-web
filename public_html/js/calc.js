@@ -108,6 +108,8 @@ $(function() {
     // If in advanced view then put the dev threshold inside the progressivity box
     if ($('input:radio[name=basic_adv]:checked').val() == 'adv') {
         $('#dev_thresh').parent().detach().prependTo("fieldset.progressivity ul");
+    } else {
+        $('#dev_thresh').parent().detach().insertAfter("#dev_thresh_anchor");
     }
     
     //--------------------------------------------------
@@ -312,6 +314,8 @@ function set_display() {
     // If in advanced view then put the dev threshold inside the progressivity box
     if ($('input:radio[name=basic_adv]:checked').val() == 'adv') {
         $('#dev_thresh').parent().detach().prependTo("fieldset.progressivity ul");
+    } else {
+        $('#dev_thresh').parent().detach().insertAfter("#dev_thresh_anchor");
     }
 
 }
