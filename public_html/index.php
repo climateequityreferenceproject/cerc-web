@@ -160,11 +160,11 @@ if (isset($_GET['year'])) {
                                            echo '<li class="advanced"><fieldset class="progressivity">';
                                            echo '<legend class="open"><span>&nbsp;</span>' . $glossary->getLink('progressivity', false, _('Progressivity')) . '</legend>';
                                            echo '<ul>';
-                                           echo '<li class="separator"></li>';
-                                           echo '<li class="advanced">';
-                                           echo '<input type="checkbox" name="do_luxcap" id="do_luxcap" class="click" value="1" ' . ($fw_params["do_luxcap"]['value'] ? 'checked="checked"' : '') . '/>';
-                                           echo '<label for="do_luxcap" class="click"> ' . _("Cap baselines at luxury threshold") . '</label>';
-                                           echo "</li>";
+//                                           echo '<li class="separator"></li>';
+//                                           echo '<li class="advanced">';
+//                                           echo '<input type="checkbox" name="do_luxcap" id="do_luxcap" class="click" value="1" ' . ($fw_params["do_luxcap"]['value'] ? 'checked="checked"' : '') . '/>';
+//                                           echo '<label for="do_luxcap" class="click"> ' . _("Cap baselines at luxury threshold") . '</label>';
+//                                           echo "</li>";
                                            echo '<li class="advanced">';
                                            echo '<input type="checkbox" name="interp_btwn_thresh" id="interp_btwn_thresh" class="click" value="1" ' . ($fw_params["interp_btwn_thresh"]['value'] ? 'checked="checked"' : '') . '/>';
                                            echo '<label for="interp_btwn_thresh" class="click"> ' . _("Progressive between thresholds") . '</label>';
