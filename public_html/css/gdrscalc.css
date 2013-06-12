@@ -185,9 +185,10 @@ fieldset li {
     margin-top:0.6em; 
 }
 form li p { margin-top:0; }
-fieldset fieldset, fieldset fieldset li { width:17em; }
-label { width:12em; }
-fieldset fieldset label { width:10.5em; }
+fieldset fieldset, fieldset fieldset li { width:19em; }
+label { width:13em; }
+fieldset fieldset label, fieldset fieldset label.select { width:11.8em; }
+fieldset fieldset label.select[for^="lux_thresh"] { float:left; width:10.5em; }
 label {
     display:block;
     float:left;
@@ -198,7 +199,7 @@ label.select {
     float:none; 
     margin-bottom:0.2em; 
 }
-label.click, label.select { width:auto; }
+label.click, label.select { width:auto; } 
 select { width:auto; }
 input, select.short { width:6em; }
 fieldset fieldset input { width:5em; }
