@@ -76,7 +76,7 @@ include_once 'process.php';
                         // option_number(1, 100, 1, get_reduction_percent($edit_array));
                         ?>
                         </select>-->
-                        <input type="text" style="width:5em;"><?php echo get_reduction_percent($edit_array); ?></a>%
+                        <input name="reduction_percent" id="reduction_percent" type="text" style="width:5em;" value="<?php echo get_reduction_percent($edit_array); ?>"></input>%
                     </td>
                     <td>
                         <?php
