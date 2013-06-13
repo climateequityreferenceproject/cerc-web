@@ -236,10 +236,10 @@ function process_pledges($pledge_info, $pathway, $db) {
         $year = $year_data['year'];
         $gdp[$year] = $year_data['gdp_blnUSDMER'];
         $bau[$year] = $year_data['fossil_CO2_MtCO2'];
-        if ($use_lulucf['value']) {
+        if ($use_lulucf['value'] && $pledge_info['include_lulucf']) {
             $bau[$year] += $year_data['LULUCF_MtCO2'];
         }
-        if ($use_nonco2['value']) {
+        if ($use_nonco2['value'] && $pledge_info['include_nonco2']) {
             $bau[$year] += $year_data['NonCO2_MtCO2e'];
         }
     }
