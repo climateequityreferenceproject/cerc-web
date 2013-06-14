@@ -247,9 +247,13 @@ function process_pledges($pledge_info, $pathway, $db) {
     switch ($pledge_info['rel_to']) {
         case 'below':
             $factor = 1 - $pledge_info['reduction_percent']/100.0;
+            $reduce_text_1 = 'by ';
+            $reduce_text_2 = '% compared to ';
             break;
         case 'of':
             $factor = $pledge_info['reduction_percent']/100.0;
+            $reduce_text_1 = 'to ';
+            $reduce_text_2 = '% of ';
             break;
         default:
             // Shouldn't get here
@@ -258,7 +262,7 @@ function process_pledges($pledge_info, $pathway, $db) {
     $by_factor = $pledge_info['reduction_percent'];
     switch ($pledge_info['quantity']) {
         case 'absolute':
-            $description .= 'total emissions by ' . $by_factor . '% compared to ';
+            $description .= 'total emissions ' . $reduce_text_1 . $by_factor . $reduce_text_2;
             if ($pledge_info['year_or_bau'] === 'bau') {
                 $description .= 'business-as-usual';
                 $pledged_reduction = (1 - $factor) * $bau[$pledge_info['by_year']];
@@ -268,7 +272,7 @@ function process_pledges($pledge_info, $pathway, $db) {
             }
             break;
         case 'intensity':
-            $description .= 'emissions intensity by ' . $by_factor . '% compared to ';
+            $description .= 'emissions intensity by ' . $reduce_text_1 . $by_factor . $reduce_text_2;
             if ($pledge_info['year_or_bau'] === 'bau') {
                 // This option actually makes no sense, but take care of it just in case:
                 $description .= 'business-as-usual';
