@@ -41,34 +41,6 @@ if (isset($_GET['year'])) {
         <div id="calc_container" class="group">
             <form action="" method="post" name="form1" id="form1" class="group">
 
-                <fieldset id="basic_adv">
-                    <legend class="open"><span>&nbsp;</span>Select basic/advanced view</legend>
-                    <div>
-                        <ul>
-                            <li>
-                                <input type="radio" name="basic_adv" id="basic" class="click" value="basic"
-                                <?php
-                                if ($display_params["basic_adv"]['value'] == "basic") {
-                                    echo 'checked="checked"';
-                                    $advanced = false;
-                                }
-                                ?> />
-                                <label for="basic" class="click radio">Basic</label>
-                                <input type="radio" name="basic_adv" id="adv" class="click" value="adv"
-                                <?php
-                                if ($display_params["basic_adv"]['value'] == "adv") {
-                                    echo 'checked="checked"';
-                                    $advanced = true;
-                                }
-                                ?> />
-                                <label for="adv" class="click radio"><?php echo _("Advanced");?></label>
-                            </li>
-                        </ul>&nbsp;
-                        <!-- DO NOT REMOVE the &nbsp; after the last element within each of the divs enclosing everything after legend in fieldsets.
-                        A jQuery bug (?) breaks the .hide part of .toggle when the &nbsp; is not there -->
-                    </div>
-                </fieldset>
-
                 <fieldset id="region_country_filter">
                     <legend class="open"><span>&nbsp;</span><?php echo _("Select regions and countries");?></legend>
                     <div>
@@ -149,32 +121,29 @@ if (isset($_GET['year'])) {
                                 <label for="use_netexports" class="click"> <?php echo sprintf(_('Include %s'), $glossary->getLink('embodied_emissions', false, _('emissions embodied in trade'))); ?></label>
                             </li>
                             <?php
-                                       if ($display_params['framework']['value'] === 'gdrs') {
-                                           echo select_num('r_wt', $fw_params, $glossary->getLink('r_weight', false, _('Responsibility weight')) . ":");
-                                       }
+                                       echo select_num('r_wt', $fw_params, $glossary->getLink('r_weight', false, _('Responsibility weight')) . ":");
                                        echo select_num('percent_gwp_MITIGATION', $shared_params,$glossary->getLink('total_cost', false, _('Mitigation cost as % GWP')) . ":");
                                        echo select_num('percent_gwp_ADAPTATION', $shared_params,$glossary->getLink('total_cost', false, _('Adaptation cost as % GWP')) . ":");
                                        echo select_num('em_elast', $shared_params, $glossary->getLink('emiss_elast', false, _('Emissions elasticity')) . ":");
-                                       echo '<span id="dev_thresh_anchor" style="display: none;"></span>';
+                                       // Progressivity
+                                       echo '<li class="advanced"><fieldset class="progressivity">';
+                                       echo '<legend class="closed"><span>&nbsp;</span>' . $glossary->getLink('progressivity', false, _('Progressivity')) . '</legend>';
+                                       echo '<ul>';
+                                       echo '<li class="advanced">';
+                                       echo '<input type="checkbox" name="interp_btwn_thresh" id="interp_btwn_thresh" class="click" value="1" ' . ($fw_params["interp_btwn_thresh"]['value'] ? 'checked="checked"' : '') . '/>';
+                                       echo '<label for="interp_btwn_thresh" class="click"> ' . _("Progressive between thresholds") . '</label>';
+                                       echo "</li>";
+                                       echo "<li>";
                                        echo select_num('dev_thresh', $fw_params, $glossary->getLink('gloss_dev_threshold', false, _('Development threshold ($PPP)')) . ":");
-                                       if ($display_params['framework']['value'] === 'gdrs') {
-                                           echo '<li class="advanced"><fieldset class="progressivity">';
-                                           echo '<legend class="open"><span>&nbsp;</span>' . $glossary->getLink('progressivity', false, _('Progressivity')) . '</legend>';
-                                           echo '<ul>';
-//                                           echo '<li class="separator"></li>';
-//                                           echo '<li class="advanced">';
-//                                           echo '<input type="checkbox" name="do_luxcap" id="do_luxcap" class="click" value="1" ' . ($fw_params["do_luxcap"]['value'] ? 'checked="checked"' : '') . '/>';
-//                                           echo '<label for="do_luxcap" class="click"> ' . _("Cap baselines at luxury threshold") . '</label>';
-//                                           echo "</li>";
-                                           echo '<li class="advanced">';
-                                           echo '<input type="checkbox" name="interp_btwn_thresh" id="interp_btwn_thresh" class="click" value="1" ' . ($fw_params["interp_btwn_thresh"]['value'] ? 'checked="checked"' : '') . '/>';
-                                           echo '<label for="interp_btwn_thresh" class="click"> ' . _("Progressive between thresholds") . '</label>';
-                                           echo "</li>";
-                                           echo select_num('lux_thresh', $fw_params, $glossary->getLink('lux_threshold', false, _('Luxury threshold ($MER)')) . ":");
-                                           echo '</ul></fieldset></li>';
-                                       }
+                                       echo "</li>";
+                                       echo "<li>";
+                                       echo select_num('lux_thresh', $fw_params, $glossary->getLink('lux_threshold', false, _('Luxury threshold ($MER)')) . ":");
+                                       echo "</li>";
+                                       echo '</ul></fieldset></li>';
+
+                                       // Kyoto obligations
                                        echo '<li class="advanced"><fieldset>';
-                                       echo '<legend class="open"><span>&nbsp;</span>' . $glossary->getLink('gloss_kyoto', false, _('Kyoto obligations')) . '</legend>';
+                                       echo '<legend class="closed"><span>&nbsp;</span>' . $glossary->getLink('gloss_kyoto', false, _('Kyoto obligations')) . '</legend>';
                                        echo '<div><ul id="kab">';
                                        echo "<li>";
                                        echo '<input type="radio" name="use_kab_radio" id="use_kab" class="click" value="use_kab" ' . ($fw_params["use_kab"]['value'] && !$fw_params["kab_only_ratified"]['value'] ? 'checked="checked"' : '') . '/>';
@@ -190,27 +159,16 @@ if (isset($_GET['year'])) {
                                        echo "</li>";
                                        echo '</li><ul>&nbsp;</div><!-- end #kab -->';
                                        echo '</fieldset></li>';
-//                                       if ($display_params['framework']['value'] === 'gdrs') {
-//                                           echo '<li class="advanced"><fieldset>';
-//                                           echo '<legend class="closed"><span>&nbsp;</span>' . _("Sequencing") . '</legend>';
-//                                           echo '<div><ul id="sequencing">';
-//                                           echo "<li>";
-//                                           echo '<input type="checkbox" name="use_sequencing" id="use_sequencing" class="click" value="1" ' . ($shared_params["use_sequencing"]['value'] ? 'checked="checked"' : '') . '/>';
-//                                           echo '<label for="use_sequencing" class="click"> ' . _("Use sequencing") . '</label>';
-//                                           echo "</li>";
-//                                           echo select_num('percent_a1_rdxn', $shared_params, _("A1 reduction %:"));
-//                                           echo select_num('base_levels_yr', $shared_params, _("Sequencing base yr:"));
-//                                           echo select_num('end_commitment_period', $shared_params, _("End of period:"));
-//                                           echo select_num('a1_smoothing', $shared_params, _("A1 smoothing:"));
-//                                           echo "<li>";
-//                                           echo '<p>' . _("Mitigation requirement gap borne by: ") . '</p><ul><li>';
-//                                           echo '<input type="radio" name="mit_gap_borne" id="annex1" class="click" value="1" ' . ($shared_params["mit_gap_borne"]['value'] == "1" ? 'checked="checked"' : '') . "/>";
-//                                           echo '<label for="annex1" class="click radio"> ' . _("Annex 1") . '</label>';
-//                                           echo '<input type="radio" name="mit_gap_borne" id="annex2" class="click" value="2" ' . ($shared_params["mit_gap_borne"]['value'] == "2" ? 'checked="checked"' : '') . "/>";
-//                                           echo '<label for="annex2" class="click radio"> ' . _("Annex 2") . '</label>';
-//                                           echo '</li></ul></li><ul>&nbsp;<!-- end #sequencing -->';
-//                                           echo '</div></fieldset></li>';
-//                                       }
+                                       
+                                       // Mitigation lag
+                                       echo '<li class="advanced"><fieldset>';
+                                       echo '<legend class="closed"><span>&nbsp;</span>' . $glossary->getLink('mit_lag', false, _('Mitigation lag')) . '</legend>';
+                                       echo '<ul>';
+                                       echo '<li>';
+                                       echo select_num('mit_lag', $shared_params, "Lag in years:");
+                                       echo '</li>';
+                                       echo '</ul>';
+                                       echo '</fieldset></li>';
                             ?>
                                    </ul>&nbsp;
                                </div>

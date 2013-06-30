@@ -508,6 +508,17 @@ EOSQL;
                                 'list' => NULL,
                                 'type' => 'real'
                             ),
+                            'mit_lag' => array(
+                                'description' => 'The number of years between the year in which mitigation obligations are being calculated and the historical year in which RCI is calculated',
+                                'advanced' => true,
+                                'db_param' => 'lag',
+                                'value' => NULL,
+                                'min' => 0,
+                                'max' => 20,
+                                'step' => 5,
+                                'list' => NULL,
+                                'type' => 'int'
+                            ),
                             'mit_gap_borne' => array(
                                 'description' => 'The country group (A1 or A2) that makes up difference between domestic emissions reductions and emergency pathway during the first sequencing period',
                                 'advanced' => true,

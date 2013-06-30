@@ -108,12 +108,12 @@
         'basic' => 'Basic',
         'adv' => 'Advanced');
     
-    $advanced = false;
+    $advanced = true;
     // TODO: replace country_grp w JS to show/hide rows and columns, or HTML table filter
     $country_list = Framework::get_country_list($user_db);
     $region_list = Framework::get_region_list(null, $user_db); // Don't specify a country
     $display_params = array ('basic_adv' => array(
-                                'value'=>'basic',
+                                'value'=>'adv',
                                 'advanced'=>false,
                                 'min'=>NULL,
                                 'max'=>NULL,

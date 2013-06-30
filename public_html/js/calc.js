@@ -34,7 +34,6 @@ $(function() {
     // If JS is enabled, hide the submit button & show the region-country filter + basic/adv
     $('#submit').hide();
     $('#region_country_filter').show();
-    $('#basic_adv').show();
     
     // Region list actions
     $('#regionList').click(changeRegionList);
@@ -97,6 +96,8 @@ $(function() {
     $('#dont_use_kab').change(submit);
     $('#kab_only_ratified').change(submit);
     
+    $('#mit_lag').change(submit);
+    
     $('#use_sequencing').change(submit);
     // TODO: These should only be run if use sequencing is checked
     $('#percent_a1_rdxn').change(submit);
@@ -104,13 +105,6 @@ $(function() {
     $('#end_commitment_period').change(submit);
     $('#a1_smoothing').change(submit);
     $('#mit_gap_borne').change(submit);
-    
-    // If in advanced view then put the dev threshold inside the progressivity box
-    if ($('input:radio[name=basic_adv]:checked').val() == 'adv') {
-        $('#dev_thresh').parent().detach().prependTo("fieldset.progressivity ul");
-    } else {
-        $('#dev_thresh').parent().detach().insertAfter("#dev_thresh_anchor");
-    }
     
     //--------------------------------------------------
     // Action on form submit
@@ -302,20 +296,6 @@ function set_display() {
         $('#display_yr').parent().hide();
     } else {
         $('#display_yr').parent().show();
-    }
-    
-    // Hide advanced if need be
-    if ($('input:radio[name=basic_adv]:checked').val() == 'basic') {
-        $('.advanced').hide();
-    } else {
-        $('.advanced').show();
-    }
-    
-    // If in advanced view then put the dev threshold inside the progressivity box
-    if ($('input:radio[name=basic_adv]:checked').val() == 'adv') {
-        $('#dev_thresh').parent().detach().prependTo("fieldset.progressivity ul");
-    } else {
-        $('#dev_thresh').parent().detach().insertAfter("#dev_thresh_anchor");
     }
 
 }
