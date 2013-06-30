@@ -30,17 +30,6 @@
                                 'list' => NULL,
                                 'type' => 'real'
                             ),
-                            'mid_rate' => array(
-                                'description' => 'The proportion of individual income (and associated emissions) that counts towards capacity and responsibility between thresholds',
-                                'advanced' => true,
-                                'db_param' => NULL,
-                                'value' => 100.0,
-                                'min' => 0.0,
-                                'max' => 100.0,
-                                'step' => 10.0,
-                                'list' => NULL,
-                                'type' => 'real'
-                            ),
                             'interp_btwn_thresh' => array(
                                 'description' => 'If this is checked, then capacity and responsibility increase steadily between the development and luxury thresholds',
                                 'advanced' => true,

@@ -15,6 +15,11 @@ if (isset($_GET['iso3'])) {
 if (isset($_GET['year'])) {
     $display_params['display_yr']['value'] = $_GET['year'];
 }
+if (isset($_GET['show_avail_params']) && $_GET['show_avail_params'] === 'yes') {
+    $show_avail_params = true;
+} else {
+    $show_avail_params = false;
+}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US">
@@ -218,14 +223,38 @@ if (isset($_GET['year'])) {
                                    </div><!-- /save -->
                                    <!--<p><?php /* ?><?php print_r(Framework::get_frameworks()); ?><?php */ ?></p>-->
                                </div><!-- /intro -->
-                               
+
                                <div id="data">
+                                <!-- get parameters as a table -->
+                                <?php
+                                if ($show_avail_params ) {
+                                    echo '<div id="param_props"><table><thead>';
+                                    echo '<th class="lj">parameter (<em>name in database</em>)</th>';
+                                    echo '<th>current value</th>';
+                                    echo '<th class="lj">description</th>';
+                                    echo '</thead>';
+                                    echo '<tbody>';
+                                    $all_params = array_merge($shared_params, $fw_params);
+                                    ksort($all_params);
+                                    foreach ($all_params as $param => $props) {
+                                        if (!is_null($props['db_param'])) {
+                                         echo '<tr>';
+                                         echo '<td class="lj"><strong>' . $param . '</strong> (<em>' . $props['db_param'] . '</em>)' . '</td>';
+                                         echo '<td>' . $props['value'] . '</td>';
+                                         echo '<td class="lj">' . $props['description'] . '</td>';
+                                         echo '</tr>';
+                                        }
+                                    }
+                                    echo '</tbody></table></div>';
+                                }
+                                 ?>
+                               
                                     <?php
                                         if (isset($_COOKIE['db']) && !$up_to_date) {
                                             echo '<p class="alert">' . _("The calculator or database has been updated since you last visited. Your settings have been reset.") . '</p>';
                                         }
                                      ?>
-
+                                
                                     <div id="calc_parameters">
                                        <?php echo generate_params_table($display_params, $fw_params, $shared_params, $country_list, $region_list, $table_views); ?>
                                     </div><!-- end #calc_parameters -->
@@ -238,6 +267,7 @@ if (isset($_GET['year'])) {
                                </div><!-- end #data -->
                            </div><!-- end #calc_container -->
                            <div id="popup"></div><!-- help #popup window -->
+                           
         <?php echo get_footer(Framework::get_data_ver(), Framework::get_calc_ver()); ?>
     </body>
 </html>
