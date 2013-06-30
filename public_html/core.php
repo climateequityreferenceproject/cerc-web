@@ -57,8 +57,12 @@
     // Function to update parameters array with last user values, if any
     function get_usr_vals(&$array) {
         foreach(array_keys($array) as $key) {
-            if (isset($_POST[$key])) {
-                $array[$key]['value'] = $_POST[$key];
+            if (isset($_POST[$key]) || isset($_GET[$key])) {
+                if (isset($_POST[$key])) {
+                    $array[$key]['value'] = $_POST[$key]; // POST overrides any GET parameters in the URL, for JS
+                } else {
+                    $array[$key]['value'] = $_GET[$key];
+                }
             } elseif (isset($_POST['submit']) && Framework::is_bool($key, $array)) {
                 // This is a checkbox: if not checked, it does not exist in $_POST
                 $array[$key]['value'] = 0;
@@ -195,7 +199,7 @@
         get_usr_vals($shared_params);
         get_usr_vals($fw_params);
     }
-
+    
     $fw->calculate($user_db, $shared_params, $fw_params);
      
     // Use the most up-to-date parameter list: years might have changed
