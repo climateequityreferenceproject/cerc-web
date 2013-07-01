@@ -9,6 +9,9 @@ function dec($num) {
 }
 
 function nice_number($prefix, $num, $postfix) {
+    if (abs($num) < 1.0e-7) {
+        $num = 0;
+    }
     if ($num < 0) {
         $retval = '<span class="num_negative">-';
     } else {
