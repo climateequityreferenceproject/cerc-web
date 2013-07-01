@@ -35,15 +35,13 @@ $query = <<< EOSQL
     SELECT year, SUM(pop_person) AS tot_person FROM core GROUP BY year;
 EOSQL;
 
-            $query .= $this->sql_views_baseline_ep();
-
 $query .= <<< EOSQL
     DROP TABLE IF EXISTS fw_percap;
     CREATE TABLE fw_percap AS SELECT core.iso3 AS iso3, core.year AS year, 
         CAST(ifnull(1000 * pop_person/totals.tot_person * emerg_path_GtC, baseline_MtC) AS REAL) AS allocation_MtC
-    FROM core, temp_base_with_ep, totals
-    WHERE core.iso3 = temp_base_with_ep.iso3 AND
-        core.year = temp_base_with_ep.year AND
+    FROM core, view_base_with_ep, totals
+    WHERE core.iso3 = view_base_with_ep.iso3 AND
+        core.year = viewb_ase_with_ep.year AND
         totals.year = core.year;
     INSERT OR IGNORE INTO schemes VALUES ("Equal per capita allocation", "percap");
 EOSQL;

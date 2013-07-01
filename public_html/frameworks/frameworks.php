@@ -191,17 +191,12 @@
         public static function get_year_range($user_db = NULL) {
             $db_cnx = self::db_cnx($user_db);
             
-            // Create the pathway/baseline temporary view
-            $query = self::sql_views_baseline_ep();
-            $db_cnx->beginTransaction();
-            $db_cnx->exec($query);
-            $db_cnx->commit();
-            $query = "SELECT MIN(year) AS min_year FROM temp_base_with_ep WHERE Baseline_MtC IS NOT NULL;";           
+            $query = "SELECT MIN(year) AS min_year FROM view_base_with_ep WHERE Baseline_MtC IS NOT NULL;";           
             $stmt = $db_cnx->query($query);
             $result = $stmt->fetchAll();
             $min_year = $result[0][0];
             $stmt->closeCursor();
-            $query = "SELECT MAX(year) AS max_year FROM temp_base_with_ep WHERE (Baseline_MtC IS NOT NULL) AND (emerg_path_GtC IS NOT NULL);";
+            $query = "SELECT MAX(year) AS max_year FROM view_base_with_ep WHERE (Baseline_MtC IS NOT NULL) AND (emerg_path_GtC IS NOT NULL);";
             $stmt = $db_cnx->query($query);
             $result = $stmt->fetchAll();          
             $max_year = $result[0][0];
@@ -210,7 +205,7 @@
             $db_cnx = NULL;
             
             return array('min_year' => $min_year, 'max_year' => $max_year);
-
+            
         }
         
         public static function get_emerg_paths($user_db = NULL) {
@@ -699,46 +694,6 @@ EOSQL;
             return $retval;
         }
         
-        // ----------------------------------------------------------------
-        // Return the SQL to create a view for the baseline and emergency pathway
-        // Creates views:
-        //   temp_ep
-        //   temp_baseline
-        //   temp_base_with_ep
-        // ----------------------------------------------------------------
-        protected function sql_views_baseline_ep() {
-            return <<< EOSQL
- DROP VIEW IF EXISTS __Source_Filter; CREATE TEMPORARY VIEW __Source_Filter AS SELECT
-        SUM(CASE WHEN param_id = "use_lulucf" THEN int_val ELSE 0 END) AS use_lulucf,
-        SUM(CASE WHEN param_id = "use_nonco2" THEN int_val ELSE 0 END) AS use_nonco2
-    FROM params;
-    
- DROP VIEW IF EXISTS temp_ep; CREATE TEMPORARY VIEW temp_ep AS SELECT
-    year,
-    SUM(CASE WHEN pathways.source="fossil" THEN pathways.emergpath_GtC ELSE 0 END) +
-    __Source_Filter.use_lulucf * SUM(CASE WHEN pathways.source="lulucf" THEN pathways.emergpath_GtC ELSE 0 END) +
-    __Source_Filter.use_nonco2 * SUM(CASE WHEN pathways.source="nonco2" THEN pathways.emergpath_GtC ELSE 0 END)
-        AS emerg_path_GtC
-     FROM pathway_names, pathways, params, __Source_Filter
-     WHERE
-        pathway_names.pathway_id IN (SELECT int_val FROM params WHERE param_id = "emerg_path_id") AND
-        pathway_names.name_short = pathways.pathway AND
-        params.param_id = "emergstart" AND
-        year > params.int_val
-     GROUP BY year;
-    
- DROP VIEW IF EXISTS temp_baseline; CREATE TEMPORARY VIEW temp_baseline AS
-    SELECT core.iso3 AS iso3, core.year AS year,
-    core.fossil_CO2_MtC + __Source_Filter.use_lulucf * ifnull(core.LULCF_MtC, nullif(__Source_Filter.use_lulucf, 1)) +
-        __Source_Filter.use_nonco2 * ifnull(core.NonCO2_MtCe, nullif(__Source_Filter.use_nonco2, 1)) AS baseline_MtC
-    FROM __Source_Filter, core;
-
- DROP VIEW IF EXISTS temp_base_with_ep; CREATE TEMPORARY VIEW temp_base_with_ep
-    AS SELECT * FROM
-        temp_baseline LEFT JOIN temp_ep ON (temp_baseline.year = temp_ep.year);
-
-EOSQL;
-        }
     }
 
     // ----------------------------------------------------------------
