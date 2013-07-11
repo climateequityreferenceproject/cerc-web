@@ -129,20 +129,22 @@ if (isset($_GET['show_avail_params']) && $_GET['show_avail_params'] === 'yes') {
                                        echo select_num('r_wt', $fw_params, $glossary->getLink('r_weight', false, _('Responsibility weight')) . ":");
                                        echo select_num('percent_gwp_MITIGATION', $shared_params,$glossary->getLink('total_cost', false, _('Mitigation cost as % GWP')) . ":");
                                        echo select_num('percent_gwp_ADAPTATION', $shared_params,$glossary->getLink('total_cost', false, _('Adaptation cost as % GWP')) . ":");
-                                       echo select_num('em_elast', $shared_params, $glossary->getLink('emiss_elast', false, _('Emissions elasticity')) . ":");
                                        // Progressivity
                                        echo '<li class="advanced"><fieldset class="progressivity">';
                                        echo '<legend class="closed"><span>&nbsp;</span>' . $glossary->getLink('progressivity', false, _('Progressivity')) . '</legend>';
                                        echo '<ul>';
-                                       echo '<li class="advanced">';
-                                       echo '<input type="checkbox" name="interp_btwn_thresh" id="interp_btwn_thresh" class="click" value="1" ' . ($fw_params["interp_btwn_thresh"]['value'] ? 'checked="checked"' : '') . '/>';
-                                       echo '<label for="interp_btwn_thresh" class="click"> ' . _("Progressive between thresholds") . '</label>';
-                                       echo "</li>";
                                        echo "<li>";
                                        echo select_num('dev_thresh', $fw_params, $glossary->getLink('gloss_dev_threshold', false, _('Development threshold ($PPP)')) . ":");
                                        echo "</li>";
                                        echo "<li>";
                                        echo select_num('lux_thresh', $fw_params, $glossary->getLink('lux_threshold', false, _('Luxury threshold ($MER)')) . ":");
+                                       echo "</li>";
+                                       echo '<li class="advanced">';
+                                       echo '<input type="checkbox" name="interp_btwn_thresh" id="interp_btwn_thresh" class="click" value="1" ' . ($fw_params["interp_btwn_thresh"]['value'] ? 'checked="checked"' : '') . '/>';
+                                       echo '<label for="interp_btwn_thresh" class="click"> ' . _("Progressive between thresholds") . '</label>';
+                                       echo "</li>";
+                                       echo "<li>";
+                                       echo select_num('em_elast', $shared_params, $glossary->getLink('emiss_elast', false, _('Emissions elasticity')) . ":");
                                        echo "</li>";
                                        echo '</ul></fieldset></li>';
 
