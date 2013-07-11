@@ -181,6 +181,8 @@
         if (isset($_COOKIE['display_params']) && $up_to_date) {
             $display_params = unserialize(stripslashes($_COOKIE['display_params']));    
         }
+        // Correct for legacy settings, where the cookie may have the 'basic' flag set
+        $display_params['basic_adv']['value'] = 'adv';
         get_usr_vals($display_params);
     }
     setcookie('display_params',serialize($display_params),$cookie_info['time'],"",$cookie_info['server']);
