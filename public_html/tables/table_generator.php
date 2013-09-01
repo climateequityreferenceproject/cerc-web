@@ -118,32 +118,38 @@
         $use_nonco2 = $shared_params['use_nonco2']['value'] == 0 ? FALSE : TRUE;
         $country_name = get_country_name($display_params, $country_list, $region_list);
         
+        $db_time = Framework::get_db_time_string($user_db);
+        $version = '<p>Data version: ' . Framework::get_data_ver();
+        $version .= '&nbsp;(last change to database: ' . $db_time['master'] . ')';
+        $version .= '&nbsp;&nbsp; Calculator version: ' . Framework::get_calc_ver();
+        $version .= "</p>\n";
+        
         switch ($display_params["framework"]['value']) {
             case 'gdrs':
                 switch ($display_params["table_view"]['value']) {
                     case 'gdrs_default':
                         include("tables/gdrs_table.php");
-                        return gdrs_table($user_db, $disp_year, $dec, $advanced);
+                        return gdrs_table($user_db, $disp_year, $dec, $advanced) . $version;
                         break;
                     case 'gdrs_tax':
                         include("tables/gdrs_tax.php");
-                        return gdrs_tax($user_db, $disp_year, $ep_start, $dec);
+                        return gdrs_tax($user_db, $disp_year, $ep_start, $dec) . $version;
                         break;
                     case 'gdrs_RCI':
                         include("tables/gdrs_rci_ts.php");
-                        return gdrs_rci_ts($user_db, $dec);
+                        return gdrs_rci_ts($user_db, $dec) . $version;
                         break;
                     case 'gdrs_alloc':
                         include("tables/gdrs_alloc.php");
-                        return gdrs_alloc($user_db,$dec, 'total', $use_nonco2);
+                        return gdrs_alloc($user_db,$dec, 'total', $use_nonco2) . $version;
                         break;
                     case 'gdrs_alloc_pc':
                         include("tables/gdrs_alloc.php");
-                        return gdrs_alloc($user_db,$dec, 'percap', $use_nonco2);
+                        return gdrs_alloc($user_db,$dec, 'percap', $use_nonco2) . $version;
                         break;
                     case 'gdrs_country_report':
                         include("tables/gdrs_country_report.php");
-                        return gdrs_country_report($user_db, $country_name, $shared_params, $display_params['display_ctry']['value'], $disp_year);
+                        return gdrs_country_report($user_db, $country_name, $shared_params, $display_params['display_ctry']['value'], $disp_year) . $version;
                         break;
                 }
                 break;
@@ -151,7 +157,7 @@
                 switch($display_params["table_view"]['value']) {
                     case 'percap_alloc':
                         include("tables/percap_alloc.php");
-                        return percap_alloc($user_db, $display_params["decimal_pl"]['value']);
+                        return percap_alloc($user_db, $display_params["decimal_pl"]['value']) . $version;
                         break;
                 }
                 break;

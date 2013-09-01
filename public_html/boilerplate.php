@@ -80,7 +80,7 @@ return <<< EOHTML
         </div><!-- end #container -->
         <div id="footer">
             <p><strong>Greenhouse Development Rights</strong> is a project of <a href="http://www.ecoequity.org/">EcoEquity</a> and the <a href="http://www.sei-international.org">Stockholm Environment Institute</a> &#169; 2008-$year </p>
-                <p>data version $data_ver  &nbsp;&nbsp;calculator version $calc_ver</p>
+                <!--<p>data version $data_ver  &nbsp;&nbsp;calculator version $calc_ver</p>-->
         </div><!-- end #footer -->
         <!--[imcode]*** Infinite Menus Settings / Code - This script reference must appear last. ***
         *Note: This script is required for scripted add on support and IE 6 sub menu functionality.

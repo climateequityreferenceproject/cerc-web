@@ -92,6 +92,17 @@
             }
         }
         
+        public static function get_db_time_string($db) {
+            $db_with_path = self::add_user_db_path(basename($db));
+            if (file_exists($db_with_path)) {
+                $retval['user'] = date("j M Y H:i:s T", filemtime($db_with_path));
+            } else {
+                $retval['user'] = "";
+            }
+            $retval['master'] = date("j M Y H:i:s T", filemtime(self::$master_db));
+            return $retval;
+        }
+        
         public static function get_good_db() {
             // Future-proof: right now keep the path, but in future might just use basename
             if (isset($_POST['user_db'])) {
