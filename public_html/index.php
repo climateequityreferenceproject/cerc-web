@@ -239,7 +239,7 @@ if (isset($_GET['show_avail_params']) && $_GET['show_avail_params'] === 'yes') {
                                     $all_params = array_merge($shared_params, $fw_params);
                                     ksort($all_params);
                                     foreach ($all_params as $param => $props) {
-                                        if (!is_null($props['db_param'])) {
+                                        if (!is_null($props['db_param']) && !Framework::is_sequencing($props['db_param'])) {
                                          echo '<tr>';
                                          echo '<td class="lj"><strong>' . $param . '</strong> (<em>' . $props['db_param'] . '</em>)' . '</td>';
                                          echo '<td>' . $props['value'] . '</td>';

@@ -328,6 +328,20 @@ EOSQL;
             return $retval;
         }
         
+        // A helper function to identify db parameters that have to do with sequencing
+        public static function is_sequencing($db_param) {
+            return in_array($db_param,
+                        array('usesequence',
+                            'a1_perc_rdxn',
+                            'a1_ref_year',
+                            'sequenceyear',
+                            'a1_shape_param',
+                            'lag',
+                            'assign_mit_gap_to')
+                    );
+            
+        }
+        
         // ----------------------------------------------------------------
         // The shared parameters array: A structured collection of all of
         // the parameters that might be used by any of the frameworks. Each
