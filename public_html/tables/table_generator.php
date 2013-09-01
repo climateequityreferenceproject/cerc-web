@@ -52,7 +52,7 @@
         
         $retval = "<h3><!--Table view: -->" . $table_name . "</h3>\n";
         $retval .= '<table id="input_values" class="group" cellspacing="0" cellpadding="0">' . "\n";
-        $retval .= '<caption><a href="#">Show parameters</a></caption><tbody>' ."\n";
+        $retval .= '<caption><a href="#">Show settings</a></caption><tbody>' ."\n";
         $retval .= "<tr>\n";
         $retval .= generate_entry(_("Global mitigation pathway: "), $ep_name);
         // TODO: add baseline parameter variable and echo value here
@@ -66,18 +66,19 @@
         } else {
             $kab_string = _('none');
         }
-        $retval .= generate_entry(_("Kyoto adjustment: "), $kab_string);
+        $retval .= generate_entry(_("Responsibility weight: "), number_format($fw_params["r_wt"]['value'],1));
         $retval .= generate_entry(_("Development threshold: "), "\$" . number_format($fw_params["dev_thresh"]['value']));
         $retval .= "</tr>\n";
+        $retval .= '<tr style="line-height:0.25em;"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>' . "\n";
         $retval .= "<tr>\n";
         $retval .= generate_entry(_("Luxury threshold: "), "\$". number_format($fw_params["lux_thresh"]['value']));
         $retval .= generate_entry(_("Cap baselines at luxury threshold: "), $fw_params["do_luxcap"]['value'] ? _("yes") : _("no"));
         $retval .= generate_entry(_("Progressive between thresholds: "), $fw_params["interp_btwn_thresh"]['value'] ? _("yes") : _("no"));
         $retval .= "</tr>\n";
         $retval .= "<tr>\n";
-        $retval .= generate_entry(_("Responsibility weight: "), number_format($fw_params["r_wt"]['value'],1));
         $retval .= generate_entry(_("Include land-use emissions: "), $shared_params["use_lulucf"]['value'] ? _("yes") : _("no"));
         $retval .= generate_entry(_("Include non-CO<sub>2</sub> gases: "), $shared_params["use_nonco2"]['value'] ? _("yes") : _("no"));
+        $retval .= generate_entry(_("Kyoto adjustment: "), $kab_string);
         $retval .= "</tr>\n";
         $retval .= "<tr>\n";
         $retval .= generate_entry(_("Cumulative since: "), $shared_params["cum_since_yr"]['value']);
