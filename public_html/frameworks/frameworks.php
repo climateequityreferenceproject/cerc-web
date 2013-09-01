@@ -347,7 +347,6 @@ EOSQL;
                             'a1_ref_year',
                             'sequenceyear',
                             'a1_shape_param',
-                            'lag',
                             'assign_mit_gap_to')
                     );
             
@@ -528,17 +527,6 @@ EOSQL;
                                 'list' => NULL,
                                 'type' => 'real'
                             ),
-                            'mit_lag' => array(
-                                'description' => 'The number of years between the year in which mitigation obligations are being calculated and the historical year in which RCI is calculated',
-                                'advanced' => true,
-                                'db_param' => 'lag',
-                                'value' => NULL,
-                                'min' => 0,
-                                'max' => 20,
-                                'step' => 5,
-                                'list' => NULL,
-                                'type' => 'int'
-                            ),
                             'mit_gap_borne' => array(
                                 'description' => 'The country group (A1 or A2) that makes up difference between domestic emissions reductions and emergency pathway during the first sequencing period',
                                 'advanced' => true,
@@ -546,6 +534,17 @@ EOSQL;
                                 'value' => NULL,
                                 'min' => 1,
                                 'max' => 2,
+                                'step' => 1,
+                                'list' => NULL,
+                                'type' => 'int'
+                            ),
+                            'use_mit_lag' => array(
+                                'description' => 'The number of years between the year in which mitigation obligations are being calculated and the historical year in which RCI is calculated',
+                                'advanced' => true,
+                                'db_param' => 'use_lag',
+                                'value' => NULL,
+                                'min' => 0,
+                                'max' => 1,
                                 'step' => 1,
                                 'list' => NULL,
                                 'type' => 'int'

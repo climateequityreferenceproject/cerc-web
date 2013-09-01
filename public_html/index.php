@@ -172,7 +172,13 @@ if (isset($_GET['show_avail_params']) && $_GET['show_avail_params'] === 'yes') {
                                        echo '<legend class="closed"><span>&nbsp;</span>' . $glossary->getLink('mit_lag', false, _('Mitigation lag')) . '</legend>';
                                        echo '<ul>';
                                        echo '<li>';
-                                       echo select_num('mit_lag', $shared_params, "Lag in years:");
+                                       if ($shared_params['use_mit_lag']['value']) {
+                                           $checked_string = 'checked="checked"';
+                                       } else {
+                                           $checked_string = '';
+                                       }
+                                       echo '<input type="checkbox" name="use_mit_lag" id="use_mit_lag" class="click" value="1" ' . $checked_string . '  />';
+                                       echo '<label for="use_mit_lag">Apply lag</label>';
                                        echo '</li>';
                                        echo '</ul>';
                                        echo '</fieldset></li>';

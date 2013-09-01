@@ -96,7 +96,7 @@ $(function() {
     $('#dont_use_kab').change(submit);
     $('#kab_only_ratified').change(submit);
     
-    $('#mit_lag').change(submit);
+    $('#use_mit_lag').change(submit);
     
     $('#use_sequencing').change(submit);
     // TODO: These should only be run if use sequencing is checked
