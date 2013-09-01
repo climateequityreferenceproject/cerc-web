@@ -132,13 +132,13 @@ $(function() {
                         //filter result
                         filterResult();
 
-                        // Update year list
+                        // No longer updating year list: just issue an alert
                         $('#cum_since_yr').load('get_year_list.php option', $('#form1').serialize(), function(){
                             var min_year = $('#cum_since_yr option').attr('value');
                             var new_year = Math.max(curr_year, min_year);
                             $('#cum_since_yr').val(new_year);
                             if (new_year != curr_year) {
-                                alert("With this choice of baseline there is no data for " + curr_year + ":\nusing " + new_year + " for the start of historical responsibility");
+                                alert("Note: data for non-CO<sub>2</sub> emissions at the national level go back only to" + new_year);
                             }
                         });
                     }
