@@ -507,7 +507,7 @@ $retval .= <<< EOHTML
 <a name="tax-table"></a>
 <br />
 <table cellspacing="2" cellpadding="2">
-    <caption>Tax table</caption>
+    <caption>Tax table (illustrative, assuming global mitigation and adaptation costs as currently specified)</caption>
     <thead>
 EOHTML;
 
