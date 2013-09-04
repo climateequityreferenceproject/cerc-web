@@ -323,7 +323,7 @@ thead { font-size:0.9em; }
 }
 legend { 
     font-weight:bold; 
-    line-height:2.0em; 
+    line-height:22px; 
     vertical-align:middle;
 }
 select, input, select.short { font-size:95%; }
@@ -436,6 +436,11 @@ li.separator {
 #spinoff_button:hover { background-position:0 -47px; }
 #spinoff_button:active { background-position:0 -47px; }
 
+#equity_settings_button { display: block;text-indent: -5000px;width: 300px!important;height: 28px;background-image:url(../img/equity-button-sprite.png)!important;background-repeat: no-repeat;border:0px!important;padding:0px!important; }
+#equity_settings_button { background-position:0 0; }
+#equity_settings_button:hover { background-position:0 -47px; }
+#equity_settings_button:active { background-position:0 -47px; }
+
 
 /*** Country and region filter ***/
 #filterDiv { display: none; }
@@ -443,3 +448,62 @@ li.separator {
 #country_available, #country_selected { width: 250px; }
 .button_btwn_list { vertical-align: middle; }
 .button_btwn_list button { width: 120px; }
+
+
+/*** Equity settings panel ***/
+#lightbox { 
+    background-color:#000; 
+    opacity:0.5; 
+    position: absolute;
+    top:0;
+    left:0;
+    height:1000%; 
+    width:100%;
+    z-index:1000000;
+}
+#equity_settings_container { 
+    font-family: Arial,Helvetica,Verdana,sans-serif;
+    font-size: 0.7em;
+    line-height: 1.8;
+    padding: 1em;
+    text-align: left;
+    position: absolute;
+    top:5%;
+    left:5%;
+    width:90%;
+    z-index:10000001;
+}
+#equity_settings_container ul { list-style:none; }
+#equity_settings { font-size:120%; margin-top:1em; min-width:33em; padding:2em; position:relative; width:90% }
+#equity_settings h2 { float:left; line-height:1; margin-right:1em; padding-top:0; }
+#equity_settings #equity_reset { margin-top:0.3em; }
+#equity_settings fieldset { border-top-width:30px; padding-bottom:1em; width:auto; }
+#equity_settings fieldset#pathway { margin-top:4em; }
+#equity_settings fieldset#cbdr { position:relative; }
+#equity_settings legend { line-height:30px; }
+#equity_settings legend, #equity_settings legend span { height:30px; }
+#equity_settings h4 { clear:both; font-weight:bold; padding-top:1em; }
+#equity_settings label { margin-right:2em; width:auto; }
+#equity_settings label input.click { margin-top:0.45em; }
+#equity_settings #cbdr-radio-container { float:left; min-width:20em; width:38%; }
+#equity_settings #cbdr-grid-container { float:left; font-size:85%; margin:1em 0 0 3%; position:relative; min-width:36em; width:58%; }
+#equity_settings #cbdr-grid-container #grid-col-1 { float:left; margin-right:3%; width:24%; }
+#equity_settings #cbdr-grid-container #grid-col-2 { float:left; margin-right:0; position:relative; width:42%; }
+#equity_settings #cbdr-grid-container #grid-col-3 { float:left; width:26%; }
+#equity_settings #cbdr-grid-container p { line-height:1.2; padding-top:0; }
+#equity_settings #cbdr-grid-container #grid-row-middle { position:relative; margin:0 auto; text-align:center; width:100%; }
+#equity_settings #cbdr-grid-container #top-label { margin:1em auto 0.25em; padding-right:3%; text-align:center; }
+#equity_settings #cbdr-grid-container #left-label, 
+#equity_settings #cbdr-grid-container #right-label { float:left; margin:6em 0.5em; width:97%; }
+#equity_settings #cbdr-grid-container #left-label { text-align:right; }
+#equity_settings #cbdr-grid-container #right-label { text-align:left; }
+#equity_settings #cbdr-grid-container #bot-label { margin:0.25em auto 1em; padding-right:3%; text-align:center; }
+#equity_settings #cbdr-grid-container ul { float:left; position:relative; margin:0.5em auto 0.25em; width:100%; }
+#equity_settings #cbdr-grid-container li { float:left; height:4em; margin:0 3% 0.6em 0; position:relative; width:30%; }
+#equity_settings #cbdr-grid-container li a, 
+#equity_settings #cbdr-grid-container li a:link, 
+#equity_settings #cbdr-grid-container li a:visited { background:#ccc; border-width:0; display:block; height:4em; text-align:center; width:100%; }
+#equity_settings #cbdr-grid-container li a:hover, 
+#equity_settings #cbdr-grid-container li a:active,
+#equity_settings #cbdr-grid-container li a.selected { background:#221E6B; }
+

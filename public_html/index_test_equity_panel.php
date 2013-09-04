@@ -43,10 +43,12 @@ if (isset($_GET['show_avail_params']) && $_GET['show_avail_params'] === 'yes') {
     <body id="gdrs_calculator">
            <div id="loading"></div>
         <?php echo get_navigation(); ?>
-<!--           <div id="lightbox"></div>
+           
+           <div id="lightbox"></div>
             <div id="equity_settings_container">
-                <?php //include("tables/equity_settings_panel.php"); ?>
-            </div>-->
+                <?php include("tables/equity_settings_panel.php"); ?>
+            </div>
+           
            <div id="calc_container" class="group">
             <form action="" method="post" name="form1" id="form1" class="group">
 
@@ -271,9 +273,9 @@ if (isset($_GET['show_avail_params']) && $_GET['show_avail_params'] === 'yes') {
                                        <?php echo generate_params_table($display_params, $fw_params, $shared_params, $country_list, $region_list, $table_views); ?>
                                     </div><!-- end #calc_parameters -->
                                     
-<!--                                    <div id="review_equity_settings">
+                                    <div id="review_equity_settings">
                                         <button id="equity_settings_button" type="button">Review equity settings</button>
-                                    </div>-->
+                                    </div>
 
                                     <div id="calc_results">
                                        <?php echo generate_results_table($display_params, $shared_params, $country_list, $region_list, $user_db); 
