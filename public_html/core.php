@@ -183,7 +183,9 @@
         }
         // Correct for legacy settings, where the cookie may have the 'basic' flag set
         $display_params['basic_adv']['value'] = 'adv';
-        get_usr_vals($display_params);
+        if (!isset($_POST['equity_cancel'])) {
+            get_usr_vals($display_params);
+        }
     }
     setcookie('display_params',serialize($display_params),$cookie_info['time'],"",$cookie_info['server']);
     
@@ -197,7 +199,7 @@
         setcookie('display_params',serialize($display_params),$cookie_info['time'],"",$cookie_info['server']);
     }
     
-    if (!isset($_POST['reset'])) {
+    if (!isset($_POST['reset']) && !isset($_POST['equity_cancel'])) {
         get_usr_vals($shared_params);
         get_usr_vals($fw_params);
     }

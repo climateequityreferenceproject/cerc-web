@@ -20,6 +20,11 @@ if (isset($_GET['show_avail_params']) && $_GET['show_avail_params'] === 'yes') {
 } else {
     $show_avail_params = false;
 }
+if (isset($_POST['equity_cancel']) || isset($_POST['equity_submit']) || (isset($_GET['equity']) && $_GET['equity'] === 'default')) {
+    $equity_nosplash = true;
+} else {
+    $equity_nosplash = false;
+}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US">
@@ -43,10 +48,14 @@ if (isset($_GET['show_avail_params']) && $_GET['show_avail_params'] === 'yes') {
     <body id="gdrs_calculator">
            <div id="loading"></div>
         <?php echo get_navigation(); ?>
-<!--           <div id="lightbox"></div>
-            <div id="equity_settings_container">
-                <?php //include("tables/equity_settings_panel.php"); ?>
-            </div>-->
+           <?php
+           if (!$equity_nosplash) {
+               echo '<div id="lightbox"></div>';
+               echo '<div id="equity_settings_container">';
+               include("tables/equity_settings_panel.php");
+               echo '</div>';
+           }
+           ?>
            <div id="calc_container" class="group">
             <form action="" method="post" name="form1" id="form1" class="group">
 

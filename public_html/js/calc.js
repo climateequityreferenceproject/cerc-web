@@ -106,6 +106,24 @@ $(function() {
     $('#a1_smoothing').change(submit);
     $('#mit_gap_borne').change(submit);
     
+    // Equity settings
+    $('#dev-low, #dev-med').click(function() {
+        $('#equity_progressivity').val(0);
+    });
+    $('#dev-high').click(function() {
+        $('#equity_progressivity').val(1);
+    });
+    
+    $('#equity_reset').click(function() {
+        $('#equity_progressivity').val(0);
+        $('#ambition-med').attr('checked','checked');
+        $('#r50c50').attr('checked','checked');
+        $('#dev-med').attr('checked','checked');
+        $('#d1990').attr('checked','checked');
+        // Short-circuit form submission
+        return false;
+    })
+
     //--------------------------------------------------
     // Action on form submit
     //--------------------------------------------------

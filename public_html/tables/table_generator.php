@@ -106,9 +106,10 @@
             $retval .= "</tr>\n";
         }
         $retval .= '</tbody></table><!-- /input_values -->' . "\n";
+        $retval .= '<form action="index.php" method="post" name="eqbtn_form" id="eqbtn_form">' . "\n";
         $retval .= '<div id="review_equity_settings">' . "\n";
-        $retval .= '<button id="equity_settings_button" type="button">Review equity settings</button>' . "\n";
-        $retval .= '</div>' . "\n";
+        $retval .= '<button id="equity_settings_button" type="submit">Review equity settings</button>' . "\n";
+        $retval .= '</div></form>' . "\n";
 
         return $retval;
     }

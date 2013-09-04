@@ -219,6 +219,15 @@
             
         }
         
+        public static function get_emerg_path_id($short_name, $user_db = NULL) {
+            $db_cnx = self::db_cnx($user_db);
+            
+            $query = "SELECT pathway_id FROM pathway_names WHERE name_short = '" . $short_name . "';";
+
+            $query_result = $db_cnx->query($query)->fetchAll();
+            return $query_result[0]['pathway_id'];
+        }
+        
         public static function get_emerg_paths($user_db = NULL) {
             $db_cnx = self::db_cnx($user_db);
            
