@@ -127,8 +127,8 @@ if (isset($_GET['show_avail_params']) && $_GET['show_avail_params'] === 'yes') {
                             </li>
                             <?php
                                        echo select_num('r_wt', $fw_params, $glossary->getLink('r_weight', false, _('Responsibility weight')) . ":");
-                                       echo select_num('percent_gwp_MITIGATION', $shared_params,$glossary->getLink('total_cost', false, _('Mitigation cost as % GWP')) . ":");
-                                       echo select_num('percent_gwp_ADAPTATION', $shared_params,$glossary->getLink('total_cost', false, _('Adaptation cost as % GWP')) . ":");
+                                       echo select_num('percent_gwp_MITIGATION', $shared_params,$glossary->getLink('mit_cost', false, _('Mitigation cost as % GWP')) . ":");
+                                       echo select_num('percent_gwp_ADAPTATION', $shared_params,$glossary->getLink('adapt_cost', false, _('Adaptation cost as % GWP')) . ":");
                                        // Progressivity
                                        echo '<li class="advanced"><fieldset class="progressivity">';
                                        echo '<legend class="closed"><span>&nbsp;</span>' . $glossary->getLink('progressivity', false, _('Progressivity')) . '</legend>';
