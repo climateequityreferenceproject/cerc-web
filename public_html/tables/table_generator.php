@@ -106,6 +106,10 @@
             $retval .= "</tr>\n";
         }
         $retval .= '</tbody></table><!-- /input_values -->' . "\n";
+        $retval .= '<div id="review_equity_settings">' . "\n";
+        $retval .= '<button id="equity_settings_button" type="button">Review equity settings</button>' . "\n";
+        $retval .= '</div>' . "\n";
+
         return $retval;
     }
     

@@ -270,10 +270,6 @@ if (isset($_GET['show_avail_params']) && $_GET['show_avail_params'] === 'yes') {
                                     <div id="calc_parameters">
                                        <?php echo generate_params_table($display_params, $fw_params, $shared_params, $country_list, $region_list, $table_views); ?>
                                     </div><!-- end #calc_parameters -->
-                                    
-<!--                                    <div id="review_equity_settings">
-                                        <button id="equity_settings_button" type="button">Review equity settings</button>
-                                    </div>-->
 
                                     <div id="calc_results">
                                        <?php echo generate_results_table($display_params, $shared_params, $country_list, $region_list, $user_db); 
