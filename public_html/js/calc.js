@@ -109,10 +109,14 @@ $(function() {
     // Equity settings
     $('#dev-low, #dev-med').click(function() {
         $('#equity_progressivity').val(0);
+        cbdr_select();
     });
     $('#dev-high').click(function() {
         $('#equity_progressivity').val(1);
+        cbdr_select();
     });
+    
+    $('#r100, #r50c50, #c100').click(cbdr_select);
     
     $('#equity_reset').click(function() {
         $('#equity_progressivity').val(0);
@@ -120,6 +124,7 @@ $(function() {
         $('#r50c50').attr('checked','checked');
         $('#dev-med').attr('checked','checked');
         $('#d1990').attr('checked','checked');
+        cbdr_select();
         // Short-circuit form submission
         return false;
     })
@@ -211,6 +216,38 @@ $(function() {
     }, 'json');
 
 });
+
+function cbdr_select() {
+    switch ($('#equity_settings input[name=r_wt]:checked').attr("id")) {
+        case 'r100':
+            id = 0;
+            break;
+        case 'r50c50':
+            id = 3;
+            break;
+        case 'c100':
+            id = 6;
+    }
+    
+    switch ($('#equity_settings input[name=dev_thresh]:checked').attr("id")) {
+        case 'dev-low':
+            id += 1;
+            break;
+        case 'dev-med':
+            id += 2;
+            break;
+        case 'dev-high':
+            id +=3;
+    }
+    for (var i = 1; i <= 9; i++) {
+        var istring = '#cbdr-' + i;
+        if (i == id) {
+            $(istring).addClass('selected');
+        } else {
+            $(istring).removeClass('selected');
+        }
+    }
+}
 
 function get_def_by_id(e) {
     // Hacky but effective

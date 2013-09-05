@@ -29,6 +29,8 @@ $cumsince_checked[1990] = '';
 
 $do_progressive = 0;
 
+$cbdr_ndx = 5;
+
 if (isset($_COOKIE['db'])) {
     // NOTE: Use '==', not '===': sometimes comparing strings to ints
     
@@ -41,19 +43,25 @@ if (isset($_COOKIE['db'])) {
     
     if ($fw_params['r_wt']['value'] == 1.0) {
         $rc_checked["r100"] = $checked_string;
+        $cbdr_ndx = 0;
     } elseif ($fw_params['r_wt']['value'] == 0.5) {
         $rc_checked["r50c50"] = $checked_string;
+        $cbdr_ndx = 3;
     } elseif ($fw_params['r_wt']['value'] == 0.0) {
         $rc_checked["c100"] = $checked_string;
+        $cbdr_ndx = 6;
     }
     
     if (($fw_params['dev_thresh']['value'] == 0) && ($fw_params['interp_btwn_thresh']['value'] == 0)) {
         $dt_checked['low'] = $checked_string;
+        $cbdr_ndx += 1;
     } elseif (($fw_params['dev_thresh']['value'] == 7500) && ($fw_params['interp_btwn_thresh']['value'] == 0)) {
         $dt_checked['med'] = $checked_string;
+        $cbdr_ndx += 2;
     } elseif (($fw_params['dev_thresh']['value'] == 7500) && ($fw_params['interp_btwn_thresh']['value'] == 1)) {
         $dt_checked['high'] = $checked_string;
         $do_progressive = 1;
+        $cbdr_ndx += 3;
     }
     
     if ($shared_params['cum_since_yr']['value'] == 1850) {
@@ -106,33 +114,15 @@ if (isset($_COOKIE['db'])) {
                     <div id="grid-col-2" class="group">
                         <p id="top-label"><strong>Responsibility given more weight</strong></p>
                         <ul>
-                            <li>
-                                <a id="cbdr-1" href="#">&nbsp;</a>
-                            </li>
-                            <li>
-                                <a id="cbdr-2" href="#">&nbsp;</a>
-                            </li>
-                            <li>
-                                <a id="cbdr-3" href="#">&nbsp;</a>
-                            </li>
-                            <li>
-                                <a id="cbdr-4" href="#">&nbsp;</a>
-                            </li>
-                            <li>
-                                <a id="cbdr-5" href="#" class="selected">&nbsp;</a>
-                            </li>
-                            <li>
-                                <a id="cbdr-6" href="#">&nbsp;</a>
-                            </li>
-                            <li>
-                                <a id="cbdr-7" href="#">&nbsp;</a>
-                            </li>
-                            <li>
-                                <a id="cbdr-8" href="#">&nbsp;</a>
-                            </li>
-                            <li>
-                                <a id="cbdr-9" href="#">&nbsp;</a>
-                            </li>
+                            <?php
+                                for ($i = 1; $i <= 9; $i++) {
+                                    $selected_string = '';
+                                    if ($i == $cbdr_ndx) {
+                                        $selected_string = 'class="selected"';
+                                    }
+                                    echo '<li><a id="cbdr-' . $i . '" ' . $selected_string . ' href="#">&nbsp;</a></li>';
+                                }
+                            ?>
                         </ul>
                         <p id="bot-label"><strong>Capacity given more weight</strong></p>
                     </div>
