@@ -84,6 +84,7 @@ $(function() {
     $('#dev_thresh').change(submit);
     $('#lux_thresh').change(submit);
     $('#do_luxcap').change(submit);
+    $('#luxcap_mult').change(submit);
     $('#interp_btwn_thresh').change(submit);
     
     $('#r_wt').change(submit);

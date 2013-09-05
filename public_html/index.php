@@ -157,6 +157,9 @@ if (isset($_POST['equity_cancel']) || isset($_POST['equity_submit']) || (isset($
                                        echo '<label for="interp_btwn_thresh" class="click"> ' . _("Progressive between thresholds") . '</label>';
                                        echo "</li>";
                                        echo "<li>";
+                                       echo select_num('luxcap_mult', $fw_params, _('Weight for incomes above luxury threshold') . ":");
+                                       echo "</li>";
+                                       echo "<li>";
                                        echo select_num('em_elast', $shared_params, $glossary->getLink('emiss_elast', false, _('Emissions elasticity')) . ":");
                                        echo "</li>";
                                        echo '</ul></fieldset></li>';

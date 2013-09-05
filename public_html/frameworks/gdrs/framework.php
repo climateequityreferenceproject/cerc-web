@@ -63,6 +63,17 @@
                                 'list' => NULL,
                                 'type' => 'int'
                             ),
+                            'luxcap_mult' => array(
+                                'description' => 'An amount to multiply the luxury threshold to calculate capacity',
+                                'advanced' => true,
+                                'db_param' => 'lux_thresh_mult',
+                                'value' => NULL,
+                                'min' => 1.0,
+                                'max' => 10.0,
+                                'step' => 1.0,
+                                'list' => NULL,
+                                'type' => 'real'
+                            ),
                             'use_kab' => array(
                                 'description' => 'If this is checked, then baselines are capped at the luxury threshold',
                                 'advanced' => true,
