@@ -3,7 +3,7 @@ if (isset($_GET['debug']) && $_GET['debug'] == 'yes') {
     ini_set('display_errors',1); 
     error_reporting(E_ALL);
 }
-
+require_once("../frameworks/frameworks.php");
 require_once("table_common.php");
 
 if (isset($_GET['allyears']) && $_GET['allyears'] == 'yes') {
@@ -45,6 +45,8 @@ $viewquery = <<< EOSQL
         AS combined WHERE country.iso3 = combined.iso3 $all_years_condition_string;
 EOSQL;
 
+$last_modified = Framework::get_db_time_string();
+
 $database = 'sqlite:'.$_GET["db"];
 
 $db = new PDO($database) OR die("<p>Can't open database</p>");
@@ -64,9 +66,7 @@ if (!is_resource($fp))
 
 // Meta-data
 fwrite($fp, "Greenhouse Development Rights Online Calculator (http://" . $_SERVER['HTTP_HOST'] . ")\n");
-// TODO: Get pathways modified also
-$record = $db->query("SELECT data_modified FROM meta")->fetchAll();
-fwrite($fp, "Last modified " . $record[0][0] . "\n");
+fwrite($fp, "Last modified " . $last_modified['master'] . "\n");
 $record = $db->query("SELECT calc_version FROM meta")->fetchAll();
 fwrite($fp, "Calculator version " . $record[0][0] . "\n");
 $record = $db->query("SELECT data_version FROM meta")->fetchAll();
