@@ -183,9 +183,9 @@ if (isset($_POST['equity_cancel']) || isset($_POST['equity_submit']) || (isset($
                                        echo '</li><ul>&nbsp;</div><!-- end #kab -->';
                                        echo '</fieldset></li>';
                                        
-                                       // Mitigation lag
+                                       // Mitigation smoothing
                                        echo '<li class="advanced"><fieldset>';
-                                       echo '<legend class="closed"><span>&nbsp;</span>' . $glossary->getLink('mit_lag', false, _('Mitigation lag')) . '</legend>';
+                                       echo '<legend class="closed"><span>&nbsp;</span>' . $glossary->getLink('mit_lag', false, _('Mitigation smoothing')) . '</legend>';
                                        echo '<ul>';
                                        echo '<li>';
                                        if ($shared_params['use_mit_lag']['value']) {
@@ -194,7 +194,7 @@ if (isset($_POST['equity_cancel']) || isset($_POST['equity_submit']) || (isset($
                                            $checked_string = '';
                                        }
                                        echo '<input type="checkbox" name="use_mit_lag" id="use_mit_lag" class="click" value="1" ' . $checked_string . '  />';
-                                       echo '<label for="use_mit_lag">Apply lag</label>';
+                                       echo '<label for="use_mit_lag">Average the mitigation-period RCI</label>';
                                        echo '</li>';
                                        echo '</ul>';
                                        echo '</fieldset></li>';
