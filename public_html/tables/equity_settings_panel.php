@@ -86,7 +86,7 @@ if (isset($_COOKIE['db'])) {
                     <h4>Select a mitigation pathway:</h4>
                     <label for="ambition-high"><input type="radio" name="emergency_path" id="ambition-high" class="click" value=<?php echo '"' . $emerg_path_id["1.5"] . '" ' . $ambition_checked["1.5"]; ?> />1.5&#176;C marker pathway (Try to limit warming to 1.5&#176;C)</label><br />
                     <label for="ambition-med"><input type="radio" name="emergency_path" id="ambition-med" class="click" value=<?php echo '"' . $emerg_path_id["2.0"] . '" ' . $ambition_checked["2.0"]; ?> />2&#176;C marker pathway (Try to limit warming to 2.0&#176;C)</label><br />
-                    <label for="ambition-low"><input type="radio" name="emergency_path" id="ambition-low" class="click" value=<?php echo '"' . $emerg_path_id["G8"] . '" ' . $ambition_checked["G8"]; ?> />G8 marker pathway</label>
+                    <label for="ambition-low"><input type="radio" name="emergency_path" id="ambition-low" class="click" value=<?php echo '"' . $emerg_path_id["G8"] . '" ' . $ambition_checked["G8"]; ?> />G8 marker pathway (As per the 2009 G8 declaration in L’Aquila)</label>
 
             </fieldset>
         </li>
