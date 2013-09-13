@@ -101,15 +101,15 @@ if (isset($_COOKIE['db'])) {
                     <label for="r50c50"><input type="radio" name="r_wt" id="r50c50" class="click" value="0.50" <?php echo $rc_checked["r50c50"]; ?> />50% Responsibility / 50% Capacity</label><br />
                     <label for="c100"><input type="radio" name="r_wt" id="c100" class="click" value="0.00" <?php echo $rc_checked["c100"]; ?> />100% Capacity</label>
 
-                    <h4>Development threshold</h4>
-                    <label for="dev-low"><input type="radio" name="dev_thresh" id="dev-low" class="click" value="0" <?php echo $dt_checked['low']; ?> />$0</label><br />
-                    <label for="dev-med"><input type="radio" name="dev_thresh" id="dev-med" class="click" value="7500" <?php echo $dt_checked['med']; ?> />$7,500</label><br />
-                    <label for="dev-high"><input type="radio" name="dev_thresh" id="dev-high" class="click" value="7500" <?php echo $dt_checked['high']; ?> />$7,500 plus progressivity factor</label>
+                    <h4>Progressivity, between and within countries</h4>
+                    <label for="dev-low"><input type="radio" name="dev_thresh" id="dev-low" class="click" value="0" <?php echo $dt_checked['low']; ?> />$0 development threshold</label><br />
+                    <label for="dev-med"><input type="radio" name="dev_thresh" id="dev-med" class="click" value="7500" <?php echo $dt_checked['med']; ?> />$7,500 development threshold</label><br />
+                    <label for="dev-high"><input type="radio" name="dev_thresh" id="dev-high" class="click" value="7500" <?php echo $dt_checked['high']; ?> />$7,500 development threshold, plus progressivity factors</label>
                     <input type="hidden" name="interp_btwn_thresh" id="equity_progressivity" value="<?php echo $do_progressive ?>"/>
                 </div>
                 <div id="cbdr-grid-container" class="group">
                     <div id="grid-col-1" class="group">
-						<p id="left-label"><strong>More regressive <br />(lower development threshhold)</strong></p>
+						<p id="left-label"><strong>More regressive</strong></p>
                     </div>
                     <div id="grid-col-2" class="group">
                         <p id="top-label"><strong>Responsibility given more weight</strong></p>
@@ -127,7 +127,7 @@ if (isset($_COOKIE['db'])) {
                         <p id="bot-label"><strong>Capacity given more weight</strong></p>
                     </div>
                     <div id="grid-col-3" class="group">
-			<p id="right-label"><strong>More progressive  <br />(higher development threshhold)</strong></p>
+			<p id="right-label"><strong>More progressive</strong></p>
                     </div>
 
                 </div>
