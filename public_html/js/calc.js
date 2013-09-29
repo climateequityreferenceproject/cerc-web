@@ -228,6 +228,7 @@ function cbdr_select() {
             break;
         case 'c100':
             id = 6;
+            break;
         default:
             id = -10;
     }
@@ -241,6 +242,7 @@ function cbdr_select() {
             break;
         case 'dev-high':
             id +=3;
+            break;
         default:
             id = -10;
     }
