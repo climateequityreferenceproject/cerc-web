@@ -219,9 +219,6 @@ $(function() {
 });
 
 function cbdr_select() {
-console.log('r_wt: ' + $('#equity_settings input[name=r_wt]:checked').attr("id"));
-console.log('dev_thresh: ' + $('#equity_settings input[name=dev_thresh]:checked').attr("id"));
-
     switch ($('#equity_settings input[name=r_wt]:checked').attr("id")) {
         case 'r100':
             id = 0;
