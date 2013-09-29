@@ -149,12 +149,12 @@ if (isset($_POST['equity_cancel']) || isset($_POST['equity_submit']) || (isset($
                                        echo "<li>";
                                        echo select_num('dev_thresh', $fw_params, $glossary->getLink('gloss_dev_threshold', false, _('Development threshold ($PPP)')) . ":");
                                        echo "</li>";
-                                       echo "<li>";
-                                       echo select_num('lux_thresh', $fw_params, $glossary->getLink('lux_threshold', false, _('Luxury threshold ($MER)')) . ":");
-                                       echo "</li>";
                                        echo '<li class="advanced">';
                                        echo '<input type="checkbox" name="interp_btwn_thresh" id="interp_btwn_thresh" class="click" value="1" ' . ($fw_params["interp_btwn_thresh"]['value'] ? 'checked="checked"' : '') . '/>';
                                        echo '<label for="interp_btwn_thresh" class="click"> ' . _("Progressive between thresholds") . '</label>';
+                                       echo "</li>";
+                                       echo "<li>";
+                                       echo select_num('lux_thresh', $fw_params, $glossary->getLink('lux_threshold', false, _('Luxury threshold ($MER)')) . ":");
                                        echo "</li>";
                                        echo "<li>";
                                        echo select_num('luxcap_mult', $fw_params, $glossary->getLink('lux_multiplier', false, _('Multiplier on incomes above the luxury threshold')) . ":");

@@ -282,8 +282,10 @@ function get_def_by_id(e) {
 function lux_thresh_activate() {
     if ($('#do_luxcap').is(':checked') || $('#interp_btwn_thresh').is(':checked')) {
         $('#lux_thresh').removeAttr("disabled");
+        $('#luxcap_mult').removeAttr("disabled");
     } else {
         $('#lux_thresh').attr("disabled",true);
+        $('#luxcap_mult').attr("disabled",true);
     }
 }
 
