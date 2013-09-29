@@ -69,8 +69,6 @@
         $retval .= generate_entry(_("Responsibility weight: "), number_format($fw_params["r_wt"]['value'],1));
         $retval .= generate_entry(_("Development threshold: "), "\$" . number_format($fw_params["dev_thresh"]['value']));
         $retval .= "</tr>\n";
-        $retval .= '<tr style="line-height:0.25em;"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>' . "\n";
-        $retval .= "<tr>\n";
         $retval .= generate_entry(_("Luxury threshold: "), "\$". number_format($fw_params["lux_thresh"]['value']));
         $retval .= generate_entry(_("Cap baselines at luxury threshold: "), $fw_params["do_luxcap"]['value'] ? _("yes") : _("no"));
         $retval .= generate_entry(_("Progressive between thresholds: "), $fw_params["interp_btwn_thresh"]['value'] ? _("yes") : _("no"));
