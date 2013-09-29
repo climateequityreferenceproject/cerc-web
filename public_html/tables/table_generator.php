@@ -69,18 +69,23 @@
         $retval .= generate_entry(_("Responsibility weight: "), number_format($fw_params["r_wt"]['value'],1));
         $retval .= generate_entry(_("Development threshold: "), "\$" . number_format($fw_params["dev_thresh"]['value']));
         $retval .= "</tr>\n";
-        $retval .= generate_entry(_("Luxury threshold: "), "\$". number_format($fw_params["lux_thresh"]['value']));
-        $retval .= generate_entry(_("Cap baselines at luxury threshold: "), $fw_params["do_luxcap"]['value'] ? _("yes") : _("no"));
         $retval .= generate_entry(_("Progressive between thresholds: "), $fw_params["interp_btwn_thresh"]['value'] ? _("yes") : _("no"));
+        $retval .= generate_entry(_("Luxury threshold: "), "\$". number_format($fw_params["lux_thresh"]['value']));
+        $retval .= generate_entry(_("Mult. on incomes above lux. thresh.: "), number_format($fw_params["luxcap_mult"]['value'],1));
         $retval .= "</tr>\n";
         $retval .= "<tr>\n";
         $retval .= generate_entry(_("Include land-use emissions: "), $shared_params["use_lulucf"]['value'] ? _("yes") : _("no"));
         $retval .= generate_entry(_("Include non-CO<sub>2</sub> gases: "), $shared_params["use_nonco2"]['value'] ? _("yes") : _("no"));
-        $retval .= generate_entry(_("Kyoto adjustment: "), $kab_string);
+        $retval .= generate_entry(_("Include emiss. embodied in trade: "), $shared_params["use_netexports"]['value'] ? _("yes") : _("no"));
         $retval .= "</tr>\n";
         $retval .= "<tr>\n";
         $retval .= generate_entry(_("Cumulative since: "), $shared_params["cum_since_yr"]['value']);
-        $retval .= generate_entry(_("Total cost as % GWP: "), number_format($shared_params["percent_gwp"]['value'],1) . "%");
+        $retval .= generate_entry(_("Mitigation cost as % GWP: "), number_format($shared_params["percent_gwp_MITIGATION"]['value'],1) . "%");
+        $retval .= generate_entry(_("Adaptation cost as % GWP: "), number_format($shared_params["percent_gwp_ADAPTATION"]['value'],1) . "%");
+        $retval .= "</tr>\n";
+        $retval .= "<tr>\n";
+        $retval .= generate_entry(_("Use mitigation smoothing: "), $shared_params["use_mit_lag"]['value'] ? _("yes") : _("no"));
+        $retval .= generate_entry(_("Kyoto adjustment: "), $kab_string);
         $retval .= generate_entry(_("Emissions elasticity: "), number_format($shared_params["em_elast"]['value'],1));
         $retval .= "</tr>\n";
         if ($shared_params["use_sequencing"]['value']) {
