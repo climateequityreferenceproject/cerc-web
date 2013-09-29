@@ -219,6 +219,9 @@ $(function() {
 });
 
 function cbdr_select() {
+console.log('r_wt: ' + $('#equity_settings input[name=r_wt]:checked').attr("id"));
+console.log('dev_thresh: ' + $('#equity_settings input[name=dev_thresh]:checked').attr("id"));
+
     switch ($('#equity_settings input[name=r_wt]:checked').attr("id")) {
         case 'r100':
             id = 0;
@@ -228,6 +231,8 @@ function cbdr_select() {
             break;
         case 'c100':
             id = 6;
+        default:
+            id = -10;
     }
     
     switch ($('#equity_settings input[name=dev_thresh]:checked').attr("id")) {
@@ -239,6 +244,8 @@ function cbdr_select() {
             break;
         case 'dev-high':
             id +=3;
+        default:
+            id = -10;
     }
     for (var i = 1; i <= 9; i++) {
         var istring = '#cbdr-' + i;

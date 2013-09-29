@@ -50,6 +50,9 @@ if (isset($_COOKIE['db'])) {
     } elseif ($fw_params['r_wt']['value'] == 0.0) {
         $rc_checked["c100"] = $checked_string;
         $cbdr_ndx = 6;
+    } else {
+        // If the current settings do not match the options on the settings panel
+        $cbdr_ndx = -10;
     }
     
     if (($fw_params['dev_thresh']['value'] == 0) && ($fw_params['interp_btwn_thresh']['value'] == 0)) {
@@ -62,6 +65,9 @@ if (isset($_COOKIE['db'])) {
         $dt_checked['high'] = $checked_string;
         $do_progressive = 1;
         $cbdr_ndx += 3;
+    } else {
+        // If the current settings do not match the options on the settings panel
+        $cbdr_ndx = -10;
     }
     
     if ($shared_params['cum_since_yr']['value'] == 1850) {
