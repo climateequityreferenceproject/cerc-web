@@ -548,7 +548,7 @@ EOSQL;
                                 'type' => 'int'
                             ),
                             'use_mit_lag' => array(
-                                'description' => 'The number of years between the year in which mitigation obligations are being calculated and the historical year in which RCI is calculated',
+                                'description' => 'Smooth over historical RCI for calculating mitigation obligations',
                                 'advanced' => true,
                                 'db_param' => 'use_lag',
                                 'value' => NULL,

@@ -362,7 +362,11 @@ EOHTML;
     $retval .= "</tr>";
     // Share of global RCI in year
     $retval .= "<tr>";
-    $retval .= "<td class=\"lj\">" . sprintf(_('%1$s share of global Responsibility Capacity Index, projected to %2$d'), $country_name, $year) . "</td>";
+    if ($shared_params['use_mit_lag']['value']) {
+        $retval .= "<td class=\"lj\">" . sprintf(_('%1$s share of global Responsibility Capacity Index in %2$s to %3$d period'), $country_name, strftime("%Y"), $year) . "</td>";
+    } else {
+        $retval .= "<td class=\"lj\">" . sprintf(_('%1$s share of global Responsibility Capacity Index, projected to %2$d'), $country_name, $year) . "</td>";
+    }
     $retval .= '<td class="cj">(B)</td>';
     $val = 100.0 * $ctry_val[$year]["gdrs_rci"];
     $retval .= "<td>" . nice_number('', $val, '%') . "</td>";
