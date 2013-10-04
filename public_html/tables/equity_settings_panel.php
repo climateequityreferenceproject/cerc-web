@@ -55,7 +55,7 @@ if (isset($_COOKIE['db'])) {
         $cbdr_ndx = -10;
     }
     
-    if (($fw_params['dev_thresh']['value'] == 0) && ($fw_params['interp_btwn_thresh']['value'] == 0)) {
+    if (($fw_params['dev_thresh']['value'] == 2500) && ($fw_params['interp_btwn_thresh']['value'] == 2500)) {
         $dt_checked['low'] = $checked_string;
         $cbdr_ndx += 1;
     } elseif (($fw_params['dev_thresh']['value'] == 7500) && ($fw_params['interp_btwn_thresh']['value'] == 0)) {
@@ -108,7 +108,7 @@ if (isset($_COOKIE['db'])) {
                     <label for="c100"><input type="radio" name="r_wt" id="c100" class="click" value="0.00" <?php echo $rc_checked["c100"]; ?> />100% Capacity</label>
 
                     <h4>Progressivity, between and within countries</h4>
-                    <label for="dev-low"><input type="radio" name="dev_thresh" id="dev-low" class="click" value="0" <?php echo $dt_checked['low']; ?> />$2,500 development threshold (LDC-style development threshold)</label><br />
+                    <label for="dev-low"><input type="radio" name="dev_thresh" id="dev-low" class="click" value="2500" <?php echo $dt_checked['low']; ?> />$2,500 development threshold (LDC-style development threshold)</label><br />
                     <label for="dev-med"><input type="radio" name="dev_thresh" id="dev-med" class="click" value="7500" <?php echo $dt_checked['med']; ?> />$7,500 development threshold</label><br />
                     <label for="dev-high"><input type="radio" name="dev_thresh" id="dev-high" class="click" value="7500" <?php echo $dt_checked['high']; ?> />$7,500 development threshold, plus $100,000 luxury threshold</label>
                     <input type="hidden" name="interp_btwn_thresh" id="equity_progressivity" value="<?php echo $do_progressive ?>"/>
