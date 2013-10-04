@@ -55,7 +55,7 @@ if (isset($_COOKIE['db'])) {
         $cbdr_ndx = -10;
     }
     
-    if (($fw_params['dev_thresh']['value'] == 2500) && ($fw_params['interp_btwn_thresh']['value'] == 2500)) {
+    if (($fw_params['dev_thresh']['value'] == 2500) && ($fw_params['interp_btwn_thresh']['value'] == 0)) {
         $dt_checked['low'] = $checked_string;
         $cbdr_ndx += 1;
     } elseif (($fw_params['dev_thresh']['value'] == 7500) && ($fw_params['interp_btwn_thresh']['value'] == 0)) {

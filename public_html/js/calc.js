@@ -60,12 +60,15 @@ $(function() {
     $('#table_view').change(function () {
         set_display();
         submit();
-        if ($('#table_view').val() == 'gdrs_country_report') {
+        if ($('#table_view').val() === 'gdrs_country_report') {
             $('#region_country_filter').hide();
         } else {
             $('#region_country_filter').show();
         }
     });
+    
+    // Equity settings panel
+    $("a[id|='cbdr']").click(cbdr_grid_select);
     
     // Toggle lux threshold
     $('#do_luxcap, #interp_btwn_thresh').click(lux_thresh_activate);
@@ -218,6 +221,51 @@ $(function() {
 
 });
 
+function cbdr_grid_select() {
+    var id_match = /\d+/.exec($(this).attr('id'));
+    var id = parseInt(id_match[0]);
+    
+    var rvsc = Math.floor((id - 1)/3);
+    var prog = (id - 1) % 3;
+    
+    switch (rvsc.toString()) {
+        case '0':
+            $('#r100').attr('checked',true);
+            break;
+        case '1':
+            $('#r50c50').attr('checked',true);
+            break;
+        case '2':
+            $('#c100').attr('checked',true);
+            break;
+        default:
+            ;
+    }
+
+    switch (prog.toString()) {
+        case '0':
+            $('#dev-low').attr('checked',true);
+            break;
+        case '1':
+            $('#dev-med').attr('checked',true);
+            break;
+        case '2':
+            $('#dev-high').attr('checked',true);
+            break;
+        default:
+            ;
+    }
+    
+    for (var i = 1; i <= 9; i++) {
+        var istring = '#cbdr-' + i;
+        if (i === id) {
+            $(istring).addClass('selected');
+        } else {
+            $(istring).removeClass('selected');
+        }
+    }
+}
+
 function cbdr_select() {
     switch ($('#equity_settings input[name=r_wt]:checked').attr("id")) {
         case 'r100':
@@ -248,7 +296,7 @@ function cbdr_select() {
     }
     for (var i = 1; i <= 9; i++) {
         var istring = '#cbdr-' + i;
-        if (i == id) {
+        if (i === id) {
             $(istring).addClass('selected');
         } else {
             $(istring).removeClass('selected');
