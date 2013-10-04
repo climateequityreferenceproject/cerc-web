@@ -503,7 +503,7 @@ li.separator {
 #equity_settings #cbdr-grid-container li a, 
 #equity_settings #cbdr-grid-container li a:link, 
 #equity_settings #cbdr-grid-container li a:visited { background:#ccc; border-width:0; display:block; height:4em; text-align:center; width:100%; }
-#equity_settings #cbdr-grid-container li a:hover, 
+#equity_settings #cbdr-grid-container li a:hover { background:#8884D1; } 
 #equity_settings #cbdr-grid-container li a:active,
 #equity_settings #cbdr-grid-container li a.selected { background:#221E6B; }
 
