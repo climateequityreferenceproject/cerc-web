@@ -86,6 +86,7 @@ if (isset($_COOKIE['db'])) {
 <form action="" method="post" name="equity_settings" id="equity_settings" class="group">
     <h2>Equity Settings</h2>
     <input type="button" name="equity_reset" id="equity_reset" class="click" value='<?php echo _("reset to defaults") ?>' />
+    <input type="submit" name="equity_continue" id="equity_continue" class="click" value='<?php echo _("continue with current settings") ?>' />
     <?php echo $glossary->getLink('equity_settings', false, _("Equity settings help")); ?>
     
     <ul>
