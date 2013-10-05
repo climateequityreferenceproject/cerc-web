@@ -42,7 +42,7 @@ return <<< EOHTML
                 <ul>
                     <!--|**START IMENUS**|imenus0,inline-->
                     <!--  ****** Infinite Menus Structure & Links ***** -->
-                    <div class="imrcmain0 imgl" style="width:950px;z-index:999999;position:relative;">
+                    <div class="imrcmain0 imgl" style="width:950px;z-index:10;position:relative;">
                         <div class="imcm imde" id="imouter0">
                             <ul id="imenus0">
                                 <li class="imatm" style="width:115px;"><a href="http://gdrights.org">Home</a></li>

@@ -1,6 +1,8 @@
 <?php
 
 require_once("frameworks/frameworks.php");
+include_once("help/HWTHelp/HWTHelp.php");
+$glossary = new HWTHelp('def_link', 'glossary.php', 'calc_gloss');
 
 /*
 * To change this template, choose Tools | Templates
@@ -84,11 +86,12 @@ if (isset($_COOKIE['db'])) {
 <form action="" method="post" name="equity_settings" id="equity_settings" class="group">
     <h2>Equity Settings</h2>
     <input type="button" name="equity_reset" id="equity_reset" class="click" value='<?php echo _("reset to defaults") ?>' />
+    <?php echo $glossary->getLink('equity_settings', false, _("Equity settings help")); ?>
     
     <ul>
         <li class="setting">
             <fieldset id="pathway">
-                <legend class="open"><span>&nbsp;</span><?php $glossary->getLink('gloss_path', false, _("Level of Global Ambition")); ?>Level of Global Ambition</legend>
+                <legend class="open"><span>&nbsp;</span><?php echo $glossary->getLink('gloss_path', false, _("Level of Global Ambition")); ?></legend>
                     <h4>Select a mitigation pathway:</h4>
                     <label for="ambition-high"><input type="radio" name="emergency_path" id="ambition-high" class="click" value=<?php echo '"' . $emerg_path_id["1.5"] . '" ' . $ambition_checked["1.5"]; ?> />1.5&#176;C marker pathway (Try to limit warming to 1.5&#176;C)</label><br />
                     <label for="ambition-med"><input type="radio" name="emergency_path" id="ambition-med" class="click" value=<?php echo '"' . $emerg_path_id["2.0"] . '" ' . $ambition_checked["2.0"]; ?> />2&#176;C marker pathway (Try to limit warming to 2.0&#176;C)</label><br />
@@ -98,7 +101,7 @@ if (isset($_COOKIE['db'])) {
         </li>
         <li class="setting">
             <fieldset id="cbdr">
-                <legend class="open"><span>&nbsp;</span>Common but Differentiated Responsibilities and Capacities </legend>
+                <legend class="open"><span>&nbsp;</span>Common but Differentiated <?php echo $glossary->getLink('gloss_rci', false, _("Responsibilities and Capacities")); ?> </legend>
 
                 <div id="cbdr-radio-container">
 
@@ -144,7 +147,7 @@ if (isset($_COOKIE['db'])) {
 
         <li class="setting">
             <fieldset id="historical_date">
-                <legend class="open"><span>&nbsp;</span>Historical Responsibility Start Date</legend>
+                <legend class="open"><span>&nbsp;</span><?php echo $glossary->getLink('gloss_responsibility', false, _("Historical Responsibility")); ?> Start Date</legend>
                     <h4>Calculate responsibility based on emissions cumulative since:</h4>
                     <label for="d1850"><input type="radio" name="cum_since_yr" id="d1850" class="click" value="1850" <?php echo $cumsince_checked[1850]; ?> />1850</label>
                     <label for="d1950"><input type="radio" name="cum_since_yr" id="d1950" class="click" value="1950" <?php echo $cumsince_checked[1950]; ?> />1950</label>

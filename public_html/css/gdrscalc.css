@@ -404,6 +404,16 @@ a.def_link, a.def_link:link, a.def_link:visited, a.def_link:hover, a.def_link:ac
     text-decoration:none;
 }
 
+#equity_settings legend a.def_link, #equity_settings legend a.def_link:link, #equity_settings legend a.def_link:visited, #equity_settings legend a.def_link:hover, #equity_settings legend a.def_link:active {
+    border-bottom-color:#050556;
+    color: #ffffff;
+}
+#equity_settings legend a.def_link, #equity_settings legend a.def_link:link, #equity_settings legend a.def_link:visited, #equity_settings legend a.def_link:hover, #equity_settings legend a.def_link:active { 
+    border-bottom:1px dotted;
+    font-weight: bold;
+    text-decoration:none;
+}
+
 /*** misc classes *********************************************/
 .clear {
     clear: both; 
@@ -459,7 +469,7 @@ li.separator {
     left:0;
     height:1000%; 
     width:100%;
-    z-index:1000000;
+    z-index:100;
 }
 #equity_settings_container { 
     font-family: Arial,Helvetica,Verdana,sans-serif;
@@ -471,7 +481,7 @@ li.separator {
     top:5%;
     left:5%;
     width:90%;
-    z-index:10000001;
+    z-index:101;
 }
 #equity_settings_container ul { list-style:none; }
 #equity_settings { font-size:120%; margin-top:1em; min-width:33em; padding:2em; position:relative; width:90% }
