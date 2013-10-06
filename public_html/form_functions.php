@@ -7,10 +7,6 @@ function select_num($param, $param_list, $label) {
     $high = $param_list[$param]['max'];
     $step = $param_list[$param]['step'];
     
-    if (!isset($param_list[$param]['description'])) {
-        $param_list[$param]['description'] = '';
-    }
-    
     // print nothing if the parameter is for Advanced view only and the selected view is Basic
     if ($param_list[$param]['advanced']) {
         if ($high <= 999999) { 
@@ -41,7 +37,7 @@ function select_num($param, $param_list, $label) {
         $fmt = "%d";
     }
     
-    $retval = '<li><label for="' . $param . '" title="' . $param_list[$param]['description'] . '"';
+    $retval = '<li><label for="' . $param . '"';
     if ($param_list[$param]['advanced']) {
         if ($high > 999999) { 
             $retval .= 'class="select advanced"';
@@ -77,9 +73,6 @@ function select_num($param, $param_list, $label) {
 // Print options list for select input field with a list of text values (option names)
 function select_options_list($param, $param_list, $label) {
     $option_list = $param_list[$param]['list'];
-    if (!isset($param_list[$param]['description'])) {
-        $param_list[$param]['description'] = '';
-    }
     // otherwise print the select field with its label, all between <li></li> tags, 
     // flagging the selected value in the option list
     
@@ -88,7 +81,7 @@ function select_options_list($param, $param_list, $label) {
     } else {
         $class = 'class="select"';
     }
-    $retval = '<li><label for="' . $param . '" ' . $class . ' title="' . $param_list[$param]['description'] . '">' . $label . " </label>\n";
+    $retval = '<li><label for="' . $param . '" ' . $class . '">' . $label . " </label>\n";
 
     if ($param_list[$param]['advanced']) {
         $class = ' class="advanced"';
