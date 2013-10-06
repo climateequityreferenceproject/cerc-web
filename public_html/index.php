@@ -20,7 +20,7 @@ if (isset($_GET['show_avail_params']) && $_GET['show_avail_params'] === 'yes') {
 } else {
     $show_avail_params = false;
 }
-if (isset($_POST['equity_cancel']) || isset($_POST['equity_continue']) || isset($_POST['equity_submit']) || (isset($_GET['equity']) && $_GET['equity'] === 'default')) {
+if (isset($_POST['equity_cancel']) || isset($_POST['equity_cancel_top']) || isset($_POST['equity_submit']) || isset($_POST['equity_submit_top']) || (isset($_GET['equity']) && $_GET['equity'] === 'default')) {
     $equity_nosplash = true;
 } else {
     $equity_nosplash = false;

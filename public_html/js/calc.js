@@ -122,7 +122,7 @@ $(function() {
     
     $('#r100, #r50c50, #c100').click(cbdr_select);
     
-    $('#equity_reset').click(function() {
+    $('#equity_reset, #equity_reset_top').click(function() {
         $('#equity_progressivity').val(0);
         $('#ambition-med').attr('checked','checked');
         $('#r50c50').attr('checked','checked');
