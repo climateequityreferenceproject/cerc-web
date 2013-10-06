@@ -50,8 +50,8 @@ if (isset($_GET['addform']))
         calc_gloss  = :calc_gloss,
         entry_date  = CURDATE()';
     $s = $pdo->prepare($sql);
-    $s->bindValue(':code_id', $_POST['code_id']);
-    $s->bindValue(':entry_title', $_POST['entry_title']);
+    $s->bindValue(':code_id', trim($_POST['code_id']));
+    $s->bindValue(':entry_title', trim($_POST['entry_title']));
     $s->bindValue(':entry_text', stripslashes($_POST['entry_text']));
     $s->bindValue(':sc_gloss', isset($_POST['sc_gloss']) ? 1 : 0);
     $s->bindValue(':calc_gloss', isset($_POST['calc_gloss']) ? 1 : 0);
@@ -119,8 +119,8 @@ if (isset($_GET['editform']))
         WHERE id    = :id';
     $s = $pdo->prepare($sql);
     $s->bindValue(':id', $_POST['id']);
-    $s->bindValue(':code_id', $_POST['code_id']);
-    $s->bindValue(':entry_title', $_POST['entry_title']);
+    $s->bindValue(':code_id', trim($_POST['code_id']));
+    $s->bindValue(':entry_title', trim($_POST['entry_title']));
     $s->bindValue(':entry_text', stripslashes($_POST['entry_text']));
     $s->bindValue(':sc_gloss', isset($_POST['sc_gloss']) ? 1 : 0);
     $s->bindValue(':calc_gloss', isset($_POST['calc_gloss']) ? 1 : 0);
