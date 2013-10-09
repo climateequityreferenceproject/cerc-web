@@ -1,5 +1,6 @@
 var regionCountryData;
 var clickedDef = false;
+var popup_size = {width: null, length: null};
 
 $(function() {
     
@@ -311,13 +312,21 @@ function get_def_by_id(e) {
     href = $(e.currentTarget).attr("href");
     def_id = href.substr(href.lastIndexOf('#') + 1);
     
+    if (!popup_size.width || !popup_size.height) {
+        popup_size = {
+            // The -20 takes care of the border
+            width: Math.min(500, screen.width - 20),
+            height: Math.min(300, screen.height - 20)
+        };
+    }
+    
     $.getJSON('glossary_array.php', {id: def_id}, function(definition){
        $('#popup').html(definition.text).dialog({
             autoOpen: false,
             title: definition.label,
-            // The -20 takes care of the border
-            width: Math.min(500, screen.width - 20),
-            height: Math.min(300, screen.height - 20)
+            width: popup_size.width,
+            height: popup_size.height,
+            resizeStop: function( event, ui ) {popup_size = ui.size;}
        });
        
        $('#popup').dialog('open');
