@@ -450,7 +450,7 @@ function spinoff_window() {
     '   <body id="spinoff">\n' +
     '      <div id="calc_container" class="group">\n' +
     '         <div id="data" class="group">\n';
-    html += $('#data').html(); // TODO ('#eqbtn_form').remove
+    html += $('#data').html();
     var d = new Date();
     html += '         </div>\n' +
     '      </div>\n' +
