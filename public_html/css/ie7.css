@@ -1,1 +1,10 @@
 *:first-child+html .group { min-height:1px; }
+#form1 fieldset {
+    border-top-color:#fff; 
+    margin:2em 0;
+}
+legend { 
+    margin-left:-2em;
+    position:static;
+}
+#form1 legend { width:24.5em; }

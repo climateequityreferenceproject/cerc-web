@@ -1,7 +1,7 @@
 <?php
 /*** Markup functions ************************************************************/
 // Print options list for select input field with consecutive integer values
-function select_num($param, $param_list, $label) {
+function select_num($param, $param_list, $label, $label_class = null) {
     // Prepare some variables
     $low = $param_list[$param]['min'];
     $high = $param_list[$param]['max'];
@@ -19,7 +19,7 @@ function select_num($param, $param_list, $label) {
             $select_class = 'class="short"';
         }
     }
-    // otherwise print the select field with its label, all between <li></li> tags, 
+    // otherwise print the select field with its label, NOT all between <li></li> tags, 
     // flagging the selected value in the option list
     if (is_array($step)) {
         $step_array = $step;
@@ -37,19 +37,22 @@ function select_num($param, $param_list, $label) {
         $fmt = "%d";
     }
     
-    $retval = '<li><label for="' . $param . '"';
-    if ($param_list[$param]['advanced']) {
-        if ($high > 999999) { 
-            $retval .= 'class="select advanced"';
-        } else { 
-            $retval .= 'class="advanced"';
-        }
-    } else {
-        if ($high > 999999) { 
-            $retval .= 'class="select"';
-        }
+    $retval = '<label for="' . $param . '"';
+//    if ($param_list[$param]['advanced']) {
+//        if ($high > 999999) { 
+//            $retval .= 'class="select advanced"';
+//        } else { 
+//            $retval .= 'class="advanced"';
+//        }
+//    } else {
+//        if ($high > 999999) { 
+//            $retval .= 'class="select"';
+//        }
+//    }
+    if ($label_class) {
+       $retval .= ' class="' . $label_class . '"'; 
     }
-    $retval .= '>' . $label . " </label>\n";
+    $retval .= '>' . $label . "</label>\n";
     $retval .= '<select name="' . $param . '" id="' . $param  . '" ' . $select_class . ">\n";
     $test_val = $param_list[$param]['value'];
     // If you don't use "round" then small rounding errors can throw this off
@@ -66,22 +69,25 @@ function select_num($param, $param_list, $label) {
         }
     }
     $retval .= "</select>\n";
-    $retval .= "</li>\n";
     return $retval;
 }
 
 // Print options list for select input field with a list of text values (option names)
-function select_options_list($param, $param_list, $label) {
+function select_options_list($param, $param_list, $label, $label_class = null) {
     $option_list = $param_list[$param]['list'];
-    // otherwise print the select field with its label, all between <li></li> tags, 
+    // otherwise print the select field with its label, NOT all between <li></li> tags, 
     // flagging the selected value in the option list
     
-    if ($param_list[$param]['advanced']) {
-        $class = 'class="select advanced"';
-    } else {
-        $class = 'class="select"';
+//    if ($param_list[$param]['advanced']) {
+//        $class = 'class="select advanced"';
+//    } else {
+//        $class = 'class="select"';
+//    }
+    $retval = '<label for="' . $param . '"';
+    if (!is_null($label_class)) {
+       $retval .= ' class="' . $label_class . '"'; 
     }
-    $retval = '<li><label for="' . $param . '" ' . $class . '">' . $label . " </label>\n";
+    $retval .= '>' . $label . "</label>\n";
 
     if ($param_list[$param]['advanced']) {
         $class = ' class="advanced"';
@@ -104,6 +110,5 @@ function select_options_list($param, $param_list, $label) {
         }
     }
     $retval .= "</select>\n";
-    $retval .= "</li>\n";
     return $retval;
 }

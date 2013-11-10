@@ -82,9 +82,5 @@ return <<< EOHTML
             <p><strong>Greenhouse Development Rights</strong> is a project of <a href="http://www.ecoequity.org/">EcoEquity</a> and the <a href="http://www.sei-international.org">Stockholm Environment Institute</a> &#169; 2008-$year </p>
                 <!--<p>data version $data_ver  &nbsp;&nbsp;calculator version $calc_ver</p>-->
         </div><!-- end #footer -->
-        <!--[imcode]*** Infinite Menus Settings / Code - This script reference must appear last. ***
-        *Note: This script is required for scripted add on support and IE 6 sub menu functionality.
-        *Note: This menu will fully function in all CSS2 browsers with the script removed.-->
-        <script language="JavaScript" src="ocscript.js" type="text/javascript"></script><!-- fix file path - in gdrights.org site root? -->
 EOHTML;
     }

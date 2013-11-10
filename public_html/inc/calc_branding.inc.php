@@ -1,0 +1,9 @@
+            <div id="header" class="group">  
+                <h1>Climate Effort-Sharing Calculator</h1>
+                <div id="partners">
+                    <ul>
+                        <li><a id="ecoequity" href="http://www.ecoequity.org">EcoEquity</a></li>
+                        <li><a id="seius" href="http://www.sei.se">SEI-US</a></li>
+                    </ul>
+                </div><!-- end #partners -->
+            </div><!-- end #header -->

@@ -1,1 +1,17 @@
 .group { height:1%; }
+#form1 fieldset {
+    border-top-color:#fff; 
+    margin:2em 0; 
+    padding-right:0; 
+    width:23em
+}
+legend { 
+    margin-left:-2em;
+    position:static;
+}
+#form1 legend { width:25em; }
+
+#intro, #data { 
+    margin-left:1em; 
+    width:60% 
+}

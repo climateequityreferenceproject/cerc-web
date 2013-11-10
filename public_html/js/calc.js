@@ -429,12 +429,12 @@ function uniqid()
 
 function spinoff_window() {
     //$("#spinoff #input_values caption").show();
-    html = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\n' +
-    '<html xmlns="http://www.w3.org/1999/xhtml">\n' +
-    '   <head>\n' +
-    '       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />\n' +
-    '       <title>View -- generated from the Greenhouse Development Rights online calculator</title>\n' +
-    '       <link rel="stylesheet" href="http://www.gdrights.org/calculator_dev/css/gdrscalc.css" type="text/css" media="screen, projection" />\n' +
+    html = '<!DOCTYPE html>\n' +
+    '    <head>\n' +
+    '       <meta charset="utf-8">\n' +
+    '       <meta http-equiv="X-UA-Compatible" content="IE=edge">\n' +
+    '       <title>View -- generated from the Climate Effort-Sharing Calculator</title>\n' +
+    '       <link rel="stylesheet" href="http://www.gdrights.org/calculator_dev/css/cescalc.css" media="screen, projection" />\n' +
     '       <style type="text/css">\n' +
     '         #input_values caption {' +
     '           display:none;' +
@@ -450,7 +450,7 @@ function spinoff_window() {
     '   <body id="spinoff">\n' +
     '      <div id="calc_container" class="group">\n' +
     '         <div id="data" class="group">\n';
-    html += $('#data').html();
+    html += $('#data').html(); // TODO ('#eqbtn_form').remove
     var d = new Date();
     html += '         </div>\n' +
     '      </div>\n' +

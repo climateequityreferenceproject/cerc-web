@@ -1,0 +1,649 @@
+@charset "UTF-8";
+/* CSS Document */
+
+/* @override 
+	http://127.0.0.1/wp-content/themes/custom_GDR/style.css
+	http://ars-humana.net/blog/wp-content/themes/custom_GDR/style.css
+*/
+
+/*
+Theme Name: GDR
+Theme URI: http://gdr.dev/
+Description: Custom theme for Greenhouse Development Rights
+Version: 1.0
+Author: Jeffrey Radcliffe
+*/
+
+/*  adapted for GDRs calculator page by Tyler Kemp-Benedict */
+
+/*
+stylesheet organization:
+    reset/normalize
+    layout
+        header layout
+        form layout
+        spinoff window layout
+        country graph legend
+    typography
+    table
+    color
+    glossary
+    misc classes
+    country and region filter
+    equity settings panel
+*/
+
+
+/*** reset ****************************************************/
+/* from Meyer */
+html, body, div, h1, h2, h3, h4, ul, ol, li, p, form, fieldset, legend, img,
+input, textarea, table, caption, tbody, tfoot, thead, tr, td, th, dl, dd, dt {
+    font-size:100%;
+    margin:0;
+    padding:0;
+    font:inherit;
+    vertical-align:baseline;
+}
+img { outline:none; }
+ul { list-style:inside; }
+#calc_container ul { list-style:none; }
+table { /* cellspacing and cellpadding are not valid CSS - these attributes must be added to the html */
+    border-collapse:collapse;
+    border-spacing:0;
+    width:100%;
+}
+
+/* from normalize.css */
+article, aside, details, figcaption, figure, footer, 
+header, hgroup, main, nav, section, summary { display: block; }
+html {
+    font-size: 100%; 
+    -ms-text-size-adjust: 100%; 
+    -webkit-text-size-adjust: 100%; 
+}
+html, button, input, select, textarea { font-family: sans-serif; }
+a:focus { outline: thin dotted; }
+a:active, a:hover { outline: 0; }
+small { font-size: 80%; }
+sub, sup {
+    font-size: 75%;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
+}
+sup { top: -0.5em; }
+sub { bottom: -0.25em; }
+nav ul, nav ol, #nav ul, #nav ol {
+    list-style: none;
+    list-style-image: none;
+}
+img {
+    border: 0; 
+    -ms-interpolation-mode: bicubic; 
+}
+svg:not(:root) { overflow: hidden; }
+button, input, select, textarea {
+    font-size: 100%; 
+    margin: 0; 
+    vertical-align: baseline; 
+    *vertical-align: middle; 
+}
+button, input { line-height: normal; }
+button, select { text-transform: none; }
+button, 
+html input[type="button"], 
+input[type="reset"],
+input[type="submit"] {
+    -webkit-appearance: button; 
+    cursor: pointer; 
+    *overflow: visible;  
+}
+button[disabled],
+html input[disabled] { cursor: default; }
+input[type="checkbox"],
+input[type="radio"] {
+    box-sizing: border-box; 
+    padding: 0; 
+    *height: 13px; 
+    *width: 13px; 
+}
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+}
+textarea {
+    overflow: auto; 
+    vertical-align: top; 
+}
+
+/*** layout  **************************************************/
+#container, #footer {
+    margin:0 auto;
+    width:950px;
+}
+/* IE6 treats width as min-width, but does not recognize CSS child selectors */
+body>#container, body>#footer {
+    min-width:950px;
+    width:95%;
+}
+#footer { border-top:2px solid; }
+#container { overflow:visible; }
+#footer { height:5em; }
+#calc_container { padding-top:1em; }
+#intro, #data {
+    float:left;
+    margin-left:30px;
+    width:65%;
+}
+#input_values { 
+    margin-bottom:0.5em;
+    padding-bottom:1em; 
+    padding-top:1em; 
+}
+#input_values ul { 
+    float:left; 
+    list-style:none; 
+    padding-right:3%; 
+    width:30%;
+}
+#input_values caption, #toggle-key {
+    text-align: left;
+    font-weight: normal;
+    font-size: 1.0em;
+}
+#toggle-key { width: 8em; }
+#input_values tbody, #ctry_report_legend { display: none; }
+td, th {
+    border:1px solid;
+    border-left:0;
+    border-right:0;
+    padding:0.2em 0.5em;
+}
+#loading { 
+    margin:300px 50% auto;
+    position:fixed;
+}
+#save {
+    margin:0.5em 0;
+    padding:0.5em;
+}
+#save p { 
+    float:left;
+    margin-right:1em;
+    padding-top:0;
+    width:auto;
+}
+
+/*** header layout ***/
+header, #header { 
+    font-size:90%;
+    height:5em; 
+    overflow:hidden; 
+    position:relative
+}
+header h1, #header h1 { 
+    height:1em;
+    left:0;
+    letter-spacing: 0.05em;
+    line-height:1em; 
+    margin:0; 
+    padding:0.75em; 
+    position:absolute; 
+    text-align:center;
+    top:0; 
+    z-index:10;
+}
+#partners {
+    bottom:0;
+    position:absolute;
+    right:0;
+}
+#partners ul li {
+    float:left;
+    list-style:none;
+}
+#partners a {
+    border:0;
+    display:block;
+    height:78px;
+    overflow:hidden;
+    text-indent:-9999px;
+}
+#partners ul li a#ecoequity {
+    background:#fff url('../img/GDR-EE-headercalculator.png') no-repeat;
+    width:148px;
+}
+#partners ul li a#seius {
+    background:#fff url('../img/GDR-SEI-headercalculator.png') no-repeat;
+    width:167px;
+}
+nav, #nav { 
+    border-bottom:2px solid #4d59a4; 
+    font-size:90%; 
+    margin:0; 
+    padding:0.5em 0;
+}
+nav ul, #nav ul {margin:0; padding:0;}
+nav li, #nav li {float:left; width:auto;}
+nav a, nav a:link, nav a:visited, nav a:hover, nav a:active, 
+#nav a, #nav a:link, #nav a:visited, #nav a:hover, #nav a:active {
+    border-bottom:none;
+    display:block; 
+    float:left; 
+    height:1.5em; 
+    line-height:1.5em; 
+    padding:0 1em; 
+    text-decoration:none;
+    width:auto;
+}
+nav li.last a, #nav li.last a { border:none;}
+
+
+/*** form layout ***/
+form {padding:0;}
+form li p { margin-top:0; }
+#form1 {
+    float:left;
+    width:26em;
+}
+/* min form height to prevent table from dropping below when form content is less tall than intro */
+#calc_container>form1 { 
+    min-height:300px; 
+    height:auto!important; 
+    height:300px; 
+}
+fieldset {
+    border:1px solid;
+    border-top-width:1.9em;
+    margin-bottom:1em;
+    margin-top:0.5em;
+    padding:0 1em;
+    position:relative;
+}
+fieldset fieldset { 
+    margin:0 auto;
+    padding:0 0 0 1em;
+}
+fieldset li { 
+    display:block;
+    margin-bottom:0.9em; 
+}
+#form1 fieldset ul {padding-top:0.9em;}
+#form1 fieldset, 
+#form1 fieldset li {
+    clear:both;
+    margin-left:auto;
+    margin-right:auto;
+    width:24em;
+}
+#form1 fieldset li {float:left;}
+#form1 fieldset fieldset, 
+#form1 fieldset fieldset li { width:23em; }
+fieldset .input_set { padding-bottom:0.75em; }
+label {width:auto;}
+select { float:right; width:auto; }
+fieldset fieldset select { margin-right:1em; }
+label {
+    display:block;
+    float:left;
+    margin-right:0.5em;
+}
+label.radio { margin-right:1.5em; }
+label.click {width:auto;}
+input, select.short { width:6em; }
+fieldset fieldset input { width:5em; }
+input.click {
+    display:block;
+    float:left;
+    margin-right:0.5em;
+    width:auto;
+}
+legend { 
+    left:0;
+    padding:0 1em;
+    position:absolute;
+    top:-1.9em;
+    width:24em;
+}
+fieldset fieldset legend { width:20em;}
+legend, legend span { height:1.9em; }
+legend span {  
+    background: url('../img/arrows3.png') no-repeat left center;
+    display:block;
+    float:left;
+    margin-right:4px;
+    width:10px;
+}
+legend.closed span { background-position:left center; }
+legend.open span { background-position:-16px center; }
+fieldset fieldset legend.closed span { background-position:-32px center; }
+fieldset fieldset legend.open span { background-position:-48px center; }
+.pretty-hover { cursor:pointer; }
+#submit, #reset { padding:0.5em; }
+label.long-label-short-select {width:14em;}
+label.long-label-long-select {width:10em;}
+label.level2 {margin-left:1.5em;}
+
+#country_list_button { float: right; }
+
+/* If no JavaScript, can't access the region & country filter or basic/advanced */
+#region_country_filter { display: none; }
+
+#basic_adv { display: none; }
+
+/*** spinoff window layout ***/
+#spinoff {padding:0 1em;}
+#spinoff #data, #spinoff #footer { 
+    margin:0; 
+    width:665px; 
+}
+body#spinoff>#calc_container #data, body#spinoff>#footer { 
+    min-width:665px; 
+    margin:0 auto;
+    width:95%; 
+}
+
+.alert { color: red; }
+
+/*** Country graph legend ***/
+#toggle-key + dl {display:none;}
+dl#ctry_report_legend { line-height: 1.3;}
+dl#ctry_report_legend dt { font-weight:bold; margin-top:1em;}
+dl#ctry_report_legend dd { padding-left:25px;}
+/*dl#ctry_report_legend dd { display: none;}*/
+dl#ctry_report_legend dt span {
+    background:url(../img/graph_leg_sprite.png) no-repeat;
+    display:block;
+    float:left;
+    height:14px;
+    margin-right:5px;
+    margin-top:4px;
+    width:20px;
+} 
+dl#ctry_report_legend dt.key-bau span { background-position:0 0; } /* business as usual line */
+dl#ctry_report_legend dt.key-gdrs span { background-position:0 -20px; } /* gdrs allocation line */
+dl#ctry_report_legend dt.key-phys span { background-position:0 -40px; } /* example physical emissions, or domestic emissions, line */
+dl#ctry_report_legend dt.key-dom span { background-position:0 -60px; } /* domestically funded mitigation */
+dl#ctry_report_legend dt.key-intl span { background-position:0 -80px; } /* international mitigation, or mitigation funded in other countries */
+dl#ctry_report_legend dt.key-sup span { background-position:0 -100px; } /* supported mitigation, or mitigation funded by other countries */
+dl#ctry_report_legend dt.key-uncond span { background-position:0 -117px; } /* unconditional pledge */
+dl#ctry_report_legend dt.key-cond span { background-position:0 -138px; } /* conditional pledge */
+
+/*** typography ***********************************************/
+body {
+    font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size:medium;
+    text-align:center
+}
+@font-face {
+    font-family: 'ProximaNova';
+    src: url('/fonts/proximanova-bold-webfont.eot');
+    src: url('/fonts/proximanova-bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/fonts/proximanova-bold-webfont.woff') format('woff'),
+         url('/fonts/proximanova-bold-webfont.ttf') format('truetype'),
+         url('/fonts/proximanova-bold-webfont.svg#ProximaNovaBold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'ProximaNova';
+    src: url('/fonts/proximanova-boldit-webfont.eot');
+    src: url('/fonts/proximanova-boldit-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/fonts/proximanova-boldit-webfont.woff') format('woff'),
+         url('/fonts/proximanova-boldit-webfont.ttf') format('truetype'),
+         url('/fonts/proximanova-boldit-webfont.svg#ProximaNovaBoldItalic') format('svg');
+    font-weight: bold;
+    font-style: italic;
+}
+h1,h2,h3,h4,h5,h6, strong, nav a, #nav a, #submit, #reset {
+    font-family:ProximaNova, "Helvetica Neue", Helvetica, Arial, sans-serif; 
+    font-weight:bold;
+}
+em {font-family:"Helvetica Neue", Helvetica, Arial, sans-serif; font-style:italic;}
+h1 em, h2 em, h3 em, h4 em, h5 em, h6 em, strong em {
+    font-family:ProximaNova, "Helvetica Neue", Helvetica, Arial, sans-serif; 
+    font-style:italic;
+    font-weight:bold; 
+}
+
+h1 { font-size:2em; }
+h2 { font-size:1.8em; padding-top:1.5em; }
+h3 { font-size:1.5em; }
+p { line-height:1.6; padding-top:0.8em; }
+a, a:link, a:visited, a:hover, a:active, #toggle-key { 
+    border-bottom:1px dotted;
+    font-weight:bold;
+    text-decoration:none;
+}
+a:hover, a:active { border-bottom-style:solid; }
+table { font-size:0.95em; line-height:1.2; }
+thead { font-size:0.9em; }
+#container { text-align:left; }
+#footer { font-size:smaller; text-align:center; }
+#calc_container {
+    font-family:Arial, Helvetica, Verdana, sans-serif;
+    font-size:0.7em;
+    line-height:1.8;
+    text-align:left;
+}
+#intro { font-size:1.2em; }
+#form1 { font-size:102%; line-height:1.2; }
+#input_values { font-size:0.9em; line-height:1.4; }
+legend { 
+    font-weight:bold; 
+    line-height:1.9em; 
+    vertical-align:middle;
+}
+select, input, select.short { font-size:95%; }
+#submit, #reset { font-size:110%; text-transform:uppercase; letter-spacing:0.1em; }
+#data td, #data th { text-align:right; }
+#input_values td, #input_values th, #data td.lj, #data th.lj { text-align:left; }
+#data td.cj, #data th.cj { text-align:center; }
+
+/*** table ****************************************************/
+td.level2 { padding-left: 2em; }
+table caption {
+    text-align: left;
+    font-weight: bold;
+    font-size: 1.2em;
+}
+tr.blank {
+    line-height: 0.25em;
+    background: #ccc;
+}
+
+/*** color ****************************************************/
+body { color:#333; }
+#container { background:#fff; }
+header h1, #header h1 { 
+    background:#4d59a4; 
+    color:#fff; 
+}
+/*#footer { background:transparent; }*/
+/*#container, footer { border-color:#8b8b8b; }*/
+#headerlinks {
+    background-color:#4d59a4;
+/*    border-top:0px solid #063;
+    border-bottom:0px solid #5b6eb4;*/
+}
+nav, #nav, footer, #footer { border-color:#4d59a4; }
+h1, h2 { color:#221e6b; } /* blue */
+h3 { color:#40822e; } /* green */
+a, a:link, a:visited, a:hover, a:active, #toggle-key {
+    border-bottom-color:#050556;
+    color:#40822e;
+}
+nav a, nav a:link, nav a:visited, nav a:hover, nav a:active, 
+#nav a, #nav a:link, #nav a:visited, #nav a:hover, #nav a:active {
+    border-right:2px solid #d2dbef;
+    color:#6b87c3; 
+}
+nav a:link, nav a:visited, 
+#nav a:link, #nav a:visited {color:#6b87c3;}
+nav a:hover, nav a:active, 
+#nav a:hover, #nav a:active {background:#f0f3fa; color:#4d59a4;}
+
+fieldset { 
+    background:#f7f8f7;
+    border-bottom:1px solid #c7d1c7;
+    border-left:1px solid #c7d1c7;
+    border-right:1px solid #c7d1c7;
+    border-top-color:#e6ebe6;
+}
+fieldset fieldset { 
+    background-color:#e6ebe6;
+    border-color:#e6ebe6;
+    border-bottom-width:6px;
+}
+legend { 
+    background-color:#40822e;
+    color:#fff;
+}
+fieldset fieldset legend { 
+    background-color:#e6ebe6;
+    color:#666; 
+}
+label.disabled { color:#999; }
+select { background:#fff; }
+#submit, #reset { background:#40822e; border-top-color:#e6ebe6; color:#fff; }
+
+td, th { border-color:#ccc; }
+img.float-left, img.float-right { border:1px solid #000; }
+#save { background:#e9eff7; }
+
+.num_negative { color: #c00; }
+
+
+/*** glossary *********************************************/
+a.def_link, a.def_link:link, a.def_link:visited, a.def_link:hover, a.def_link:active {
+    border-bottom-color:#050556;
+    color:#507346;
+}
+a.def_link, a.def_link:link, a.def_link:visited, a.def_link:hover, a.def_link:active { 
+    border-bottom:1px dotted;
+    font-weight:normal;
+    text-decoration:none;
+}
+
+#equity_settings legend a.def_link, #equity_settings legend a.def_link:link, #equity_settings legend a.def_link:visited, #equity_settings legend a.def_link:hover, #equity_settings legend a.def_link:active {
+    border-bottom-color:#050556;
+    color: #ffffff;
+}
+#equity_settings legend a.def_link, #equity_settings legend a.def_link:link, #equity_settings legend a.def_link:visited, #equity_settings legend a.def_link:hover, #equity_settings legend a.def_link:active { 
+    border-bottom:1px dotted;
+    font-weight: bold;
+    text-decoration:none;
+}
+
+/*** misc classes *********************************************/
+.clear {
+    clear: both; 
+    /* next 2 rules are browser correction */
+    font-size: 1px; 
+    line-height: 0;
+}
+
+.group:before, .group:after {
+    content: " ";
+    display: table;
+}
+.group:after { clear: both; }
+.group { *zoom: 1; }
+
+img.float-left {
+    float:left;
+    margin:0 15px 5px 0;
+}
+img.float-right {
+    float:right;
+    margin:0 0 5px 15px;
+}
+
+li.separator {
+    border-top: 1px solid #999;
+}
+
+#spinoff #eqbtn_form { display:none; }
+#spinoff_button { display: block;text-indent: -5000px;width: 300px!important;height: 28px;background-image:url(../img/spinoff-button-sprite.png)!important;background-repeat: no-repeat;border:0px!important;padding:0px!important; }
+#spinoff_button { background-position:0 0; }
+#spinoff_button:hover { background-position:0 -47px; }
+#spinoff_button:active { background-position:0 -47px; }
+
+
+#equity_settings_button { display: block;text-indent: -5000px;width: 300px!important;height: 28px;background-image:url(../img/equity-button-sprite.png)!important;background-repeat: no-repeat;border:0px!important;padding:0px!important; }
+#equity_settings_button { background-position:0 0; }
+#equity_settings_button:hover { background-position:0 -47px; }
+#equity_settings_button:active { background-position:0 -47px; }
+
+
+/*** Country and region filter ***/
+#filterDiv { display: none; }
+#filterDiv p { text-align: left; }
+#country_available, #country_selected { width: 250px; }
+.button_btwn_list { vertical-align: middle; }
+.button_btwn_list button { width: 120px; }
+
+
+/*** Equity settings panel ***/
+#lightbox { 
+    background-color:#000; 
+    opacity:0.5; 
+    position: absolute;
+    top:0;
+    left:0;
+    height:1000%; 
+    width:100%;
+    z-index:100;
+}
+#equity_settings_container { 
+    font-size:80%;
+    line-height:1.4;
+    margin:3.25em auto;
+    position:absolute;
+    top:5%;
+    left:5%;
+    width:90%;
+    z-index:101;
+}
+#equity_settings_container ul { list-style:none; margin-top:0.25em;}
+#equity_settings { 
+    background:#e6ebe6;
+    margin:0 auto;
+    padding:2em; 
+    width:56em; 
+}
+#equity_settings h2 { float:left; line-height:1; margin-right:1em; padding-top:0; }
+#equity_settings input[type="submit"], #equity_settings input[type="button"] { padding:0.25em; }
+#equity_settings fieldset { border-top-width:2em; position:relative; width:54em; } /* padding-bottom:1em; */
+#equity_settings fieldset#pathway { margin-top:2em; }
+#equity_settings fieldset#cbdr { position:relative; }
+#equity_settings legend { line-height:2em; width:54em; }
+#equity_settings legend, #equity_settings legend span { height:2em; }
+#equity_settings h4 { clear:both; font-weight:bold; padding-top:1em; }
+#equity_settings label { float:none; margin-right:2em; width:auto; }
+#equity_settings label input.click { margin-top:0.2em; }
+#equity_settings #historical_date label { float:left; }
+#equity_settings li { margin-bottom:0.5em;}
+#equity_settings #cbdr-radio-container { float:left; width:22em; }
+
+#equity_settings #cbdr-grid-container { float:left; font-size:85%; margin:1em 0 0 3%; position:relative; width:35em; }
+#equity_settings #cbdr-grid-container #grid-col-1 { float:left; margin-right:3%; width:8em; }
+#equity_settings #cbdr-grid-container #grid-col-2 { float:left; margin-right:0; position:relative; width:15em; }
+#equity_settings #cbdr-grid-container #grid-col-3 { float:left; width:9em; }
+#equity_settings #cbdr-grid-container p { line-height:1.2; padding-top:0; }
+#equity_settings #cbdr-grid-container #grid-row-middle { position:relative; margin:0 auto; text-align:center; width:100%; }
+#equity_settings #cbdr-grid-container #top-label { margin:1em auto 0.25em; padding-right:3%; text-align:center; }
+#equity_settings #cbdr-grid-container #left-label, 
+#equity_settings #cbdr-grid-container #right-label { margin:10em 0; }
+#equity_settings #cbdr-grid-container #left-label { text-align:right; }
+#equity_settings #cbdr-grid-container #right-label { text-align:left; }
+#equity_settings #cbdr-grid-container #bot-label { margin:0.25em auto 1em; padding-right:3%; text-align:center; }
+#equity_settings #cbdr-grid-container ul { float:left; position:relative; margin:0.5em auto 0.25em; width:100%; }
+#equity_settings #cbdr-grid-container li { float:left; height:4em; margin:0 3% 0.6em 0; position:relative; width:30%; }
+#equity_settings #cbdr-grid-container li a, 
+#equity_settings #cbdr-grid-container li a:link, 
+#equity_settings #cbdr-grid-container li a:visited { background:#ccc; border-width:0; display:block; height:4em; text-align:center; width:100%; }
+#equity_settings #cbdr-grid-container li a:hover { background:#8884D1; } 
+#equity_settings #cbdr-grid-container li a:active,
+#equity_settings #cbdr-grid-container li a.selected { background:#221E6B; }
