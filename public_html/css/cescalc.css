@@ -599,7 +599,7 @@ li.separator {
 #equity_settings_container { 
     font-size:80%;
     line-height:1.4;
-    margin:3.2em auto;
+    margin:3em auto;
     position:absolute;
     top:5%;
     left:5%;
@@ -611,26 +611,26 @@ li.separator {
     background:#e6ebe6;
     margin:0 auto;
     padding:2em; 
-    width:56em; 
+    width:62em; 
 }
 #equity_settings h2 { float:left; line-height:1; margin-right:1em; padding-top:0; }
 #equity_settings input[type="submit"], #equity_settings input[type="button"] { padding:0.25em; }
-#equity_settings fieldset { border-top-width:2em; position:relative; width:54em; } /* padding-bottom:1em; */
+#equity_settings fieldset { border-top-width:2em; position:relative; width:60em; } /* padding-bottom:1em; */
 #equity_settings fieldset#pathway { margin-top:2em; }
 #equity_settings fieldset#cbdr { position:relative; }
-#equity_settings legend { line-height:2em; width:54em; }
+#equity_settings legend { line-height:2em; width:60em; }
 #equity_settings legend, #equity_settings legend span { height:2em; }
 #equity_settings h4 { clear:both; font-weight:bold; padding-top:1em; }
-#equity_settings label { float:none; margin-right:2em; width:auto; }
+#equity_settings label { float:none; margin-right:0; width:auto; }
+#equity_settings #historical_date label { float:left; margin-right:2em; }
 #equity_settings label input.click { margin-top:0.2em; }
-#equity_settings #historical_date label { float:left; }
-#equity_settings li { margin-bottom:0.5em;}
-#equity_settings #cbdr-radio-container { float:left; width:20em; }
+#equity_settings li { margin-bottom:0.5em; }
+#equity_settings #cbdr-radio-container { float:left; width:34em; }
 
-#equity_settings #cbdr-grid-container { float:left; font-size:85%; margin:2em 0 0 3%; position:relative; width:36em; }
-#equity_settings #cbdr-grid-container #grid-col-1 { float:left; margin-right:3%; width:8em; }
-#equity_settings #cbdr-grid-container #grid-col-2 { float:left; margin-right:0; position:relative; width:17em; }
-#equity_settings #cbdr-grid-container #grid-col-3 { float:left; width:9em; }
+#equity_settings #cbdr-grid-container { float:left; font-size:85%; margin:1em 0 0 0; position:relative; width:28em; }
+#equity_settings #cbdr-grid-container #grid-col-1 { float:left; margin-right:3%; width:5em; }
+#equity_settings #cbdr-grid-container #grid-col-2 { float:left; margin-right:0; position:relative; width:16em; }
+#equity_settings #cbdr-grid-container #grid-col-3 { float:left; width:6em; }
 #equity_settings #cbdr-grid-container p { line-height:1.2; padding-top:0; }
 #equity_settings #cbdr-grid-container #grid-row-middle { position:relative; margin:0 auto; text-align:center; width:100%; }
 #equity_settings #cbdr-grid-container #top-label { margin:1em auto 0.25em; padding-right:3%; text-align:center; }

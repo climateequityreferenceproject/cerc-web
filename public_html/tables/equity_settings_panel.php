@@ -148,7 +148,7 @@ if (isset($_COOKIE['db'])) {
                                                     <p id="left-label"><strong>More regressive</strong></p>
                         </div>
                         <div id="grid-col-2" class="group">
-                            <p id="top-label"><strong>Responsibility <br />given more weight</strong></p>
+                            <p id="top-label"><strong>Responsibility given more weight</strong></p>
                             <ul>
                                 <?php
                                     for ($i = 1; $i <= 9; $i++) {
@@ -160,7 +160,7 @@ if (isset($_COOKIE['db'])) {
                                     }
                                 ?>
                             </ul>
-                            <p id="bot-label"><strong>Capacity <br />given more weight</strong></p>
+                            <p id="bot-label"><strong>Capacity given more weight</strong></p>
                         </div>
                         <div id="grid-col-3" class="group">
                             <p id="right-label"><strong>More progressive</strong></p>
