@@ -125,7 +125,7 @@ $(function() {
     
     $('#equity_reset, #equity_reset_top').click(function() {
         $('#equity_progressivity').val(0);
-        $('#ambition-med').attr('checked','checked');
+        $('#ambition-high').attr('checked','checked');
         $('#r50c50').attr('checked','checked');
         $('#dev-med').attr('checked','checked');
         $('#d1990').attr('checked','checked');
