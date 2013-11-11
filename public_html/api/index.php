@@ -46,15 +46,21 @@
             }
         }
         if (!$user_db) {
-            // If already have a duplicated version, use that, otherwise create if needed
-            $db_array = Framework::dup_master_db('calc', true);
-            $master_db = $db_array['db'];
-            if ($db_array['did_create']) {
-                // Created a new one, so run it
-                $fw->calculate($master_db, $shared_params_default, $fw_params_default);
+            if (isset($_GET['old_db'])) {
+                $old_db = Framework::add_user_db_path($_GET['old_db']);
+                // Copy the old database as a master
+                $user_db = Framework::get_user_db($master_db);
+            } else {
+                // If already have a duplicated version, use that, otherwise create if needed
+                $db_array = Framework::dup_master_db('calc', true);
+                $master_db = $db_array['db'];
+                if ($db_array['did_create']) {
+                    // Created a new one, so run it
+                    $fw->calculate($master_db, $shared_params_default, $fw_params_default);
+                }
+                // Copy an already calculated database (if it exists)
+                $user_db = Framework::get_user_db($master_db);
             }
-            // Copy an already calculated database (if it exists)
-            $user_db = Framework::get_user_db($master_db);
             if ($user_db) {
                 // This will be a temp DB unless used GET to request a new one; that case is handled below
                 $made_temp_db = true;
