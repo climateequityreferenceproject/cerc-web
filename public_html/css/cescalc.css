@@ -599,7 +599,7 @@ li.separator {
 #equity_settings_container { 
     font-size:80%;
     line-height:1.4;
-    margin:3.25em auto;
+    margin:3.2em auto;
     position:absolute;
     top:5%;
     left:5%;
@@ -625,17 +625,17 @@ li.separator {
 #equity_settings label input.click { margin-top:0.2em; }
 #equity_settings #historical_date label { float:left; }
 #equity_settings li { margin-bottom:0.5em;}
-#equity_settings #cbdr-radio-container { float:left; width:22em; }
+#equity_settings #cbdr-radio-container { float:left; width:20em; }
 
-#equity_settings #cbdr-grid-container { float:left; font-size:85%; margin:1em 0 0 3%; position:relative; width:35em; }
+#equity_settings #cbdr-grid-container { float:left; font-size:85%; margin:2em 0 0 3%; position:relative; width:36em; }
 #equity_settings #cbdr-grid-container #grid-col-1 { float:left; margin-right:3%; width:8em; }
-#equity_settings #cbdr-grid-container #grid-col-2 { float:left; margin-right:0; position:relative; width:15em; }
+#equity_settings #cbdr-grid-container #grid-col-2 { float:left; margin-right:0; position:relative; width:17em; }
 #equity_settings #cbdr-grid-container #grid-col-3 { float:left; width:9em; }
 #equity_settings #cbdr-grid-container p { line-height:1.2; padding-top:0; }
 #equity_settings #cbdr-grid-container #grid-row-middle { position:relative; margin:0 auto; text-align:center; width:100%; }
 #equity_settings #cbdr-grid-container #top-label { margin:1em auto 0.25em; padding-right:3%; text-align:center; }
 #equity_settings #cbdr-grid-container #left-label, 
-#equity_settings #cbdr-grid-container #right-label { margin:10em 0; }
+#equity_settings #cbdr-grid-container #right-label { margin:8em 0; }
 #equity_settings #cbdr-grid-container #left-label { text-align:right; }
 #equity_settings #cbdr-grid-container #right-label { text-align:left; }
 #equity_settings #cbdr-grid-container #bot-label { margin:0.25em auto 1em; padding-right:3%; text-align:center; }
