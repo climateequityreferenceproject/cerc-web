@@ -99,6 +99,10 @@
                         );
                         
         public $table_views = array(
+                            'gdrs_country_report' => array(
+                                'display_name' => 'Country/region report',
+                                'time_series' => false
+                            ),
                             'gdrs_default' => array(
                                 'display_name' => 'Overview',
                                 'time_series' => false
@@ -118,10 +122,6 @@
                             'gdrs_alloc_pc' => array(
                                 'display_name' => 'Allocations per capita time series',
                                 'time_series' => true
-                            ),
-                            'gdrs_country_report' => array(
-                                'display_name' => 'Country/region report',
-                                'time_series' => false
                             )
                         );
         

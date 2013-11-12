@@ -11,6 +11,9 @@ $table_view_default = $display_params['table_view']['value'];
 if (isset($_GET['iso3'])) {
     $display_params['display_ctry']['value'] = $_GET['iso3'];
     $display_params['table_view']['value'] = 'gdrs_country_report';
+} else {
+    $display_params['display_ctry']['value'] = Framework::get_world_code();;
+    $display_params['table_view']['value'] = 'gdrs_country_report';
 }
 if (isset($_GET['year'])) {
     $display_params['display_yr']['value'] = $_GET['year'];
