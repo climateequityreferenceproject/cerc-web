@@ -34,7 +34,8 @@ $(function() {
     
     // If JS is enabled, hide the submit button & show the region-country filter + basic/adv
     $('#submit').hide();
-    $('#region_country_filter').show();
+//    $('#region_country_filter').show(); // country report is now default, 
+//    so by default, region_country_filter should hide
     
     // Region list actions
     $('#regionList').click(changeRegionList);
