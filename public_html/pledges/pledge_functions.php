@@ -264,7 +264,7 @@ function process_pledges($pledge_info, $pathway, $db) {
         case 'absolute':
             $description .= 'total emissions ' . $reduce_text_1 . $by_factor . $reduce_text_2;
             if ($pledge_info['year_or_bau'] === 'bau') {
-                $description .= 'business-as-usual';
+                $description .= 'baseline';
                 $pledged_reduction = (1 - $factor) * $bau[$pledge_info['by_year']];
             } else {
                 $description .= $pledge_info['rel_to_year'];
@@ -275,7 +275,7 @@ function process_pledges($pledge_info, $pathway, $db) {
             $description .= 'emissions intensity by ' . $reduce_text_1 . $by_factor . $reduce_text_2;
             if ($pledge_info['year_or_bau'] === 'bau') {
                 // This option actually makes no sense, but take care of it just in case:
-                $description .= 'business-as-usual';
+                $description .= 'baseline';
                 $pledged_reduction = (1 - $factor) * $bau[$pledge_info['by_year']];
             } else {
                 $description .= $pledge_info['rel_to_year'];

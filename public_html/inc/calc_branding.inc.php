@@ -1,5 +1,5 @@
             <div id="header" class="group">  
-                <h1>Climate Effort-Sharing Calculator</h1>
+                <h1>Climate Effort-Sharing Calculator <span>beta</span></h1>
                 <div id="partners">
                     <ul>
                         <li><a id="ecoequity" href="http://www.ecoequity.org">EcoEquity</a></li>

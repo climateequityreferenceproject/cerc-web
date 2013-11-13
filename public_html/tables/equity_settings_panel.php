@@ -87,7 +87,7 @@ if (isset($_COOKIE['db'])) {
     <h2>Equity Settings</h2>
     <?php echo $glossary->getLink('equity_settings', false, _("Help")); ?>
     <input type="button" name="equity_reset_top" id="equity_reset_top" class="click" value='<?php echo _("Reset to defaults") ?>' />
-    <input type="submit" name="equity_submit_top" id="equity_submit_top" class="click" value='<?php echo _("Save these settings") ?>' />
+    <input type="submit" name="equity_submit_top" id="equity_submit_top" class="click" value='<?php echo _("Save and continue") ?>' />
     <input type="submit" name="equity_cancel_top" id="equity_cancel_top" class="click" value='<?php echo _("Cancel") ?>' />
     
     <ul>
@@ -184,7 +184,7 @@ if (isset($_COOKIE['db'])) {
 
     </ul>
     <input type="button" name="equity_reset" id="equity_reset" class="click" value='<?php echo _("Reset to defaults") ?>' />
-    <input type="submit" name="equity_submit" id="equity_submit" class="click" value='<?php echo _("Save these settings") ?>' />
+    <input type="submit" name="equity_submit" id="equity_submit" class="click" value='<?php echo _("Save and continue") ?>' />
     <input type="submit" name="equity_cancel" id="equity_cancel" class="click" value='<?php echo _("Cancel") ?>' />
 
 </form><!-- end equity_settings -->

@@ -292,15 +292,10 @@ EOHTML;
     
     $retval .= '<p id="toggle-key">' . _('Show graph key') . '</p>';
     $retval .= '<dl id="ctry_report_legend">';
-    $retval .= '<dt class="key-bau"><span></span>' . _('Business as Usual') . '</dt>';
-    $retval .= '<dd>' . _('GHG emissions baselines (or BAU trajectories) are calculated based on 
-        convergence from recent historical growth rates to long-term (2030) growth rates 
-        from the projections of McKinsey and Co. (Version 2.1). CO<sub>2</sub> from land use is projected 
-        constant at 2005 levels. GDP estimates are taken from IMF (WEO2013) through the year 2018 
-        and converge to growth rates from McKinsey and Co. in 2030. See 
-        <a href="http://gdrights.org/gdrs-scorecard-calculator-information/gdp-and-emissions-baselines-in-the-gdrs-framework/">
-        GDP and emissions baselines in the GDRs framework</a> for details.') . '</dd>';
-
+    $retval .= '<dt class="key-bau"><span></span>' . _('Baseline Emissions') . '</dt>';
+    
+    $retval .= '<dd>' . _('GHG emissions baselines (these are <strong>*not*</strong> business-as-usual pathways) are calculated as counter-factual non-policy baselines. The method is convergence from recent historical growth rates to long-term (2030) growth rates from the projections of McKinsey and Co. (Version 2.1). CO<sub>2</sub> from land use is projected constant at 2005 levels. GDP estimates are taken from IMF (WEO2013) through 2018 and converge to growth rates from McKinsey and Co. in 2030. See <a href="http://gdrights.org/calculator-information/gdp-and-emissions-baselines-in-the-gdrs-framework/">Sourcing and normalization of GDRs emissions baselines</a> for details.') . '</dd>';    
+    
     $retval .= '<dt class="key-gdrs"><span></span>' . _('GDRs "fair share" allocation') . '</dt>';
     $retval .= '<dd>' . sprintf(_('National allocation trajectory, as calculated by GDRs for %s using the specified pathways and parameters. 
         The mitigation implied by this allocation can be either domestic or international &#8211; GDRs in itself says nothing about how or where it occurs.'), $country_name) . '</dd>';
@@ -308,7 +303,7 @@ EOHTML;
     if ($iso3 != $world_code) {
         $retval .= '<dt class="key-phys"><span></span>' . _('Domestic emissions') . '</dt>';
         $retval .= '<dd>' . sprintf(_('An example of a domestic emissions trajectory for %s that is consistent with the specified pathways and parameters. '), $country_name);
-        $retval .= sprintf(_('This pathway is not part of GDRs proper, for while GDRs assigns each country a mitigation obligation, it does not specify how or where that obligation should be discharged. The domestic emissions pathway is estimated by tracing a pathway that tracks the selected global mitigation pathway. That is, the annual rate of emission reduction below BAU is the same in all countries and equal to the global reduction rate. For more information, see <a href="http://gdrights.org/gdrs-scorecard-calculator-information/gdrs-obligations/">On domestic action in a global crisis</a>.'), $country_name) . '</dd>';
+        $retval .= sprintf(_('This pathway is not part of GDRs proper, for while GDRs assigns each country a mitigation obligation, it does not specify how or where that obligation should be discharged. The domestic emissions pathway is estimated by tracing a pathway that tracks the selected global mitigation pathway. That is, the annual rate of emission reduction below the baseline is the same in all countries and equal to the global reduction rate. For more information, see <a href="http://gdrights.org/gdrs-scorecard-calculator-information/gdrs-obligations/">On domestic action in a global crisis</a>.'), $country_name) . '</dd>';
 
         $retval .= '<dt class="key-dom"><span></span>';
         if ($fund_others) {
@@ -348,14 +343,14 @@ EOHTML;
     
     // BAU emissions
     $retval .= "<tr>";
-    $retval .= "<td class=\"lj\">" . sprintf(_('%1$s business-as-usual emissions, projected to %2$d'), $country_name, $year) . "</td>";
+    $retval .= "<td class=\"lj\">" . sprintf(_('%1$s baseline emissions, projected to %2$d'), $country_name, $year) . "</td>";
     $val = $bau[$year];
     $retval .= '<td class="cj">&nbsp;</td>';
     $retval .= "<td>" . nice_number('', $val, '') . ' Mt' . $gases . "</td>";
     $retval .= "</tr>";
     // year Global mitigation obligation as MtCO2e below BAU
     $retval .= "<tr>";
-    $retval .= "<td class=\"lj\">" . sprintf(_("Global mitigation requirement below business-as-usual, projected to %d"), $year) . "</td>";
+    $retval .= "<td class=\"lj\">" . sprintf(_("Global mitigation requirement below baseline, projected to %d"), $year) . "</td>";
     $retval .= '<td class="cj">(A)</td>';
     $val = $world_bau - $world_tot["gdrs_alloc"];
     $retval .= "<td>" . nice_number('', $val, '') . ' Mt' . $gases . "</td>";
@@ -379,14 +374,14 @@ EOHTML;
     $retval .= "</tr>";
     // National mitigation obligation as MtCO2e below BAU
     $retval .= "<tr>";
-    $retval .= "<td class=\"lj level2\">" . _("as tons below business-as-usual") . "</td>";
+    $retval .= "<td class=\"lj level2\">" . _("as tons below baseline") . "</td>";
     $retval .= '<td class="cj">&nbsp;</td>';
     $val = $bau[$year] - $ctry_val[$year]["gdrs_alloc_MtCO2"];
     $retval .= "<td>" . nice_number('', $val, '') . ' Mt' . $gases . "</td>";
     $retval .= "</tr>";
     // National mitigation obligation as % below BAU
     $retval .= "<tr>";
-    $retval .= "<td class=\"lj level2\">" . _("as percent below business-as-usual") . "</td>";
+    $retval .= "<td class=\"lj level2\">" . _("as percent below baseline") . "</td>";
     $retval .= '<td class="cj">&nbsp;</td>';
     $val = 100 * (1 - $ctry_val[$year]["gdrs_alloc_MtCO2"]/$bau[$year]);
     $retval .= "<td>" . nice_number('', $val, '%') . "</td>";
@@ -462,7 +457,7 @@ EOHTML;
 //    }
     
 
-    $scorecard_link = '<a href="' . $scorecard_url . '">' . _('Climate Equity Scorecard') . '</a>';
+    $scorecard_link = '<a href="' . $scorecard_url . '">' . _('Climate Equity Pledge Scorecard') . '</a>';
     $condl_term = array('conditional' => _('conditional'), 'unconditional' => _('unconditional'));
     foreach (array('unconditional', 'conditional') as $condl) {
         $pledges = $dom_pledges[$condl];
@@ -476,25 +471,25 @@ EOHTML;
             $retval .= '<tr><td class="lj" colspan="3">' . $common_str . '</td></tr>';
             // Total
             $retval .= "<tr>";
-            $retval .= "<td class=\"lj level2\">in tons below business-as-usual</td>";
+            $retval .= "<td class=\"lj level2\">in tons below baseline</td>";
             $retval .= '<td class="cj">&nbsp;</td>';
             $val = $pledge_info['pledge'];
             $retval .= "<td>" . nice_number('', $val, '') . ' Mt' . $gases . "</td>";
             $retval .= "</tr>";
             // % below BAU
             $retval .= "<tr>";
-            $retval .= "<td class=\"lj level2\">" . _('as percent below business-as-usual') . "</td>";
+            $retval .= "<td class=\"lj level2\">" . _('as percent below baseline') . "</td>";
             $retval .= '<td class="cj">&nbsp;</td>';
             $val = 100 * $pledge_info['pledge']/$bau[$pledge_year];
             $retval .= "<td>" . nice_number('', $val, '%') . "</td>";
             $retval .= "</tr>";
             // Score
-            $retval .= "<tr>";
-            $retval .= "<td class=\"lj level2\">" . sprintf(_('as %s-style score'), $scorecard_link) . "</td>";
-            $retval .= '<td class="cj">&nbsp;</td>';
-            $val = 100 * ($pledge_info['pledge'] - $mit_oblig)/$bau[$pledge_year];
-            $retval .= "<td>" . nice_number('', $val, '') . "</td>";
-            $retval .= "</tr>";
+//            $retval .= "<tr>";
+//            $retval .= "<td class=\"lj level2\">" . sprintf(_('as %s-style score'), $scorecard_link) . "</td>";
+//            $retval .= '<td class="cj">&nbsp;</td>';
+//            $val = 100 * ($pledge_info['pledge'] - $mit_oblig)/$bau[$pledge_year];
+//            $retval .= "<td>" . nice_number('', $val, '') . "</td>";
+//            $retval .= "</tr>";
         }
     }
     

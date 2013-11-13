@@ -27,7 +27,7 @@ require_once "help/HWTHelp/HWTHelp.php";
        More info: h5bp.com/b/378 -->
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-  <title>Glossary | Climate Equity Scorecard</title>
+  <title>Glossary | Climate Equity Pledge Scorecard</title>
   <meta name="description" content="">
   <meta name="author" content="">
 
@@ -51,7 +51,7 @@ require_once "help/HWTHelp/HWTHelp.php";
   <body class="glossary group">
     <div id="container" class="group">
     <header>
-        <h1><a href="http://gdrights.org/scorecard/">Climate Equity Scorecard</a> Glossary</h1>
+        <h1><a href="http://gdrights.org/scorecard/">Climate Equity Pledge Scorecard</a> Glossary</h1>
     </header>
     <div id="main" role="main" class="group">
 
