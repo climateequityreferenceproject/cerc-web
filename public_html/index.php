@@ -5,7 +5,6 @@ if (isset($_GET['debug']) && $_GET['debug'] == 'yes') {
 }
 
 include("core.php");
-include("boilerplate.php");
 include("form_functions.php");
 $table_view_default = $display_params['table_view']['value'];
 if (isset($_GET['iso3'])) {
@@ -318,7 +317,8 @@ if (isset($_POST['equity_cancel']) || isset($_POST['equity_cancel_top']) || isse
                                </div><!-- end #data -->
                            </div><!-- end #calc_container -->
                            <div id="popup"></div><!-- help #popup window -->
-                           
-        <?php echo get_footer(Framework::get_data_ver(), Framework::get_calc_ver()); ?>
+            <br class="clear"/>
+        </div><!-- end #container -->      
+        <?php include("inc/calc_footer.inc.php"); ?>
     </body>
 </html>
