@@ -34,7 +34,7 @@ if (isset($_POST['equity_cancel']) || isset($_POST['equity_cancel_top']) || isse
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>Climate Effort-Sharing Calculator</title>
+    <title>Climate Equity Reference Calculator</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -158,7 +158,8 @@ if (isset($_POST['equity_cancel']) || isset($_POST['equity_cancel_top']) || isse
                             echo "</li>";
                             echo "<li>";
                             echo select_num('percent_gwp_MITIGATION', $shared_params,$glossary->getLink('mit_cost', false, _('Mitigation cost as % GWP')) . ":");
-                            echo "</li>";
+                            echo "<p class='level2'>Global average mitigation cost per ton CO<sub>2</sub> per year: <span id='cost_per_ton'>$[XXX]</span></p></li>";
+//                            echo '<li><label class="level2">[report price per ton here]</label></li>';
                             echo "<li>";
                             echo select_num('percent_gwp_ADAPTATION', $shared_params,$glossary->getLink('adapt_cost', false, _('Adaptation cost as % GWP')) . ":");
                             echo "</li>";

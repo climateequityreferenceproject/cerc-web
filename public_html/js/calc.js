@@ -434,7 +434,7 @@ function spinoff_window() {
     '    <head>\n' +
     '       <meta charset="utf-8">\n' +
     '       <meta http-equiv="X-UA-Compatible" content="IE=edge">\n' +
-    '       <title>View -- generated from the Climate Effort-Sharing Calculator</title>\n' +
+    '       <title>View -- generated from the Climate Equity Reference Calculator</title>\n' +
     '       <link rel="stylesheet" href="http://www.gdrights.org/calculator_dev/css/cescalc.css" media="screen, projection" />\n' +
     '       <style type="text/css">\n' +
     '         #input_values caption {' +

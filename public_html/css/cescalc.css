@@ -254,6 +254,7 @@ nav li.last a, #nav li.last a { border:none;}
 /*** form layout ***/
 form {padding:0;}
 form li p { margin-top:0; }
+form li p.level2 {clear:both; padding:0.4em 0 0 1.5em;}
 #form1 {
     float:left;
     width:26em;
