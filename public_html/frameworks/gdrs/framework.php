@@ -168,6 +168,29 @@
         public function get_default_fw_params() {
             return $this->fw_params_default;
         }
+        
+        public function cost_of_carbon($user_db, $year) {
+$sql = <<< ENDSQL
+SELECT (1000 * 3/11) * cost_blnUSDMER/
+	NULLIF(baseline_MtC - allocation_MtC, 0)
+	AS cost_USD_per_tCO2
+FROM	(SELECT 0.01 * params.real_val * SUM(core.gdp_blnUSDMER) AS cost_blnUSDMER
+		FROM core, params WHERE params.param_id = 'billpercgwp_mit'
+		AND core.year = $year),
+	(SELECT SUM(baseline_MtC) AS baseline_MtC
+		FROM view_baseline
+		WHERE year = $year),
+	(SELECT SUM(allocation_MtC) AS allocation_MtC
+		FROM gdrs
+		WHERE year = $year);
+
+ENDSQL;
+            $this->db_connect($user_db);
+            $retval = $this->get_db()->query($sql)->fetch(PDO::FETCH_NAMED);
+            $this->db_close();
+            
+            return $retval['cost_USD_per_tCO2'];
+        }
     }
     
     

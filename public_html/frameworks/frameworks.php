@@ -587,6 +587,9 @@ EOSQL;
         
         abstract public function get_default_fw_params();
         
+        abstract public function cost_of_carbon($db, $year);
+
+        
         // ----------------------------------------------------------------
         // Methods to implement the database connection, which is maintained
         // over the life of each instance of a specific framework. (So, there

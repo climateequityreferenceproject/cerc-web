@@ -149,14 +149,13 @@ $(function() {
             "getdb=yes",
             function(dbname) {
                 $('#user_db').val(dbname);
+                // Get table
                 $.post(
                     "core.php",
-                    $('#form1').serialize() + "&submit=submit&ajax=ajax",
+                    $('#form1').serialize() + "&submit=submit&ajax=table",
                     function(data) {
                         $('#data').html(data);
                         init_calc_behavior();
-                        // hide spinner
-                        $('#loading').hide();
 
                         //filter result
                         filterResult();
@@ -171,6 +170,16 @@ $(function() {
                             }
                         });
                     }
+                );
+                // Get cost of carbon
+                $.post(
+                    "core.php",
+                    $('#form1').serialize() + "&submit=submit&ajax=carboncost",
+                    function(data) {
+                        $('#cost_per_ton').html(data);
+                         // hide spinner
+                        $('#loading').hide();
+                   }
                 );
             }
         );

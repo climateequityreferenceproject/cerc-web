@@ -213,17 +213,22 @@
     // Special case
     $shared_params['percent_gwp']['value'] = $shared_params['percent_gwp_MITIGATION']['value'] + $shared_params['percent_gwp_ADAPTATION']['value'];
     
+    $cost_of_carbon = $fw->cost_of_carbon($user_db, $display_params['display_yr']['value']);
+    
     /*** Cleanup ************************************************************/
     // Just to be sure, explicitly delete the object
     unset($fw);
     
-    if (isset($_POST['ajax']) && $_POST['ajax']) {
-        // print_r($_POST);
-        // echo("<br /><br />");
-        // print_r($shared_params);
-        // echo("<br /><br />");
-        // print_r($fw_params);
-        // echo("<br /><br />");
-        // print_r($display_params);
-        echo generate_table($display_params, $fw_params, $shared_params, $country_list, $region_list, $table_views, $user_db);
+    if (isset($_POST['ajax'])) {
+        switch ($_POST['ajax']) {
+            case 'table':
+                echo generate_table($display_params, $fw_params, $shared_params, $country_list, $region_list, $table_views, $user_db);
+                break;
+            case 'carboncost':
+                echo number_format($cost_of_carbon);
+                break;
+            default:
+                break;
+            
+        }
     }
