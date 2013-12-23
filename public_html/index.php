@@ -158,8 +158,8 @@ if (isset($_POST['equity_cancel']) || isset($_POST['equity_cancel_top']) || isse
                             echo "</li>";
                             echo "<li>";
                             echo select_num('percent_gwp_MITIGATION', $shared_params,$glossary->getLink('mit_cost', false, _('Mitigation cost as % GWP')) . ":");
-                            echo "<p class='level2'>Global average mitigation cost per ton CO<sub>2</sub> per year: $<span id='cost_per_ton'>" . number_format($cost_of_carbon) . "</span></p></li>";
-//                            echo '<li><label class="level2">[report price per ton here]</label></li>';
+                            echo "<p class='level2'>" . sprintf(_('Global average mitigation cost is %1$s per ton CO<sub>2</sub> in %2$d'), "$<span id='cost_per_ton'>" . number_format($cost_of_carbon) . "</span>", $display_params['display_yr']['value']) . "</p>";
+                            echo "</li>";
                             echo "<li>";
                             echo select_num('percent_gwp_ADAPTATION', $shared_params,$glossary->getLink('adapt_cost', false, _('Adaptation cost as % GWP')) . ":");
                             echo "</li>";
