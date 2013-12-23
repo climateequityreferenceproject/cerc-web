@@ -132,6 +132,7 @@ EOSQL;
     $i = 0;
     foreach ($year_list as $y) {
         $ctry_val[$y] = $record[$i];
+        $pop[$y] = $ctry_val[$y]['pop_mln'];
         $bau[$y] = $ctry_val[$y]['fossil_CO2_MtCO2'] + 
             $use_nonco2 * $ctry_val[$y]['NonCO2_MtCO2e'] + 
             $use_lulucf * $ctry_val[$y]['LULUCF_MtCO2'];
@@ -484,12 +485,12 @@ EOHTML;
             $retval .= "<td>" . nice_number('', $val, '%') . "</td>";
             $retval .= "</tr>";
             // Score
-//            $retval .= "<tr>";
-//            $retval .= "<td class=\"lj level2\">" . sprintf(_('as %s-style score'), $scorecard_link) . "</td>";
-//            $retval .= '<td class="cj">&nbsp;</td>';
-//            $val = 100 * ($pledge_info['pledge'] - $mit_oblig)/$bau[$pledge_year];
-//            $retval .= "<td>" . nice_number('', $val, '') . "</td>";
-//            $retval .= "</tr>";
+            $retval .= "<tr>";
+            $retval .= "<td class=\"lj level2\">" . sprintf(_('as %s-style score'), $scorecard_link) . "</td>";
+            $retval .= '<td class="cj">&nbsp;</td>';
+            $val = ($pledge_info['pledge'] - $mit_oblig)/$pop[$pledge_year];
+            $retval .= "<td>" . nice_number('', $val, '') . ' t' . $gases . '/cap' . "</td>";
+            $retval .= "</tr>";
         }
     }
     
