@@ -169,17 +169,17 @@ $(function() {
                                 alert("Note: data for non-CO<sub>2</sub> emissions at the national level go back only to" + new_year);
                             }
                         });
+                        // Get cost of carbon: don't submit form, since we know it's exactly what was just posted
+                        $.post(
+                            "core.php",
+                            "submit=submit&ajax=carboncost",
+                            function(data) {
+                                $('#cost_per_ton').html(data);
+                                 // hide spinner
+                                $('#loading').hide();
+                           }
+                        );
                     }
-                );
-                // Get cost of carbon
-                $.post(
-                    "core.php",
-                    $('#form1').serialize() + "&submit=submit&ajax=carboncost",
-                    function(data) {
-                        $('#cost_per_ton').html(data);
-                         // hide spinner
-                        $('#loading').hide();
-                   }
                 );
             }
         );
