@@ -148,6 +148,7 @@ EOSQL;
      * Generate graphs
      */
     $dom_pledges = get_processed_pledges($iso3, $shared_params, $dbfile);
+    $num_pledges = count($dom_pledges, COUNT_RECURSIVE) - count($dom_pledges, COUNT_NORMAL);
     
 $query = <<< EOSQL
 SELECT year, SUM(gdrs_alloc_MtCO2) AS gdrs_alloc_MtCO2, SUM(fossil_CO2_MtCO2) AS fossil_CO2_MtCO2,
@@ -335,10 +336,15 @@ EOHTML;
     /*
      * Main table
      */
+    if ($num_pledges > 0) {
+        $caption = _("Mitigation obligation and pledges");
+    } else {
+        $caption = _("Mitigation obligation");
+    }
 $retval .= <<< EOHTML
 <br />
 <table cellspacing="2" cellpadding="2">
-<caption>Fair share table</caption>
+<caption>$caption</caption>
     <tbody>
 EOHTML;
     
@@ -520,7 +526,7 @@ $retval .= <<< EOHTML
         <th>&nbsp;</th>
         <th>&nbsp;</th>
         <th style="border: none;">&nbsp;</th>
-        <th colspan="2" style="text-align:center">Per-capita obligation</th>
+        <th colspan="2" style="text-align:center">Annual per-capita obligation</th>
     </tr>
     <tr>
         <th>Income level<br/>(2010 \$US MER/cap)</th>
@@ -530,7 +536,7 @@ $retval .= <<< EOHTML
         <th>Population above<br/>tax level (% pop.)</th>
         <th style="border: none;">&nbsp;</th>
         <th><br/>as 2010 \$US MER/cap</th>
-        <th><br/>as kt$gases/cap</th>
+        <th><br/>as t$gases/cap</th>
     </tr>
     </thead>
     <tbody>
