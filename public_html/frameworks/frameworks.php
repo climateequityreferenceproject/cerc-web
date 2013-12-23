@@ -588,8 +588,7 @@ EOSQL;
         abstract public function get_default_fw_params();
         
         abstract public function cost_of_carbon($db, $year);
-
-        
+                
         // ----------------------------------------------------------------
         // Methods to implement the database connection, which is maintained
         // over the life of each instance of a specific framework. (So, there
@@ -704,6 +703,17 @@ EOSQL;
             
             return $retval;
         }
+        
+        public function get_params_as_query($user_db) {
+            $shared_params = $this->get_shared_params($user_db);
+            $fw_params = $this->get_fw_params($user_db);
+            $query_array = array();
+            foreach (array_merge($shared_params, $fw_params) as $pname => $parray) {
+                $query_array[] = $pname . "=" . $parray['value'];
+            }
+            return implode("&", $query_array);
+        }
+
         
         public function get_table_views() {
             return $this->table_views;

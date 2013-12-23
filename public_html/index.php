@@ -258,6 +258,7 @@ if (isset($_POST['equity_cancel']) || isset($_POST['equity_cancel_top']) || isse
                                         echo $welcome_string;
                                         ?></p>
 
+                                        <a href="<?php echo $scorecard_url ?>"><?php echo _("Open Climate Equity Pledge Scorecard with these settings") ?></a>
                                         <form action="index.php" method="post" name="eqbtn_form" id="eqbtn_form">
                                             <div id="review_equity_settings">
                                                 <button id="equity_settings_button" type="submit">Review equity settings</button>

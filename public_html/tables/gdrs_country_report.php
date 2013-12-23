@@ -59,6 +59,9 @@ function gdrs_country_report($dbfile, $country_name, $shared_params, $iso3, $yea
     $year_list_string = 'year=' . implode(' OR year=', $year_list);
     
     $world_code = Framework::get_world_code();
+    $fw = new Framework::$frameworks['gdrs']['class'];
+    $query_string = $fw->get_params_as_query($dbfile);
+    unset($fw);
     
     $viewquery = get_common_table_query($dbfile);
 
@@ -445,9 +448,9 @@ EOHTML;
     // Blank line
     $retval .= "<tr class=\"blank\"><td colspan=\"3\">&nbsp;</td></tr>";
     if (Framework::is_dev()) {
-        $scorecard_url = 'http://www.gdrights.org/scorecard/';
-    } else {
         $scorecard_url = 'http://www.gdrights.org/scorecard_dev/';
+    } else {
+        $scorecard_url = 'http://www.gdrights.org/scorecard/';
     }
     
     // Pledges
@@ -464,7 +467,7 @@ EOHTML;
 //    }
     
 
-    $scorecard_link = '<a href="' . $scorecard_url . '">' . _('Climate Equity Pledge Scorecard') . '</a>';
+    $scorecard_link = '<a href="' . $scorecard_url . '?' . $query_string . '">' . _('Climate Equity Pledge Scorecard') . '</a>';
     $condl_term = array('conditional' => _('conditional'), 'unconditional' => _('unconditional'));
     foreach (array('unconditional', 'conditional') as $condl) {
         $pledges = $dom_pledges[$condl];

@@ -215,6 +215,15 @@
     
     $cost_of_carbon = $fw->cost_of_carbon($user_db, $display_params['display_yr']['value']);
     
+    
+    // Get a scorecard url
+    $query_string = $fw->get_params_as_query($user_db);
+    if (Framework::is_dev()) {
+        $scorecard_url = 'http://www.gdrights.org/scorecard_dev/?' . $query_string;
+    } else {
+        $scorecard_url = 'http://www.gdrights.org/scorecard/?' . $query_string;
+    }
+    
     /*** Cleanup ************************************************************/
     // Just to be sure, explicitly delete the object
     unset($fw);
