@@ -307,8 +307,8 @@ EOHTML;
     
     if ($iso3 != $world_code) {
         $retval .= '<dt class="key-phys"><span></span>' . _('Domestic emissions') . '</dt>';
-        $retval .= '<dd>' . sprintf(_('An example of a domestic emissions trajectory for %s that is consistent with the specified pathways and parameters. '), $country_name);
-        $retval .= sprintf(_('This pathway is not part of GDRs proper, for while GDRs assigns each country a mitigation obligation, it does not specify how or where that obligation should be discharged. The domestic emissions pathway is estimated by tracing a pathway that tracks the selected global mitigation pathway. That is, the annual rate of emission reduction below the baseline is the same in all countries and equal to the global reduction rate. For more information, see <a href="http://gdrights.org/gdrs-scorecard-calculator-information/gdrs-obligations/">On domestic action in a global crisis</a>.'), $country_name) . '</dd>';
+        $retval .= '<dd>' . sprintf(_('An example domestic emissions trajectory for %s, one that’s consistent with the specified pathways and parameters. '), $country_name);
+        $retval .= sprintf(_('This pathway is not properly part of the GDRs effort-sharing framework, for while GDRs assigns each country a mitigation obligation, it does not specify how or where that obligation should be discharged. However, in this report, as a guide to thought, all countries are given a domestic emissions pathway that tracks the selected global mitigation pathway. That is, it drops, relative to the national (policy-free) baseline, at the same rate as the selected global mitigation pathway. For more information, see <a href="http://gdrights.org/gdrs-scorecard-calculator-information/gdrs-obligations/">On domestic action in a global crisis</a>.'), $country_name) . '</dd>';
 
         $retval .= '<dt class="key-dom"><span></span>';
         if ($fund_others) {
