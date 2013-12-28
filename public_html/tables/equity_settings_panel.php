@@ -101,7 +101,7 @@ if (isset($_COOKIE['db'])) {
                             <label for="ambition-high"><input type="radio" name="emergency_path" id="ambition-high" class="click" value=<?php echo '"' . $emerg_path_id["1.5"] . '" ' . $ambition_checked["1.5"]; ?> />Strong 2&#176;C (Good odds of limiting warming to 2&#176;C. Undefined odds of limiting warming to 1.5&#176;C)</label>
                         </li>
                         <li>
-                            <label for="ambition-med"><input type="radio" name="emergency_path" id="ambition-med" class="click" value=<?php echo '"' . $emerg_path_id["2.0"] . '" ' . $ambition_checked["2.0"]; ?> />Weak 2&#176;C (This pathway would have been considered strong before 2013 IPCC Fifth Assessment Report)</label>
+                            <label for="ambition-med"><input type="radio" name="emergency_path" id="ambition-med" class="click" value=<?php echo '"' . $emerg_path_id["2.0"] . '" ' . $ambition_checked["2.0"]; ?> />Weak 2&#176;C (This pathway would have been considered strong before the 2013 IPCC Fifth Assessment Report)</label>
                         </li>
                         <li>
                             <label for="ambition-low"><input type="radio" name="emergency_path" id="ambition-low" class="click" value=<?php echo '"' . $emerg_path_id["G8"] . '" ' . $ambition_checked["G8"]; ?> />G8 marker (An even weaker pathway, as per the 2009 G8 declaration in L’Aquila)</label>
