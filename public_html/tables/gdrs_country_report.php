@@ -19,11 +19,11 @@ function nice_number($prefix, $num, $postfix, $decimal = NULL) {
     }
     $retval .= $prefix;
     if (is_numeric($decimal)) {
-        $dec = dec($num);
-    } else {
         $dec = $decimal;
+    } else {
+        $dec = dec($num);
     }
-    $retval .= number_format(abs($num), dec($num));
+    $retval .= number_format(abs($num), $dec);
     $retval .= $postfix;
     if ($num < 0) {
         $retval .= '</span>';
@@ -524,7 +524,7 @@ EOHTML;
             $retval .= "<td class=\"lj level2\">" . sprintf(_('as %s-style score'), $scorecard_link) . "</td>";
             $retval .= '<td class="cj">&nbsp;</td>';
             $val = ($pledge_info['pledge'] - $mit_oblig)/$pop[$pledge_year];
-            $retval .= "<td>" . nice_number('', $val, '') . ' t' . $gases . '/cap' . "</td>";
+            $retval .= "<td>" . nice_number('', $val, '', 1) . ' t' . $gases . '/cap' . "</td>";
             $retval .= "</tr>";
         }
     }
