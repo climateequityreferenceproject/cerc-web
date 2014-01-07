@@ -8,7 +8,7 @@ function dec($num) {
     return max(0, 1 - floor(log10(abs($num))));
 }
 
-function nice_number($prefix, $num, $postfix) {
+function nice_number($prefix, $num, $postfix, $decimal = NULL) {
     if (abs($num) < 1.0e-7) {
         $num = 0;
     }
@@ -18,6 +18,11 @@ function nice_number($prefix, $num, $postfix) {
         $retval = '';
     }
     $retval .= $prefix;
+    if (is_numeric($decimal)) {
+        $dec = dec($num);
+    } else {
+        $dec = $decimal;
+    }
     $retval .= number_format(abs($num), dec($num));
     $retval .= $postfix;
     if ($num < 0) {
@@ -389,6 +394,13 @@ EOHTML;
     $val = $bau[$year] - $ctry_val[$year]["gdrs_alloc_MtCO2"];
     $retval .= "<td>" . nice_number('', $val, '') . ' Mt' . $gases . "</td>";
     $retval .= "</tr>";
+    // National mitigation obligation as tCO2e/capita
+    $retval .= "<tr>";
+    $retval .= "<td class=\"lj level2\">" . _("as tons per capita") . "</td>";
+    $retval .= '<td class="cj">&nbsp;</td>';
+    $val = ($bau[$year] - $ctry_val[$year]["gdrs_alloc_MtCO2"])/$pop[$year];
+    $retval .= "<td>" . nice_number('', $val, '', 1) . ' t' . $gases . "/cap</td>";
+    $retval .= "</tr>";
     // National mitigation obligation as % below BAU
     $retval .= "<tr>";
     $retval .= "<td class=\"lj level2\">" . _("as percent below baseline") . "</td>";
@@ -425,6 +437,13 @@ EOHTML;
     $retval .= '<td class="cj">&nbsp;</td>';
     $val = $ctry_val[$year]["gdrs_alloc_MtCO2"];
     $retval .= "<td>" . nice_number('', $val, '') . ' Mt' . $gases . "</td>";
+    $retval .= "</tr>";
+    // GDRs allocation as tCO2e/capita
+    $retval .= "<tr>";
+    $retval .= "<td class=\"lj level2\">" . _("as tons per capita") . "</td>";
+    $retval .= '<td class="cj">&nbsp;</td>';
+    $val = $ctry_val[$year]["gdrs_alloc_MtCO2"]/$pop[$year];
+    $retval .= "<td>" . nice_number('', $val, '', 1) . ' t' . $gases . "/cap</td>";
     $retval .= "</tr>";
     // GDRs 2020 allocation as percent of 1990 emissions
     $retval .= "<tr>";
@@ -485,6 +504,13 @@ EOHTML;
             $retval .= '<td class="cj">&nbsp;</td>';
             $val = $pledge_info['pledge'];
             $retval .= "<td>" . nice_number('', $val, '') . ' Mt' . $gases . "</td>";
+            $retval .= "</tr>";
+            // Per capita
+            $retval .= "<tr>";
+            $retval .= "<td class=\"lj level2\">in tons per capita</td>";
+            $retval .= '<td class="cj">&nbsp;</td>';
+            $val = $pledge_info['pledge']/$pop[$pledge_year];
+            $retval .= "<td>" . nice_number('', $val, '', 1) . ' t' . $gases . "/cap</td>";
             $retval .= "</tr>";
             // % below BAU
             $retval .= "<tr>";
