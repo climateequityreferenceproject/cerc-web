@@ -65,7 +65,7 @@ function gdrs_country_report($dbfile, $country_name, $shared_params, $iso3, $yea
     
     $world_code = Framework::get_world_code();
     $fw = new Framework::$frameworks['gdrs']['class'];
-    $query_string = $fw->get_params_as_query($dbfile);
+    $query_string = $fw->get_params_as_query($dbfile) . '&country=' . $iso3;
     unset($fw);
     
     $viewquery = get_common_table_query($dbfile);
