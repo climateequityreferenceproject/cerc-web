@@ -486,10 +486,12 @@ EOHTML;
 //    }
     
 
-    $scorecard_link = '<a href="' . $scorecard_url . '?' . $query_string . '">' . _('Climate Equity Pledge Scorecard') . '</a>';
     $condl_term = array('conditional' => _('conditional'), 'unconditional' => _('unconditional'));
+    $condl_code['unconditional'] = '0';
+    $condl_code['conditional'] = '1';
     foreach (array('unconditional', 'conditional') as $condl) {
         $pledges = $dom_pledges[$condl];
+        $first_pledge = true;
         foreach ($pledges as $pledge_year => $pledge_info) {
             $mit_oblig = $bau[$pledge_year] - $ctry_val[$pledge_year]["gdrs_alloc_MtCO2"];
             $common_str = sprintf(_('%1$s %2$s pledge: %3$s by %4$d'),
@@ -497,6 +499,15 @@ EOHTML;
                     $condl_term[$condl],
                     $pledge_info['description'],
                     $pledge_year);
+            
+            if ($first_pledge) {
+                $scorecard_link = '<a href="' . $scorecard_url . '?';
+                $scorecard_link .= $query_string . '&conditional=' . $condl_code[$condl]; 
+                $scorecard_link .= '">' . _('Climate Equity Pledge Scorecard') . '</a>';
+            } else {
+                $scorecard_link = _('Climate Equity Pledge Scorecard');
+            }
+            
             $retval .= '<tr><td class="lj" colspan="3">' . $common_str . '</td></tr>';
             // Total
             $retval .= "<tr>";
@@ -526,6 +537,8 @@ EOHTML;
             $val = ($pledge_info['pledge'] - $mit_oblig)/$pop[$pledge_year];
             $retval .= "<td>" . nice_number('', $val, '', 1) . ' t' . $gases . '/cap' . "</td>";
             $retval .= "</tr>";
+            // No link for subsequent pledges
+            $first_pledge = false;
         }
     }
     
