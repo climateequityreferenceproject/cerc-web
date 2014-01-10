@@ -129,8 +129,8 @@ EOSQL;
         $record = $db->query($regionquery)->fetchAll();;
     }
     
-    $use_nonco2 = $shared_params['use_nonco2']['value'];
-    $use_lulucf = $shared_params['use_lulucf']['value'];
+    $use_nonco2 = (int) $shared_params['use_nonco2']['value'];
+    $use_lulucf = (int) $shared_params['use_lulucf']['value'];
     $gases = "CO<sub>2</sub>";
     $gases_svg = 'CO<tspan dy="3" font-size="10">2</tspan>';
     if ($use_nonco2) {
@@ -170,10 +170,10 @@ EOSQL;
         $yr_ndx = $record['year'];
         $global_alloc_series[$yr_ndx] = $record['gdrs_alloc_MtCO2'];
         $global_bau_series[$yr_ndx] = $record['fossil_CO2_MtCO2'];
-        if ($shared_params['use_lulucf']['value']) {
+        if ($use_lulucf) {
             $global_bau_series[$yr_ndx] += $record['LULUCF_MtCO2'];
         }
-        if ($shared_params['use_nonco2']['value']) {
+        if ($use_nonco2) {
             $global_bau_series[$yr_ndx] += $record['NonCO2_MtCO2e'];
         }
     }
@@ -206,10 +206,10 @@ EOSQL;
         $yr_ndx = $record['year'];
         $alloc_series[$yr_ndx] = $record['gdrs_alloc_MtCO2'];
         $bau_series[$yr_ndx] = $record['fossil_CO2_MtCO2'];
-        if ($shared_params['use_lulucf']['value']) {
+        if ($use_lulucf) {
             $bau_series[$yr_ndx] += $record['LULUCF_MtCO2'];
         }
-        if ($shared_params['use_nonco2']['value']) {
+        if ($use_nonco2) {
             $bau_series[$yr_ndx] += $record['NonCO2_MtCO2e'];
         }
         $dulline_series[$yr_ndx] = $bau_series[$yr_ndx] * ($global_alloc_series[$yr_ndx]/$global_bau_series[$yr_ndx]);
