@@ -22,12 +22,14 @@ if (isset($_GET['show_avail_params']) && $_GET['show_avail_params'] === 'yes') {
 } else {
     $show_avail_params = false;
 }
-if (isset($_POST['equity_cancel']) || isset($_POST['equity_cancel_top']) || isset($_POST['equity_submit']) || isset($_POST['equity_submit_top']) || (isset($_GET['equity']) && $_GET['equity'] === 'default')) {
-    $equity_nosplash = true;
-} else {
-    $equity_nosplash = false;
-}
-//$equity_nosplash = true; // TODO remove this after browser testing
+
+$equity_nosplash = false;
+$equity_nosplash = $equity_nosplash || isset($_POST['equity_cancel']);
+$equity_nosplash = $equity_nosplash || isset($_POST['equity_cancel_top']);
+$equity_nosplash = $equity_nosplash || isset($_POST['equity_submit']);
+$equity_nosplash = $equity_nosplash || isset($_POST['equity_submit_top']);
+$equity_nosplash = $equity_nosplash || (isset($_GET['equity']) && $_GET['equity'] === 'default');
+$equity_nosplash = $equity_nosplash || isset($_GET['iso3']);
 ?>
 <!DOCTYPE html>
     <head>
