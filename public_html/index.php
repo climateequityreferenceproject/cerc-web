@@ -128,7 +128,7 @@ $equity_nosplash = $equity_nosplash || isset($_GET['iso3']);
                     <legend class="open"><span>&nbsp;</span>Calculator settings</legend>
                     <ul class="group">
                         <li>
-                            <?php echo select_options_list('emergency_path', $shared_params, $glossary->getLink('gloss_path', false, _("Global mitigation pathway")) . ": ", 'long-label-long-select'); ?>
+                            <?php echo select_options_list('emergency_path', $shared_params, $glossary->getLink('gloss_path', false, _("Global mitigation pathway")) . ": "); ?>
                             <!--<li>
                                 <label for="baseline" class="select">Baseline: </label>
                                 <select name="baseline" id="baseline">
