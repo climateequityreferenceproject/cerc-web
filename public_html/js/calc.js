@@ -144,6 +144,14 @@ $(function() {
         // Get current year
         var curr_year = $('#cum_since_yr').val();
         
+        // Update the url
+        $.post(
+            "get_params_as_query.php",
+            function(new_url) {
+                $("a#scorecard_url").attr("href", new_url);
+            }
+        );
+        
         $.post(
             "core.php",
             "getdb=yes",
