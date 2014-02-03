@@ -4,7 +4,7 @@ require_once("frameworks/frameworks.php");
 
 $fw = new Framework::$frameworks['gdrs']['class'];
 // Get a scorecard url
-$query_string = $fw->get_params_as_query($user_db);
+$query_string = $fw->get_params_as_query(Framework::get_good_db());
 if (Framework::is_dev()) {
     $scorecard_url = 'http://www.gdrights.org/scorecard_dev/?' . $query_string;
 } else {
