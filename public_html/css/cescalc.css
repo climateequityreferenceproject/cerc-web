@@ -429,6 +429,8 @@ a, a:link, a:visited, a:hover, a:active, #toggle-key {
     text-decoration:none;
 }
 a:hover, a:active { border-bottom-style:solid; }
+header h1 a, #header h1 a { color:#fff; border:none; }
+header h1 a:hover, #header h1 a:hover { color:#b8d4ff; }
 table { font-size:0.95em; line-height:1.2; }
 thead { font-size:0.9em; }
 #container { text-align:left; }
@@ -472,15 +474,11 @@ header h1, #header h1 {
     background:#4d59a4; 
     color:#fff; 
 }
-/*#footer { background:transparent; }*/
-/*#container, footer { border-color:#8b8b8b; }*/
 #headerlinks {
     background-color:#4d59a4;
-/*    border-top:0px solid #063;
-    border-bottom:0px solid #5b6eb4;*/
 }
 nav, #nav, footer, #footer { border-color:#4d59a4; }
-h1, h2 { color:#221e6b; } /* blue */
+h1, h2 { color:#221e6b; } /* blue */ 
 h3 { color:#40822e; } /* green */
 a, a:link, a:visited, a:hover, a:active, #toggle-key {
     border-bottom-color:#050556;
@@ -547,6 +545,48 @@ a.def_link, a.def_link:link, a.def_link:visited, a.def_link:hover, a.def_link:ac
     font-weight: bold;
     text-decoration:none;
 }
+
+.glossary, .docs {font-size:90%;}
+.glossary #container, .docs #container {
+    color:#666;
+    min-width:500px; 
+    max-width:900px;
+}
+.glossary #main, .docs #main {border-top:6px solid #ffce73; margin-top:0.5em;}
+.glossary #main div p, .glossary #main div dl {padding-left:1em;}
+.glossary nav {border-bottom:none; margin:0;}
+.glossary h1, .glossary h2, .docs h1, .docs h2 {color:#4d59a4;}
+.glossary h1, .docs h1 {font-size:2.5em; margin:0.5em 0;}
+.glossary h2, .docs h2 {font-size:1.5em; margin-top:1.5em; padding-top:0;}
+.glossary header, .glossary #header, .docs header, .docs #header {font-size:90%;}
+.glossary header h1, .glossary #header h1, .docs header h1, .docs #header h1 {font-size:2em; margin:0;}
+.glossary p {line-height:1.4; margin-top:0.75em; padding-top:0;}
+
+dl {
+	border-bottom: 1px solid #999;
+	float: left;
+	margin: 1em 0 3em 0;
+	padding: 0;
+	width: 100%;
+}
+dt {
+	border-top: 1px solid #999;
+	clear: left;
+	float: left;
+	font-weight: bold;
+	margin: 0;
+	padding: 0.5em 0;
+	width: 20%;
+}
+dd {
+	border-top: 1px solid #999;
+	float: left;
+	margin: 0;
+	padding: 0.5em 0;
+	width: 80%;
+}
+.glossary div {clear:both;}
+
 
 /*** misc classes *********************************************/
 .clear {

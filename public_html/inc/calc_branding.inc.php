@@ -1,5 +1,5 @@
             <div id="header" class="group">  
-                <h1>Climate Equity Reference Calculator <span>beta</span></h1>
+                <h1><a href="<?php echo $calculator_url;?>">Climate Equity Reference Calculator</a> <span>beta</span></h1>
                 <div id="partners">
                     <ul>
                         <li><a id="ecoequity" href="http://www.ecoequity.org">EcoEquity</a></li>

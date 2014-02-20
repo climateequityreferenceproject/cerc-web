@@ -223,6 +223,13 @@
     } else {
         $scorecard_url = 'http://www.gdrights.org/scorecard/?' . $query_string;
     }
+
+    // Get a calculator home url
+    if (Framework::is_dev()) {
+        $calculator_url = 'http://www.gdrights.org/calculator_dev/';
+    } else {
+        $calculator_url = 'http://www.gdrights.org/calculator/';
+    }
     
     /*** Cleanup ************************************************************/
     // Just to be sure, explicitly delete the object

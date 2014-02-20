@@ -241,7 +241,7 @@ class HWTHelp implements Iterator
     public function getHelpPage($label_elem = "h2")
     {
         $retval = '';
-        $retval .= '<nav>' . PHP_EOL;
+        $retval .= '<nav class="group">' . PHP_EOL;
         $retval .= '<ul>' . PHP_EOL;
         foreach ($this->_entries as $id => $entry) {
             $retval .= '<li><a href="#' . $id . '">' . $entry['label'] . '</a></li>';
