@@ -501,7 +501,7 @@ EOHTML;
                     $pledge_year);
             
             if ($first_pledge) {
-                $scorecard_link = '<a href="' . $scorecard_url . '?';
+                $scorecard_link = '<a target="_blank" href="' . $scorecard_url . '?';
                 $scorecard_link .= $query_string . '&conditional=' . $condl_code[$condl]; 
                 $scorecard_link .= '">' . _('Climate Equity Pledge Scorecard') . '</a>';
             } else {
