@@ -555,6 +555,7 @@ a.def_link, a.def_link:link, a.def_link:visited, a.def_link:hover, a.def_link:ac
 .glossary #main, .docs #main {border-top:6px solid #ffce73; margin-top:0.5em;}
 .glossary #main div p, .glossary #main div dl, .glossary #main div li {padding-left:1em;}
 .glossary #main div p, .glossary #main div li {line-height:1.4; margin-top:0.75em; padding-top:0;}
+.glossary #main div ul ul li, .glossary #main div ol ol li  {padding-left:3em;}
 .glossary nav, .glossary #nav {border-bottom:none; margin:0;}
 .glossary h1, .glossary h2, .docs h1, .docs h2 {color:#4d59a4;}
 .glossary h1, .docs h1 {font-size:2.5em; margin:0.5em 0;}
