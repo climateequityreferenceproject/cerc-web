@@ -160,7 +160,7 @@ $equity_nosplash = $equity_nosplash || isset($_GET['iso3']);
                             echo "</li>";
                             echo "<li>";
                             echo select_num('percent_gwp_MITIGATION', $shared_params,$glossary->getLink('mit_cost', false, _('Mitigation cost as % GWP')) . ":");
-                            echo "<p class='level2'>" . sprintf(_('Global average mitigation cost is %1$s per ton CO<sub>2</sub> in %2$d'), "$<span id='cost_per_ton'>" . number_format($cost_of_carbon) . "</span>", $display_params['display_yr']['value']) . "</p>";
+                            echo "<p class='level2'>" . sprintf(_('Global average mitigation cost is %1$s per tonne CO<sub>2</sub> in %2$d'), "$<span id='cost_per_ton'>" . number_format($cost_of_carbon) . "</span>", $display_params['display_yr']['value']) . "</p>";
                             echo "</li>";
                             echo "<li>";
                             echo select_num('percent_gwp_ADAPTATION', $shared_params,$glossary->getLink('adapt_cost', false, _('Adaptation cost as % GWP')) . ":");
