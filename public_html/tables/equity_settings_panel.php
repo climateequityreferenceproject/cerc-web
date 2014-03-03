@@ -145,7 +145,7 @@ if (isset($_COOKIE['db'])) {
                     </div>
                     <div id="cbdr-grid-container" class="group">
                         <div id="grid-col-1" class="group">
-                                                    <p id="left-label"><strong>More regressive</strong></p>
+                                                    <p id="left-label"><strong>Less progressive</strong></p>
                         </div>
                         <div id="grid-col-2" class="group">
                             <p id="top-label"><strong>Responsibility given more weight</strong></p>
