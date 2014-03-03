@@ -227,7 +227,7 @@ $equity_nosplash = $equity_nosplash || isset($_GET['iso3']);
 
                            <input type="hidden" id="user_db" name="user_db" value="<?php echo $user_db; ?>" />
                            <input type="submit" name="submit" id="submit" class="click" value="<?php echo _("calculate") ?>" /> <!-- TODO: add validation -->
-                           <input type="submit" name="reset" id="reset" class="click" value="<?php echo _("reset to default values") ?>" />
+                           <input type="submit" name="reset" id="reset" class="click" value="<?php echo _("reset to initial values") ?>" />
                        </form>
 
                        <div id="filterDiv">

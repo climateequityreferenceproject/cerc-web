@@ -113,7 +113,7 @@ msgid "calculate"
 msgstr "calculer"
 
 #: /home/erickb/NetBeansProjects/gdrs_web/site/index.php:189
-msgid "reset to default values"
+msgid "reset to initial values"
 msgstr "réinitialiser les valeurs par défaut"
 
 #: /home/erickb/NetBeansProjects/gdrs_web/site/index.php:197
