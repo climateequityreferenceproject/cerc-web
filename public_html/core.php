@@ -19,7 +19,6 @@
     $cookie_info['server'] = preg_replace("/^\.|www\./","",$_SERVER['HTTP_HOST']);
     
     // Always using GDRs framework now
-    $shared_params = Framework::get_shared_params();
     $fw = new Framework::$frameworks['gdrs']['class'];
     
     /*** Databases ************************************************************/
@@ -46,6 +45,7 @@
         // This will make a copy of the user_db
         $user_db = Framework::get_user_db($user_db);
     }
+    $shared_params = Framework::get_shared_params($user_db);
     $fw_params = $fw->get_fw_params($user_db);
     setcookie('db',serialize(Framework::get_db_name($user_db)),$cookie_info['time'],"",$cookie_info['server']);
 
@@ -209,7 +209,7 @@
     // Use the most up-to-date parameter list: years might have changed
     $shared_params = Framework::get_shared_params($user_db);
     $fw_params = $fw->get_fw_params($user_db);
-        
+    
     // Special case
     $shared_params['percent_gwp']['value'] = $shared_params['percent_gwp_MITIGATION']['value'] + $shared_params['percent_gwp_ADAPTATION']['value'];
     

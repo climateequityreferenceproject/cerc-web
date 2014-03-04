@@ -11,7 +11,7 @@ if (isset($_GET['iso3'])) {
     $display_params['display_ctry']['value'] = $_GET['iso3'];
     $display_params['table_view']['value'] = 'gdrs_country_report';
 } else {
-    $display_params['display_ctry']['value'] = Framework::get_world_code();;
+    $display_params['display_ctry']['value'] = Framework::get_world_code();
     $display_params['table_view']['value'] = 'gdrs_country_report';
 }
 if (isset($_GET['year'])) {
@@ -140,17 +140,17 @@ $equity_nosplash = $equity_nosplash || isset($_GET['iso3']);
                             <?php echo select_num('cum_since_yr', $shared_params, $glossary->getLink('cum_respons', false, _('Cumulative since')) . ": "); ?>
                         </li>
                         <li>
-                            <input type="checkbox" name="use_lulucf" id="use_lulucf" class="click" value="1" <?php if ($shared_params["use_lulucf"]['value'])
+                            <input type="checkbox" name="use_lulucf" id="use_lulucf" class="click" value="1" <?php if ((int) $shared_params["use_lulucf"]['value'] === 1)
                             echo 'checked="checked"'; ?>  />
                             <label for="use_lulucf" class="click"> <?php echo sprintf(_('Include %s'), $glossary->getLink('lu_emissions', false, _('land-use emissions'))); ?></label>
                         </li>
                         <li>
-                            <input type="checkbox" name="use_nonco2" id="use_nonco2" class="click" value="1" <?php if ($shared_params["use_nonco2"]['value'])
+                            <input type="checkbox" name="use_nonco2" id="use_nonco2" class="click" value="1" <?php if ((int) $shared_params["use_nonco2"]['value'] === 1)
                            echo 'checked="checked"'; ?>  />
                             <label for="use_nonco2" class="click"> <?php echo sprintf(_('Include %s'), $glossary->getLink('non_co2_gases', false, _('non-CO<sub>2</sub> gases')));?></label>
                         </li>
                         <li>
-                            <input type="checkbox" name="use_netexports" id="use_netexports" class="click" value="1" <?php if ($shared_params["use_netexports"]['value'])
+                            <input type="checkbox" name="use_netexports" id="use_netexports" class="click" value="1" <?php if ((int) $shared_params["use_netexports"]['value'] === 1)
                            echo 'checked="checked"'; ?>  />
                             <label for="use_netexports" class="click"> <?php echo sprintf(_('Include %s'), $glossary->getLink('embodied_emissions', false, _('emissions embodied in trade'))); ?></label>
                         </li>

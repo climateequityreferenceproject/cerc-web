@@ -172,7 +172,7 @@ $(function() {
                         // Get cost of carbon: don't submit form, since we know it's exactly what was just posted
                         $.post(
                             "core.php",
-                            "submit=submit&ajax=carboncost",
+                            "ajax=carboncost",
                             function(data) {
                                 $('#cost_per_ton').html(data);
                                  // hide spinner
