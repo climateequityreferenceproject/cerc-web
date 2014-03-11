@@ -173,8 +173,9 @@
 $sql = <<< ENDSQL
 SELECT (1000 * 3/11) * cost_blnUSDMER/
 	NULLIF(baseline_MtC - allocation_MtC, 0)
-	AS cost_USD_per_tCO2
-FROM	(SELECT 0.01 * params.real_val * SUM(core.gdp_blnUSDMER) AS cost_blnUSDMER
+	AS cost_USD_per_tCO2, cost_blnUSDMER, cost_perc_gwp, year
+FROM	(SELECT 0.01 * params.real_val * SUM(core.gdp_blnUSDMER) AS cost_blnUSDMER,
+        params.real_val AS cost_perc_gwp, core.year AS year
 		FROM core, params WHERE params.param_id = 'billpercgwp_mit'
 		AND core.year = $year),
 	(SELECT SUM(baseline_MtC) AS baseline_MtC
@@ -189,7 +190,7 @@ ENDSQL;
             $retval = $this->get_db()->query($sql)->fetch(PDO::FETCH_NAMED);
             $this->db_close();
             
-            return $retval['cost_USD_per_tCO2'];
+            return $retval;
         }
     }
     

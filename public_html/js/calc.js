@@ -174,7 +174,11 @@ $(function() {
                             "core.php",
                             "ajax=carboncost",
                             function(data) {
-                                $('#cost_per_ton').html(data);
+                                var costs = jQuery.parseJSON(data);
+                                $('#cost_per_tonne').html(costs.pertonne);
+                                $('#cost_perc_gwp').html(costs.percgwp)
+                                $('#cost_total').html(costs.totcost);
+                                $('#cost_year').html(costs.year);
                                  // hide spinner
                                 $('#loading').hide();
                            }
