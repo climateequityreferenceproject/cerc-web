@@ -243,7 +243,7 @@
             case 'carboncost':
                 $cost_tot = number_format($cost_of_carbon['cost_blnUSDMER']);
                 $cost_tonne = number_format($cost_of_carbon['cost_USD_per_tCO2']);
-                $cost_perc = number_format($cost_of_carbon['cost_perc_gwp']);
+                $cost_perc = number_format($cost_of_carbon['cost_perc_gwp'], 1);
                 $year = (int) $cost_of_carbon['year'];
                 echo json_encode(array(
                     'totcost' => $cost_tot,
