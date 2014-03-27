@@ -160,7 +160,7 @@ $equity_nosplash = $equity_nosplash || isset($_GET['iso3']);
                             echo "</li>";
                             echo "<li>";
                             echo select_num('percent_gwp_MITIGATION', $shared_params,$glossary->getLink('mit_cost', false, _('Mitigation cost as % GWP')) . ":");
-                            $fmt_string = 'Assuming a total global mitigation cost of %1$s (%2$s of GWP), this yields a global average mitigation cost of %3$s per tonne CO<sub>2</sub> in %4$s.';
+                            $fmt_string = 'Assuming a total global mitigation cost of %1$s (%2$s of GWP), this yields a global average mitigation cost of %3$s per tonne CO<sub>2</sub>e in %4$s.';
                             $mitcost_string = '$<span id= "cost_total">' . number_format($cost_of_carbon['cost_blnUSDMER']) . '</span> billion';
                             $perccost_string = '<span id= "cost_perc_gwp">' . number_format($cost_of_carbon['cost_perc_gwp'], 1) . '</span>%';
                             $carbcost_string = '$<span id= "cost_per_tonne">' . number_format($cost_of_carbon['cost_USD_per_tCO2']) . '</span>';
