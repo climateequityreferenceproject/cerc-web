@@ -456,7 +456,7 @@ EOSQL;
                                 'min' => 0.0,
                                 'max' => 100.0,
                                 'step' => array(
-                                    array('cutoff' => 0.5, 'step' => 0.1),
+                                    array('cutoff' => 1.0, 'step' => 0.1),
                                     array('cutoff' => NULL, 'step' => 0.5)
                                 ),
                                 'list' => NULL,
@@ -470,7 +470,7 @@ EOSQL;
                                 'min' => 0.0,
                                 'max' => 100.0,
                                 'step' => array(
-                                    array('cutoff' => 0.5, 'step' => 0.1),
+                                    array('cutoff' => 1.0, 'step' => 0.1),
                                     array('cutoff' => NULL, 'step' => 0.5)
                                 ),
                                 'list' => NULL,
@@ -484,7 +484,7 @@ EOSQL;
                                 'min' => 0.0,
                                 'max' => 100.0,
                                 'step' => array(
-                                    array('cutoff' => 0.5, 'step' => 0.1),
+                                    array('cutoff' => 1.0, 'step' => 0.1),
                                     array('cutoff' => NULL, 'step' => 0.5)
                                 ),
                                 'list' => NULL,
