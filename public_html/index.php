@@ -69,6 +69,18 @@ $equity_nosplash = $equity_nosplash || isset($_GET['iso3']);
         }
         ?>
         <div id="calc_container" class="group">
+            <?php
+            if (Framework::is_dev()) {
+                echo '<!-- The data encoding type, enctype, MUST be specified as below -->';
+                echo '<form enctype="multipart/form-data" action="" name="upload_form" method="POST">';
+                echo '    <!-- MAX_FILE_SIZE must precede the file input field -->';
+                echo '    <input type="hidden" name="MAX_FILE_SIZE" value="8388608" />'; // This is 8 MB
+                echo '    <!-- Name of input element determines name in $_FILES array -->';
+                echo '    Upload SQLite3 database: <input name="upload_db" type="file" />';
+                echo '    <input type="submit" value="Upload" />';
+                echo '</form>';
+            }
+            ?>
             <form action="" method="post" name="form1" id="form1" class="group">
 
                 <fieldset id="region_country_filter">

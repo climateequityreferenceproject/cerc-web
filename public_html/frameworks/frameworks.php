@@ -105,7 +105,13 @@
         
         public static function get_good_db() {
             // Future-proof: right now keep the path, but in future might just use basename
-            if (isset($_POST['user_db'])) {
+            $check_date = true;
+            if (isset($_FILES['upload_db'])) {
+                $db_path = self::add_user_db_path(basename($_FILES['upload_db']['name'],".sqlite3")); // Strip .sqlite3
+                move_uploaded_file($_FILES['upload_db']['tmp_name'], $db_path);
+                $user_db_nopath = basename($db_path);
+                $check_date = false;
+            } elseif (isset($_POST['user_db'])) {
                 $user_db_nopath = basename($_POST['user_db']);
             } elseif (isset($_GET['db'])) {
                 $user_db_nopath = basename($_GET['db']);
@@ -116,7 +122,7 @@
             }
             if ($user_db_nopath && self::add_user_db_path($user_db_nopath)) {
                 $user_db = self::add_user_db_path($user_db_nopath);
-                if (!self::db_up_to_date($user_db)) {
+                if ($check_date && !self::db_up_to_date($user_db)) {
                     unlink($user_db);
                     $user_db = null;
                 }
