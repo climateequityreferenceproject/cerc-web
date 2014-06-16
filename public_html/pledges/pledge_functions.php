@@ -185,6 +185,9 @@ function process_pledges($pledge_info, $pathway, $db) {
         $querystring .= '&db=' . $db;
     }
     $req = new HTTP_Request($api_url . $querystring);
+    if (Framework::is_dev()) {
+        $req->setBasicAuth("***REMOVED***", "***REMOVED***");
+    }
     $req->setMethod(HTTP_REQUEST_METHOD_GET);
     if (!PEAR::isError($req->sendRequest())) {
          $params = (array) json_decode($req->getResponseBody());
@@ -200,6 +203,9 @@ function process_pledges($pledge_info, $pathway, $db) {
     
     // Build up API query
     $req = new HTTP_Request($api_url);
+    if (Framework::is_dev()) {
+        $req->setBasicAuth("***REMOVED***", "***REMOVED***");
+    }
     $req->setMethod(HTTP_REQUEST_METHOD_POST);
     if ($pledge_info['rel_to_year']) {
         $years = $pledge_info['rel_to_year'] . "," . $pledge_info['by_year'];
