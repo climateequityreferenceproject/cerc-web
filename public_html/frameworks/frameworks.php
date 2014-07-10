@@ -107,10 +107,18 @@
             // Future-proof: right now keep the path, but in future might just use basename
             $check_date = true;
             if (isset($_FILES['upload_db'])) {
-                $db_path = self::add_user_db_path(basename($_FILES['upload_db']['name'],".sqlite3")); // Strip .sqlite3
-                move_uploaded_file($_FILES['upload_db']['tmp_name'], $db_path);
-                $user_db_nopath = basename($db_path);
-                $check_date = false;
+                // Strip any of a number of possible extensions
+                $upload_db_basename = basename($_FILES['upload_db']['name']);
+                $user_db_nopath = preg_replace('/\.(sqlite3|sql3|db|sql|sqlite)$/','',$upload_db_basename);
+                // Replace fancy characters
+                $user_db_nopath = preg_replace('/[^A-Za-z0-9_]+/','_',$user_db_nopath);
+                $user_db_withpath = self::$user_db_path . '/' . $user_db_nopath;
+                $upload_valid = move_uploaded_file($_FILES['upload_db']['tmp_name'], $user_db_withpath);
+                if ($upload_valid) {
+                    $check_date = false;
+                } else {
+                    $user_db_nopath = null;
+                }
             } elseif (isset($_POST['user_db'])) {
                 $user_db_nopath = basename($_POST['user_db']);
             } elseif (isset($_GET['db'])) {
