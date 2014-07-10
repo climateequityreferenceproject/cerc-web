@@ -31,6 +31,12 @@ function nice_number($prefix, $num, $postfix, $decimal = NULL) {
     return $retval;
 }
 
+function is_country_gdrsdb($db, $code)
+{
+    $record = $db->query('SELECT iso3 FROM country WHERE iso3="' . $code . '";')->fetchAll();
+    return count($record) > 0;
+}
+
 function get_kyoto_commitment($db, $iso3) {
     $retval = null;
     
@@ -79,7 +85,7 @@ function gdrs_country_report($dbfile, $country_name, $shared_params, $iso3, $yea
 
     // Start with the core SQL view
     $db->query($viewquery);
-    
+       
 $worldquery = <<< EOSQL
 SELECT SUM(pop_mln) AS pop, SUM(gdp_blnUSDMER) AS gdp_mer,
         SUM(gdp_blnUSDPPP) AS gdp_ppp, SUM(gdrs_alloc_MtCO2) AS gdrs_alloc,
@@ -89,7 +95,7 @@ SELECT SUM(pop_mln) AS pop, SUM(gdp_blnUSDMER) AS gdp_mer,
     FROM disp_temp WHERE year = $year;
 EOSQL;
 
-if (!is_country($iso3)) {
+if (!is_country_gdrsdb($db,$iso3)) {
     if ($iso3 === $world_code) {
         $flag_string = ' WHERE (' . $year_list_string . ')';
     } else {
@@ -123,10 +129,10 @@ EOSQL;
 }
     $record = $db->query($worldquery)->fetchAll();
     $world_tot = $record[0]; // Only one record, but using "fetchAll" makes sure curser closed
-    if (is_country($iso3)) {
+    if (is_country_gdrsdb($db,$iso3)) {
         $record = $db->query('SELECT * FROM disp_temp WHERE (' . $year_list_string . ') AND iso3="' . $iso3 . '" ORDER BY year;')->fetchAll();
     } else {
-        $record = $db->query($regionquery)->fetchAll();;
+        $record = $db->query($regionquery)->fetchAll();
     }
     
     $use_nonco2 = (int) $shared_params['use_nonco2']['value'];
@@ -178,7 +184,7 @@ EOSQL;
         }
     }
     $query = 'SELECT year,';
-    if (is_country($iso3)) {
+    if (is_country_gdrsdb($db,$iso3)) {
         $query .=  ' gdrs_alloc_MtCO2, fossil_CO2_MtCO2, LULUCF_MtCO2,
         NonCO2_MtCO2e';
         $query .= ' FROM disp_temp WHERE iso3="' . $iso3 . '" AND';
