@@ -76,8 +76,10 @@ $equity_nosplash = $equity_nosplash || isset($_GET['iso3']);
                 echo '    <!-- MAX_FILE_SIZE must precede the file input field -->';
                 echo '    <input type="hidden" name="MAX_FILE_SIZE" value="8388608" />'; // This is 8 MB
                 echo '    <!-- Name of input element determines name in $_FILES array -->';
-                echo '    Upload SQLite3 database: <input name="upload_db" type="file" />';
-                echo '    <input type="submit" value="Upload" />';
+                echo '    SQLite3 database: <input name="upload_db" type="file" />';
+                echo '    and then <input type="submit" value="upload" />';
+                echo '    or <input type="submit" value="reset" />';
+                echo '    (Current database: ' . basename($user_db) . ')';
                 echo '</form>';
             }
             ?>
