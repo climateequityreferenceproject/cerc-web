@@ -23,10 +23,12 @@
     
     /*** Databases ************************************************************/
     
+    $user_db = Framework::get_good_db();
     if (isset($_POST['reset'])) {
+        if ($user_db) {
+            unlink($user_db);
+        }
         $user_db = null;
-    } else {
-        $user_db = Framework::get_good_db();
     }
     
     $up_to_date = true;
