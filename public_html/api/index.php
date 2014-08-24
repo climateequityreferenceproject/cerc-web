@@ -49,7 +49,7 @@
             if (isset($_GET['old_db'])) {
                 $old_db = Framework::add_user_db_path($_GET['old_db']);
                 // Copy the old database as a master
-                $user_db = Framework::get_user_db($master_db);
+                $user_db = Framework::get_user_db($old_db);
             } else {
                 // If already have a duplicated version, use that, otherwise create if needed
                 $db_array = Framework::dup_master_db('calc', true);
