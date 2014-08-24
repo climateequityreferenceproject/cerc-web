@@ -64,8 +64,11 @@
         // ----------------------------------------------------------------
         // This creates a temporary database that will be deleted either immediately after use or using cron
         // If $db is specified, will make a copy of that, rather than using the master
-        public static function get_user_db($db = NULL) {
-            $user_db = tempnam(self::$user_db_path, "fw-sql3-");
+        public static function get_user_db($db = NULL, $fnmod = "") {
+            if (self::is_dev()) {
+                $fnmod .= '-dev';
+            }
+            $user_db = tempnam(self::$user_db_path, "fw-sql3-" . $fnmod . '-');
             if ($db) {
                 $db_to_copy = $db;
             } else {
