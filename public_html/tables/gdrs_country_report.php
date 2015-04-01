@@ -538,7 +538,7 @@ EOHTML;
             $retval .= "</tr>";
             // Score
             $retval .= "<tr>";
-            $retval .= "<td class=\"lj level2\">" . sprintf(_('as %s-style score'), $scorecard_link) . "</td>";
+            $retval .= "<td class=\"lj level2\">" . sprintf(_('As %s-style score'), $scorecard_link) . "</td>";
             $retval .= '<td class="cj">&nbsp;</td>';
             $val = ($pledge_info['pledge'] - $mit_oblig)/$pop[$pledge_year];
             $retval .= "<td>" . nice_number('', $val, '', 1) . ' t' . $gases . '/cap' . "</td>";
