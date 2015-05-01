@@ -1,5 +1,7 @@
 <?php
 include_once 'process.php';
+// need this to use the calculator API
+require_once "HTTP/Request.php";
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -21,6 +23,13 @@ include_once 'process.php';
         <form name="add" id="add" method="post" action="">
             <input type="hidden" name="form" value="add"/>
             <!-- Country and region drop-downs -->
+            <?php
+            // before writing the regions dropdown field, we check the calculator
+            // whether there are any new regions that we should add
+            $db_code = check_for_new_regions(); 
+            // we write the name of the calculator API database for re-use
+            echo ($db_code);
+            ?>
             <?php echo make_ctryregion_list($edit_array); ?>
             <!-- Conditional/unconditional-->
             <?php
@@ -145,7 +154,10 @@ include_once 'process.php';
         <form name="table" method="post" action="">
             <input type="hidden" name="form" value="table"/>
             <div id="table">
-                <?php include("get_table.php"); ?>
+               <?php
+                // we write the name of the calculator API database for re-use
+                echo ($db_code); ?>
+               <?php include("get_table.php"); ?>
             </div>
         </form>
     </body>

@@ -173,4 +173,57 @@ HTML;
 
     return $html;
 }
+ 
+function check_for_new_regions() {
+    // 1. get the currently known regions from the pledge database
+    $pledge_db_regions = array ();
+    $result = query_db("SELECT region_code, name FROM region ORDER BY name;");
+    while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+        $pledge_db_regions[] = $row['region_code'] ;  
+    }
+    
+    // 2. get the regions currently used by the calculator 
+    // let's check if we have been passed an API database to reuse through the form
+    $db = $_REQUEST['db'];
+    // if we don't have a database to reuse, we request a new copy from the calculator API
+    if (!$db) { 
+        $req =& new HTTP_Request("http://gdrights.org/calculator/api/?q=new_db");
+        $req->setMethod(HTTP_REQUEST_METHOD_GET);
+        if (!PEAR::isError($req->sendRequest())) {
+            $response = (array) json_decode($req->getResponseBody());
+            $db = $response['db'];
+        } else {
+            throw new Exception($req->getMessage());
+        }
+    }
+    // now let's write the name the new (or re-used) database for future reference
+    $db_code = "<input type=\"hidden\" name=\"db\" value=\"" . $db . "\">";
+
+    // now let's get the actual list of regions using this database copy
+    $req =& new HTTP_Request("http://gdrights.org/calculator/api/?q=regions&db=" . $db);
+    $req->setMethod(HTTP_REQUEST_METHOD_GET);
+    if (!PEAR::isError($req->sendRequest())) {
+        // Note: json_decode returns arrays as StdClass, so have to cast
+        $calc_regions = (array) json_decode($req->getResponseBody());
+    } else {
+        throw new Exception($req->getMessage());
+    }
+    
+    // 3. go through the list and check if it's also part of the pledge
+    // data base region list. If not, add it.
+    foreach ($calc_regions as $region) {
+        $reg = (array) $region;
+        if (!(in_array ($reg['region_code'], $pledge_db_regions))) {
+            echo ("<font color=\"red\"><b>Region " . $reg['name'] . " (" . $reg['region_code'] . ") is in the calculator database but not in the pledge database. It has been added.</b></font><br>\n");
+            $sql = "INSERT INTO `region` (`region_code`, `name`) VALUES (\"" . $reg['region_code'] . "\",\"". $reg['name'] . "\");";
+            $result = query_db($sql);
+        }
+    }
+ 
+    // we return the code of the database we have used so it can be included in 
+    // the forms in index.php as a hidden field for re-use, otherwise, every 
+    // time the "region" drop down field is created, a new copy of the database 
+    // is created.
+    return $db_code;
+}
 
