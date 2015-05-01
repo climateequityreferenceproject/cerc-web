@@ -292,6 +292,13 @@ function process_pledges($pledge_info, $pathway, $db) {
         default:
             // Shouldn't reach here
     }
-    
+    // CH: check if there is a description override in the pledge database
+    // those are stored in the 'caveat' field and follow this syntax:
+    // {description_override=Text of the Override}
+    $output_array = array ();
+    preg_match("/.*{description_override=(.*)}.*/", $pledge_info['caveat'], $output_array);
+    if (count($output_array)==2) {  // the first [0] value in the array is the fully matched string, the second [1] is the part we're interested in
+        $description = $output_array[1];
+    }
     return array('pledge' => $pledged_reduction, 'description' => $description);
 }
