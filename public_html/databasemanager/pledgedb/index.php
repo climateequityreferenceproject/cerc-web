@@ -26,9 +26,7 @@ require_once "HTTP/Request.php";
             <?php
             // before writing the regions dropdown field, we check the calculator
             // whether there are any new regions that we should add
-            $db_code = check_for_new_regions(); 
-            // we write the name of the calculator API database for re-use
-            echo ($db_code);
+            check_for_new_regions(); 
             ?>
             <?php echo make_ctryregion_list($edit_array); ?>
             <!-- Conditional/unconditional-->
@@ -154,9 +152,6 @@ require_once "HTTP/Request.php";
         <form name="table" method="post" action="">
             <input type="hidden" name="form" value="table"/>
             <div id="table">
-               <?php
-                // we write the name of the calculator API database for re-use
-                echo ($db_code); ?>
                <?php include("get_table.php"); ?>
             </div>
         </form>

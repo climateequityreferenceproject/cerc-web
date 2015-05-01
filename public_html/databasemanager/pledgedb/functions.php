@@ -184,7 +184,20 @@ function check_for_new_regions() {
     
     // 2. get the regions currently used by the calculator 
     // let's check if we have been passed an API database to reuse through the form
-    $db = $_REQUEST['db'];
+    //$db = $_REQUEST['db'];
+    $db = $_COOKIE['db'];
+    
+    // check is this database still exists
+    if (isset($db)) {
+        $req =& new HTTP_Request("http://gdrights.org/calculator/api/?q=regions&db=" . $db);
+        $req->setMethod(HTTP_REQUEST_METHOD_GET);
+        $req->sendRequest();
+        $code = $req->getResponseCode();
+        if ( $code == 410) {
+            unset($db);
+        }
+    }
+    
     // if we don't have a database to reuse, we request a new copy from the calculator API
     if (!$db) { 
         $req =& new HTTP_Request("http://gdrights.org/calculator/api/?q=new_db");
@@ -196,8 +209,6 @@ function check_for_new_regions() {
             throw new Exception($req->getMessage());
         }
     }
-    // now let's write the name the new (or re-used) database for future reference
-    $db_code = "<input type=\"hidden\" name=\"db\" value=\"" . $db . "\">";
 
     // now let's get the actual list of regions using this database copy
     $req =& new HTTP_Request("http://gdrights.org/calculator/api/?q=regions&db=" . $db);
@@ -220,10 +231,9 @@ function check_for_new_regions() {
         }
     }
  
-    // we return the code of the database we have used so it can be included in 
-    // the forms in index.php as a hidden field for re-use, otherwise, every 
-    // time the "region" drop down field is created, a new copy of the database 
-    // is created.
-    return $db_code;
+    // we save the code of the database we have used as a cookie so it can be 
+    // re-used, otherwise, every time the "region" drop down field is created, 
+    // a new copy of the database is created.
+    setcookie("db", $db, time()+3600);
 }
 
