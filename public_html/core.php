@@ -218,21 +218,18 @@
     $cost_of_carbon = $fw->cost_of_carbon($user_db, $display_params['display_yr']['value']);
     
     
-    // Get a scorecard url
+    // Get a scorecard, calculator home and glossary url
     $query_string = $fw->get_params_as_query($user_db);
     if (Framework::is_dev()) {
-        $scorecard_url = 'http://www.gdrights.org/scorecard_dev/?' . $query_string;
+        $scorecard_url = 'http://' . get_host_name() . '/scorecard_dev/?' . $query_string;
+        $calculator_url = 'http://' . get_host_name() . '/calculator_dev/';
+        $gloss_url = "http://" . get_host_name() . "/calculator_dev/glossary.php";
     } else {
-        $scorecard_url = 'http://www.gdrights.org/scorecard/?' . $query_string;
+        $scorecard_url = 'http://' . get_host_name() . '/scorecard/?' . $query_string;
+        $calculator_url = 'http://' . get_host_name() . '/calculator/';
+        $gloss_url = "http://" . get_host_name() . "/calculator/glossary.php";
     }
 
-    // Get a calculator home url
-    if (Framework::is_dev()) {
-        $calculator_url = 'http://www.gdrights.org/calculator_dev/';
-    } else {
-        $calculator_url = 'http://www.gdrights.org/calculator/';
-    }
-    
     /*** Cleanup ************************************************************/
     // Just to be sure, explicitly delete the object
     unset($fw);
@@ -259,3 +256,17 @@
             
         }
     }
+
+    // we don't really know where the calculator is accessed from, so we want to 
+    // construct certain links to retain the current "domain name space"
+    // also, this function also gets defined in pledge_functions.php, so let's
+    // make sure it hasn't been defined yet before creating it
+    //if (!function_exists('get_host_name')) {
+        function get_host_name () {
+            if(isset($_SERVER['HTTP_X_FORWARDED_HOST'])) {
+                return $_SERVER['HTTP_X_FORWARDED_HOST'];
+            } else {
+                return $_SERVER['HTTP_HOST'];     
+            }
+        } 
+    //}

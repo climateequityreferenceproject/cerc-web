@@ -174,10 +174,16 @@ function is_country($code)
 }
 
 function process_pledges($pledge_info, $pathway, $db) {
-    if (Framework::is_dev()) {
-        $api_url = "http://gdrights.org/calculator_dev/api/";
+    if(isset($_SERVER['HTTP_X_FORWARDED_HOST'])) {
+        $host = $_SERVER['HTTP_X_FORWARDED_HOST'];
     } else {
-        $api_url = "http://gdrights.org/calculator/api/";
+        $host = $_SERVER['HTTP_HOST'];     
+    }
+
+    if (Framework::is_dev()) {
+        $api_url = "http://" . $host . "/calculator_dev/api/";
+    } else {
+        $api_url = "http://" . $host . "/calculator/api/";
     }
     // First, get the parameter values used by the database
     $querystring = '?q=params';

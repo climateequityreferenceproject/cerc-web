@@ -310,7 +310,7 @@ EOHTML;
     $retval .= '<dl id="ctry_report_legend">';
     $retval .= '<dt class="key-bau"><span></span>' . _('Baseline Emissions') . '</dt>';
     
-    $retval .= '<dd>' . _('GHG emissions baselines (these are <strong>*not*</strong> business-as-usual pathways) are calculated as counter-factual non-policy baselines. The method is convergence from recent historical growth rates to long-term (2030) growth rates from the projections of McKinsey and Co. (Version 2.1). CO<sub>2</sub> from land use is projected constant at 2005 levels. GDP estimates are taken from IMF (WEO2013) through 2018 and converge to growth rates from McKinsey and Co. in 2030. See <a href="http://gdrights.org/calculator-information/gdp-and-emissions-baselines-in-the-gdrs-framework/">Definition, sourcing, and updating of the emissions baselines</a> for details.') . '</dd>';    
+    $retval .= '<dd>' . _('GHG emissions baselines (these are <strong>*not*</strong> business-as-usual pathways) are calculated as counter-factual non-policy baselines. The method is convergence from recent historical growth rates to long-term (2030) growth rates from the projections of McKinsey and Co. (Version 2.1). CO<sub>2</sub> from land use is projected constant at 2005 levels. GDP estimates are taken from IMF (WEO2013) through 2018 and converge to growth rates from McKinsey and Co. in 2030. See <a href="http://' . get_host_name() . '/calculator-information/gdp-and-emissions-baselines-in-the-gdrs-framework/">Definition, sourcing, and updating of the emissions baselines</a> for details.') . '</dd>';    
     
     $retval .= '<dt class="key-gdrs"><span></span>' . _('GDRs "fair share" allocation') . '</dt>';
     $retval .= '<dd>' . sprintf(_('National allocation trajectory, as calculated by GDRs for %s using the specified pathways and parameters. 
@@ -319,7 +319,7 @@ EOHTML;
     if ($iso3 != $world_code) {
         $retval .= '<dt class="key-phys"><span></span>' . _('Domestic emissions') . '</dt>';
         $retval .= '<dd>' . sprintf(_('An example domestic emissions pathway for %s, one that’s consistent with the selected parameters. '), $country_name);
-        $retval .= sprintf(_('This pathway is not fundamental to the GDRs effort-sharing framework, for while GDRs assigns each country a mitigation obligation, it does not specify how or where that obligation should be discharged. However, as a guide to thought, all countries are given a domestic emissions pathway that is consistent with an overall global cost-minimization strategy. That is, domestic emissions in all countries drop at the same rate as the selected global mitigation pathway, relative to national (policy-free) baselines. For more information, see <a href="http://gdrights.org/gdrs-scorecard-calculator-information/gdrs-obligations/">On domestic action in a global crisis</a>.'), $country_name) . '</dd>';
+        $retval .= sprintf(_('This pathway is not fundamental to the GDRs effort-sharing framework, for while GDRs assigns each country a mitigation obligation, it does not specify how or where that obligation should be discharged. However, as a guide to thought, all countries are given a domestic emissions pathway that is consistent with an overall global cost-minimization strategy. That is, domestic emissions in all countries drop at the same rate as the selected global mitigation pathway, relative to national (policy-free) baselines. For more information, see <a href="http://' . get_host_name() . '/gdrs-scorecard-calculator-information/gdrs-obligations/">On domestic action in a global crisis</a>.'), $country_name) . '</dd>';
 
         $retval .= '<dt class="key-dom"><span></span>';
         if ($fund_others) {
@@ -473,9 +473,9 @@ EOHTML;
     // Blank line
     $retval .= "<tr class=\"blank\"><td colspan=\"3\">&nbsp;</td></tr>";
     if (Framework::is_dev()) {
-        $scorecard_url = 'http://www.gdrights.org/scorecard_dev/';
+        $scorecard_url = 'http://' . get_host_name() . '/scorecard_dev/';
     } else {
-        $scorecard_url = 'http://www.gdrights.org/scorecard/';
+        $scorecard_url = 'http://' . get_host_name() . '/scorecard/';
     }
     
     // Pledges
