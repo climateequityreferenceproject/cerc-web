@@ -1,4 +1,8 @@
 <?php
+// undocumented URL parameter switches for downloading xls tables:
+// - dl_start_year = independent of responsibility start date, xls file will only contain data from that year onward
+// - tax_tables = if tax_tables=1 the tax tables and tax data will be included, otherwise it won't
+
 if (isset($_GET['debug']) && $_GET['debug'] == 'yes') {
     ini_set('display_errors',1); 
     error_reporting(E_ALL);
@@ -11,8 +15,26 @@ if (isset($_GET['allyears']) && $_GET['allyears'] == 'yes') {
 } else {
     $all_years_condition_string = "AND combined.gdrs_alloc_MtCO2 IS NOT NULL";
 }
-$tax_string_gdrs = get_tax_string($_GET["db"]);
-$tax_string_combined = get_tax_string($_GET["db"], FALSE);
+if (isset($_GET['dl_start_year'])) {
+    $dl_start_year_condition_string = " AND year >= " . filter_input(INPUT_GET, 'dl_start_year', FILTER_SANITIZE_NUMBER_INT);
+} else {
+    $dl_start_year_condition_string = "";
+}
+if (isset($_GET['tax_tables']) && filter_input(INPUT_GET, 'tax_tables', FILTER_SANITIZE_NUMBER_INT) == '1') {
+    $skip_tax_table = FALSE;
+} else {
+    $skip_tax_table = TRUE;
+}
+$db_file = $user_db_store . "/" . $_GET["db"];
+
+if ($skip_tax_table) {
+    $tax_string_gdrs = "";
+    $tax_string_combined = "";
+} else {
+    $tax_string_gdrs = get_tax_string($db_file);
+    $tax_string_combined = get_tax_string($db_file, FALSE);
+}
+
 $viewquery = <<< EOSQL
     CREATE TEMPORARY VIEW disp_temp AS
         SELECT combined.iso3 AS iso3, country.name AS country, year, pop_mln,
@@ -42,12 +64,12 @@ $viewquery = <<< EOSQL
                         (11.0/3.0) * gdrs.kyoto_gap_MtC AS kyoto_gap_MtCO2
                         $tax_string_gdrs
             FROM core LEFT JOIN gdrs ON core.year = gdrs.year AND core.iso3 = gdrs.iso3)
-        AS combined WHERE country.iso3 = combined.iso3 $all_years_condition_string;
+        AS combined WHERE country.iso3 = combined.iso3 $all_years_condition_string $dl_start_year_condition_string;
 EOSQL;
 
 $last_modified = Framework::get_db_time_string();
 
-$database = 'sqlite:'.$_GET["db"];
+$database = 'sqlite:'.$db_file;
 
 $db = new PDO($database) OR die("<p>Can't open database</p>");
 // Start with the core SQL view
@@ -55,8 +77,8 @@ if (!$db->query($viewquery)) {
     print_r($db->errorInfo());
 }
 
-$dlfile = "gdrs_all_output_" . time() . ".xls";
-$tsfile = tempnam("/***REMOVED***/sessions/gdrs-db", "gdrs-tabsep-");
+$dlfile = $xls_file_slug . time() . ".xls";
+$tsfile = tempnam($xls_tmp_dir, $xls_file_slug ."tabsep-");
 
 $fp = fopen($tsfile, "w");
 if (!is_resource($fp))
@@ -65,7 +87,7 @@ if (!is_resource($fp))
 }
 
 // Meta-data
-fwrite($fp, "Greenhouse Development Rights Online Calculator (http://" . $_SERVER['HTTP_HOST'] . ")\n");
+fwrite($fp, $xls_copyright_notice . "\n");
 fwrite($fp, "Last modified " . $last_modified['master'] . "\n");
 $record = $db->query("SELECT calc_version FROM meta")->fetchAll();
 fwrite($fp, "Calculator version " . $record[0][0] . "\n");
@@ -77,13 +99,16 @@ foreach ($db->query("SELECT param_id, int_val, descr FROM params WHERE int_val I
 foreach ($db->query("SELECT param_id, real_val, descr FROM params WHERE real_val IS NOT NULL") as $record) {
     fwrite($fp, $record["param_id"] . "\t" . $record["real_val"] . "\t" . $record["descr"] . "\n");
 }
-fwrite($fp, "Tax table:\n");
-fwrite($fp, "\t\"For income at tax, compute tax_income_dens_#/tax_pop_dens_#\"\n");
-fwrite($fp, "\t\"For tax rate, compute tax_revenue_dens_#/tax_income_dens_#\"\n");
-fwrite($fp, "\t\"For tax per capita, compute tax_revenue_dens_#/tax_pop_dens_#\"\n");
-fwrite($fp, "\tSequence number\tLabel\n");
-foreach ($db->query("SELECT seq_no, label FROM tax_levels;") as $record) {
-    fwrite($fp, "\t" . $record['seq_no']. "\t\"" . $record['label'] . "\"\n");
+
+if (!($skip_tax_table)) {
+    fwrite($fp, "Tax table:\n");
+    fwrite($fp, "\t\"For income at tax, compute tax_income_dens_#/tax_pop_dens_#\"\n");
+    fwrite($fp, "\t\"For tax rate, compute tax_revenue_dens_#/tax_income_dens_#\"\n");
+    fwrite($fp, "\t\"For tax per capita, compute tax_revenue_dens_#/tax_pop_dens_#\"\n");
+    fwrite($fp, "\tSequence number\tLabel\n");
+    foreach ($db->query("SELECT seq_no, label FROM tax_levels;") as $record) {
+        fwrite($fp, "\t" . $record['seq_no']. "\t\"" . $record['label'] . "\"\n");
+    }
 }
 
 // Country-level data

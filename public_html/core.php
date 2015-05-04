@@ -1,6 +1,7 @@
 <?php
     require_once('i18n.php');
-
+    require_once('config.php');
+    
     include_once("help/HWTHelp/HWTHelp.php");
     require_once("frameworks/frameworks.php");
     require_once("tables/table_generator.php");
@@ -220,14 +221,14 @@
     
     // Get a scorecard, calculator home and glossary url
     $query_string = $fw->get_params_as_query($user_db);
-    if (Framework::is_dev()) {
-        $scorecard_url = 'http://' . get_host_name() . '/scorecard_dev/?' . $query_string;
-        $calculator_url = 'http://' . get_host_name() . '/calculator_dev/';
-        $gloss_url = "http://" . get_host_name() . "/calculator_dev/glossary.php";
+    if (Framework::is_dev()) { 
+        $scorecard_url = $URL_sc_dev . '?' . $query_string;
+        $calculator_url = $URL_calc_dev;
+        $gloss_url = $URL_gloss_dev;
     } else {
-        $scorecard_url = 'http://' . get_host_name() . '/scorecard/?' . $query_string;
-        $calculator_url = 'http://' . get_host_name() . '/calculator/';
-        $gloss_url = "http://" . get_host_name() . "/calculator/glossary.php";
+        $scorecard_url = $URL_sc . '?' . $query_string;
+        $calculator_url = $URL_calc;
+        $gloss_url = $URL_gloss;
     }
 
     /*** Cleanup ************************************************************/
@@ -257,16 +258,3 @@
         }
     }
 
-    // we don't really know where the calculator is accessed from, so we want to 
-    // construct certain links to retain the current "domain name space"
-    // also, this function also gets defined in pledge_functions.php, so let's
-    // make sure it hasn't been defined yet before creating it
-    //if (!function_exists('get_host_name')) {
-        function get_host_name () {
-            if(isset($_SERVER['HTTP_X_FORWARDED_HOST'])) {
-                return $_SERVER['HTTP_X_FORWARDED_HOST'];
-            } else {
-                return $_SERVER['HTTP_HOST'];     
-            }
-        } 
-    //}

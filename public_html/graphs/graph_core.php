@@ -445,6 +445,7 @@
         // For wedges, expect series to be in order--can be top-down or bottom-up
         // Colors are the colors of the wedges in sequence
         public function svgplot_wedges($wedges, $params=NULL) {
+            global $svg_tmp_dir;
             if (!$params) {
                 $params = array(
                     'common_id' => NULL,
@@ -608,7 +609,7 @@
             
             $svg .= $this->svg_end();
             
-            $fname = tempnam("/***REMOVED***/html/tmp", "graph-") . ".svg";
+            $fname = tempnam($svg_tmp_dir, "graph-") . ".svg";
             $fh = fopen($fname, 'w') or die("Cannot open file " . $fname);
             
             fwrite($fh, $svg);

@@ -4,15 +4,18 @@
     // Initialize Framework class-level static variables
     //
     // -------------------------------------------------------------------
+
+    // The config file has likely been require'd before, but just in case
+    require_once 'config.php';
     // Point to master database
     if (Framework::is_dev()) {
-        Framework::$master_db = "/***REMOVED***/databases/gdrs_core.sql3";
+        Framework::$master_db = $core_db_dev;
     } else {
-        Framework::$master_db = "/***REMOVED***/databases/gdrs_core_pub.sql3";
+        Framework::$master_db = $core_db;
     }
     
     // Point to folder where user databases are stored
-    Framework::$user_db_path = "/***REMOVED***/sessions/gdrs-db";
+    Framework::$user_db_path = $user_db_store;
     
     // -------------------------------------------------------------------
     //
@@ -44,7 +47,7 @@
     // -------------------------------------------------------------------
     // For GDRs, set path to the calculator
     if (Framework::is_dev()) {
-        GreenhouseDevRights::$exec_path = "/***REMOVED***/gdrscode/engine/gdrsclib/dist/Development/GNU-Linux-x86/gdrsclib";
+        GreenhouseDevRights::$exec_path = $calc_engine_path_dev;
     } else {
-        GreenhouseDevRights::$exec_path = "/***REMOVED***/gdrscode/engine/gdrsclib/dist/Public/GNU-Linux-x86/gdrsclib";
+        GreenhouseDevRights::$exec_path = $calc_engine_path;
     }

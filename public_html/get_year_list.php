@@ -1,4 +1,5 @@
 <?php
+    require_once ('config.php');
     include("frameworks/frameworks.php");
     include("form_functions.php");
     

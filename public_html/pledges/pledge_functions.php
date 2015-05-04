@@ -2,13 +2,15 @@
 // Use the API: over time, will make things more consistent
 require_once "HTTP/Request.php";
 require_once "frameworks/frameworks.php";
+require "config.php";
 
 function pledge_db_connect() {
-    $db = mysql_connect('localhost', 'pledges', '***REMOVED***');
+    global $pledge_db_config;
+    $db = mysql_connect($pledge_db_config['host'], $pledge_db_config['user'], $pledge_db_config['pwd']);
     if (!$db) {
         die('Could not connect: ' . mysql_error());
     }
-    mysql_select_db("pledges", $db);
+    mysql_select_db($pledge_db_config['dbname'], $db);
     
     return $db;
 }
@@ -299,8 +301,8 @@ function process_pledges($pledge_info, $pathway, $db) {
             // Shouldn't reach here
     }
     // CH: check if there is a description override in the pledge database
-    // those are stored in the 'caveat' field and follow this syntax:
-    // {description_override=Text of the Override}
+    // those are stored in the 'caveat' field and follow this JSON syntax:
+    // {"description_override":"Text of the Override"}
     $output_array = array ();
     preg_match("/{.*}/", $pledge_info['caveat'], $output_array);
     if (isset($output_array[0])) { 

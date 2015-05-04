@@ -294,7 +294,7 @@ $equity_nosplash = $equity_nosplash || isset($_GET['iso3']);
                     <?php
                                        if ($display_params['framework']['value'] === 'gdrs') {
                                            echo '<p>';
-                                           echo '<a href="tables/download_tabsep.php?db=' . $user_db . '">' . _("Download complete Excel table") . '</a>';
+                                           echo '<a href="tables/download_tabsep.php?db=' . Framework::get_db_name($user_db) . '">' . _("Download complete Excel table") . '</a>';
                                            if (Framework::is_dev()) {
                                                // Allow downloading of database
                                                echo ' | <a href="util/download_db.php?db=' . Framework::get_db_name($user_db) .'">' . _("Download SQLite3 database") . '</a>';
