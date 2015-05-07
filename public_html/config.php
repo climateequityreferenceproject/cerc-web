@@ -41,7 +41,9 @@ $URL_sc = 'http://' . $host_name . '/scorecard/';
 $URL_sc_dev = 'http://' . $host_name . '/scorecard_dev/';
 $URL_gloss = "http://" . $host_name . "/calculator/glossary.php";
 $URL_gloss_dev = "http://" . $host_name . "/calculator_dev/glossary.php";
-
+$URL_calc_api = 'http://' . $host_name . '/calculator/api/';
+$URL_calc_api_dev = 'http://' . $host_name . '/calculator_dev/api/';
+        
 // this is the directory where the include files of the help db project
 // specifically, db_gdrs_help.inc.php and error.html.php
 $helpdb_include_path = $_SERVER['DOCUMENT_ROOT'] . '/helpdb/includes/';
@@ -59,3 +61,6 @@ $excel_download_header_rename = array(
             "gdrs_pop_mln_above_dl"  => "pop_mln_above_dl",
             "gdrs_pop_mln_above_lux" => "pop_mln_above_lux"
             );
+
+// the _dev calculator might be .htaccess protected. If so, we need to pass creds
+$dev_calc_creds = array ("user"=>"***REMOVED***", "pass"=>"***REMOVED***");

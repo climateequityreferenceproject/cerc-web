@@ -176,16 +176,11 @@ function is_country($code)
 }
 
 function process_pledges($pledge_info, $pathway, $db) {
-    if(isset($_SERVER['HTTP_X_FORWARDED_HOST'])) {
-        $host = $_SERVER['HTTP_X_FORWARDED_HOST'];
-    } else {
-        $host = $_SERVER['HTTP_HOST'];     
-    }
-
+    global $URL_calc_api, $URL_calc_api_dev, $dev_calc_creds;
     if (Framework::is_dev()) {
-        $api_url = "http://" . $host . "/calculator_dev/api/";
+        $api_url = $URL_calc_api_dev;
     } else {
-        $api_url = "http://" . $host . "/calculator/api/";
+        $api_url = $URL_calc_api ;
     }
     // First, get the parameter values used by the database
     $querystring = '?q=params';
@@ -193,9 +188,7 @@ function process_pledges($pledge_info, $pathway, $db) {
         $querystring .= '&db=' . $db;
     }
     $req = new HTTP_Request($api_url . $querystring);
-    if (Framework::is_dev()) {
-        $req->setBasicAuth("***REMOVED***", "***REMOVED***");
-    }
+    if (Framework::is_dev()) { $req->setBasicAuth($dev_calc_creds['user'], $dev_calc_creds['pass']); }
     $req->setMethod(HTTP_REQUEST_METHOD_GET);
     if (!PEAR::isError($req->sendRequest())) {
          $params = (array) json_decode($req->getResponseBody());
@@ -211,9 +204,7 @@ function process_pledges($pledge_info, $pathway, $db) {
     
     // Build up API query
     $req = new HTTP_Request($api_url);
-    if (Framework::is_dev()) {
-        $req->setBasicAuth("***REMOVED***", "***REMOVED***");
-    }
+    if (Framework::is_dev()) { $req->setBasicAuth($dev_calc_creds['user'], $dev_calc_creds['pass']); }
     $req->setMethod(HTTP_REQUEST_METHOD_POST);
     if ($pledge_info['rel_to_year']) {
         $years = $pledge_info['rel_to_year'] . "," . $pledge_info['by_year'];
@@ -286,7 +277,7 @@ function process_pledges($pledge_info, $pathway, $db) {
             }
             break;
         case 'intensity':
-            $description .= 'emissions intensity by ' . $reduce_text_1 . $by_factor . $reduce_text_2;
+            $description .= 'emissions intensity ' . $reduce_text_1 . $by_factor . $reduce_text_2;
             if ($pledge_info['year_or_bau'] === 'bau') {
                 // This option actually makes no sense, but take care of it just in case:
                 $description .= 'baseline';
@@ -308,6 +299,6 @@ function process_pledges($pledge_info, $pathway, $db) {
     if (isset($output_array[0])) { 
         $output = json_decode($output_array[0], TRUE);
         $description = $output['description_override'];
-    }
+     }
     return array('pledge' => $pledged_reduction, 'description' => $description);
 }
