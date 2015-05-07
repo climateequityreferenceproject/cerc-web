@@ -2,6 +2,7 @@
 // undocumented URL parameter switches for downloading xls tables:
 // - dl_start_year = independent of responsibility start date, xls file will only contain data from that year onward
 // - tax_tables = if tax_tables=1 the tax tables and tax data will be included, otherwise it won't
+// - gdrs_headers=1 keeps the Excel data table headers as specified in the core database, otherwise (default) they are overridden as per renaming mask in config.php
 
 if (isset($_GET['debug']) && $_GET['debug'] == 'yes') {
     ini_set('display_errors',1); 
@@ -24,6 +25,11 @@ if (isset($_GET['tax_tables']) && filter_input(INPUT_GET, 'tax_tables', FILTER_S
     $skip_tax_table = FALSE;
 } else {
     $skip_tax_table = TRUE;
+}
+if (isset($_GET['gdrs_headers']) && filter_input(INPUT_GET, 'gdrs_headers', FILTER_SANITIZE_NUMBER_INT) == '1') {
+    $keep_gdrs_headers = TRUE;
+} else {
+    $keep_gdrs_headers = FALSE;
 }
 $db_file = $user_db_store . "/" . $_GET["db"];
 
@@ -110,11 +116,20 @@ if (!($skip_tax_table)) {
         fwrite($fp, "\t" . $record['seq_no']. "\t\"" . $record['label'] . "\"\n");
     }
 }
+// Mark up the boundaries of the data table
+fwrite($fp, "\n<--- START DATA TABLE --->\n");    
 
 // Country-level data
 $query = $db->query("SELECT * FROM disp_temp ORDER BY country;");
 if ($record = $query->fetch(PDO::FETCH_ASSOC)) {
-    fwrite($fp, implode("\t", array_keys($record)) . "\n");
+    $table_header = implode("\t", array_keys($record));
+    if (!$keep_gdrs_headers) {
+        foreach ($excel_download_header_rename as $old=>$new) {
+            $table_header = str_replace($old, $new, $table_header); 
+	}
+ 
+    }
+    fwrite($fp, $table_header . "\n");
     do {
         fwrite($fp, implode("\t", $record) . "\n");
     } while ($record = $query->fetch(PDO::FETCH_ASSOC));
@@ -148,7 +163,8 @@ foreach ($db->query('SELECT * FROM flag_names') as $flags) {
         fwrite($fp, $row_start . implode("\t", $record) . "\n");
     }
 }
-
+// Mark up the boundaries of the data table
+fwrite($fp, "<--- END DATA TABLE --->\n");    
 
 fclose($fp);
 

@@ -258,3 +258,26 @@
         }
     }
 
+    function delete_old_tempfiles ($path, $age = 28800) { // $age is in seconds. Defaults to 8 hours
+        $files = glob($path."/*");
+        $now   = time();
+        foreach ($files as $file) {
+            if (is_file($file)) {
+                if ($now - filemtime($file) >= $age) {
+                    unlink($file);
+                }
+            }
+        }
+    }
+    
+    
+// clean up old files from temporary folders. times are from Eric's old cron
+// jobs - not clear why we keep svgs for a week (do they get re-used?)
+// It's sufficienty to call this on every 25th page view on average - if run, it 
+// adds about 200ms to each page load and we don't want to slow down every single time 
+if (rand(1,25) == 1) {
+    delete_old_tempfiles ($user_db_store , 28800); // 8 hours
+    delete_old_tempfiles ($xls_tmp_dir , 28800);   // 8 hours
+    delete_old_tempfiles ($svg_tmp_dir , 604800);  // 7 days
+    $temp = shell_exec("date >> " . $user_db_store . "/log.txt");
+}

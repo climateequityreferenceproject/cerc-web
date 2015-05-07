@@ -14,6 +14,8 @@
  * Label exceptions from the HWTHelp class
  * 
  */
+require_once('config.php');
+
 class HWTHelpException extends Exception
 {
 }
@@ -71,7 +73,8 @@ class HWTHelp implements Iterator
      */   
     private static function getHelpDB($filter = null)
     {
-        include $_SERVER['DOCUMENT_ROOT'] . '/helpdb/includes/db_gdrs_help.inc.php';
+        global $helpdb_include_path;
+        include $helpdb_include_path . 'db_gdrs_help.inc.php';
         if ($filter) {
             $filter_text = ' WHERE ' . $filter . '=1';
         } else {
@@ -85,7 +88,7 @@ class HWTHelp implements Iterator
         catch (PDOException $e)
         {
           $error = 'Error fetching entries: ' . $e->getMessage();
-          include  $_SERVER['DOCUMENT_ROOT'] . '/helpdb/includes/error.html.php';
+          include $helpdb_include_path . 'error.html.php';
           exit();
         }
 

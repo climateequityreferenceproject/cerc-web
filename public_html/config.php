@@ -41,3 +41,21 @@ $URL_sc = 'http://' . $host_name . '/scorecard/';
 $URL_sc_dev = 'http://' . $host_name . '/scorecard_dev/';
 $URL_gloss = "http://" . $host_name . "/calculator/glossary.php";
 $URL_gloss_dev = "http://" . $host_name . "/calculator_dev/glossary.php";
+
+// this is the directory where the include files of the help db project
+// specifically, db_gdrs_help.inc.php and error.html.php
+$helpdb_include_path = $_SERVER['DOCUMENT_ROOT'] . '/helpdb/includes/';
+
+// Excel download table header replacements
+// trying to mask the GDRs legacy of the CERP calculator, without going crazy with
+// changes to the core database, this array provides for a rename mask for the 
+// table headers for the Excel data file download. 
+// syntax: "old_value" => "new_value"
+$excel_download_header_rename = array( 
+            "gdrs_alloc_MtCO2"       => "allocation_MtCO2",
+            "gdrs_r_MtCO2"           => "responsibility_MtCO2",
+            "gdrs_c_blnUSDMER"       => "capacity_blnUSDMER",
+            "gdrs_rci"               => "rci",
+            "gdrs_pop_mln_above_dl"  => "pop_mln_above_dl",
+            "gdrs_pop_mln_above_lux" => "pop_mln_above_lux"
+            );
