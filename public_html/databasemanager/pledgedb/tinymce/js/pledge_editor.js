@@ -2,6 +2,7 @@ tinyMCE.init({
     mode : "textareas",
     theme : "advanced",
     plugins : "spellchecker,preview",
+    editor_deselector : "mceNoEditor",
     // Next three lines remove paragraphs -- don't want them for these short entries
     force_br_newlines : true,
     force_p_newlines : false,
@@ -15,7 +16,7 @@ tinyMCE.init({
     // From http://stackoverflow.com/questions/9845211/change-tinymce-input-height-from-textarea-height
     setup : function(ed) {
         ed.onInit.add(function(ed, evt) {
-            var new_val = '30px';
+            var new_val = '70px';
 
             // adjust table element
             var elem = document.getElementById(ed.id + '_tbl');

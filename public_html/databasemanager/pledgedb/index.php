@@ -134,12 +134,9 @@ require_once "HTTP/Request.php";
             <label>Source:</label><br/>
             <textarea name="source" cols="75" rows="2" ><?php echo get_text($edit_array, 'source');?></textarea><br />
             <label>Caveat:</label><br/>
-            <i>Note: We use the Caveat field to store other random information about the pledge in JSON format. <br>
-            (NB: it is ok to write other text into the caveat field; only the information in curly brackets will be interpreted as JSON data.<br>
-            These additional information appear all together in one set of curly brackets in this syntax: <br>
-            {"key_1":"value_1", "key_2":"value_2", ... , "key_n":"value_n"}<br>
-            Currently, these keys are used by the calculator: description_override  <br></i>  
-            <textarea name="caveat" cols="75" rows="2" ><?php echo get_text($edit_array, 'caveat');?></textarea><br />
+            <i><b>The caveat field is used to hold all sorts of additional structured and unstructured data about a pledge.<br />
+                        For more information about the syntax and purposes, <a href="caveat_help.php">there is a special helpfile</a></b></i><br />
+            <textarea name="caveat" cols="100" rows="7" class="mceNoEditor"><?php echo get_text($edit_array, 'caveat');?></textarea><br /><br />
             <label>Details:</label><br />
             <textarea name="details" cols="75" rows="2" ><?php echo get_text($edit_array, 'details');?></textarea>
             <?php
