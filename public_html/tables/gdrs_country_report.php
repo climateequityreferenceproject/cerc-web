@@ -64,6 +64,7 @@ EOSQL;
 function gdrs_country_report($dbfile, $country_name, $shared_params, $iso3, $year) {
     global $host_name;
     global $URL_sc, $URL_sc_dev;
+    global $glossary;
     $year_list = get_pledge_years($iso3);
     $year_list[] = $year;
     $year_list[] = 1990;
@@ -354,9 +355,9 @@ EOHTML;
      * Main table
      */
     if ($num_pledges > 0) {
-        $caption = _("Mitigation obligation and pledges");
+        $caption = _("Fair shares and pledges");
     } else {
-        $caption = _("Mitigation obligation");
+        $caption = _("Fair shares");
     }
 $retval .= <<< EOHTML
 <br />
@@ -417,10 +418,10 @@ EOHTML;
     $val = 100 * (1 - $ctry_val[$year]["gdrs_alloc_MtCO2"]/$bau[$year]);
     $retval .= "<td>" . nice_number('', $val, '%') . "</td>";
     $retval .= "</tr>";
-    // Climate tax
-    $climate_tax_link = '<a href="#tax-table">' . _('climate tax') . '</a>';
+    // Financial expression (formerly known as "climate tax"
+    // $climate_tax_link = '<a href="#tax-table">' . _('climate tax') . '</a>';
     $retval .= '<tr>';
-    $retval .= "<td class=\"lj level2\">" . sprintf(_('as per-capita %1$s (assuming global mitigation and adaptation costs = %2$s%% of global GWP)'), $climate_tax_link, nice_number('', $perc_gwp, '')) . "</td>";
+    $retval .= "<td class=\"lj\">" . sprintf(_('Fair share in financial terms (assuming %1$s = %2$s%% of GWP) (in $/cap)'), $glossary->getLink('incr_cost', false, _('global mitigation and adaptation costs')), nice_number('', $perc_gwp, '')) . "</td>";
     $retval .= '<td class="cj">&nbsp;</td>';
     $val = 1000 * $world_tot['gdp_mer'] * 0.01 * $perc_gwp * $ctry_val[$year]["gdrs_rci"]/$ctry_val[$year]['pop_mln'];
     $retval .= "<td>" . nice_number('$', $val, '') . "</td>";
