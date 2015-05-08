@@ -291,14 +291,21 @@ function process_pledges($pledge_info, $pathway, $db) {
         default:
             // Shouldn't reach here
     }
-    // CH: check if there is a description override in the pledge database
+    $helptext = "";
+    // CH: check if there is any additional data in the pledge database
     // those are stored in the 'caveat' field and follow this JSON syntax:
     // {"description_override":"Text of the Override"}
+    // 
     $output_array = array ();
     preg_match("/{.*}/", $pledge_info['caveat'], $output_array);
+    // this if loop gets entered if there is any JSON encoded data in the
+    // caveat field, so deal with any possible cases accordingly
     if (isset($output_array[0])) { 
         $output = json_decode($output_array[0], TRUE);
-        $description = $output['description_override'];
+        if (isset($output['description_override'])) { $description = $output['description_override']; }
+        if (isset($output['help_label']) || isset($output['help_title']) || isset($output['help_text'])) {
+            $helptext = "<a onclick='display_popup(\"" . $output['help_title'] . "\",\"". $output['help_text'] . "\")'>" . $output['help_label'] . "</a>";
+        }
      }
-    return array('pledge' => $pledged_reduction, 'description' => $description);
+    return array('pledge' => $pledged_reduction, 'description' => $description, 'helptext' => $helptext);
 }

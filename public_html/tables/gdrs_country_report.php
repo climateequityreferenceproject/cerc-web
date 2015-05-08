@@ -503,11 +503,12 @@ EOHTML;
         $first_pledge = true;
         foreach ($pledges as $pledge_year => $pledge_info) {
             $mit_oblig = $bau[$pledge_year] - $ctry_val[$pledge_year]["gdrs_alloc_MtCO2"];
-            $common_str = sprintf(_('%1$s %2$s pledge: %3$s by %4$d'),
+            $common_str = sprintf(_('%1$s %2$s pledge: %3$s by %4$d %5$s'),
                     $country_name,
                     $condl_term[$condl],
                     $pledge_info['description'],
-                    $pledge_year);
+                    $pledge_year,
+                    $pledge_info['helptext']);
             
             if ($first_pledge) {
                 $scorecard_link = '<a target="_blank" href="' . $scorecard_url . '?';
