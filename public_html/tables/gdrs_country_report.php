@@ -316,30 +316,30 @@ EOHTML;
     
     $retval .= '<dd>' . _('GHG emissions baselines (these are <strong>*not*</strong> business-as-usual pathways) are calculated as counter-factual non-policy baselines. The method is convergence from recent historical growth rates to long-term (2030) growth rates from the projections of McKinsey and Co. (Version 2.1). CO<sub>2</sub> from land use is projected constant at 2005 levels. GDP estimates are taken from IMF (WEO2013) through 2018 and converge to growth rates from McKinsey and Co. in 2030. See <a href="http://' . $host_name . '/calculator-information/gdp-and-emissions-baselines-in-the-gdrs-framework/">Definition, sourcing, and updating of the emissions baselines</a> for details.') . '</dd>';    
     
-    $retval .= '<dt class="key-gdrs"><span></span>' . _('GDRs "fair share" allocation') . '</dt>';
-    $retval .= '<dd>' . sprintf(_('National allocation trajectory, as calculated by GDRs for %s using the specified pathways and parameters. 
-        The mitigation implied by this allocation can be either domestic or international &#8211; GDRs in itself says nothing about how or where it occurs.'), $country_name) . '</dd>';
+    $retval .= '<dt class="key-gdrs"><span></span>' . _('"Fair share" allocation') . '</dt>';
+    $retval .= '<dd>' . sprintf(_('National allocation trajectory, as calculated for %s using the specified pathways and parameters. 
+        The mitigation implied by this allocation can be either domestic or international &#8211; The Climate Equity Reference Project effort-sharing framework says nothing about how or where it occurs.'), $country_name) . '</dd>';
     
     if ($iso3 != $world_code) {
         $retval .= '<dt class="key-phys"><span></span>' . _('Domestic emissions') . '</dt>';
         $retval .= '<dd>' . sprintf(_('An example domestic emissions pathway for %s, one that’s consistent with the selected parameters. '), $country_name);
-        $retval .= sprintf(_('This pathway is not fundamental to the GDRs effort-sharing framework, for while GDRs assigns each country a mitigation obligation, it does not specify how or where that obligation should be discharged. However, as a guide to thought, all countries are given a domestic emissions pathway that is consistent with an overall global cost-minimization strategy. That is, domestic emissions in all countries drop at the same rate as the selected global mitigation pathway, relative to national (policy-free) baselines. For more information, see <a href="http://' . $host_name . '/gdrs-scorecard-calculator-information/gdrs-obligations/">On domestic action in a global crisis</a>.'), $country_name) . '</dd>';
+        $retval .= sprintf(_('This pathway is not fundamental to the CERP effort-sharing framework, for while it assigns each country a mitigation obligation, it does not specify how or where that obligation should be discharged. However, as a guide to thought, all countries are given a domestic emissions pathway that is consistent with an overall global cost-minimization strategy. That is, domestic emissions in all countries drop at the same rate as the selected global mitigation pathway, relative to national (policy-free) baselines.'), $country_name) . '</dd>';
 
         $retval .= '<dt class="key-dom"><span></span>';
         if ($fund_others) {
             $retval .= _('Domestically-funded mitigation') . '</dt>'; // if we decide to make a distinction, this one would be Domestic mitigation, with its own definition 
-            $retval .= '<dd>'. sprintf(_('Mitigation funded by %s and carried out within its own borders. The fraction of a country\'s mitigation obligation that is discharged domestically is not specified by GDRs, but is rather a result of the international cost and mitigation sharing arrangements that it chooses to participate in.'), $country_name) . '</dd>';
+            $retval .= '<dd>'. sprintf(_('Mitigation funded by %s and carried out within its own borders. The fraction of a country\'s mitigation obligation that is discharged domestically is not specified by the CERP effort-sharing framework, but is rather a result of the international cost and mitigation sharing arrangements that it chooses to participate in.'), $country_name) . '</dd>';
         } else {
             $retval .= _('Domestically-funded mitigation') . '</dt>';
-            $retval .= '<dd>' . sprintf(_('Mitigation funded by %s and carried out within its own borders. The fraction of a country\'s mitigation obligation that is discharged domestically is not specified by GDRs, but is rather a result of the international cost and mitigation sharing arrangements that it chooses to participate in.'), $country_name) . '</dd>';
+            $retval .= '<dd>' . sprintf(_('Mitigation funded by %s and carried out within its own borders. The fraction of a country\'s mitigation obligation that is discharged domestically is not specified by the CERP effort-sharing framework, but is rather a result of the international cost and mitigation sharing arrangements that it chooses to participate in.'), $country_name) . '</dd>';
         }
 
         if ($fund_others) {
             $retval .= '<dt class="key-intl"><span></span>' . _('Mitigation funded in other countries') . '</dt>';
-            $retval .= '<dd>' . sprintf(_('Mitigation funded by %s and carried out within other countries. The fraction of a country\'s mitigation obligation that is discharged in other countries is not specified by GDRs, but is rather a result of the international cost and mitigation sharing arrangements that it chooses to participate in.'), $country_name) . '</dd>';
+            $retval .= '<dd>' . sprintf(_('Mitigation funded by %s and carried out within other countries. The fraction of a country\'s mitigation obligation that is discharged in other countries is not specified by the CERP effort-sharing framework, but is rather a result of the international cost and mitigation sharing arrangements that it chooses to participate in.'), $country_name) . '</dd>';
             } else {
             $retval .= '<dt class="key-sup"><span></span>' . _('Mitigation funded by other countries') . '</dt>';
-            $retval .= '<dd>' . sprintf(_('Mitigation funded other countries, but carried out within the borders of %s. GDRs assigns the "credit" for this mitigation to the funder, but of course the terms of the mitigation would be as negotiated with the host country.'), $country_name) . '</dd>';
+            $retval .= '<dd>' . sprintf(_('Mitigation funded other countries, but carried out within the borders of %s. The CERP effort-sharing framework currently assigns the "credit" for this mitigation to the funder, but of course the terms of the mitigation would be as negotiated with the host country.'), $country_name) . '</dd>';
         }
         if (!empty($dom_pledges['unconditional'])) {
             $retval .= '<dt class="key-uncond"><span></span>' . _('Unconditional Pledge') . '</dt>';
@@ -421,7 +421,7 @@ EOHTML;
     // Financial expression (formerly known as "climate tax"
     // $climate_tax_link = '<a href="#tax-table">' . _('climate tax') . '</a>';
     $retval .= '<tr>';
-    $retval .= "<td class=\"lj\">" . sprintf(_('Fair share in financial terms (assuming %1$s = %2$s%% of GWP) (in $/cap)'), $glossary->getLink('incr_cost', false, _('global mitigation and adaptation costs')), nice_number('', $perc_gwp, '')) . "</td>";
+    $retval .= "<td class=\"lj\">" . sprintf(_('Per capita fair share, expressed in financial terms (assuming %1$s = %2$s%% of GWP)'), $glossary->getLink('incr_cost', false, _('incremental global mitigation + adaptation costs')), nice_number('', $perc_gwp, '')) . "</td>";
     $retval .= '<td class="cj">&nbsp;</td>';
     $val = 1000 * $world_tot['gdp_mer'] * 0.01 * $perc_gwp * $ctry_val[$year]["gdrs_rci"]/$ctry_val[$year]['pop_mln'];
     $retval .= "<td>" . nice_number('$', $val, '') . "</td>";
