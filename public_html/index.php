@@ -197,7 +197,7 @@ $equity_nosplash = $equity_nosplash || isset($_GET['iso3']);
 
                             // Cost of Climate Action
                             echo '<li class="advanced"><fieldset class="incremental_cost">';
-                            echo '<legend class="closed"><span>&nbsp;</span>' . $glossary->getLink('incr_cost', false, _('Incremental cost of climate action')) . '</legend>';
+                            echo '<legend class="closed"><span>&nbsp;</span>' . $glossary->getLink('incr_cost', false, _('Incremental costs of climate action')) . '</legend>';
                             echo '<ul class="group">';
                             echo "<li>";
                             echo select_num('percent_gwp_MITIGATION', $shared_params,$glossary->getLink('mit_cost', false, _('Mitigation cost as % GWP')) . ":", 'long-label-short-select');
