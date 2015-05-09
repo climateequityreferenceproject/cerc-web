@@ -200,7 +200,7 @@ $equity_nosplash = $equity_nosplash || isset($_GET['iso3']);
                             echo '<legend class="closed"><span>&nbsp;</span>' . $glossary->getLink('incr_cost', false, _('Incremental cost of climate action')) . '</legend>';
                             echo '<ul class="group">';
                             echo "<li>";
-                            echo select_num('percent_gwp_MITIGATION', $shared_params,$glossary->getLink('mit_cost', false, _('Incremental mitigation cost as % GWP')) . ":", 'long-label-short-select');
+                            echo select_num('percent_gwp_MITIGATION', $shared_params,$glossary->getLink('mit_cost', false, _('Mitigation cost as % GWP')) . ":", 'long-label-short-select');
                             $fmt_string = 'Assuming a total global mitigation cost of %1$s (%2$s of GWP), this yields a global average incremental mitigation cost of %3$s per tonne CO<sub>2</sub>e in %4$s.';
                             $mitcost_string = '$<span id= "cost_total">' . number_format($cost_of_carbon['cost_blnUSDMER']) . '</span> billion';
                             $perccost_string = '<span id= "cost_perc_gwp">' . number_format($cost_of_carbon['cost_perc_gwp'], 1) . '</span>%';
