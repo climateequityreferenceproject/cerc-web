@@ -1,0 +1,27 @@
+<?php 
+// This is the maintenance "switch" and maintenance message/output at the same time.
+// if this file is called "_maintenance-on", the server will interpret any php below and return a maintenance message
+// and send a proper HTTP return code to search engines and the like to try again in 15 minutes.
+// if this file is called anything else (suggestion: "_maintenance-off"), everything works as normal.
+
+// Let's send a proper HTTP 503 return code to tell search engines and the like that this is a temporary outage
+// important: no output can appear above this code; this includes any white space above the opening <?php tags
+// in this script or the index.php file
+$protocol = "HTTP/1.0";
+if ( "HTTP/1.1" == $_SERVER["SERVER_PROTOCOL"] ) {
+	$protocol = "HTTP/1.1";
+	header( "$protocol 503 Service Unavailable", true, 503 );
+	header( "Retry-After: 900" );
+}
+include_once("config.php");
+?>
+<html>
+<head>
+<title>Public version currently unavailable</title>
+</head>
+<body>
+<p>This version is currently down while it is being updated. We apologize for the inconvenience</p>
+<p>The <a href="<?php echo($URL_calc_dev); ?>">development version</a> may be intermittently available. Thanks for your
+patience.</p>
+</body>
+</html>

@@ -2,6 +2,11 @@
 if (isset($_GET['debug']) && $_GET['debug'] == 'yes') {
     ini_set('display_errors',1); 
     error_reporting(E_ALL);
+} 
+// implements maintenance mode - check _maintenance-off file for details and usage
+if (file_exists("_maintenance-on")) {
+    include("_maintenance-on");
+    exit();
 }
 
 include("core.php");
@@ -53,7 +58,8 @@ $equity_nosplash = $equity_nosplash || isset($_GET['iso3']);
     <script type="text/javascript" src="js/jquery-1.4.4.min.js"></script>
     <script type="text/javascript" src="js/jquery-ui-1.8.9.custom.min.js"></script>
     <script type="text/javascript" src="js/jquery.tablesorter.js"></script>
-    <script type="text/javascript" src="js/calc.js"></script>
+    <script type="text/javascript" src="js/calc.js"></script>        
+    <?php if (strpos($_SERVER['PHP_SELF'], '_dev')===false) { include("inc/googleanalytics.php"); } ?>
     </head>
     <body id="gdrs_calculator">
         <div id="loading"></div>

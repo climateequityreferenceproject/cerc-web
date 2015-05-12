@@ -64,3 +64,7 @@ $excel_download_header_rename = array(
 
 // the _dev calculator might be .htaccess protected. If so, we need to pass creds
 $dev_calc_creds = array ("user"=>"***REMOVED***", "pass"=>"***REMOVED***");
+
+// Google Analytics - the tracking code is specific for the calculator; 
+// the CERP website has its own
+$ga_tracking_code = '***REMOVED***';
