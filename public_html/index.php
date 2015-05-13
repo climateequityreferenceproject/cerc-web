@@ -59,7 +59,7 @@ $equity_nosplash = $equity_nosplash || isset($_GET['iso3']);
     <script type="text/javascript" src="js/jquery-ui-1.8.9.custom.min.js"></script>
     <script type="text/javascript" src="js/jquery.tablesorter.js"></script>
     <script type="text/javascript" src="js/calc.js"></script>        
-    <?php if (strpos($_SERVER['PHP_SELF'], '_dev')===false) { include("inc/googleanalytics.php"); } ?>
+    <?php include("inc/googleanalytics.php"); ?>
     </head>
     <body id="gdrs_calculator">
         <div id="loading"></div>

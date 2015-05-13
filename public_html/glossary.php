@@ -47,7 +47,7 @@ include("core.php");
        Modernizr enables HTML5 elements & feature detects; Respond is a polyfill for min/max-width CSS3 Media Queries
        For optimal performance, use a custom Modernizr build: www.modernizr.com/download/ -->
   <script src="js/modernizr-2.6.2.min.js"></script>
-  <?php if (strpos($_SERVER['PHP_SELF'], '_dev')===false) { include("inc/googleanalytics.php"); } ?>
+  <?php include("inc/googleanalytics.php"); ?>
   </head>  
   <body class="glossary group">
     <div id="container" class="group">

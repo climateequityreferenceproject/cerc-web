@@ -334,36 +334,41 @@ function get_def_by_id(e) {
     def_id = href.substr(href.lastIndexOf('#') + 1);
     
     $.getJSON('glossary_array.php', {id: def_id}, function(definition){
-       display_popup (definition.label, definition.text)
+       display_popup (definition.label, definition.text);
     });
     e.preventDefault();
 }
 
 function display_popup (label, text) {
-	if (!popup_size.width || !popup_size.height) {
+    if (!popup_size.width || !popup_size.height) {
         popup_size = {
             // The -20 takes care of the border
             width: Math.min(500, screen.width - 20),
             height: Math.min(300, screen.height - 20)
         };
     }
-    
-	$('#popup').html(text).dialog({
-            autoOpen: false,
-            title: label,
-            width: popup_size.width,
-            height: popup_size.height,
-            resizeStop: function( event, ui ) {popup_size = ui.size;}
-       });
-       
-       $('#popup').dialog('open');
-       
-       $('#popup').find('a').each(function() {
-            if ($(this).attr('target') == '_self') {
-                $(this).addClass('def_link');
-                $(this).click(get_def_by_id);
-            }
-        });
+
+    $('#popup').html(text).dialog({
+        autoOpen: false,
+        title: label,
+        width: popup_size.width,
+        height: popup_size.height,
+        resizeStop: function( event, ui ) {popup_size = ui.size;}
+    });
+
+    $('#popup').dialog('open');
+              
+    $('#popup').find('a').each(function() {
+        $(this).addClass('def_link');
+        if ($(this).attr('target') == '_self') {
+            $(this).click(get_def_by_id);
+        }
+    });
+    // somehow, adding the css class to the links with above code causes the first
+    // link in the popup to have focus and be scrolled to. below code fixes that
+    $(document.activeElement).blur();
+    $('#popup').scrollTop("0");
+    $('#popup').focus;
 }
 
 function lux_thresh_activate() {
