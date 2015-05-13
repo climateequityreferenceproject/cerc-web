@@ -1,6 +1,7 @@
 <?php
 // undocumented URL parameter switches for downloading xls tables:
 // - dl_start_year = independent of responsibility start date, xls file will only contain data from that year onward
+// - dl_end_year = independent of responsibility start date, xls file will only contain data up until that year 
 // - tax_tables = if tax_tables=1 the tax tables and tax data will be included, otherwise it won't
 // - gdrs_headers=1 keeps the Excel data table headers as specified in the core database, otherwise (default) they are overridden as per renaming mask in config.php
 
@@ -18,6 +19,11 @@ if (isset($_GET['allyears']) && $_GET['allyears'] == 'yes') {
 }
 if (isset($_GET['dl_start_year'])) {
     $dl_start_year_condition_string = " AND year >= " . filter_input(INPUT_GET, 'dl_start_year', FILTER_SANITIZE_NUMBER_INT);
+} else {
+    $dl_start_year_condition_string = "";
+}
+if (isset($_GET['dl_end_year'])) {
+    $dl_start_year_condition_string = " AND year <= " . filter_input(INPUT_GET, 'dl_end_year', FILTER_SANITIZE_NUMBER_INT);
 } else {
     $dl_start_year_condition_string = "";
 }
