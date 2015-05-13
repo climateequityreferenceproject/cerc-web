@@ -17,15 +17,12 @@ if (isset($_GET['allyears']) && $_GET['allyears'] == 'yes') {
 } else {
     $all_years_condition_string = "AND combined.gdrs_alloc_MtCO2 IS NOT NULL";
 }
+$dl_year_condition_string = "";
 if (isset($_GET['dl_start_year'])) {
-    $dl_start_year_condition_string = " AND year >= " . filter_input(INPUT_GET, 'dl_start_year', FILTER_SANITIZE_NUMBER_INT);
-} else {
-    $dl_start_year_condition_string = "";
+    $dl_year_condition_string .= " AND year >= " . filter_input(INPUT_GET, 'dl_start_year', FILTER_SANITIZE_NUMBER_INT);
 }
 if (isset($_GET['dl_end_year'])) {
-    $dl_start_year_condition_string = " AND year <= " . filter_input(INPUT_GET, 'dl_end_year', FILTER_SANITIZE_NUMBER_INT);
-} else {
-    $dl_start_year_condition_string = "";
+    $dl_year_condition_string .= " AND year <= " . filter_input(INPUT_GET, 'dl_end_year', FILTER_SANITIZE_NUMBER_INT);
 }
 if (isset($_GET['tax_tables']) && filter_input(INPUT_GET, 'tax_tables', FILTER_SANITIZE_NUMBER_INT) == '1') {
     $skip_tax_table = FALSE;
@@ -76,7 +73,7 @@ $viewquery = <<< EOSQL
                         (11.0/3.0) * gdrs.kyoto_gap_MtC AS kyoto_gap_MtCO2
                         $tax_string_gdrs
             FROM core LEFT JOIN gdrs ON core.year = gdrs.year AND core.iso3 = gdrs.iso3)
-        AS combined WHERE country.iso3 = combined.iso3 $all_years_condition_string $dl_start_year_condition_string;
+        AS combined WHERE country.iso3 = combined.iso3 $all_years_condition_string $dl_year_condition_string;
 EOSQL;
 
 $last_modified = Framework::get_db_time_string();
