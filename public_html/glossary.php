@@ -65,7 +65,7 @@ include("core.php");
         ?>
 
     </div> <!-- end of #main -->
-    <?php include_once ("footer.php"); ?>
+    <br><?php include("inc/calc_footer.inc.php"); ?>
   </div> <!-- end of #container -->
 
 

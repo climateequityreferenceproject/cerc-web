@@ -306,12 +306,30 @@ $equity_nosplash = $equity_nosplash || isset($_GET['iso3']);
                                        <div id="save">
                     <?php
                                        if ($display_params['framework']['value'] === 'gdrs') {
+                                           if (Framework::is_dev()) {
+                                                // Allow XLS download with various advanced parameters
+                                                echo '<ul>';
+                                                echo '<li class="advanced"><fieldset class="xls_download_advanced">';
+                                                echo '<legend class="closed"><span>&nbsp;</span>Advanced Excel download</legend>';
+                                                echo "<form method='get' action='tables/download_tabsep.php'>";
+                                                echo "    <input type='hidden' name='db' value='<?php echo (Framework::get_db_name($user_db)); ?>'> ";
+                                                echo "    Download Start Year:";
+                                                echo "    <input type='text' name='dl_start_year' maxlength='4' size='4'><br>";
+                                                echo "    Download End Year:";
+                                                echo "    <input type='text' name='dl_end_year' maxlength='4' size='4'><br>";
+                                                echo "    <input type='checkbox' name='tax_tables' value='1'>Include tax tables<br>";
+                                                echo "    <input type='checkbox' name='gdrs_headers' value='1'>Use gdrs_ table headers<br>";
+                                                echo "    <input type='submit' value='download'>";
+                                                echo "</form>";
+                                                echo '</li>';
+                                                echo '</ul>';
+                                           }
                                            echo '<p>';
                                            echo '<a href="tables/download_tabsep.php?db=' . Framework::get_db_name($user_db) . '">' . _("Download complete Excel table") . '</a>';
                                            if (Framework::is_dev()) {
-                                               // Allow downloading of database
-                                               echo ' | <a href="util/download_db.php?db=' . Framework::get_db_name($user_db) .'">' . _("Download SQLite3 database") . '</a>';
-                                           }
+                                                // Allow downloading of database
+                                                echo ' | <a href="util/download_db.php?db=' . Framework::get_db_name($user_db) .'">' . _("Download SQLite3 database") . '</a>';
+                                            }
                                            # echo '<p><a href="viz/test.php?db=' . $user_db . '">Google visualization test</a></p>';
                                            echo '</p>';
                                        }

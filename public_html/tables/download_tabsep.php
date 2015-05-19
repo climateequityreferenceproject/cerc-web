@@ -5,36 +5,38 @@
 // - tax_tables = if tax_tables=1 the tax tables and tax data will be included, otherwise it won't
 // - gdrs_headers=1 keeps the Excel data table headers as specified in the core database, otherwise (default) they are overridden as per renaming mask in config.php
 
-if (isset($_GET['debug']) && $_GET['debug'] == 'yes') {
+if (isset($_REQUEST['debug']) && $_REQUEST['debug'] == 'yes') {
     ini_set('display_errors',1); 
     error_reporting(E_ALL);
 }
 require_once("../frameworks/frameworks.php");
 require_once("table_common.php");
 
-if (isset($_GET['allyears']) && $_GET['allyears'] == 'yes') {
+$user_db = $_REQUEST["db"];
+
+if (isset($_REQUEST['allyears']) && $_REQUEST['allyears'] == 'yes') {
     $all_years_condition_string = "";
 } else {
     $all_years_condition_string = "AND combined.gdrs_alloc_MtCO2 IS NOT NULL";
 }
 $dl_year_condition_string = "";
-if (isset($_GET['dl_start_year'])) {
-    $dl_year_condition_string .= " AND year >= " . filter_input(INPUT_GET, 'dl_start_year', FILTER_SANITIZE_NUMBER_INT);
+if (isset($_REQUEST['dl_start_year'])) {
+    $dl_year_condition_string .= " AND year >= " . $_REQUEST['dl_start_year'];
 }
-if (isset($_GET['dl_end_year'])) {
-    $dl_year_condition_string .= " AND year <= " . filter_input(INPUT_GET, 'dl_end_year', FILTER_SANITIZE_NUMBER_INT);
+if (isset($_REQUEST['dl_end_year'])) {
+    $dl_year_condition_string .= " AND year <= " . $_REQUEST['dl_end_year'];
 }
-if (isset($_GET['tax_tables']) && filter_input(INPUT_GET, 'tax_tables', FILTER_SANITIZE_NUMBER_INT) == '1') {
+if (isset($_REQUEST['tax_tables']) && ($_REQUEST['tax_tables'] == '1')) {
     $skip_tax_table = FALSE;
 } else {
     $skip_tax_table = TRUE;
 }
-if (isset($_GET['gdrs_headers']) && filter_input(INPUT_GET, 'gdrs_headers', FILTER_SANITIZE_NUMBER_INT) == '1') {
+if (isset($_REQUEST['gdrs_headers']) && ($_REQUEST['gdrs_headers'] == '1')) {
     $keep_gdrs_headers = TRUE;
 } else {
     $keep_gdrs_headers = FALSE;
 }
-$db_file = $user_db_store . "/" . $_GET["db"];
+$db_file = $user_db_store . "/" . $user_db;
 
 if ($skip_tax_table) {
     $tax_string_gdrs = "";
