@@ -312,7 +312,7 @@ $equity_nosplash = $equity_nosplash || isset($_GET['iso3']);
                                                 echo '<li class="advanced"><fieldset class="xls_download_advanced">';
                                                 echo '<legend class="closed"><span>&nbsp;</span>Advanced Excel download</legend>';
                                                 echo "<form method='get' action='tables/download_tabsep.php'>";
-                                                echo "    <input type='hidden' name='db' value='<?php echo (Framework::get_db_name($user_db)); ?>'> ";
+                                                echo "    <input type='hidden' name='db' value='" . Framework::get_db_name($user_db) . "'> ";
                                                 echo "    Download Start Year:";
                                                 echo "    <input type='text' name='dl_start_year' maxlength='4' size='4'><br>";
                                                 echo "    Download End Year:";
