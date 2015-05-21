@@ -323,20 +323,20 @@ EOHTML;
     if ($iso3 != $world_code) {
         $retval .= '<dt class="key-phys"><span></span>' . _('Domestic emissions') . '</dt>';
         $retval .= '<dd>' . sprintf(_('An example domestic emissions pathway for %s, one that’s consistent with the selected parameters. '), $country_name);
-        $retval .= sprintf(_('This pathway is not fundamental to the CERP effort-sharing framework, for while it assigns each country a mitigation obligation, it does not specify how or where that obligation should be discharged. However, as a guide to thought, all countries are given a domestic emissions pathway that is consistent with an overall global cost-minimization strategy. That is, domestic emissions in all countries drop at the same rate as the selected global mitigation pathway, relative to national (policy-free) baselines.'), $country_name) . '</dd>';
+        $retval .= sprintf(_('This pathway is not fundamental to the CERP effort-sharing framework, for while it assigns each country a mitigation fair share, it does not specify how or where that share should be discharged. However, as a guide to thought, all countries are given a domestic emissions pathway that is consistent with an overall global cost-minimization strategy. That is, domestic emissions in all countries drop at the same rate as the selected global mitigation pathway, relative to national (policy-free) baselines.'), $country_name) . '</dd>';
 
         $retval .= '<dt class="key-dom"><span></span>';
         if ($fund_others) {
             $retval .= _('Domestically-funded mitigation') . '</dt>'; // if we decide to make a distinction, this one would be Domestic mitigation, with its own definition 
-            $retval .= '<dd>'. sprintf(_('Mitigation funded by %s and carried out within its own borders. The fraction of a country\'s mitigation obligation that is discharged domestically is not specified by the CERP effort-sharing framework, but is rather a result of the international cost and mitigation sharing arrangements that it chooses to participate in.'), $country_name) . '</dd>';
+            $retval .= '<dd>'. sprintf(_('Mitigation funded by %s and carried out within its own borders. The fraction of a country\'s mitigation fair share that is discharged domestically is not specified by the CERP effort-sharing framework, but is rather a result of the international cost and mitigation sharing arrangements that it chooses to participate in.'), $country_name) . '</dd>';
         } else {
             $retval .= _('Domestically-funded mitigation') . '</dt>';
-            $retval .= '<dd>' . sprintf(_('Mitigation funded by %s and carried out within its own borders. The fraction of a country\'s mitigation obligation that is discharged domestically is not specified by the CERP effort-sharing framework, but is rather a result of the international cost and mitigation sharing arrangements that it chooses to participate in.'), $country_name) . '</dd>';
+            $retval .= '<dd>' . sprintf(_('Mitigation funded by %s and carried out within its own borders. The fraction of a country\'s mitigation fair share that is discharged domestically is not specified by the CERP effort-sharing framework, but is rather a result of the international cost and mitigation sharing arrangements that it chooses to participate in.'), $country_name) . '</dd>';
         }
 
         if ($fund_others) {
             $retval .= '<dt class="key-intl"><span></span>' . _('Mitigation funded in other countries') . '</dt>';
-            $retval .= '<dd>' . sprintf(_('Mitigation funded by %s and carried out within other countries. The fraction of a country\'s mitigation obligation that is discharged in other countries is not specified by the CERP effort-sharing framework, but is rather a result of the international cost and mitigation sharing arrangements that it chooses to participate in.'), $country_name) . '</dd>';
+            $retval .= '<dd>' . sprintf(_('Mitigation funded by %s and carried out within other countries. The fraction of a country\'s mitigation fair share that is discharged in other countries is not specified by the CERP effort-sharing framework, but is rather a result of the international cost and mitigation sharing arrangements that it chooses to participate in.'), $country_name) . '</dd>';
             } else {
             $retval .= '<dt class="key-sup"><span></span>' . _('Mitigation funded by other countries') . '</dt>';
             $retval .= '<dd>' . sprintf(_('Mitigation funded other countries, but carried out within the borders of %s. The CERP effort-sharing framework currently assigns the "credit" for this mitigation to the funder, but of course the terms of the mitigation would be as negotiated with the host country.'), $country_name) . '</dd>';
@@ -373,7 +373,7 @@ EOHTML;
     $retval .= '<td class="cj">&nbsp;</td>';
     $retval .= "<td>" . nice_number('', $val, '') . ' Mt' . $gases . "</td>";
     $retval .= "</tr>";
-    // year Global mitigation obligation as MtCO2e below BAU
+    // year Global mitigation fair share as MtCO2e below BAU
     $retval .= "<tr>";
     $retval .= "<td class=\"lj\">" . sprintf(_("Global mitigation requirement below baseline, projected to %d"), $year) . "</td>";
     $retval .= '<td class="cj">(A)</td>';
@@ -391,27 +391,27 @@ EOHTML;
     $val = 100.0 * $ctry_val[$year]["gdrs_rci"];
     $retval .= "<td>" . nice_number('', $val, '%') . "</td>";
     $retval .= "</tr>";
-    // National mitigation obligation (group)
+    // National mitigation fair share (group)
     $retval .= "<tr>";
-    $retval .= "<td class=\"lj\">" . sprintf(_('%1$s mitigation obligation, projected to %2$d'), $country_name, $year) . "</td>";
+    $retval .= "<td class=\"lj\">" . sprintf(_('%1$s mitigation fair share, projected to %2$d'), $country_name, $year) . "</td>";
     $retval .= '<td class="cj">(A &#215; B)</td>';
     $retval .= "<td>&nbsp;</td>";
     $retval .= "</tr>";
-    // National mitigation obligation as MtCO2e below BAU
+    // National mitigation fair share as MtCO2e below BAU
     $retval .= "<tr>";
     $retval .= "<td class=\"lj level2\">" . _("as tonnes below baseline") . "</td>";
     $retval .= '<td class="cj">&nbsp;</td>';
     $val = $bau[$year] - $ctry_val[$year]["gdrs_alloc_MtCO2"];
     $retval .= "<td>" . nice_number('', $val, '') . ' Mt' . $gases . "</td>";
     $retval .= "</tr>";
-    // National mitigation obligation as tCO2e/capita
+    // National mitigation fair share as tCO2e/capita below BAU
     $retval .= "<tr>";
     $retval .= "<td class=\"lj level2\">" . _("as tonnes per capita below baseline") . "</td>";
     $retval .= '<td class="cj">&nbsp;</td>';
     $val = ($bau[$year] - $ctry_val[$year]["gdrs_alloc_MtCO2"])/$pop[$year];
     $retval .= "<td>" . nice_number('', $val, '', 1) . ' t' . $gases . "/cap</td>";
     $retval .= "</tr>";
-    // National mitigation obligation as % below BAU
+    // National mitigation fair share as % below BAU
     $retval .= "<tr>";
     $retval .= "<td class=\"lj level2\">" . _("as percent below baseline") . "</td>";
     $retval .= '<td class="cj">&nbsp;</td>';
@@ -443,14 +443,14 @@ EOHTML;
     $retval .= "</tr>";
     // GDRs 2020 allocation as MtCO2e
     $retval .= "<tr>";
-    $retval .= "<td class=\"lj level2\">" . _("as tonnes below baseline") . "</td>";
+    $retval .= "<td class=\"lj level2\">" . _("as tonnes") . "</td>";
     $retval .= '<td class="cj">&nbsp;</td>';
     $val = $ctry_val[$year]["gdrs_alloc_MtCO2"];
     $retval .= "<td>" . nice_number('', $val, '') . ' Mt' . $gases . "</td>";
     $retval .= "</tr>";
     // GDRs allocation as tCO2e/capita
     $retval .= "<tr>";
-    $retval .= "<td class=\"lj level2\">" . _("as tonnes per capita below baseline") . "</td>";
+    $retval .= "<td class=\"lj level2\">" . _("as tonnes per capita") . "</td>";
     $retval .= '<td class="cj">&nbsp;</td>';
     $val = $ctry_val[$year]["gdrs_alloc_MtCO2"]/$pop[$year];
     $retval .= "<td>" . nice_number('', $val, '', 1) . ' t' . $gases . "/cap</td>";
@@ -545,7 +545,7 @@ EOHTML;
             $retval .= "<tr>";
             // Tom Edit 
             // $retval .= "<td class=\"lj level2\">" . sprintf(_('As %s-style score'), $scorecard_link) . "</td>";
-            $retval .= "<td class=\"lj level2\">" . sprintf(_('Amount by which this pledge falls short of mitigation obligation'), $scorecard_link) . "</td>";
+            $retval .= "<td class=\"lj level2\">" . sprintf(_('Amount by which this pledge falls short of mitigation fair share'), $scorecard_link) . "</td>";
             $retval .= '<td class="cj">&nbsp;</td>';
             $val = ($pledge_info['pledge'] - $mit_oblig)/$pop[$pledge_year];
             $retval .= "<td>" . nice_number('', $val, '', 1) . ' t' . $gases . '/cap' . "</td>";
@@ -581,7 +581,7 @@ EOHTML;
 //        <th>&nbsp;</th>
 //        <th>&nbsp;</th>
 //        <th style="border: none;">&nbsp;</th>
-//        <th colspan="2" style="text-align:center">Annual per-capita obligation</th>
+//        <th colspan="2" style="text-align:center">Annual per-capita fair share</th>
 //    </tr>
 //    <tr>
 //        <th>Income level<br/>(2010 \$US MER/cap)</th>
@@ -647,7 +647,7 @@ EOHTML;
 //        $retval .= "</tr>";
 //        // Percent
 //        $retval .= "<tr>";
-//        $retval .= "<td class=\"lj level2\">As share of " . $pledge_year . " mitigation obligation</td>";
+//        $retval .= "<td class=\"lj level2\">As share of " . $pledge_year . " mitigation fair share</td>";
 //        $val = 100 * $pledge_info['pledge']/($bau[$pledge_year] - $ctry_val[$pledge_year]["gdrs_alloc_MtCO2"]);
 //        $retval .= "<td>" . nice_number('', $val, '%') . "</td>";
 //        $retval .= "</tr>";
