@@ -375,7 +375,7 @@ EOHTML;
     $retval .= "</tr>";
     // year Global mitigation fair share as MtCO2e below BAU
     $retval .= "<tr>";
-    $retval .= "<td class=\"lj\">" . sprintf(_("Global mitigation requirement below baseline, projected to %d"), $year) . "</td>";
+    $retval .= "<td class=\"lj\">" . sprintf(_("Global mitigation requirement below global baseline, projected to %d"), $year) . "</td>";
     $retval .= '<td class="cj">(A)</td>';
     $val = $world_bau - $world_tot["gdrs_alloc"];
     $retval .= "<td>" . nice_number('', $val, '') . ' Mt' . $gases . "</td>";
