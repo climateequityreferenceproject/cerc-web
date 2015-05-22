@@ -29,7 +29,7 @@ if (isset($_GET['show_avail_params']) && $_GET['show_avail_params'] === 'yes') {
 }
 
 $equity_nosplash = false;
-$equity_nosplash = $equity_nosplash || isset($_POST['equity_cancel']);
+$equity_nosplash = $equity_nosplash || isset($_REQUEST['equity_cancel']);
 $equity_nosplash = $equity_nosplash || isset($_POST['equity_cancel_top']);
 $equity_nosplash = $equity_nosplash || isset($_POST['equity_submit']);
 $equity_nosplash = $equity_nosplash || isset($_POST['equity_submit_top']);
@@ -38,6 +38,7 @@ $equity_nosplash = $equity_nosplash || isset($_GET['iso3']);
 ?>
 <!DOCTYPE html>
     <head>
+    <style>#dl_excel_button {width:auto!important;background:none!important;border:none;padding:0!important;cursor:pointer;border-bottom-color: #050556;border-bottom-style: dotted;border-bottom-width: 1px;color: #40822E;font-family: Arial,Helvetica,Verdana,sans-serif;font-feature-settings: normal;font-kerning: auto;font-language-override: normal;font-size: 13.4333px;font-size-adjust: none;font-stretch: normal;font-style: normal;font-synthesis: weight style;font-variant: normal;font-variant-alternates: normal;font-variant-caps: normal;font-variant-east-asian: normal;font-variant-ligatures: normal;font-variant-numeric: normal;font-variant-position: normal;font-weight: 700;line-height: 21.5px;text-align: left;text-decoration: none;text-decoration-color: #40822E;text-decoration-line: none;text-decoration-style: solid;}</style>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
@@ -199,6 +200,10 @@ $equity_nosplash = $equity_nosplash || isset($_GET['iso3']);
                             echo "<li>";
                             echo select_num('em_elast', $shared_params, $glossary->getLink('emiss_elast', false, _('Emissions elasticity')) . ":");
                             echo "</li>";
+                            echo '<li class="advanced">';
+                            echo '<input type="checkbox" name="show_tax_tables" id="show_tax_tables" class="click" value="1" ' . (isset($_REQUEST['show_tax_tables']) ? 'checked="checked"' : '') . '/>';
+                            echo '<label for="show_tax_tables" class="click"> ' . _("Show illustrative \"tax table\"") . '</label>';
+                            echo "</li>";
                             echo '</ul></fieldset></li>';
 
                             // Cost of Climate Action
@@ -312,6 +317,10 @@ $equity_nosplash = $equity_nosplash || isset($_GET['iso3']);
                                                 echo '<li class="advanced"><fieldset class="xls_download_advanced">';
                                                 echo '<legend class="closed"><span>&nbsp;</span>Advanced Excel download</legend>';
                                                 echo "<form method='get' action='tables/download_tabsep.php'>";
+                                                // the red warning rext below is a hack to respond a redirection related bug
+                                                // TODO: after proper move to cerp.org domain, remove it 
+                                                echo "    <font color='red'><b>DONT USE EXCEL DOWNLOAD ON CLIMATEREFERENCE.ORG, HEAD OVER TO <a href='http://GDRIGHTS.ORG/calculator_dev'>GDRIGHTS.ORG/calculator</a></b></font><br><br>";
+                                                // end hack
                                                 echo "    <input type='hidden' name='db' value='" . Framework::get_db_name($user_db) . "'> ";
                                                 echo "    Download Start Year:";
                                                 echo "    <input type='text' name='dl_start_year' maxlength='4' size='4'><br>";
@@ -325,15 +334,30 @@ $equity_nosplash = $equity_nosplash || isset($_GET['iso3']);
                                                 echo '</ul>';
                                            }
                                            echo '<p>';
-                                           echo '<a href="tables/download_tabsep.php?db=' . Framework::get_db_name($user_db) . '">' . _("Download complete Excel table") . '</a>';
+                                           // a hack to respond a redirection related bug
+                                           // TODO: after proper move to cerp.org domain, remove it (by only keeping the code in the first bracket of the if block
+                                           if ($host_name == "gdrights.org") {
+                                               echo '<a href="tables/download_tabsep.php?db=' . Framework::get_db_name($user_db) . '">' . _("Download complete Excel table") . '</a>';
+                                           } else {
+                                               echo '<form action="http://gdrights.org/calculator' . (Framework::is_dev() ? '_dev' : '') . '/index.php" method="post">';                                               
+                                               echo '<input type="hidden" name="warning" value="1">';
+                                               echo '<input type="hidden" name="equity_cancel" value="1">';
+                                               echo '<input type="submit" id="dl_excel_button" value="Download complete Excel table" style="{background:none!important;border:none!important;padding:0!important;cursor:pointer!important;border-bottom-color: #050556!important;border-bottom-style: dotted!important;border-bottom-width: 1px!important;color: #40822E!important;font-family: Arial,Helvetica,Verdana,sans-serif!important;font-feature-settings: normal!important;font-kerning: auto!important;font-language-override: normal!important;font-size: 13.4333px!important;font-size-adjust: none!important;font-stretch: normal!important;font-style: normal!important;font-synthesis: weight style!important;font-variant: normal!important;font-variant-alternates: normal!important;font-variant-caps: normal!important;font-variant-east-asian: normal!important;font-variant-ligatures: normal!important;font-variant-numeric: normal!important;font-variant-position: normal!important;font-weight: 700!important;line-height: 21.5px!important;text-align: left!important;text-decoration: none!important;text-decoration-color: #40822E!important;text-decoration-line: none!important;text-decoration-style: solid!important;}">';
+                                               //echo '</form>';
+                                           }
+                                           // end hack
                                            if (Framework::is_dev()) {
                                                 // Allow downloading of database
                                                 echo ' | <a href="util/download_db.php?db=' . Framework::get_db_name($user_db) .'">' . _("Download SQLite3 database") . '</a>';
                                             }
                                            # echo '<p><a href="viz/test.php?db=' . $user_db . '">Google visualization test</a></p>';
                                            echo '</p>';
+                                           // part of a hack to respond a redirection related bug
+                                           // TODO: after proper move to cerp.org domain, remove the line below
+                                           if (!($host_name == "gdrights.org")) { echo '</form>';}
+
                                        }
-                    ?>
+                  ?>
                                    </div><!-- /save -->
                                    <!--<p><?php /* ?><?php print_r(Framework::get_frameworks()); ?><?php */ ?></p>-->
                                </div><!-- /intro -->
@@ -364,6 +388,10 @@ $equity_nosplash = $equity_nosplash || isset($_GET['iso3']);
                                  ?>
                                
                                     <?php
+                                       // a hack to respond a redirection related bug
+                                       // TODO: after proper move to cerp.org domain, remove the line below
+                                       if (isset($_POST['warning'])) { echo '<p class="alert">An error occurred. Your calculator settings have been reset, please review the settings before attempting the Excel download again.</p>'; }
+
                                         if (isset($_COOKIE['db']) && !$up_to_date) {
                                             echo '<p class="alert">' . _("The calculator or database has been updated since you last visited. Your settings have been reset.") . '</p>';
                                         }

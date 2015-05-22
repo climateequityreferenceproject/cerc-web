@@ -70,8 +70,10 @@
         $retval .= generate_entry(_("Development threshold: "), "\$" . number_format($fw_params["dev_thresh"]['value']));
         $retval .= "</tr>\n";
         $retval .= generate_entry(_("Progressive between thresholds: "), $fw_params["interp_btwn_thresh"]['value'] ? _("yes") : _("no"));
-        $retval .= generate_entry(_("Luxury threshold: "), "\$". number_format($fw_params["lux_thresh"]['value']));
-        $retval .= generate_entry(_("Mult. on incomes above lux. thresh.: "), number_format($fw_params["luxcap_mult"]['value'],1));
+        if ($fw_params["interp_btwn_thresh"]['value']==1) {
+            $retval .= generate_entry(_("Luxury threshold: "), "\$". number_format($fw_params["lux_thresh"]['value']));
+            $retval .= generate_entry(_("Mult. on incomes above lux. thresh.: "), number_format($fw_params["luxcap_mult"]['value'],1));
+        }
         $retval .= "</tr>\n";
         $retval .= "<tr>\n";
         $retval .= generate_entry(_("Include land-use emissions: "), $shared_params["use_lulucf"]['value'] ? _("yes") : _("no"));

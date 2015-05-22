@@ -91,6 +91,7 @@ $(function() {
     $('#do_luxcap').change(submit);
     $('#luxcap_mult').change(submit);
     $('#interp_btwn_thresh').change(submit);
+    $('#show_tax_tables').change(submit);
     
     $('#r_wt').change(submit);
     // $('#percent_gwp').change(submit);
