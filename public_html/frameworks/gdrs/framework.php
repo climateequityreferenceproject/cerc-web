@@ -104,7 +104,7 @@
                                 'time_series' => false
                             ),
                             'gdrs_tax' => array(
-                                'display_name' => 'Obligation to pay',
+                                'display_name' => 'Fair share (user-estimated incremental costs)',
                                 'time_series' => false
                             ),
                             'gdrs_RCI' => array(

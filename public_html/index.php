@@ -296,7 +296,7 @@ $equity_nosplash = $equity_nosplash || isset($_GET['iso3']);
                                          <p><?php print_r($fw_params); ?></p>
                                          <p><?php print_r($display_params); ?></p>--><?php */ ?>
                                         <p><?php
-                                        $welcome_string = _('Use the controls to the left to change the parameter values and see the implications for national obligations.');
+                                        $welcome_string = _('Use the controls to the left to change the parameter values and see the implications for national fair shares.');
                                         //                                       $welcome_string .= ' ' . sprintf(_('Use the controls to the left to change the parameters in the %1$s and see the implications for the %2$s and other indicators.'), $glossary->getLink('def_gdrs', false, _('GDRs framework')), $glossary->getLink('gloss_rci', false, _('Responsibility and Capacity Index (RCI)')));
                                         echo $welcome_string;
                                         ?></p>

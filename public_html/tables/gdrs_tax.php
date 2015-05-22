@@ -31,12 +31,13 @@ $retval = <<< EOHTML
     <thead>
         <tr>
             <th class="lj">Country or Group</th>
-            <th>Obligation<br/>to pay<br/>(% of total)</th>
-            <th>Obligation<br/>to pay<br/>(billion 2010 \$US MER)</th>
-            <th>Obligation<br/>to pay<br/>(% GDP)</th>
-            <th>Obligation<br/>per capita<br/>(2010 \$US MER/cap)</th>
-            <th>Obligation per person<br/>above development<br/>threshold (2010 \$US MER/cap)</th>
+            <th>Fair share<br/>(% of total)</th>
+            <th>Fair share<br/>(billion 2010 \$US MER)</th>
+            <th>Fair share<br/>(% GDP)</th>
+            <th>Fair share per capita<br/>(2010 \$US MER/cap)</th>
+            <th>Fair share<br/>per person above development threshold<br/>(2010 \$US MER/cap)</th>
         </tr>
+        
     </thead>
     <tbody>
 EOHTML;
@@ -72,17 +73,17 @@ EOSQL;
     $world_tot = $record[0]; // Only one record, but using "fetchAll" makes sure curser closed
     $retval .= "<tr>";
     $retval .= '<td class="lj cr_item">( 1) World</td>';
-    // Obligation to pay % of total
+    // Fair share % of total
     $retval .= "<td>" . number_format($oblfactor * 100.00, $dec) . "</td>";
-    // Obligation to pay bln USD MER
+    // Fair share bln USD MER
     $val = $billfracgwp * $gwp_mer;
     $retval .= "<td>" . number_format($val, $dec) . "</td>";
-    // Obligation to pay % GDP
+    // OFair share % GDP
     $retval .= "<td>" . number_format(100.00 * $billfracgwp, $dec) . "</td>";
-    // Obligation per capita
+    // Fair share per capita
     $val = 1000.0 * $billfracgwp * $gwp_mer/$world_tot["pop"];
     $retval .= "<td>" . number_format($val, $dec) . "</td>";
-    // Obligation per person above dev threshold
+    // Fair share per person above dev threshold
     $val = 1000.0 * $billfracgwp * $gwp_mer/$world_tot["pop_above_dl"];
     $retval .= "<td>" . number_format($val, $dec) . "</td>";
     $retval .= "</tr>";
@@ -102,20 +103,20 @@ EOSQL;
         foreach ($db->query($regionquery) as $record) {
             $retval .= "<tr>";
             $retval .= '<td class="lj cr_item">' . $longname . "</td>";
-            // Obligation to pay % of total
+            // Fair share  % of total
             $obl_frac = $record["gdrs_oblig"]/$world_tot["gdrs_oblig"];
             $val = 100.0 * $oblfactor * $obl_frac;
             $retval .= "<td>" . number_format($val, $dec) . "</td>";
-            // Obligation to pay bln USD MER
+            // Fair share  bln USD MER
             $obl_mer = $billfracgwp * $gwp_mer * $obl_frac;
             $retval .= "<td>" . number_format($obl_mer, $dec) . "</td>";
-            // Obligation to pay % GDP
+            // Fair share  % GDP
             $val = 100.0 * $obl_mer/$record["gdp_mer"];
             $retval .= "<td>" . number_format($val, $dec) . "</td>";
-            // Obligation per capita
+            // Fair share per capita
             $val = 1000.0 * $obl_mer/$record["pop"];
             $retval .= "<td>" . number_format($val, $dec) . "</td>";
-            // Obligation per person above dev threshold
+            // Fair share per person above dev threshold
             $val = 1000.0 * $obl_mer/$record["pop_above_dl"];
             $retval .= "<td>" . number_format($val, $dec) . "</td>";
             $retval .= "</tr>";
@@ -126,20 +127,20 @@ EOSQL;
     foreach ($db->query("SELECT * FROM tax_temp ORDER BY country") as $record) {
         $retval .= "<tr>";
         $retval .= '<td class="lj cr_item">' . $record["country"] . "</td>";
-        // Obligation to pay % of total
+        // Fair share % of total
         $obl_frac = $record["gdrs_oblig"]/$world_tot["gdrs_oblig"];
         $val = 100.0 * $oblfactor * $obl_frac;
         $retval .= "<td>" . number_format($val, $dec) . "</td>";
-        // Obligation to pay bln USD MER
+        // Fair share bln USD MER
         $obl_mer = $billfracgwp * $gwp_mer * $obl_frac;
         $retval .= "<td>" . number_format($obl_mer, $dec) . "</td>";
-        // Obligation to pay % GDP
+        // Fair share % GDP
         $val = 100.0 * $obl_mer/$record["gdp_mer"];
         $retval .= "<td>" . number_format($val, $dec) . "</td>";
-        // Obligation per capita
+        // Fair share per capita
         $val = 1000.0 * $obl_mer/$record["pop"];
         $retval .= "<td>" . number_format($val, $dec) . "</td>";
-        // Obligation per person above dev threshold
+        // Fair share per person above dev threshold
         $val = 1000.0 * $obl_mer/$record["pop_above_dl"];
         $retval .= "<td>" . number_format($val, $dec) . "</td>";
         $retval .= "</tr>";

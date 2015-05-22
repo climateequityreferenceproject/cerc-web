@@ -574,7 +574,7 @@ EOSQL;
                                 'type' => 'int'
                             ),
                             'use_mit_lag' => array(
-                                'description' => 'Smooth over historical RCI for calculating mitigation obligations',
+                                'description' => 'Smooth over historical RCI for calculating mitigation fair share',
                                 'advanced' => true,
                                 'db_param' => 'use_lag',
                                 'value' => NULL,
