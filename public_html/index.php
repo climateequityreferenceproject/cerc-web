@@ -319,7 +319,10 @@ $equity_nosplash = $equity_nosplash || isset($_GET['iso3']);
                                                 echo "<form method='get' action='tables/download_tabsep.php'>";
                                                 // the red warning rext below is a hack to respond a redirection related bug
                                                 // TODO: after proper move to cerp.org domain, remove it 
-                                                echo "    <font color='red'><b>DONT USE EXCEL DOWNLOAD ON CLIMATEREFERENCE.ORG, HEAD OVER TO <a href='http://GDRIGHTS.ORG/calculator_dev'>GDRIGHTS.ORG/calculator</a></b></font><br><br>";
+                                                // TODO: there is also a pretty nifty <style> section in the <head> which won't be needed no more
+                                                if (!($host_name == "gdrights.org")) {
+                                                    echo "    <font color='red'><b>DONT USE EXCEL DOWNLOAD ON CLIMATEREFERENCE.ORG, HEAD OVER TO <a href='http://GDRIGHTS.ORG/calculator_dev'>GDRIGHTS.ORG/calculator</a></b></font><br><br>";
+                                                }
                                                 // end hack
                                                 echo "    <input type='hidden' name='db' value='" . Framework::get_db_name($user_db) . "'> ";
                                                 echo "    Download Start Year:";

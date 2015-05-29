@@ -63,7 +63,7 @@ EOSQL;
 // TODO: Replace "iso3" with the more generic "code"
 function gdrs_country_report($dbfile, $country_name, $shared_params, $iso3, $year) {
     global $host_name;
-    global $URL_sc, $URL_sc_dev;
+    global $URL_sc, $URL_sc_dev, $svg_tmp_dir;
     global $glossary;
     $year_list = get_pledge_years($iso3);
     $year_list[] = $year;
@@ -303,12 +303,18 @@ EOSQL;
     
     $width_string = $graph_width . "px";
     $height_string = ($graph_height + $legend_height) . "px";
-    
-$retval .= <<< EOHTML
-<object data="$graph_file" type="image/svg+xml" style="width:$width_string; height:$height_string; border: 1px solid #CCC;">
-    <p>No SVG support</p>
-</object>
-EOHTML;
+
+    //getting svg source code and dumping it directly into the page to make it 
+    //css-able
+    $svg_code = file_get_contents($svg_tmp_dir . "/" . basename($graph_file));
+    $retval .= $svg_code;
+// below, old code that constructs an object to display the external svg image 
+// file instead of dumping svg code onto the page         
+//$retval .= <<< EOHTML
+//<object data="$graph_file" type="image/svg+xml" style="width:$width_string; height:$height_string; border: 1px solid #CCC;">
+//    <p>No SVG support</p>
+//</object>
+//EOHTML;
     
     $retval .= '<p id="toggle-key">' . _('Show graph key') . '</p>';
     $retval .= '<dl id="ctry_report_legend">';

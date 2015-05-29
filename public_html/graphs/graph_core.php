@@ -592,7 +592,7 @@
                 $svg .= '<polyline id="' . $id . '"';
                 if (!$this->have_css) {
                     $svg .= ' stroke-width="1" stroke="#000"';
-                }
+                } 
                 $svg .= ' points="' . $points . '"';
                 if (!$this->have_css) {
                     $svg .= ' fill="none"';
@@ -602,7 +602,7 @@
             
             // Place glyphs
             foreach ($this->glyphs as $id => $glyph) {
-                $svg .= '<use xlink:href="#' . $id . '" ';
+                $svg .= '<use id="use-' . $id . '" xlink:href="#' . $id . '" ';
                 $svg .= self::translate($glyph['xtrans'], $glyph['ytrans']);
                 $svg .= ' />' . "\n";
             }
