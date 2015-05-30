@@ -330,7 +330,6 @@ $equity_nosplash = $equity_nosplash || isset($_GET['iso3']);
                                                 echo "    Download End Year:";
                                                 echo "    <input type='text' name='dl_end_year' maxlength='4' size='4'><br>";
                                                 echo "    <input type='checkbox' name='tax_tables' value='1'>Include tax tables<br>";
-                                                echo "    <input type='checkbox' name='gdrs_headers' value='1'>Use gdrs_ table headers<br>";
                                                 echo "    <input type='submit' value='download'>";
                                                 echo "</form>";
                                                 echo '</li>';

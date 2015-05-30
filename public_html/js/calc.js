@@ -162,6 +162,9 @@ $(function() {
                         filterResult();
 
                         // No longer updating year list: just issue an alert
+                        // TODO: this does not work: it should be triggered when user selects <1970 year when nonCO2
+                        // is selected but not if non-CO2 is not selected. for that, we'd have to fetch the first 
+                        // data year for nonCO2 from DB (or hardcode to 1970)
                         $('#cum_since_yr').load('get_year_list.php option', $('#form1').serialize(), function(){
                             var min_year = $('#cum_since_yr option').attr('value');
                             var new_year = Math.max(curr_year, min_year);
@@ -177,7 +180,7 @@ $(function() {
                             function(data) {
                                 var costs = jQuery.parseJSON(data);
                                 $('#cost_per_tonne').html(costs.pertonne);
-                                $('#cost_perc_gwp').html(costs.percgwp)
+                                $('#cost_perc_gwp').html(costs.percgwp);
                                 $('#cost_total').html(costs.totcost);
                                 $('#cost_year').html(costs.year);
                                  // hide spinner

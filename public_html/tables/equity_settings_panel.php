@@ -98,13 +98,13 @@ if (isset($_COOKIE['db'])) {
                     <h4>Select a mitigation pathway:</h4>
                     <ul>
                         <li>
-                            <label for="ambition-high"><input type="radio" name="emergency_path" id="ambition-high" class="click" value=<?php echo '"' . $emerg_path_id["1.5"] . '" ' . $ambition_checked["1.5"]; ?> />Strong 2&#176;C pathway (Good odds of limiting warming to 2&#176;C. Undefined odds of limiting warming to 1.5&#176;C)</label>
+                            <label for="ambition-high"><input type="radio" name="emergency_path" id="ambition-high" class="click" value=<?php echo '"' . $emerg_path_id["1.5"] . '" ' . $ambition_checked["1.5"]; ?> /><?php echo $glossary->getLink('gloss_path', false, _("1.5&#176;C pathway")); ?> ("Greater than or equal to 50% chance of staying below 1.5&#176;C in 2100.")</label>
                         </li>
                         <li>
-                            <label for="ambition-med"><input type="radio" name="emergency_path" id="ambition-med" class="click" value=<?php echo '"' . $emerg_path_id["2.0"] . '" ' . $ambition_checked["2.0"]; ?> />Weak 2&#176;C pathway (This pathway would have been considered strong before the 2013 IPCC Fifth Assessment Report)</label>
+                            <label for="ambition-med"><input type="radio" name="emergency_path" id="ambition-med" class="click" value=<?php echo '"' . $emerg_path_id["2.0"] . '" ' . $ambition_checked["2.0"]; ?> /><?php echo $glossary->getLink('gloss_path', false, _("2&#176;C pathway")); ?> ("Greater than 66% chance of staying within 2&#176;C in 2100.")</label>
                         </li>
                         <li>
-                            <label for="ambition-low"><input type="radio" name="emergency_path" id="ambition-low" class="click" value=<?php echo '"' . $emerg_path_id["G8"] . '" ' . $ambition_checked["G8"]; ?> />G8 pathway (An even weaker pathway, one consistent with the 2009 G8 Declaration in L’Aquila)</label>
+                            <label for="ambition-low"><input type="radio" name="emergency_path" id="ambition-low" class="click" value=<?php echo '"' . $emerg_path_id["G8"] . '" ' . $ambition_checked["G8"]; ?> /><?php echo $glossary->getLink('gloss_path', false, _("G8 pathway")); ?> (A weaker pathway, consistent with the 2009 G8 Declaration in L’Aquila)</label>
                         </li>
                     </ul>
                 </div>

@@ -424,12 +424,25 @@ EOHTML;
     $val = 100 * (1 - $ctry_val[$year]["gdrs_alloc_MtCO2"]/$bau[$year]);
     $retval .= "<td>" . nice_number('', $val, '%') . "</td>";
     $retval .= "</tr>";
-    // Financial expression (formerly known as "climate tax"
+    // Financial expression (formerly known as "climate tax")
     // $climate_tax_link = '<a href="#tax-table">' . _('climate tax') . '</a>';
     $retval .= '<tr>';
-    $retval .= "<td class=\"lj\">" . sprintf(_('Per capita fair share, expressed in financial terms (assuming %1$s = %2$s%% of GWP)'), $glossary->getLink('incr_cost', false, _('incremental global mitigation + adaptation costs')), nice_number('', $perc_gwp, '')) . "</td>";
+    $retval .= "<td class=\"lj\">Per capita fair share of global costs, expressed in financial terms</td>";
     $retval .= '<td class="cj">&nbsp;</td>';
-    $val = 1000 * $world_tot['gdp_mer'] * 0.01 * $perc_gwp * $ctry_val[$year]["gdrs_rci"]/$ctry_val[$year]['pop_mln'];
+    $retval .= '<td class="cj">&nbsp;</td>';
+    $retval .= '</tr>';
+    // 1. Mitigation
+    $retval .= '<tr>';
+    $retval .= "<td class=\"lj level2\">" . sprintf(_('Mitigation costs (assuming %1$s = %2$s%% of GWP)'), $glossary->getLink('mit_cost', false, _('incremental global mitigation costs')), nice_number('', $shared_params['percent_gwp_MITIGATION']['value'], '')) . "</td>";
+    $retval .= '<td class="cj">&nbsp;</td>';
+    $val = 1000 * $world_tot['gdp_mer'] * 0.01 * $shared_params['percent_gwp_MITIGATION']['value'] * $ctry_val[$year]["gdrs_rci"]/$ctry_val[$year]['pop_mln'];
+    $retval .= "<td>" . nice_number('$', $val, '') . "</td>";
+    $retval .= "</tr>";
+    // 2. Adaptation
+    $retval .= '<tr>';
+    $retval .= "<td class=\"lj level2\">" . sprintf(_('Adaptation cost (assuming %1$s = %2$s%% of GWP)'), $glossary->getLink('adapt_cost', false, _('global adaptation costs')), nice_number('', $shared_params['percent_gwp_ADAPTATION']['value'], '')) . "</td>";
+    $retval .= '<td class="cj">&nbsp;</td>';
+    $val = 1000 * $world_tot['gdp_mer'] * 0.01 * $shared_params['percent_gwp_ADAPTATION']['value'] * $ctry_val[$year]["gdrs_rci"]/$ctry_val[$year]['pop_mln'];
     $retval .= "<td>" . nice_number('$', $val, '') . "</td>";
     $retval .= "</tr>";
     // Blank line
@@ -567,7 +580,9 @@ EOHTML;
     
     
     // Tax table - only display it when explicitly wanted
-    if (isset($_REQUEST['show_tax_tables'])) {       
+    if (isset($_REQUEST['show_tax_tables'])) { 
+        // CH: even though the varibale name is $cost_of_mitigation, I think it
+        // calculates the total of mitigation and adaptation cost
         $cost_of_mitigation = 0.01 * $perc_gwp * $world_tot['gdp_mer']/($world_bau - $world_tot['gdrs_alloc']);
 
         $retval .= <<< EOHTML
