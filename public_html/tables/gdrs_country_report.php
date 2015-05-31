@@ -520,7 +520,6 @@ EOHTML;
     $condl_code['conditional'] = '1';
     foreach (array('unconditional', 'conditional') as $condl) {
         $pledges = $dom_pledges[$condl];
-        $first_pledge = true;
         foreach ($pledges as $pledge_year => $pledge_info) {
             $mit_oblig = $bau[$pledge_year] - $ctry_val[$pledge_year]["gdrs_alloc_MtCO2"];
             $common_str = sprintf(_('%1$s %2$s pledge: %3$s by %4$d %5$s'),
@@ -529,15 +528,7 @@ EOHTML;
                     $pledge_info['description'],
                     $pledge_year,
                     $pledge_info['helptext']);
-            
-            if ($first_pledge) {
-                $scorecard_link = '<a target="_blank" href="' . $scorecard_url . '?';
-                $scorecard_link .= $query_string . '&conditional=' . $condl_code[$condl]; 
-                $scorecard_link .= '">' . _('Climate Equity Pledge Scorecard') . '</a>';
-            } else {
-                $scorecard_link = _('Climate Equity Pledge Scorecard');
-            }
-            
+                        
             $retval .= '<tr><td class="lj" colspan="3">' . $common_str . '</td></tr>';
             // Total
             $retval .= "<tr>";
@@ -560,17 +551,22 @@ EOHTML;
             $val = 100 * $pledge_info['pledge']/$bau[$pledge_year];
             $retval .= "<td>" . nice_number('', $val, '%') . "</td>";
             $retval .= "</tr>";
-            // Score
-            $retval .= "<tr>";
-            // Tom Edit 
-            // $retval .= "<td class=\"lj level2\">" . sprintf(_('As %s-style score'), $scorecard_link) . "</td>";
-            $retval .= "<td class=\"lj level2\">" . sprintf(_('Amount by which this pledge falls short of mitigation fair share'), $scorecard_link) . "</td>";
-            $retval .= '<td class="cj">&nbsp;</td>';
+            // Mitigation shortfall/exceedance
             $val = ($pledge_info['pledge'] - $mit_oblig)/$pop[$pledge_year];
-            $retval .= "<td>" . nice_number('', $val, '', 1) . ' t' . $gases . '/cap' . "</td>";
-            $retval .= "</tr>";
-            // No link for subsequent pledges
-            $first_pledge = false;
+            if ($val <0) {
+                $retval .= "<tr>";
+                $retval .= "<td class=\"lj level2\">Amount by which this pledge falls short of mitigation fair share</td>";
+                $retval .= '<td class="cj">&nbsp;</td>';
+                $retval .= "<td>" . nice_number('<span class="num_negative">', abs($val), '</span>', 1) . ' t' . $gases . '/cap' . "</td>";
+                $retval .= "</tr>";
+            } else {
+                $retval .= "<tr>";
+                $retval .= "<td class=\"lj level2\">Amount by which this pledge exceeds the mitigation fair share</td>";
+                $retval .= '<td class="cj">&nbsp;</td>';
+                $retval .= "<td>" . nice_number('<span class="num_pos_green">', $val, '</span>', 1) . ' t' . $gases . '/cap' . "</td>";
+                $retval .= "</tr>";
+                
+            }
         }
     }
     
@@ -644,7 +640,7 @@ EOHTML;
                 $retval .= "<td>" . nice_number('', $val, '') . "</td>";
                 $retval .= '</tr>';
             }
-
+ 
             $retval .= <<< EOHTML
                 </tbody>
             </table>

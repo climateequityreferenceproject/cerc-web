@@ -522,6 +522,7 @@ td, th { border-color:#ccc; }
 img.float-left, img.float-right { border:1px solid #000; }
 #save { background:#e9eff7; }
 
+.num_pos_green { color: #40822E; }
 .num_negative { color: #c00; }
 
 
