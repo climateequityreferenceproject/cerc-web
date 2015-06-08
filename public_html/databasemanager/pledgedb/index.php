@@ -134,6 +134,7 @@ require_once "HTTP/Request.php";
             <label>Source:</label><br/>
             <textarea name="source" cols="75" rows="2" ><?php echo get_text($edit_array, 'source');?></textarea><br />
             <label>Caveat:</label><br/>
+<?php // TODO: create collapsable caveat entry form - more thoughts on that in caveat_help.php ?>
             <i><b>The caveat field is used to hold all sorts of additional structured and unstructured data about a pledge.<br />
                         For more information about the syntax and purposes, <a href="caveat_help.php">there is a special helpfile</a></b></i><br />
             <textarea name="caveat" cols="100" rows="7" class="mceNoEditor"><?php echo get_text($edit_array, 'caveat');?></textarea><br /><br />
