@@ -31,6 +31,18 @@ class Constants {
                 "user" => "pledges-dev",
                 "pwd" => "***REMOVED***",
                 "host" => "localhost"
+            ),  
+            "public_new" => array(  
+                "dbname" => "pledges_cerp",
+                "user" => "pledges_cerp",
+                "pwd" => "***REMOVED***",
+                "host" => "localhost"
+            ),
+            "development_new" => array(  
+                "dbname" => "pledges_cerp-dev",
+                "user" => "pledges_cerp-dev",
+                "pwd" => "***REMOVED***",
+                "host" => "localhost"
             )  
         ),
         "is_dev" => null
@@ -54,10 +66,21 @@ class Constants {
      * @return array
      */
     public static function db_info() {
-        if (self::is_dev()) {
-            return self::$config['db']['development'];
+        if (strpos(dirname(__FILE__), "gd/gdrights.org")) {
+            // pre-move calculator 
+            if (self::is_dev()) {
+                return self::$config['db']['development'];
+            } else {
+                return self::$config['db']['public'];
+            }
         } else {
-            return self::$config['db']['public'];
+            // post-move calculator 
+            if (self::is_dev()) {
+                return self::$config['db']['development_new'];
+            } else {
+                return self::$config['db']['public_new'];
+            }
+            
         }
     }
 }
