@@ -187,9 +187,18 @@ function check_for_new_regions() {
     //$db = $_REQUEST['db'];
     $db = $_COOKIE['db'];
     
+    
+    // we don't really know where the calculator is accessed from, so we want to 
+    // construct the API link to retain the current "domain name space"
+    if(isset($_SERVER['HTTP_X_FORWARDED_HOST'])) {
+        $URL_calc_api = 'http://' . $_SERVER['HTTP_X_FORWARDED_HOST'] . '/calculator/api/';
+    } else {
+        $URL_calc_api = 'http://' . $_SERVER['HTTP_HOST'] . '/calculator/api/';
+    }
+
     // check is this database still exists
     if (isset($db)) {
-        $req =& new HTTP_Request("http://gdrights.org/calculator/api/?q=regions&db=" . $db);
+        $req =& new HTTP_Request($URL_calc_api . "?q=regions&db=" . $db);
         $req->setMethod(HTTP_REQUEST_METHOD_GET);
         $req->sendRequest();
         $code = $req->getResponseCode();
@@ -200,7 +209,7 @@ function check_for_new_regions() {
     
     // if we don't have a database to reuse, we request a new copy from the calculator API
     if (!$db) { 
-        $req =& new HTTP_Request("http://gdrights.org/calculator/api/?q=new_db");
+        $req =& new HTTP_Request($URL_calc_api . "?q=new_db");
         $req->setMethod(HTTP_REQUEST_METHOD_GET);
         if (!PEAR::isError($req->sendRequest())) {
             $response = (array) json_decode($req->getResponseBody());
@@ -211,7 +220,7 @@ function check_for_new_regions() {
     }
 
     // now let's get the actual list of regions using this database copy
-    $req =& new HTTP_Request("http://gdrights.org/calculator/api/?q=regions&db=" . $db);
+    $req =& new HTTP_Request($URL_calc_api . "?q=regions&db=" . $db);
     $req->setMethod(HTTP_REQUEST_METHOD_GET);
     if (!PEAR::isError($req->sendRequest())) {
         // Note: json_decode returns arrays as StdClass, so have to cast

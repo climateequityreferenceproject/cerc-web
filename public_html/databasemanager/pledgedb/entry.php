@@ -7,7 +7,7 @@ require_once "config/config.php";
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title>GDRs Pledges Database: Entry screen</title>
+        <title>Climate Equity Reference Calculator Pledges Database: Entry screen</title>
 <!--        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
         <script type="text/javascript" src="tinymce/js/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
         
