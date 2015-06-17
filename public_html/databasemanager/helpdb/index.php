@@ -12,7 +12,7 @@ include_once 'includes/magicquotes.inc.php';
 // saving this line for reference in scorecard and calculator, both in subdirectories of gdrights.org
 // include_once $_SERVER['DOCUMENT_ROOT'] . '/helpdb/includes/db_gdrs_help.inc.php';
 
-$site_title = "GDRs Help Documentation for Scorecard and Calculator";
+$site_title = "Climate Equity Reference Project - Help Documentation for Scorecard and Calculator";
 
 // Collect data for a new entry
 // Arrive here via Add link from entries.html.php or searchform.html.php
