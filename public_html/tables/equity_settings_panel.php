@@ -10,11 +10,15 @@ $glossary = new HWTHelp('def_link', 'glossary.php', 'calc_gloss');
 */
 
 $emerg_path_id["1.5"] = Framework::get_emerg_path_id('1.5Cmarkerpathway');
+//$emerg_path_id["1.5nn"] = Framework::get_emerg_path_id('1.5Cmarkerpathway_noneg');
 $emerg_path_id["2.0"] = Framework::get_emerg_path_id('2.0Cmarkerpathway');
+//$emerg_path_id["2.0nn"] = Framework::get_emerg_path_id('2.0Cmarkerpathway_noneg');
 $emerg_path_id["G8"] = Framework::get_emerg_path_id('G8Pathway');
 
 $ambition_checked["1.5"] = '';
+$ambition_checked["1.5nn"] = '';
 $ambition_checked["2.0"] = '';
+$ambition_checked["2.0nn"] = '';
 $ambition_checked["G8"] = '';
 
 $rc_checked["r100"] = '';
@@ -98,11 +102,25 @@ if (isset($_COOKIE['db'])) {
                     <h4>Select a mitigation pathway:</h4>
                     <ul>
                         <li>
-                            <label for="ambition-high"><input type="radio" name="emergency_path" id="ambition-high" class="click" value=<?php echo '"' . $emerg_path_id["1.5"] . '" ' . $ambition_checked["1.5"]; ?> /><?php echo $glossary->getLink('gloss_path', false, _("1.5&#176;C pathway")); ?> ("Greater than or equal to 50% chance of staying below 1.5&#176;C in 2100.")</label>
+                            <label for="ambition-high"><input type="radio" name="emergency_path" id="ambition-high" class="click" value=<?php echo '"' . $emerg_path_id["1.5"] . '" ' . $ambition_checked["1.5"]; ?> /><?php echo $glossary->getLink('gloss_path', false, _("1.5&#176;C Standard")); ?> ("Greater than or equal to 50% chance of staying below 1.5&#176;C in 2100.")</label>
                         </li>
+<?php // take those if statements out once we decided we are ok with the wording
+      // there is also more work to be done to get this implemented, for example 
+      // wrt to the Framework::get_emerg_path_id('2.0Cmarkerpathway_noneg'); stuff
+      // or including the new pathways in the dropdown menu in the settings sidebar ?>
+<?php if (Framework::is_dev()) { ?>
                         <li>
-                            <label for="ambition-med"><input type="radio" name="emergency_path" id="ambition-med" class="click" value=<?php echo '"' . $emerg_path_id["2.0"] . '" ' . $ambition_checked["2.0"]; ?> /><?php echo $glossary->getLink('gloss_path', false, _("2&#176;C pathway")); ?> ("Greater than 66% chance of staying within 2&#176;C in 2100.")</label>
+                            <label for="ambition-high-no-neg"><input disabled type="radio" name="emergency_path" id="ambition-high-no-neg" class="click" value=<?php echo '"' . $emerg_path_id["1.5nn"] . '" ' . $ambition_checked["1.5nn"]; ?> /><span style="color:grey!important;">1.5&#176;C No Negative Emissions (Same carbon budget as above, without negative emissions)</span></label>
                         </li>
+<?php } ?>
+                        <li>
+                            <label for="ambition-med"><input type="radio" name="emergency_path" id="ambition-med" class="click" value=<?php echo '"' . $emerg_path_id["2.0"] . '" ' . $ambition_checked["2.0"]; ?> /><?php echo $glossary->getLink('gloss_path', false, _("2&#176;C Standard")); ?> ("Greater than 66% chance of staying within 2&#176;C in 2100.")</label>
+                        </li>
+<?php if (Framework::is_dev()) { ?>
+                        <li>
+                            <label for="ambition-med-no-neg"><input disabled type="radio" name="emergency_path" id="ambition-med-no-neg" class="click" value=<?php echo '"' . $emerg_path_id["2.0nn"] . '" ' . $ambition_checked["2.0nn"]; ?> /><span style="color:grey!important;">2&#176;C  No Negative Emissions (Same carbon budget as above, without negative emissions)</span></label>
+                        </li>
+<?php } ?>
                         <li>
                             <label for="ambition-low"><input type="radio" name="emergency_path" id="ambition-low" class="click" value=<?php echo '"' . $emerg_path_id["G8"] . '" ' . $ambition_checked["G8"]; ?> /><?php echo $glossary->getLink('gloss_path', false, _("G8 pathway")); ?> (A weaker pathway, consistent with the 2009 G8 Declaration in L’Aquila)</label>
                         </li>

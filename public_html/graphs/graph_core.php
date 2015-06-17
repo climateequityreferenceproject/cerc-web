@@ -7,14 +7,14 @@
         protected $label = "";
         protected $unit = "";
         
-        function __construct($min, $max, $label, $unit, $use_limits, $number_format) {
+        function __construct($min, $max, $label, $unit, $use_limits, $number_format, $step) {
             $this->min = $min;
             $this->max = $max;
             $this->label = $label;
             $this->unit = $unit;
             $this->use_limits = $use_limits;
             $this->number_format = $number_format;
-            $this->scale = $this->calc_scale();
+            $this->scale = $this->calc_scale($step);
         }
         
         public function get_label() {
@@ -39,7 +39,7 @@
         
         // This is from Tcl's plotchart module by Arjen Markus
         // Returns a list as "min, max, step"
-        private function calc_scale() {
+        private function calc_scale($step_override=NULL) {
             $xmin = $this->min;
             $xmax = $this->max;
             
@@ -82,7 +82,11 @@
                 }
             }
             
-            return array('min'=>$nicemin, 'max'=>$nicemax, 'step'=>$step * $factor);
+            if (isset($step_override)) {
+                return array('min'=>$nicemin, 'max'=>$nicemax, 'step'=>$step_override);
+            } else {
+                return array('min'=>$nicemin, 'max'=>$nicemax, 'step'=>$step * $factor);
+            }
         }
         
     }
@@ -185,19 +189,23 @@
         }
         
         // For now, axes are set once, not resest
-        public function set_xaxis($min, $max, $label, $unit, $use_limits=FALSE, $number_format=TRUE) {
+        public function set_xaxis($min, $max, $label, $unit, $use_limits=FALSE, $number_format=TRUE, $step=NULL) {
             if (!$this->xaxis) {
-                $this->xaxis = new Axis($min, $max, $label, $unit, $use_limits, $number_format);
+                $this->xaxis = new Axis($min, $max, $label, $unit, $use_limits, $number_format, $step);
             }
         }
-        public function set_yaxis($min, $max, $label, $unit, $use_limits=FALSE, $number_format=TRUE) {
+        public function set_yaxis($min, $max, $label, $unit, $use_limits=FALSE, $number_format=TRUE, $step=NULL) {
             if (!$this->yaxis) {
-                $this->yaxis = new Axis($min, $max, $label, $unit, $use_limits, $number_format);
+                $this->yaxis = new Axis($min, $max, $label, $unit, $use_limits, $number_format, $step);
             }
+        }
+        public function get_yaxis_scale() {
+            return $this->yaxis->scale;
         }
         
-        public function add_series($points, $id) {
+        public function add_series($points, $id, $css_class=NULL) {
             $this->series[$id] = $points;
+            if (isset($css_class)) { $this->css_classes[$id] = $css_class; }
         }
         
         protected function horiz_stripes($id, $pattern = NULL) {
@@ -559,12 +567,13 @@
             foreach ($wedges as $id => $wedge) {
                 $s1 = $wedge['between'][0];
                 $s2 = $wedge['between'][1];
+                if (isset($wedge['offset'])) { $x_offset = $wedge['offset']; } else { $x_offset = 0; }
                 $points = "";
                 foreach ($scaled_series[$s1] as $x => $y) {
-                    $points .= $x . "," . ($this->dim['height'] - $y) . " " ;
+                    $points .= ($x + $x_offset) . "," . ($this->dim['height'] - $y) . " " ;
                 }
                 foreach (array_reverse($scaled_series[$s2], true) as $x => $y) {
-                    $points .= $x . "," . ($this->dim['height'] - $y) . " " ;
+                    $points .= ($x + $x_offset) . "," . ($this->dim['height'] - $y) . " " ;
                 }
                 $svg .= '<polygon';
                 if (!$this->have_css) {
@@ -573,6 +582,7 @@
                 if ($wedge['id']) {
                     $svg .= ' id="' . $wedge['id'] . '"';
                 }
+                if ($wedge['css_class']) { $svg .= ' class="' . $wedge['css_class'] . '"' ;}
                 if ($wedge['color'] && !$this->have_css) {
                     $svg .= ' fill="' . $wedge['color'] . '"';
                 } elseif ($wedge['stripes'] && !$this->have_css) {
@@ -590,6 +600,7 @@
                     $points .= $x . "," . ($this->dim['height'] - $y) . " " ;
                 }
                 $svg .= '<polyline id="' . $id . '"';
+                if ($this->css_classes[$id]) { $svg .= ' class="' . $this->css_classes[$id] . '"'; }
                 if (!$this->have_css) {
                     $svg .= ' stroke-width="1" stroke="#000"';
                 } 

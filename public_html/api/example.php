@@ -45,10 +45,10 @@ function get_country_data($iso3) {
 
 <html>
     <head>
-        <title>Testing GDRs API</title>
+        <title>Testing CERC API</title>
     </head>
     <body>
-        <h1>Testing GDRs API</h1>
+        <h1>Testing CERC API</h1>
         <form method="post">
             <select name="country">
                 <?php

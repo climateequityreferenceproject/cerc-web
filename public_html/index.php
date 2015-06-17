@@ -9,6 +9,11 @@ if (file_exists("_maintenance-on")) {
     exit();
 }
 
+function microtime_float() {
+    list($usec, $sec) = explode(" ", microtime());
+    return ((float)$usec + (float)$sec);
+}
+
 include("core.php");
 include("form_functions.php");
 $table_view_default = $display_params['table_view']['value'];
@@ -404,9 +409,16 @@ $equity_nosplash = $equity_nosplash || isset($_GET['iso3']);
                                     </div><!-- end #calc_parameters -->
 
                                     <div id="calc_results">
-                                       <?php echo generate_results_table($display_params, $shared_params, $country_list, $region_list, $user_db); 
+                                       <?php 
+                                       $time_start = microtime_float();
+                                       echo generate_results_table($display_params, $shared_params, $country_list, $region_list, $user_db); 
                                         // include("tables/sample_table.php");
+                                       // this only works for the first country report. needs fixing.
+                                       // specifically, what I am actually interested in is figuring out how much time re-calculation of db 
+                                       // takes and how much time the retrieval of values and processing for display
+                                       // echo "<div>processed in " . round(microtime_float() - $time_start,3) . " seconds</div>";
                                        ?>
+
                                     </div><!-- end #calc_results -->
                                </div><!-- end #data -->
                            </div><!-- end #calc_container -->
