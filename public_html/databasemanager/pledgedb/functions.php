@@ -1,17 +1,12 @@
 <?php
 
 function db_connect() {
-    if (strpos($_SERVER['REQUEST_URI'],"dev") !== FALSE) {
-        $dbname = 'pledges-dev';
-    } else {
-        $dbname = 'pledges';
-    }
-    $db = mysql_connect('localhost', $dbname, '***REMOVED***');
+    $db_data = Constants::db_info();
+    $db = mysql_connect($db_data['host'], $db_data['user'], $db_data['pwd']);
     if (!$db) {
         die('Could not connect: ' . mysql_error());
     }
-    mysql_select_db($dbname, $db);
-    
+    mysql_select_db($db_data['dbname'], $db);
     return $db;
 }
 

@@ -79,8 +79,7 @@ class Constants {
                 return self::$config['db']['development_new'];
             } else {
                 return self::$config['db']['public_new'];
-            }
-            
+            }            
         }
     }
 }

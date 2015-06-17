@@ -1,4 +1,5 @@
 <?php
+include_once 'config/config.php';
 include_once 'process.php';
 // need this to use the calculator API
 require_once "HTTP/Request.php";
