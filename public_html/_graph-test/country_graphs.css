@@ -7,9 +7,8 @@ line.axis {stroke:#999; stroke-width:2;}
 line.hrule {width:1; stroke:black; stroke-dasharray:1,2;}
 line#vertical {width:1; stroke:#999;}
 polyline {stroke-width:1; stroke:black; fill:none;}
-polyline#bau {stroke-width:2; stroke:#555;}
 polyline#historical {stroke-width:4; stroke:#555;}
-polyline#alloc {stroke-width:4; stroke:#0066b3;}
+polyline#gdrsalloc {stroke-width:4; stroke:#0066b3;}
 polyline#physical {stroke-width:4; stroke:#7e9f51; stroke-dasharray:4,4;}
 polygon {stroke-width:0; stroke:black; fill-opacity:0.8;}
 polygon#mitoblig {fill:#e6b350;}
@@ -20,20 +19,29 @@ polygon#supportedmit {fill:#e6e6e6;}
 .uncond-glyph {stroke:#000;stroke-width:1px;fill:#ff3c3c;}
 .cond-glyph {stroke:#000;stroke-width:1px;fill:#96dcff;}
 
-/* shift to class-based, instead of id-based css-ing */
-.bau {stroke-width:2; stroke:#555;}
-.historical {stroke-width:4; stroke:#555;}
-.alloc {stroke-width:4; stroke:#0066b3;}
-.physical {stroke-width:4; stroke:#7e9f51; stroke-dasharray:4,4;}
+.wedge_eff { fill: #92D050; fill-opacity: 0.5; } 
+.wedge_res { fill: #6092E0; fill-opacity: 0.5; }
 
-polygon#greenband {fill:#00A400;}
+.lfl_bar_green{ fill: #00B050; fill-opacity: 0.502; }
+.lfl_bar_yellow{ fill: #FFFF00; fill-opacity: 0.502; }
+.lfl_bar_red{ fill: #FC4C4E; fill-opacity: 0.502; }
+
+.bau {fill: none; stroke: #555; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1,5; }
+
+.high_eq {fill: none;stroke: #4F81BD;stroke-width: 2;stroke-linecap: round;stroke-linejoin: round;}
+.medium_eq { fill: none; stroke: #FFC000;stroke-width: 2;stroke-linecap: round;stroke-linejoin: round;}
+.low_eq {fill: none;stroke: #FF0000;stroke-width: 2;stroke-linecap: round;stroke-linejoin: round;}
+
+.noline {stroke:none;fill:none;}
+
+.historical {stroke-width:4; stroke:#555;}
 
 
 /* colors *******************
   #e6b350 ochre 100% (domestic mitigation before opacity reduction)
   #c2823e brown ltr (international share stripe)
-  #0066b3 blue (fair share line)
-  #7e9f51 green (physical reductions line, aka greenline)
+  #0066b3 blue (CERP share line)
+  #7e9f51 green (physical reductions line)
   #e6e6e6 gray (supported mitigation)
   rgb(255,60,60) #ff3c3c red (unconditional glyph)
   rgb(150,220,255) #96dcff light blue (conditional glyph)

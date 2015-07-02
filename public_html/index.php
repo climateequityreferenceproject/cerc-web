@@ -27,7 +27,7 @@ if (isset($_GET['iso3'])) {
 if (isset($_GET['year'])) {
     $display_params['display_yr']['value'] = $_GET['year'];
 }
-if (isset($_GET['show_avail_params']) && $_GET['show_avail_params'] === 'yes') {
+if (isset($_REQUEST['show_avail_params']) && $_REQUEST['show_avail_params'] === 'yes') {
     $show_avail_params = true;
 } else {
     $show_avail_params = false;
@@ -43,7 +43,6 @@ $equity_nosplash = $equity_nosplash || isset($_GET['iso3']);
 ?>
 <!DOCTYPE html>
     <head>
-    <style>#dl_excel_button {width:auto!important;background:none!important;border:none;padding:0!important;cursor:pointer;border-bottom-color: #050556;border-bottom-style: dotted;border-bottom-width: 1px;color: #40822E;font-family: Arial,Helvetica,Verdana,sans-serif;font-feature-settings: normal;font-kerning: auto;font-language-override: normal;font-size: 13.4333px;font-size-adjust: none;font-stretch: normal;font-style: normal;font-synthesis: weight style;font-variant: normal;font-variant-alternates: normal;font-variant-caps: normal;font-variant-east-asian: normal;font-variant-ligatures: normal;font-variant-numeric: normal;font-variant-position: normal;font-weight: 700;line-height: 21.5px;text-align: left;text-decoration: none;text-decoration-color: #40822E;text-decoration-line: none;text-decoration-style: solid;}</style>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
@@ -65,6 +64,7 @@ $equity_nosplash = $equity_nosplash || isset($_GET['iso3']);
     <script type="text/javascript" src="js/jquery-ui-1.8.9.custom.min.js"></script>
     <script type="text/javascript" src="js/jquery.tablesorter.js"></script>
     <script type="text/javascript" src="js/calc.js"></script>        
+    <script type="text/javascript" src="graphs/graph_interactivity.js"></script>        
     <?php include("inc/googleanalytics.php"); ?>
     </head>
     <body id="gdrs_calculator">
@@ -147,6 +147,25 @@ $equity_nosplash = $equity_nosplash || isset($_GET['iso3']);
                         <li>
                             <?php echo select_num('decimal_pl', $display_params, _("Decimal places:")); ?>
                         </li>
+                        <?php // for now, we only want advanced chart settings in the -dev calculator 
+                        if (Framework::is_dev()) { ?>
+                        <li class="advanced">
+                            <fieldset class="ch_settings" id="ch_settings">
+                            <legend class="closed"><span>&nbsp;</span>Christian's Play Area</legend>
+                            <input type="checkbox" id="greenband" name="greenband" checked="1" value="1"><label for="greenband">Use Green Band</label>
+                            <ul class="group">
+                                <li>
+                                    <button onclick="toggledisplay_by_class('physical')">toggle</button>
+                                </li>
+                                <li>
+                                    <button onclick="toggledisplay_by_class('physical', 'show')">on</button>
+                                </li>
+                                <li>
+                                    <button onclick="toggledisplay_by_class('physical', 'hide')">off</button>
+                                </li>
+                            </ul>
+                        </li>
+                        <?php } ?>
                     </ul>
                 </fieldset>
 
@@ -272,6 +291,7 @@ $equity_nosplash = $equity_nosplash || isset($_GET['iso3']);
                            </fieldset>
 
                            <input type="hidden" id="user_db" name="user_db" value="<?php echo $user_db; ?>" />
+                           <input type="hidden" id="show_avail_params" name="show_avail_params" value="<?php echo ($show_avail_params ? 'yes' : 'no'); ?>" />
                            <input type="submit" name="submit" id="submit" class="click" value="<?php echo _("calculate") ?>" /> <!-- TODO: add validation -->
                            <input type="submit" name="reset" id="reset" class="click" value="<?php echo _("reset to initial values") ?>" />
                        </form>
@@ -306,7 +326,7 @@ $equity_nosplash = $equity_nosplash || isset($_GET['iso3']);
                                         echo $welcome_string;
                                         ?></p>
 
-                                        <a id="scorecard_url" target="_blank" href="<?php echo $scorecard_url ?>"><?php echo _("") ?></a>
+                                        <a id="scorecard_2" target="_blank" href="<?php echo $scorecard_url ?>"><?php echo _("") ?></a>
                                         <form action="index.php" method="post" name="eqbtn_form" id="eqbtn_form">
                                             <div id="review_equity_settings">
                                                 <button id="equity_settings_button" type="submit">Review equity settings</button>
@@ -322,13 +342,6 @@ $equity_nosplash = $equity_nosplash || isset($_GET['iso3']);
                                                 echo '<li class="advanced"><fieldset class="xls_download_advanced">';
                                                 echo '<legend class="closed"><span>&nbsp;</span>Advanced Excel download</legend>';
                                                 echo "<form method='get' action='tables/download_tabsep.php'>";
-                                                // the red warning rext below is a hack to respond a redirection related bug
-                                                // TODO: after proper move to cerp.org domain, remove it 
-                                                // TODO: there is also a pretty nifty <style> section in the <head> which won't be needed no more
-                                                if (!($host_name == "gdrights.org")) {
-                                                    echo "    <font color='red'><b>DONT USE EXCEL DOWNLOAD ON CLIMATEREFERENCE.ORG, HEAD OVER TO <a href='http://GDRIGHTS.ORG/calculator_dev'>GDRIGHTS.ORG/calculator</a></b></font><br><br>";
-                                                }
-                                                // end hack
                                                 echo "    <input type='hidden' name='db' value='" . Framework::get_db_name($user_db) . "'> ";
                                                 echo "    Download Start Year:";
                                                 echo "    <input type='text' name='dl_start_year' maxlength='4' size='4'><br>";
@@ -341,38 +354,23 @@ $equity_nosplash = $equity_nosplash || isset($_GET['iso3']);
                                                 echo '</ul>';
                                            }
                                            echo '<p>';
-                                           // a hack to respond a redirection related bug
-                                           // TODO: after proper move to cerp.org domain, remove it (by only keeping the code in the first bracket of the if block
-                                           if ($host_name == "gdrights.org") {
-                                               echo '<a href="tables/download_tabsep.php?db=' . Framework::get_db_name($user_db) . '">' . _("Download complete Excel table") . '</a>';
-                                           } else {
-                                               echo '<form action="http://gdrights.org/calculator' . (Framework::is_dev() ? '_dev' : '') . '/index.php" method="post">';                                               
-                                               echo '<input type="hidden" name="warning" value="1">';
-                                               echo '<input type="hidden" name="equity_cancel" value="1">';
-                                               echo '<input type="submit" id="dl_excel_button" value="Download complete Excel table" style="{background:none!important;border:none!important;padding:0!important;cursor:pointer!important;border-bottom-color: #050556!important;border-bottom-style: dotted!important;border-bottom-width: 1px!important;color: #40822E!important;font-family: Arial,Helvetica,Verdana,sans-serif!important;font-feature-settings: normal!important;font-kerning: auto!important;font-language-override: normal!important;font-size: 13.4333px!important;font-size-adjust: none!important;font-stretch: normal!important;font-style: normal!important;font-synthesis: weight style!important;font-variant: normal!important;font-variant-alternates: normal!important;font-variant-caps: normal!important;font-variant-east-asian: normal!important;font-variant-ligatures: normal!important;font-variant-numeric: normal!important;font-variant-position: normal!important;font-weight: 700!important;line-height: 21.5px!important;text-align: left!important;text-decoration: none!important;text-decoration-color: #40822E!important;text-decoration-line: none!important;text-decoration-style: solid!important;}">';
-                                               //echo '</form>';
-                                           }
-                                           // end hack
+                                           echo '<a href="tables/download_tabsep.php?db=' . Framework::get_db_name($user_db) . '">' . _("Download complete Excel table") . '</a>';
                                            if (Framework::is_dev()) {
                                                 // Allow downloading of database
                                                 echo ' | <a href="util/download_db.php?db=' . Framework::get_db_name($user_db) .'">' . _("Download SQLite3 database") . '</a>';
                                             }
                                            # echo '<p><a href="viz/test.php?db=' . $user_db . '">Google visualization test</a></p>';
                                            echo '</p>';
-                                           // part of a hack to respond a redirection related bug
-                                           // TODO: after proper move to cerp.org domain, remove the line below
-                                           if (!($host_name == "gdrights.org")) { echo '</form>';}
-
                                        }
                   ?>
                                    </div><!-- /save -->
                                    <!--<p><?php /* ?><?php print_r(Framework::get_frameworks()); ?><?php */ ?></p>-->
-                               </div><!-- /intro -->
+                                </div><!-- /intro -->
 
-                               <div id="data">
+                                <div id="data">
                                 <!-- get parameters as a table -->
                                 <?php
-                                if ($show_avail_params ) {
+                                if ($show_avail_params) {
                                     echo '<div id="param_props"><table><thead>';
                                     echo '<th class="lj">parameter (<em>name in database</em>)</th>';
                                     echo '<th>current value</th>';
@@ -383,41 +381,47 @@ $equity_nosplash = $equity_nosplash || isset($_GET['iso3']);
                                     ksort($all_params);
                                     foreach ($all_params as $param => $props) {
                                         if (!is_null($props['db_param']) && !Framework::is_sequencing($props['db_param'])) {
-                                         echo '<tr>';
-                                         echo '<td class="lj"><strong>' . $param . '</strong> (<em>' . $props['db_param'] . '</em>)' . '</td>';
-                                         echo '<td>' . $props['value'] . '</td>';
-                                         echo '<td class="lj">' . $props['description'] . '</td>';
-                                         echo '</tr>';
+                                            echo '<tr>';
+                                            echo '<td class="lj"><strong>' . $param . '</strong> (<em>' . $props['db_param'] . '</em>)' . '</td>';
+                                            echo '<td>' . $props['value'] . '</td>';
+                                            echo '<td class="lj">' . $props['description'] . '</td>';
+                                            echo '</tr>';
+                                            if (strlen($full_link)==0) {
+                                                $full_link = $URL_calc . "?" . $param . "=" . $props['value'];
+                                            } else {
+                                                $full_link .= "&" . $param . "=" . $props['value'];
+                                            }
                                         }
                                     }
                                     echo '</tbody></table></div>';
                                 }
-                                 ?>
+                                ?>
                                
                                     <?php
-                                       // a hack to respond a redirection related bug
-                                       // TODO: after proper move to cerp.org domain, remove the line below
-                                       if (isset($_POST['warning'])) { echo '<p class="alert">An error occurred. Your calculator settings have been reset, please review the settings before attempting the Excel download again.</p>'; }
-
                                         if (isset($_COOKIE['db']) && !$up_to_date) {
                                             echo '<p class="alert">' . _("The calculator or database has been updated since you last visited. Your settings have been reset.") . '</p>';
                                         }
-                                     ?>
-                                
+                                        if (isset($_REQUEST['dataversion'])) {
+                                            if (!(Framework::get_data_ver() == $_REQUEST['dataversion'])) {
+                                                echo '<p class="alert">' . _("Please note that the calculator database has been updated since your link was generated. Your settings have been preserved but the results may differ slightly.") . '</p>';
+                                            }
+                                        }
+                                    ?>
+                                                                
                                     <div id="calc_parameters">
-                                       <?php echo generate_params_table($display_params, $fw_params, $shared_params, $country_list, $region_list, $table_views); ?>
+                                        <?php echo generate_params_table($display_params, $fw_params, $shared_params, $country_list, $region_list, $table_views); ?>
                                     </div><!-- end #calc_parameters -->
 
                                     <div id="calc_results">
-                                       <?php 
-                                       $time_start = microtime_float();
-                                       echo generate_results_table($display_params, $shared_params, $country_list, $region_list, $user_db); 
+                                        <?php 
+                                        $time_start = microtime_float();
+                                        echo generate_results_table($display_params, $shared_params, $country_list, $region_list, $user_db); 
                                         // include("tables/sample_table.php");
-                                       // this only works for the first country report. needs fixing.
-                                       // specifically, what I am actually interested in is figuring out how much time re-calculation of db 
-                                       // takes and how much time the retrieval of values and processing for display
-                                       // echo "<div>processed in " . round(microtime_float() - $time_start,3) . " seconds</div>";
-                                       ?>
+                                        // this only works for the first country report. needs fixing.
+                                        // specifically, what I am actually interested in is figuring out how much time re-calculation of db 
+                                        // takes and how much time the retrieval of values and processing for display
+                                        // echo "<div>processed in " . round(microtime_float() - $time_start,3) . " seconds</div>";
+                                        ?>
 
                                     </div><!-- end #calc_results -->
                                </div><!-- end #data -->

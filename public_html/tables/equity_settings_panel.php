@@ -61,7 +61,7 @@ if (isset($_COOKIE['db'])) {
         $cbdr_ndx = -10;
     }
     
-    if (($fw_params['dev_thresh']['value'] == 2500) && ($fw_params['interp_btwn_thresh']['value'] == 0)) {
+    if (($fw_params['dev_thresh']['value'] == 0) && ($fw_params['interp_btwn_thresh']['value'] == 0)) {
         $dt_checked['low'] = $checked_string;
         $cbdr_ndx += 1;
     } elseif (($fw_params['dev_thresh']['value'] == 7500) && ($fw_params['interp_btwn_thresh']['value'] == 0)) {
@@ -150,7 +150,7 @@ if (isset($_COOKIE['db'])) {
                         <h4>Progressivity, between and within countries</h4>
                         <ul>
                             <li>
-                                <label for="dev-low"><input type="radio" name="dev_thresh" id="dev-low" class="click" value="2500" <?php echo $dt_checked['low']; ?> />$2,500 development threshold (actually, a poverty threshold)</label>
+                                <label for="dev-low"><input type="radio" name="dev_thresh" id="dev-low" class="click" value="0" <?php echo $dt_checked['low']; ?> />No development threshold (actually, a regressive approach)</label>
                             </li>
                             <li>
                                 <label for="dev-med"><input type="radio" name="dev_thresh" id="dev-med" class="click" value="7500" <?php echo $dt_checked['med']; ?> />$7,500 development threshold</label>

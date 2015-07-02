@@ -63,7 +63,7 @@ EOSQL;
 // TODO: Replace "iso3" with the more generic "code"
 function gdrs_country_report($dbfile, $country_name, $shared_params, $iso3, $year) {
     global $host_name;
-    global $URL_sc, $URL_sc_dev, $svg_tmp_dir;
+    global $URL_sc, $URL_sc_dev, $URL_calc, $svg_tmp_dir;
     global $glossary;
     $year_list = get_pledge_years($iso3);
     $year_list[] = $year;
@@ -75,7 +75,7 @@ function gdrs_country_report($dbfile, $country_name, $shared_params, $iso3, $yea
     
     $world_code = Framework::get_world_code();
     $fw = new Framework::$frameworks['gdrs']['class'];
-    $query_string = $fw->get_params_as_query($dbfile) . '&country=' . $iso3;
+    $query_string = $fw->get_params_as_query($dbfile) . '&dataversion=' . Framework::get_data_ver() . '&iso3=' . $iso3;
     unset($fw);
     
     $viewquery = get_common_table_query($dbfile);
@@ -222,11 +222,34 @@ EOSQL;
         if ($use_nonco2) {
             $bau_series[$yr_ndx] += $record['NonCO2_MtCO2e'];
         }
-        $dulline_series[$yr_ndx] = $bau_series[$yr_ndx] * ($global_alloc_series[$yr_ndx]/$global_bau_series[$yr_ndx]);
+        
+        // TODO really, I should figure out how params are passed to $display_params 
+        // and best used here, CH. Also, this check should go outside of the loop eventually. leaving it here for now to kep relevant code together
+        if (Framework::is_dev()) {
+            $greenband = isset($_REQUEST['greenband']);
+        }
+        // we need some good logic and algs here. probably put algs into a function
+        if ($greenband) {
+            if ((round($global_alloc_series[$yr_ndx]/$global_bau_series[$yr_ndx], 4)) != 1) {  // adjusted greenline only once emergency pathway starts
+                $low = 0.8 *$bau_series[$yr_ndx] * ($global_alloc_series[$yr_ndx]/$global_bau_series[$yr_ndx]);
+                $low = max($low, $alloc_series[$yr_ndx]);
+                $low = min($low, $bau_series[$yr_ndx]);
+                $high = 1.2 *$bau_series[$yr_ndx] * ($global_alloc_series[$yr_ndx]/$global_bau_series[$yr_ndx]);
+                $high = max($high, $alloc_series[$yr_ndx]);
+                $high = min($high, $bau_series[$yr_ndx]);
+                $dulline_series[$yr_ndx]=min($low,$high);
+                $dulline_series_max[$yr_ndx]=max($low,$high);
+            } else {
+                $dulline_series[$yr_ndx] = $bau_series[$yr_ndx];
+                $dulline_series_max[$yr_ndx] = $bau_series[$yr_ndx];
+            }
+        } else {
+            $dulline_series[$yr_ndx] = $bau_series[$yr_ndx] * ($global_alloc_series[$yr_ndx]/$global_bau_series[$yr_ndx]);            
+        }
         $min = min($min, $alloc_series[$yr_ndx]);
         $max = max($max, $bau_series[$yr_ndx]);
     }
-    
+  
     $graph_width = 500;
     $graph_height = 312;
     $legend_height = 0;
@@ -242,23 +265,31 @@ EOSQL;
     // The TRUE means use the specified limits for the graph; the FALSE means don't format numbers
     $graph->set_xaxis(1990, 2030, "", "", TRUE, FALSE);
     $graph->set_yaxis($min, $max, "Mt" . $gases_svg, "");
-    $graph->add_series($bau_series, "bau");
-    $graph->add_series($dulline_series, "physical");
-    $graph->add_series($alloc_series, "gdrsalloc");
-    $glyph_id = 0;
-    foreach ($dom_pledges['conditional'] as $pledge_year => $pledge_info) {
-        $yr_ndx = $pledge_year;
-        $graph->add_glyph($yr_ndx,
-                $bau_series[$yr_ndx] - $pledge_info['pledge'],
-                'cond-glyph', 'cond-glyph-' . $glyph_id++,
-                'circle', 10);
+    $graph->add_series($bau_series, "bau", "bau");
+    if ($greenband) {
+        $graph->add_series($dulline_series_max, "physical_max", "physical");
     }
-    foreach ($dom_pledges['unconditional'] as $pledge_year => $pledge_info) {
-        $yr_ndx = $pledge_year;
-        $graph->add_glyph($yr_ndx,
-                $bau_series[$yr_ndx] - $pledge_info['pledge'],
-                'uncond-glyph', 'uncond-glyph-' . $glyph_id++,
-                'diamond', 12);
+    $graph->add_series($dulline_series, "physical", "physical");
+    $graph->add_series($alloc_series, "alloc",  "alloc");
+    $glyph_id = 0;
+    foreach (array('unconditional', 'conditional') as $condl) {
+        $pledges = $dom_pledges[$condl];
+        foreach ($pledges as $pledge_year => $pledge_info) {
+            $yr_ndx = $pledge_year;
+            $conditionality = isset($pledge_info['conditionality_override']) ? $pledge_info['conditionality_override'] : $condl;
+            if ($conditionality=="conditional") {
+                $graph->add_glyph($yr_ndx,
+                        $bau_series[$yr_ndx] - $pledge_info['pledge'],
+                        'cond-glyph', 'cond-glyph-' . $glyph_id++,
+                        'circle', 10);
+            }
+            if ($conditionality=="unconditional") {
+                $graph->add_glyph($yr_ndx,
+                        $bau_series[$yr_ndx] - $pledge_info['pledge'],
+                        'uncond-glyph', 'uncond-glyph-' . $glyph_id++,
+                        'diamond', 12);
+            }
+        }
     }
 
     $maxgap = 0;
@@ -278,21 +309,32 @@ EOSQL;
         $wedge_id = 'supportedmit';
         $stripes = NULL;
     }
+    if ($greenband) {
+        $greenband_wedge = array(
+                            'id' => 'greenband',
+                            'between' => array('physical', 'physical_max'),
+                            'color' => '#00A400',
+                            'stripes' => NULL,
+                            'opacity' => 0.8
+                            );
+    }
     $graph_file = $graph->svgplot_wedges(array(
                         array(
                             'id' => 'mitoblig',
-                            'between' => array('bau', 'gdrsalloc'),
+                            'between' => array('bau', 'alloc'),
                             'color' => '#8ebd7f',
                             'stripes' => NULL,
-                            'opacity' => 0.8
+                            'opacity' => 0.8,
+                            'css_class' => 'mitoblig'
                         ),
                         array(
                             'id' => $wedge_id,
-                            'between' => array('physical', 'gdrsalloc'),
+                            'between' => array('physical', 'alloc'),
                             'color' => $gap_color,
                             'stripes' => $stripes,
                             'opacity' => 0.8
-                        )
+                        ),
+                        $greenband_wedge
                     ), array(
                         'common_id' => 'historical',
                         'vertical_at' => $year
@@ -301,8 +343,8 @@ EOSQL;
 
     $graph_file = "/tmp/" . basename($graph_file);
     
-    $width_string = $graph_width . "px";
-    $height_string = ($graph_height + $legend_height) . "px";
+//    $width_string = $graph_width . "px";
+//    $height_string = ($graph_height + $legend_height) . "px";
 
     //getting svg source code and dumping it directly into the page to make it 
     //css-able
@@ -316,6 +358,7 @@ EOSQL;
 //</object>
 //EOHTML;
     
+    $retval .= '<div id="ctry_report_legend_ctr" style="position:relative;">';
     $retval .= '<p id="toggle-key">' . _('Show graph key') . '</p>';
     $retval .= '<dl id="ctry_report_legend">';
     $retval .= '<dt class="key-bau"><span></span>' . _('Baseline Emissions') . '</dt>';
@@ -357,6 +400,10 @@ EOSQL;
         }
     }
     $retval .= '</dl>';
+    $retval .= '<p style="position:absolute; left:125px; top:1px">';
+    $retval .= '<a href="' . $URL_calc . '?' . $query_string . '">Shareable Link to this view</a>';
+    $retval .= '</p>';
+    $retval .= '</div>';
     /*
      * Main table
      */
@@ -518,56 +565,64 @@ EOHTML;
     $condl_term = array('conditional' => _('conditional'), 'unconditional' => _('unconditional'));
     $condl_code['unconditional'] = '0';
     $condl_code['conditional'] = '1';
+    $pledge_table_output = array();
     foreach (array('unconditional', 'conditional') as $condl) {
         $pledges = $dom_pledges[$condl];
         foreach ($pledges as $pledge_year => $pledge_info) {
             $mit_oblig = $bau[$pledge_year] - $ctry_val[$pledge_year]["gdrs_alloc_MtCO2"];
-            $common_str = sprintf(_('%1$s %2$s pledge: %3$s by %4$d %5$s'),
+            $conditionality = isset($pledge_info['conditionality_override']) ? $pledge_info['conditionality_override'] : $condl;
+            $common_str = sprintf(_('%1$s %2$s pledge%3$s: %4$s by %5$d %6$s'),
                     $country_name,
-                    $condl_term[$condl],
+                    $condl_term[$conditionality],
+                    $pledge_info['pledge_qualifier'],
                     $pledge_info['description'],
                     $pledge_year,
                     $pledge_info['helptext']);
-                        
-            $retval .= '<tr><td class="lj" colspan="3">' . $common_str . '</td></tr>';
+            $ouput_idx = $pledge_year * 10 + (($conditionality == "unconditional") ? 5 : 0); // need to use $condl here so conditionality override doesn't overwrite output
+            while (strlen($pledge_table_output[$ouput_idx])>0) { $ouput_idx = $ouput_idx - 1; }
+            
+            $pledge_table_output[$ouput_idx] = '<tr><td class="lj" colspan="3">' . $common_str . '</td></tr>';
             // Total
-            $retval .= "<tr>";
-            $retval .= "<td class=\"lj level2\">in tonnes below baseline</td>";
-            $retval .= '<td class="cj">&nbsp;</td>';
+            $pledge_table_output[$ouput_idx] .= "<tr>";
+            $pledge_table_output[$ouput_idx] .= "<td class=\"lj level2\">in tonnes below baseline</td>";
+            $pledge_table_output[$ouput_idx] .= '<td class="cj">&nbsp;</td>';
             $val = $pledge_info['pledge'];
-            $retval .= "<td>" . nice_number('', $val, '') . ' Mt' . $gases . "</td>";
-            $retval .= "</tr>";
+            $pledge_table_output[$ouput_idx] .= "<td>" . nice_number('', $val, '') . ' Mt' . $gases . "</td>";
+            $pledge_table_output[$ouput_idx] .= "</tr>";
             // Per capita
-            $retval .= "<tr>";
-            $retval .= "<td class=\"lj level2\">in tonnes per capita below baseline</td>";
-            $retval .= '<td class="cj">&nbsp;</td>';
+            $pledge_table_output[$ouput_idx] .= "<tr>";
+            $pledge_table_output[$ouput_idx] .= "<td class=\"lj level2\">in tonnes per capita below baseline</td>";
+            $pledge_table_output[$ouput_idx] .= '<td class="cj">&nbsp;</td>';
             $val = $pledge_info['pledge']/$pop[$pledge_year];
-            $retval .= "<td>" . nice_number('', $val, '', 1) . ' t' . $gases . "/cap</td>";
-            $retval .= "</tr>";
+            $pledge_table_output[$ouput_idx] .= "<td>" . nice_number('', $val, '', 1) . ' t' . $gases . "/cap</td>";
+            $pledge_table_output[$ouput_idx] .= "</tr>";
             // % below BAU
-            $retval .= "<tr>";
-            $retval .= "<td class=\"lj level2\">" . _('as percent below baseline') . "</td>";
-            $retval .= '<td class="cj">&nbsp;</td>';
+            $pledge_table_output[$ouput_idx] .= "<tr>";
+            $pledge_table_output[$ouput_idx] .= "<td class=\"lj level2\">" . _('as percent below baseline') . "</td>";
+            $pledge_table_output[$ouput_idx] .= '<td class="cj">&nbsp;</td>';
             $val = 100 * $pledge_info['pledge']/$bau[$pledge_year];
-            $retval .= "<td>" . nice_number('', $val, '%') . "</td>";
-            $retval .= "</tr>";
+            $pledge_table_output[$ouput_idx] .= "<td>" . nice_number('', $val, '%') . "</td>";
+            $pledge_table_output[$ouput_idx] .= "</tr>";
             // Mitigation shortfall/exceedance
             $val = ($pledge_info['pledge'] - $mit_oblig)/$pop[$pledge_year];
             if ($val <0) {
-                $retval .= "<tr>";
-                $retval .= "<td class=\"lj level2\">Amount by which this pledge falls short of mitigation fair share</td>";
-                $retval .= '<td class="cj">&nbsp;</td>';
-                $retval .= "<td>" . nice_number('<span class="num_negative">', abs($val), '</span>', 1) . ' t' . $gases . '/cap' . "</td>";
-                $retval .= "</tr>";
+                $pledge_table_output[$ouput_idx] .= "<tr>";
+                $pledge_table_output[$ouput_idx] .= "<td class=\"lj level2\">Amount by which this pledge falls short of mitigation fair share</td>";
+                $pledge_table_output[$ouput_idx] .= '<td class="cj">&nbsp;</td>';
+                $pledge_table_output[$ouput_idx] .= "<td>" . nice_number('<span class="num_negative">', abs($val), '</span>', 1) . ' t' . $gases . '/cap' . "</td>";
+                $pledge_table_output[$ouput_idx] .= "</tr>";
             } else {
-                $retval .= "<tr>";
-                $retval .= "<td class=\"lj level2\">Amount by which this pledge exceeds the mitigation fair share</td>";
-                $retval .= '<td class="cj">&nbsp;</td>';
-                $retval .= "<td>" . nice_number('<span class="num_pos_green">', $val, '</span>', 1) . ' t' . $gases . '/cap' . "</td>";
-                $retval .= "</tr>";
-                
+                $pledge_table_output[$ouput_idx] .= "<tr>";
+                $pledge_table_output[$ouput_idx] .= "<td class=\"lj level2\">Amount by which this pledge exceeds the mitigation fair share</td>";
+                $pledge_table_output[$ouput_idx] .= '<td class="cj">&nbsp;</td>';
+                $pledge_table_output[$ouput_idx] .= "<td>" . nice_number('<span class="num_pos_green">', $val, '</span>', 1) . ' t' . $gases . '/cap' . "</td>";
+                $pledge_table_output[$ouput_idx] .= "</tr>";                
             }
         }
+    }
+    krsort($pledge_table_output);
+    foreach ($pledge_table_output as $key => $value) {
+        $retval .= $value;
     }
     
     // Close the table

@@ -479,6 +479,8 @@
             }
 
             // Search through and see what points all the series have in common
+            // if series names are given in an array "igenore_for_common" of the 
+            // prarams opions array, these series are ignored here  
             if ($params['common_id']) {
                 $common_series = array();
                 $ref_series = current($scaled_series);
@@ -488,20 +490,24 @@
                 foreach (array_keys($ref_series) as $ndx => $x) {
                     $yval = NULL;
                     foreach ($scaled_series as $id => $points_array) {
-                        if (!$yval) {
-                            $yval = $points_array[$x];
-                        } else {
-                            if ($points_array[$x] !== $yval) {
-                                $finished = TRUE;
-                                break;
+                        if (!in_array($id, $params['ignore_for_common'])) {
+                            if (!$yval) {
+                                $yval = $points_array[$x];
+                            } else {
+                                if ($points_array[$x] !== $yval) {
+                                    $finished = TRUE;
+                                    break;
+                                }
                             }
-                        }
+                        }   
                     }
                     if ($finished) {
                         if ($prev_x && $prev_y) {
                             $prepend = array($prev_x => $prev_y);
                             foreach ($scaled_series as $id => $val) {
-                                $scaled_series[$id] = $prepend + $scaled_series[$id];
+                                if (!in_array($id, $params['ignore_for_common'])) {
+                                    $scaled_series[$id] = $prepend + $scaled_series[$id];
+                                }
                             }
                         }
                         break;
@@ -609,25 +615,28 @@
                     $svg .= ' fill="none"';
                 }
                 $svg .= ' />' . "\n";
-            }
+            }  
             
             // Place glyphs
             foreach ($this->glyphs as $id => $glyph) {
                 $svg .= '<use id="use-' . $id . '" xlink:href="#' . $id . '" ';
                 $svg .= self::translate($glyph['xtrans'], $glyph['ytrans']);
-                $svg .= ' />' . "\n";
+                $svg .= ' class="' . substr($id, 0, (strpos($id, "glyph") + 5)) .'" />' . "\n";
             }
             
             $svg .= $this->svg_end();
-            
-            $fname = tempnam($svg_tmp_dir, "graph-") . ".svg";
-            $fh = fopen($fname, 'w') or die("Cannot open file " . $fname);
-            
-            fwrite($fh, $svg);
-            
-            fclose($fh);
-            
-            return $fname;
-            
+
+            if ($params['code_output']) {
+                return $svg;
+            } else {
+                $fname = tempnam($svg_tmp_dir, "graph-") . ".svg";
+                $fh = fopen($fname, 'w') or die("Cannot open file " . $fname);
+
+                fwrite($fh, $svg);
+
+                fclose($fh);
+
+                return $fname;
+            }            
         }
     }

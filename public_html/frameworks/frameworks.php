@@ -33,11 +33,11 @@
         
         // ----------------------------------------------------------------
         // Return true or false if the calculator is or is not being
-        // called from a folder name with "dev" in it.
+        // called from a folder or server name with "dev" in it.
         // ----------------------------------------------------------------
         public static function is_dev() {
             // Note: might return "0" (a correct, non-false value)--have to check for false
-            if (strpos($_SERVER['PHP_SELF'], 'dev')===false) {
+            if ((strpos($_SERVER['PHP_SELF'], 'dev')===false) && (strpos($_SERVER['SERVER_NAME'], 'dev')===false)){
                 return false;
             } else {
                 return true;

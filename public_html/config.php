@@ -77,15 +77,28 @@ if (strpos(dirname(__FILE__), "gd/gdrights.org")) {
                 );
 
     // define certain URLs. If pointing to a directory, include trailing slash
-    $URL_calc = 'http://' . $host_name . '/calculator/';
-    $URL_calc_dev = 'http://' . $host_name . '/calculator_dev/';
-    $URL_sc = 'http://' . $host_name . '/scorecard/';
-    $URL_sc_dev = 'http://' . $host_name . '/scorecard_dev/';
-    $URL_gloss = "http://" . $host_name . "/calculator/glossary.php";
-    $URL_gloss_dev = "http://" . $host_name . "/calculator_dev/glossary.php";
-    $URL_calc_api = 'http://' . $host_name . '/calculator/api/';
-    $URL_calc_api_dev = 'http://' . $host_name . '/calculator_dev/api/';
-
+    // need ===false to cover the possible (even very likely) non-false value 0
+    if ((strpos($host_name, "calculator-dev.") === false) && (strpos($host_name, "calculator.") === false)) {
+        // accessed through directory (should not occur due to redirects, but better safe than sorry)
+        $URL_calc = 'http://' . $host_name . '/calculator/';
+        $URL_calc_dev = 'http://' . $host_name . '/calculator-dev/';
+        $URL_sc = 'http://' . $host_name . '/scorecard/';
+        $URL_sc_dev = 'http://' . $host_name . '/scorecard_dev/';
+        $URL_gloss = "http://" . $host_name . "/calculator/glossary.php";
+        $URL_gloss_dev = "http://" . $host_name . "/calculator-dev/glossary.php";
+        $URL_calc_api = 'http://' . $host_name . '/calculator/api/';
+        $URL_calc_api_dev = 'http://' . $host_name . '/calculator-dev/api/';        
+    } else {
+        // accessed through subdomain
+        $URL_calc = 'http://calculator.climateequityreference.org/';
+        $URL_calc_dev = 'http://calculator-dev.climateequityreference.org/';
+        $URL_sc = 'http://calculator.climateequityreference.org/scorecard/';           // this doesn't really work, but also should not be needed; scorecard is not in the same subdomain...
+        $URL_sc_dev = 'http://calculator.climateequityreference.org/scorecard_dev/';   // this doesn't really work, but also should not be needed; scorecard is not in the same subdomain...
+        $URL_gloss = 'http://calculator.climateequityreference.org/glossary.php';
+        $URL_gloss_dev = 'http://calculator-dev.climateequityreference.org/glossary.php';
+        $URL_calc_api = 'http://calculator.climateequityreference.org/api/';
+        $URL_calc_api_dev = 'http://calculator-dev.climateequityreference.org/api/';
+    }
 }
 
 // this is the directory where the include files of the help db project
@@ -109,6 +122,9 @@ $excel_download_header_rename = array(
 // the _dev calculator might be .htaccess protected. If so, we need to pass creds
 $dev_calc_creds = array ("user"=>"***REMOVED***", "pass"=>"***REMOVED***");
 
+// where the main website lives - we don't want to use $host_name for this as it might include subdomain names
+$main_domain_host = "climateequityreference.org";
+        
 // Google Analytics - the tracking code is specific for the calculator; 
 // the CERP website has its own
 $ga_tracking_code = '***REMOVED***';

@@ -291,7 +291,6 @@ function process_pledges($pledge_info, $pathway, $db) {
         default:
             // Shouldn't reach here
     }
-    $helptext = "";
     // CH: check if there is any additional data in the pledge database
     // those are stored in the 'caveat' field and follow this JSON syntax:
     // {"description_override":"Text of the Override"}
@@ -306,6 +305,13 @@ function process_pledges($pledge_info, $pathway, $db) {
         if (isset($output['help_label']) || isset($output['help_title']) || isset($output['help_text'])) {
             $helptext = "<a onclick='display_popup(\"" . $output['help_title'] . "\",\"". $output['help_text'] . "\")'>" . $output['help_label'] . "</a>";
         }
-     }
-    return array('pledge' => $pledged_reduction, 'description' => $description, 'helptext' => $helptext);
+        if ((isset($output['unconditional'])) || (isset($output['conditional']))) {
+            $condl_override = (isset($output['unconditional'])) ? 'unconditional' : 'conditional';
+        }
+    }
+    $retvar = array('pledge' => $pledged_reduction, 'description' => $description);
+    if (isset($helptext)) { $retvar['helptext'] = $helptext; }
+    if (isset($condl_override)) { $retvar['conditionality_override'] = $condl_override; }
+    if (isset($output['pledge_qualifier'])) { $retvar['pledge_qualifier']=" (" . $output['pledge_qualifier'] . ")"; }
+    return $retvar;
 }

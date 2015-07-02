@@ -441,9 +441,11 @@ function set_display() {
     timeseries_set = {gdrs_RCI: 1, gdrs_alloc: 1, gdrs_alloc_pc: 1};
     if ($('#table_view').val() in country_set) {
         $('#display_ctry').parent().show();
+        $('#chart_settings').parent().show();
         $('#decimal_pl').parent().hide();
     } else {
         $('#display_ctry').parent().hide();
+        $('#chart_settings').parent().hide();
         $('#decimal_pl').parent().show();
     }
     if ($('#table_view').val() in timeseries_set) {
@@ -467,7 +469,7 @@ function spinoff_window() {
     '       <meta charset="utf-8">\n' +
     '       <meta http-equiv="X-UA-Compatible" content="IE=edge">\n' +
     '       <title>View -- generated from the Climate Equity Reference Calculator</title>\n' +
-    '       <link rel="stylesheet" href="http://www.gdrights.org/calculator_dev/css/cescalc.css" media="screen, projection" />\n' +
+    '       <link rel="stylesheet" href="http://calculator-dev.climateequityreference.org/css/cescalc.css" media="screen, projection" />\n' +
     '       <style type="text/css">\n' +
     '         #input_values caption {' +
     '           display:none;' +
