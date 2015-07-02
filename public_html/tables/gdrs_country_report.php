@@ -372,7 +372,7 @@ EOSQL;
     if ($iso3 != $world_code) {
         $retval .= '<dt class="key-phys"><span></span>' . _('Domestic emissions') . '</dt>';
         $retval .= '<dd>' . sprintf(_('An example domestic emissions pathway for %s, one that’s consistent with the selected parameters. '), $country_name);
-        $retval .= sprintf(_('This pathway is not fundamental to the CERP effort-sharing framework, for while it assigns each country a mitigation fair share, it does not specify how or where that share should be discharged. However, as a guide to thought, all countries are given a domestic emissions pathway that is consistent with an overall global cost-minimization strategy. That is, domestic emissions in all countries drop at the same rate as the selected global mitigation pathway, relative to national (policy-free) baselines.'), $country_name) . '</dd>';
+        $retval .= sprintf(_('This pathway does not describe the national fair share. Rather it is shown as a guide to thought. In this example, domestic emissions (the dotted green line) decline (relative to national BAU) at the same rate that global emissions decline below the global BAU.  In the real world, a national domestic emissions trajectory will depend on the cost of domestic mitigation relative to the cost of mitigation in other countries, and on its chosen participation in international mechanisms for providing or receiving financial and technological support for mitigation.'), $country_name) . '</dd>';
 
         $retval .= '<dt class="key-dom"><span></span>';
         if ($fund_others) {
