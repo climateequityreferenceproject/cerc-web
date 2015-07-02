@@ -27,6 +27,8 @@
                 <li>help_title = title of the help text popup</li>
                 <li>help_text = the text of the popup <br>links to other glossary items work using this syntax: &lt;a href=glossary.php#gloss_rci target=_self&gt; - note that there cannot be any quotes, single or otherwise in this html tag<br />It is recommended to break help text into paragraphs using &lt;p&gt; tags, in fact their use is encouraged even for single paragraph help texts (for css)</li>
                 <li>unconditional = set to "yes" if a target is an unconditional target but the data structure of the calculator forces you to enter it as a conditional pledge.</li>
+                <li>conditional = set to "yes" if a target is a conditional target but the data structure of the calculator forces you to enter it as an unconditional pledge.</li>
+                <li>pledge_qualifier = text that appears in brackets after the, for example, "China unconditional pledge" text - to be used for example, to distinguish between low and high ends of pledge ranges</li>
             </ul>
         </ul>
         <br /><br /> 
