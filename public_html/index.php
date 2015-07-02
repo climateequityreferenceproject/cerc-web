@@ -386,11 +386,6 @@ $equity_nosplash = $equity_nosplash || isset($_GET['iso3']);
                                             echo '<td>' . $props['value'] . '</td>';
                                             echo '<td class="lj">' . $props['description'] . '</td>';
                                             echo '</tr>';
-                                            if (strlen($full_link)==0) {
-                                                $full_link = $URL_calc . "?" . $param . "=" . $props['value'];
-                                            } else {
-                                                $full_link .= "&" . $param . "=" . $props['value'];
-                                            }
                                         }
                                     }
                                     echo '</tbody></table></div>';
