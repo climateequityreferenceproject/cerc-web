@@ -199,6 +199,11 @@
                 $this->yaxis = new Axis($min, $max, $label, $unit, $use_limits, $number_format, $step);
             }
         }
+        public function set_yaxis2($min, $max, $label, $unit, $use_limits=FALSE, $number_format=TRUE, $step=NULL) {
+            if (!$this->yaxis2) {
+                $this->yaxis2 = new Axis($min, $max, $label, $unit, $use_limits, $number_format, $step);
+            }
+        }
         public function get_yaxis_scale() {
             return $this->yaxis->scale;
         }
@@ -326,7 +331,7 @@
                 }
                 $x = $margin['left'] + $offset;
                 if ($params['ticks']) {
-                    $retval .= '<line x1="' . $x . '" y1="' . $y1 . '" x2="' . $x . '" y2="' . $y2 . '"';
+                    $retval .= '<line class="axis" x1="' . $x . '" y1="' . $y1 . '" x2="' . $x . '" y2="' . $y2 . '"';
                     if (!$this->have_css) {
                         $retval .= ' stroke="black"';
                     }
@@ -351,15 +356,22 @@
             return $retval;
         }
         
-        protected function svg_yaxis($params = array('ticks'=>true, 'line' => true)) {
-            $scale = $this->yaxis->get_scale();
-            $label = $this->yaxis->get_label();
-            if (($unit = $this->yaxis->get_unit()) !== "") {
-                $label .= " (" . $unit . ")";
-            }
+        protected function svg_yaxis($params = array('ticks'=>true, 'line' => true, 'x_offset' => 0), $axis_number = 1) {
             $margin = $this->get_margins();
+            switch ($axis_number) {
+                case 2:
+                    $scale = $this->yaxis2->get_scale();
+                    $label = $this->yaxis2->get_label();
+                    if (($unit = $this->yaxis2->get_unit()) !== "") { $label .= " (" . $unit . ")"; }
+                    $xpos = $margin['right'] + $params['x_offset'];
+                    break;
+                default:
+                    $scale = $this->yaxis->get_scale();
+                    $label = $this->yaxis->get_label();
+                    if (($unit = $this->yaxis->get_unit()) !== "") { $label .= " (" . $unit . ")"; }
+                    $xpos = $margin['left'] + $params['x_offset'];
+            }
             
-            $xpos = $margin['left'];
             $y1 = $this->dim['height'] - $margin['bottom'];
             $y2 = $this->dim['height'] - $margin['top'];
             
@@ -370,7 +382,7 @@
             $retval = "";
             
             if ($params['line']) {
-                $retval .= '<line class="axis" x1="' . $xpos . '" y1="' . $y1 . '" x2="' . $xpos . '" y2="' . $y2 . '"';
+                $retval .= '<line class="axis yaxis" x1="' . $xpos . '" y1="' . $y1 . '" x2="' . $xpos . '" y2="' . $y2 . '"';
                 if (!$this->have_css) {
                     $retval .= ' stroke="black"';
                 }
@@ -379,10 +391,15 @@
             
             $dec = self::dec($scale['max']);
             $x1 = $xpos;
-            $x2 = $xpos - $this->ticksize;
+            $x2 = $xpos - (($axis_number == 2) ? (-1)*$this->ticksize : $this->ticksize);
+            
             $yval = $scale['min'];
+            var_dump($scale);
+            var_dump($canvas_len);
+            var_dump($canvas_step);
             for ($offset = 0; $offset <= $canvas_len; $offset += $canvas_step) {
-                if ($this->yaxis->number_format) {
+                echo ".".$axis_number;
+                if (($axis_number == 2) ? $this->yaxis2->number_format : $this->yaxis->number_format) {
                     $val = number_format($yval, $dec);
                     // Avoid negative zero
                     if ((float) $val == 0.0) {
@@ -399,10 +416,12 @@
                     }
                     $retval .= '/>' . "\n";
                 }
-                $attr = $this->have_css ? '' : $this->y_axis_text_attr;
-                $retval .= '<text class="axis-label-y" ' . $attr . ' x="' . $x2 . '" y="' . ($y + 3) . '">' . "\n";
-                $retval .= $val;
-                $retval .= "</text>\n";
+                if (!(($axis_number == 2) && ($offset==0))) {
+                    $attr = $this->have_css ? '' : $this->y_axis_text_attr;
+                    $retval .= '<text class="axis-label-y" ' . $attr . ' x="' . ($x2+ ($axis_number == 2 ? 20 : 0)) . '" y="' . ($y + 3) . '">' . "\n";
+                    $retval .= $val;
+                    $retval .= "</text>\n";
+                }
                 $yval += $scale['step'];
             }
             
@@ -479,9 +498,10 @@
             }
 
             // Search through and see what points all the series have in common
-            // if series names are given in an array "igenore_for_common" of the 
+            // if series names are given in an array "ignore_for_common" of the 
             // prarams opions array, these series are ignored here  
             if ($params['common_id']) {
+                if (!isset($params[ignore_for_common])) { $params[ignore_for_common] = array(); }
                 $common_series = array();
                 $ref_series = current($scaled_series);
                 $finished = false;
@@ -557,12 +577,13 @@
             
             $svg .= $this->svg_xaxis(array('ticks'=>false, 'line'=>true));
             $svg .= $this->svg_yaxis(array('ticks'=>false, 'line'=>false));
+            if (isset($params['has_second_yaxis'])) { $svg .= $this->svg_yaxis(array('ticks'=>true, 'line'=>true, 'x_offset' => -30),2); }
             
             if ($params['vertical_at']) {
                 $y1 = $this->dim['height'] - $margin['bottom'];
                 $y2 = $this->dim['height'] - $margin['top'];
                 $xvert_scaled = $this->xaxis->transf_coord($params['vertical_at'], $margin['left'], $margin['right']);
-                $svg .= '<line id="vertical" ';
+                $svg .= '<line id="vertical" class="yaxis" ';
                 if (!$this->have_css) {
                     $svg .= ' width="1" stroke="#999"';
                 }
@@ -573,13 +594,18 @@
             foreach ($wedges as $id => $wedge) {
                 $s1 = $wedge['between'][0];
                 $s2 = $wedge['between'][1];
-                if (isset($wedge['offset'])) { $x_offset = $wedge['offset']; } else { $x_offset = 0; }
+                $x_offset[0] = (isset($wedge['x_offset'])) ? $wedge['x_offset']['left'] : 0;
+                $x_offset[1] = (isset($wedge['x_offset'])) ? $wedge['x_offset']['right'] : 0;
                 $points = "";
+                $i = 0;
                 foreach ($scaled_series[$s1] as $x => $y) {
-                    $points .= ($x + $x_offset) . "," . ($this->dim['height'] - $y) . " " ;
+                    $points .= ($x + $x_offset[$i]) . "," . ($this->dim['height'] - $y) . " " ;
+                    $i = $i +1;
                 }
+                $i = 1;
                 foreach (array_reverse($scaled_series[$s2], true) as $x => $y) {
-                    $points .= ($x + $x_offset) . "," . ($this->dim['height'] - $y) . " " ;
+                    $points .= ($x + $x_offset[$i]) . "," . ($this->dim['height'] - $y) . " " ;
+                    $i = $i - 1;
                 }
                 $svg .= '<polygon';
                 if (!$this->have_css) {

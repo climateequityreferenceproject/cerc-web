@@ -222,11 +222,11 @@ header h1 span, #header h1 span {
     text-indent:-9999px;
 }
 #partners ul li a#ecoequity {
-    background:#fff url('../img/GDR-EE-headercalculator.png') no-repeat;
+    background:#fff url('../img/GDR-EE-headercalculator.png?v=1.0') no-repeat;
     width:148px;
 }
 #partners ul li a#seius {
-    background:#fff url('../img/GDR-SEI-headercalculator.png') no-repeat;
+    background:#fff url('../img/GDR-SEI-headercalculator.png?v=1.0') no-repeat;
     width:167px;
 }
 nav, #nav { 
@@ -321,7 +321,7 @@ legend {
 fieldset fieldset legend { width:20em;}
 legend, legend span { height:1.9em; }
 legend span {  
-    background: url('../img/arrows3.png') no-repeat left center;
+    background: url('../img/arrows3.png?v=1.0') no-repeat left center;
     display:block;
     float:left;
     margin-right:4px;
@@ -365,7 +365,7 @@ dl#ctry_report_legend dt { font-weight:bold; margin-top:1em;}
 dl#ctry_report_legend dd { padding-left:25px;}
 /*dl#ctry_report_legend dd { display: none;}*/
 dl#ctry_report_legend dt span {
-    background:url(../img/graph_leg_sprite.png) no-repeat;
+    background:url(../img/graph_leg_sprite.png?v=1.0) no-repeat;
     display:block;
     float:left;
     height:14px;
@@ -619,13 +619,13 @@ li.separator {
 }
 
 #spinoff #eqbtn_form { display:none; }
-#spinoff_button { display: block;text-indent: -5000px;width: 300px!important;height: 28px;background-image:url(../img/spinoff-button-sprite.png)!important;background-repeat: no-repeat;border:0px!important;padding:0px!important; }
+#spinoff_button { display: block;text-indent: -5000px;width: 300px!important;height: 28px;background-image:url(../img/spinoff-button-sprite.png?v=1.0)!important;background-repeat: no-repeat;border:0px!important;padding:0px!important; }
 #spinoff_button { background-position:0 0; }
 #spinoff_button:hover { background-position:0 -47px; }
 #spinoff_button:active { background-position:0 -47px; }
 
 #equity_settings_button { 
-    background-image:url(../img/equity-button-sprite.png)!important;
+    background-image:url(../img/equity-button-sprite.png?v=1.0)!important;
     background-repeat: no-repeat;
     border:0px!important;
     display: block; 

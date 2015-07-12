@@ -62,7 +62,7 @@ EOSQL;
 
 // TODO: Replace "iso3" with the more generic "code"
 function gdrs_country_report($dbfile, $country_name, $shared_params, $iso3, $year) {
-    global $host_name;
+    global $host_name, $main_domain_host;
     global $URL_sc, $URL_sc_dev, $URL_calc, $svg_tmp_dir;
     global $glossary;
     $year_list = get_pledge_years($iso3);
@@ -363,7 +363,7 @@ EOSQL;
     $retval .= '<dl id="ctry_report_legend">';
     $retval .= '<dt class="key-bau"><span></span>' . _('Baseline Emissions') . '</dt>';
     
-    $retval .= '<dd>' . _('GHG emissions baselines (these are <strong>*not*</strong> business-as-usual pathways) are calculated as counter-factual ' . $glossary->getLink('gloss_bau', false, _('non-policy baselines')) . '. The method is convergence from recent historical growth rates to long-term (2030) growth rates from the projections of McKinsey and Co. (Version 2.1). CO<sub>2</sub> from land use is projected constant at 2005 levels. GDP estimates are taken from IMF (WEO2013) through 2018 and converge to growth rates from McKinsey and Co. in 2030. See <a href="http://' . $host_name . '/calculator-information/gdp-and-emissions-baselines/">Definition, sourcing, and updating of the emissions baselines</a> for details.') . '</dd>';    
+    $retval .= '<dd>' . _('GHG emissions baselines (these are <strong>*not*</strong> business-as-usual pathways) are calculated as counter-factual ' . $glossary->getLink('gloss_bau', false, _('non-policy baselines')) . '. The method is convergence from recent historical growth rates to long-term (2030) growth rates from the projections of McKinsey and Co. (Version 2.1). CO<sub>2</sub> from land use is projected constant at at levels equal to the average of the last 10 years of historical data. GDP estimates are taken from IMF (WEO2013) through 2018 and converge to growth rates from McKinsey and Co. in 2030. See <a href="http://' . $main_domain_host . '/calculator-information/gdp-and-emissions-baselines/">Definition, sourcing, and updating of the emissions baselines</a> for details.') . '</dd>';    
     
     $retval .= '<dt class="key-gdrs"><span></span>' . _('"Fair share" allocation') . '</dt>';
     $retval .= '<dd>' . sprintf(_('National allocation trajectory, as calculated for %s using the specified pathways and parameters. 

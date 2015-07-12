@@ -1,16 +1,4 @@
 <?php
-/**
-* $Rev::               $:  Revision of last commit
-* $Author::            $:  Author of last commit
-* $Date::              $:  Date of last commit
-* 
-* $Rev$:     Revision of last commit
-* $Author$:  Author of last commit
-* $Date$:    Date of last commit
- */
-
-$svn_LastChangedDate = "$LastChangedDate$";
-$svn_LastChangedRevision = "$LastChangedRevision$";
 
 // we don't really know where the calculator is accessed from, so we want to 
 // construct certain links to retain the current "domain name space"

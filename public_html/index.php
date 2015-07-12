@@ -50,9 +50,9 @@ $equity_nosplash = $equity_nosplash || isset($_GET['iso3']);
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="stylesheet" href="css/cescalc.css">
-    <link rel="stylesheet" href="css/tablesorter.css">
-    <link rel="stylesheet" href="css/smoothness/jquery-ui-1.8.9.custom.css" />
+    <link rel="stylesheet" href="css/cescalc.css?v=1.0">
+    <link rel="stylesheet" href="css/tablesorter.css?v=1.0">
+    <link rel="stylesheet" href="css/smoothness/jquery-ui-1.8.9.custom.css?v=1.0" />
     <!--[if IE 6]>
         <link href="css/ie6.css" media="screen, projection" rel="stylesheet" type="text/css" />
     <![endif]-->
@@ -60,11 +60,11 @@ $equity_nosplash = $equity_nosplash || isset($_GET['iso3']);
         <link href="css/ie7.css" media="screen, projection" rel="stylesheet" type="text/css" />
     <![endif]-->
     <!--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>-->
-    <script type="text/javascript" src="js/jquery-1.4.4.min.js"></script>
-    <script type="text/javascript" src="js/jquery-ui-1.8.9.custom.min.js"></script>
-    <script type="text/javascript" src="js/jquery.tablesorter.js"></script>
-    <script type="text/javascript" src="js/calc.js"></script>        
-    <script type="text/javascript" src="graphs/graph_interactivity.js"></script>        
+    <script type="text/javascript" src="js/jquery-1.4.4.min.js?v=1.0"></script>
+    <script type="text/javascript" src="js/jquery-ui-1.8.9.custom.min.js?v=1.0"></script>
+    <script type="text/javascript" src="js/jquery.tablesorter.js?v=1.0"></script>
+    <script type="text/javascript" src="js/calc.js?v=1.0"></script>        
+    <script type="text/javascript" src="graphs/graph_interactivity.js?v=1.0"></script>        
     <?php include("inc/googleanalytics.php"); ?>
     </head>
     <body id="gdrs_calculator">
@@ -152,7 +152,7 @@ $equity_nosplash = $equity_nosplash || isset($_GET['iso3']);
                         <li class="advanced">
                             <fieldset class="ch_settings" id="ch_settings">
                             <legend class="closed"><span>&nbsp;</span>Christian's Play Area</legend>
-                            <input type="checkbox" id="greenband" name="greenband" checked="1" value="1"><label for="greenband">Use Green Band</label>
+                            <input type="checkbox" id="greenband" name="greenband" value="1"><label for="greenband">Use Green Band</label>
                             <ul class="group">
                                 <li>
                                     <button onclick="toggledisplay_by_class('physical')">toggle</button>
