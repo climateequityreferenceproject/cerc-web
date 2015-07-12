@@ -1,5 +1,6 @@
 <?php
 
+require_once "config/config.php";
 include_once 'functions.php';
 
 function db_get_country_table($min_by_year = NULL, $max_by_year = NULL) {

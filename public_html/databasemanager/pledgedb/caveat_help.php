@@ -36,5 +36,7 @@
         <textarea name="caveat" cols="120" rows="12" class="mceNoEditor">{"description_override":"reduce total emissions by 22% compared to Mexican INDC baseline", "help_label":"<br><b>important information on baseline calibration</b>", "help_title":"INDC Baseline Calibration", "help_text":"<p>Mexico has provided a BAU baseline in its INDC submissions. This BAU projection differs from the <a href=glossary.php#gloss_bau target=_self>no-policies baseline</a> used by the Climate Equity Reference Calculator. We have therefore adjusted the Mexican INDC pledge to match the baseline used by the calculator. The target emissions in 2030 are identical for both methods.</p>"}
 
 Calculation of target "hack": (1) BAU(2030) in INDC submission (GHG only, no Black Carbon) is 973 Mt CO2e); (2) 2030 non-conditional target is 22% below BAU in 2030; (3) (1) and (2) gives an emissions target of 758,940 kt CO2e; (4) absolute 2000 emissions for MEX are 618,040Kt CO2e. (5) from (3) and (4) follows that the 2030 target is a limitation to 122.8% of 2020 levels. </textarea>
+        Here is another one:<br />
+        <textarea name="caveat2" cols="120" rows="12" class="mceNoEditor">This is not really a 'unconditional' pledge. Rather it is the low end of China's 60% to 65% pledge. {"unconditional":"yes","pledge_qualifier":"low end of range"}</textarea>
     </body>
 </html>
