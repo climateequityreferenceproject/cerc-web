@@ -29,31 +29,39 @@ while($row = mysql_fetch_assoc($result))
 {
    $data[] = $row;
 }
+ 
+$colNames = array_keys(reset($data));
+$ret = "";
 
-$colNames = array_keys(reset($data))
-?>
+// header row
+$ret .= (isset($_REQUEST['dl'])) ? "" : "<table border='1'>\n<tr>\n<th>";
+foreach($colNames as $colName) {
+    $ret .= $colName . ((isset($_REQUEST['dl'])) ? "\t" : "</th>\n<th>");
+}
+$ret .= (isset($_REQUEST['dl'])) ? "\n" : "</th>\n</tr>\n";
 
-<table border="1">
-<tr>
-  <?php
-     //print the header
-     foreach($colNames as $colName)
-     {
-        echo "<th>$colName</th>";
-     }
-  ?>
-</tr>
+//print the rows
+foreach($data as $row) {
+$ret .= (isset($_REQUEST['dl'])) ? "" : "<tr>\n<td>";
+    foreach($colNames as $colName) {
+        $cell = $row[$colName];
+        $cell = str_replace(chr(13) , " " , $cell);
+        $cell = str_replace(chr(10) , " " , $cell);
+        $ret .= $cell . ((isset($_REQUEST['dl'])) ? "\t" : "</td>\n<td>");
+    }
+    $ret .= (isset($_REQUEST['dl'])) ? "\n" : "</td>\n</tr>\n";
+}
+$ret .= (isset($_REQUEST['dl'])) ? "" : "</table>";
 
-  <?php
-     //print the rows
-     foreach($data as $row)
-     {
-        echo "<tr>";
-        foreach($colNames as $colName)
-        {
-           echo "<td>".$row[$colName]."</td>";
-        }
-        echo "</tr>";
-     }
-  ?>
-</table>
+if (isset($_REQUEST['dl'])) {
+    header("Cache-Control: no-cache, must-revalidate");
+    header("Pragma: no-cache");
+    header("Content-type: text/tab-separated-values");
+    header("Content-Length: " . filesize($ret)); 
+    header("Content-Disposition: attachment; filename=\"pledges.xls\"" );
+    header("Content-Description: PHP/INTERBASE Generated Data" );
+    echo ($ret);
+} else {
+    echo '<a href="display.php?dl=1">Download as Exel file</a><br/><br/>';
+    echo ($ret);
+}

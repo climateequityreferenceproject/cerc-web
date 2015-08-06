@@ -1,5 +1,6 @@
 <?php
 include_once 'config/config.php';
+include_once('config/caveat_fields.php');
 include_once 'process.php';
 // need this to use the calculator API
 require_once "HTTP/Request.php";
@@ -10,11 +11,12 @@ require_once "HTTP/Request.php";
     <head profile="http://gmpg.org/xfn/11">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <title>Climate Equity Reference Calculator Pledges Database</title>
-        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <script type="text/javascript" src="tinymce/js/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
         
         <script type="text/javascript" src="js/pledges.js"></script>
         <script type="text/javascript" src="tinymce/js/pledge_editor.js"></script>
+        <script type="text/javascript" src="js/jquery.floatThead.min.js?v=1.2.12"></script>
         
         <link rel="stylesheet" type="text/css" href="css/pledges.css" />
     </head>
@@ -138,7 +140,74 @@ require_once "HTTP/Request.php";
 <?php // TODO: create collapsable caveat entry form - more thoughts on that in caveat_help.php ?>
             <i><b>The caveat field is used to hold all sorts of additional structured and unstructured data about a pledge.<br />
                         For more information about the syntax and purposes, <a href="caveat_help.php">there is a special helpfile</a></b></i><br />
-            <textarea name="caveat" cols="100" rows="7" class="mceNoEditor"><?php echo get_text($edit_array, 'caveat');?></textarea><br /><br />
+            <!-- the area formerly known as the caveat field -->
+            <div id="caveat-top-container" style="position:relative;">
+            <div id="caveat-container" style="overflow-y:auto; height: 180px; width: 50em; border:1px dotted grey; padding:8px;">
+                <script>
+                    $(document).ready(function(){
+                        $('input[type="checkbox"]').on('change', function() {
+                            $('input[name="' + this.name + '"]').not(this).prop('checked', false);
+                        });
+                    });
+                </script>
+
+                <?php
+                   
+                    $output_array = array ();
+                    $additional_caveat_data = array();
+                    preg_match("/{.*}/", get_text($edit_array, 'caveat'), $output_array);
+                    
+                    if (isset($output_array[0])) { 
+                        $additional_caveat_data= json_decode($output_array[0], TRUE); 
+                        $caveat_text = trim(str_replace($output_array[0],"", get_text($edit_array, 'caveat')));
+                    }
+                    foreach ($caveat_fields as $caveat_data_type) {
+                        echo '<label id="' . $caveat_data_type['name'] . '-label" style="position:relative;">' . $caveat_data_type['name'] . ': (hover for help)</label>' . "\n";
+                        echo '<div id="' . $caveat_data_type['name'] . '-help" style="display: none;border:1px solid black;background-color:yellow;width:50em;position:absolute;top:2px;left:90px;padding:2px;line-height:12.5px">';
+                        echo '<b>' . $caveat_data_type['title'] . '</b><br>';
+                        echo $caveat_data_type['description'] . '</div>';
+                        echo "<script>";
+                        echo "document.getElementById('" . $caveat_data_type['name'] . "-label').onmouseover = function() { document.getElementById('" . $caveat_data_type['name'] . "-help').style.display = 'block'; }; ";
+                        echo "document.getElementById('" . $caveat_data_type['name'] . "-label').onmouseout  = function() { document.getElementById('" . $caveat_data_type['name'] . "-help').style.display = 'none'; }; ";
+                        echo "</script>";
+                        
+                        switch ($caveat_data_type['type']) {
+                            case 'textarea':
+                                echo '<br />' . "\n";
+                                echo '<textarea name="'.$caveat_data_type['name'].'" id="'.$caveat_data_type['name'].'" ';
+                                echo 'cols="75" rows="3" class="mceNoEditor">';
+                                echo $additional_caveat_data[$caveat_data_type['name']];
+                                echo '</textarea><br />' . "\n" . '<br />' . "\n";
+                                break;
+                            case 'textbox':
+                                echo '<br />' . "\n";
+                                echo '<input type="text" style="width:53em;" name="'.$caveat_data_type['name'].'" id="'.$caveat_data_type['name'].'" ';
+                                echo 'value="' . $additional_caveat_data[$caveat_data_type['name']] . '">';
+                                echo '<br />' . "\n" . '<br />' . "\n";
+                                break;
+                            case 'boolean': ///// NOTE: THIS ACTUALLY IS NOT FINALIZED CODE 
+//                                echo '&nbsp;&nbsp;&nbsp;' . "\n";
+//                                echo '<input type="checkbox" name="'.$caveat_data_type['name'].'" id="'.$caveat_data_type['name'].'" value="yes" />yes  ' . "\n";
+//                                echo '<input type="checkbox" name="'.$caveat_data_type['name'].'" id="'.$caveat_data_type['name'].'" value="no" />no' . "\n";
+//                                echo '<br />' . "\n" . '<br />' . "\n";
+                                break;
+                            case 'yes':
+                                echo '&nbsp;&nbsp;&nbsp;' . "\n";
+                                echo '<input type="checkbox" name="'.$caveat_data_type['name'].'" id="'.$caveat_data_type['name'].'" value="yes"';
+                                echo (isset($additional_caveat_data[$caveat_data_type['name']]) ? ' checked="checked"' : '');
+                                echo ' />yes  ' . "\n";
+                                echo '<br />' . "\n" . '<br />' . "\n";
+                                break;
+                            default:
+                                // Shouldn't reach here
+                        }
+                    }
+                ?>
+                The actual caveats:<br>
+                <textarea name="caveat" cols="75" rows="2"><?php echo $caveat_text; ?></textarea><br /><br />
+            </div>
+            
+
             <label>Details:</label><br />
             <textarea name="details" cols="75" rows="2" ><?php echo get_text($edit_array, 'details');?></textarea>
             <?php
@@ -155,8 +224,20 @@ require_once "HTTP/Request.php";
         </div>
         <form name="table" method="post" action="">
             <input type="hidden" name="form" value="table"/>
-            <div id="table">
+            <div id="table" class="wrapper" style="overflow:auto;">
                <?php include("get_table.php"); ?>
+                <script>
+                    var $table = $('table.demo');
+                    $table.floatThead({
+                        scrollContainer: function($table){
+                            return $table.closest('.wrapper');
+                        }
+                    });
+//                    $(document).ready(function(){
+//                        var $table = document.getElementById('country_tbl');
+//                        $table.floatThead();
+                    });
+                </script>
             </div>
         </form>
     </body>

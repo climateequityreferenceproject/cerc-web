@@ -137,6 +137,7 @@ $html = <<<HTML
     <input type="radio" name="country_or_region" value="country" $ctry_checked /><label for="iso3">Country: </label>
     <select name="iso3" id="iso3">
 HTML;
+        $html .= '<option value="blank"></option>';
         $result = query_db("SELECT iso3, name FROM country ORDER BY name;");
         while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
             if ($edit_array && $row['iso3']===$edit_array['iso3']) {
