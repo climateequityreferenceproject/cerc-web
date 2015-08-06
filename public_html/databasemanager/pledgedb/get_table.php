@@ -20,7 +20,7 @@ SQL;
     
     mysql_close($db);
 
-    $html = '<table id="country_tbl">';
+    $html = '<table id="country_tbl" class="table countrytbl">';
     $html .= '<thead>';
     $html .= "<tr>";
     $html .= "<th>Edit</th>";
@@ -39,7 +39,7 @@ SQL;
     $html .= "<th>Delete</th>";
     $html .= "<th>Info. link</th>";
     $html .= "<th>Source</th>";
-    $html .= "<th>Caveat</th>";
+    $html .= "<th>Caveat/Additional Data</th>";
     $html .= "<th>Details</th>";
     $html .= "</tr>";
     $html .= '</thead>';
@@ -97,7 +97,7 @@ SQL;
     
     mysql_close($db);
 
-    $html = '<table id="region_tbl">';
+    $html = '<table id="region_tbl" class="table regiontbl">';
     $html .= '<thead>';
     $html .= "<tr>";
     $html .= "<th>Edit</th>";
@@ -116,7 +116,7 @@ SQL;
     $html .= "<th>Delete</th>";
     $html .= "<th>Info. link</th>";
     $html .= "<th>Source</th>";
-    $html .= "<th>Caveat</th>";
+    $html .= "<th>Caveat/Additional Data</th>";
     $html .= "<th>Details</th>";
     $html .= "</tr>";
     $html .= '</thead>';

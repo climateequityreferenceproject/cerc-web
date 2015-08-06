@@ -20,15 +20,15 @@ if (isset($_POST['form']) && !isset($_POST['cancel'])) {
             foreach ($caveat_fields as $caveat_data_type) {
                  if (isset($new_values[$caveat_data_type['name']])) {
                      if (strlen($new_values[$caveat_data_type['name']])>0) {
-                        $json .= (strlen($json)==0) ? "{" : ", ";
+                        $json .= (strlen($json)==0) ? "\n\n" . "{" : ", ";
                         $json .= '"' . $caveat_data_type['name'] . '":';
                         $json .= '"' . str_replace("'","&#39;",str_replace('"','&quot;',trim($new_values[$caveat_data_type['name']]))) . '"';
                      }
                      unset($new_values[$caveat_data_type['name']]);
                  }
             }
-            $json .= (strlen($json)>0) ? "}"."\n\n" : "";
-            $new_values['caveat'] = trim($json . $new_values['caveat']);
+            $json .= (strlen($json)>0) ? "}" : "";
+            $new_values['caveat'] = trim($new_values['caveat'] . $json);
 
             // The following aren't fields in the database
             unset($new_values['country_or_region']);

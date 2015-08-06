@@ -136,8 +136,7 @@ require_once "HTTP/Request.php";
             <label>Link to more information: </label><input type="text" name="info_link" value="<?php echo get_text($edit_array, 'info_link');?>"/><br />
             <label>Source:</label><br/>
             <textarea name="source" cols="75" rows="2" ><?php echo get_text($edit_array, 'source');?></textarea><br />
-            <label>Caveat:</label><br/>
-<?php // TODO: create collapsable caveat entry form - more thoughts on that in caveat_help.php ?>
+            <label>Caveat/Additional Data:</label><br/>
             <i><b>The caveat field is used to hold all sorts of additional structured and unstructured data about a pledge.<br />
                         For more information about the syntax and purposes, <a href="caveat_help.php">there is a special helpfile</a></b></i><br />
             <!-- the area formerly known as the caveat field -->
@@ -224,18 +223,11 @@ require_once "HTTP/Request.php";
         </div>
         <form name="table" method="post" action="">
             <input type="hidden" name="form" value="table"/>
-            <div id="table" class="wrapper" style="overflow:auto;">
                <?php include("get_table.php"); ?>
                 <script>
-                    var $table = $('table.demo');
-                    $table.floatThead({
-                        scrollContainer: function($table){
-                            return $table.closest('.wrapper');
-                        }
-                    });
-//                    $(document).ready(function(){
-//                        var $table = document.getElementById('country_tbl');
-//                        $table.floatThead();
+                    $(document).ready(function(){
+                        $('table.countrytbl').floatThead({useAbsolutePositioning: false});
+                        $('table.regiontbl').floatThead({useAbsolutePositioning: false});
                     });
                 </script>
             </div>
