@@ -25,6 +25,7 @@ polygon#supportedmit {fill:#e6e6e6;}
 .historical {stroke-width:4; stroke:#555;}
 .alloc {stroke-width:4; stroke:#0066b3;}
 .physical {stroke-width:4; stroke:#7e9f51; stroke-dasharray:4,4;}
+.neg_area { fill: #CCC; fill-opacity: 0.25; }
 
 polygon#greenband {fill:#00A400;}
 

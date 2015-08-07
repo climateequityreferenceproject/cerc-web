@@ -138,23 +138,25 @@ function get_processed_pledges($iso3, $shared_params, $dbfile=NULL) {
     }
     
     $pledge_years = get_pledge_years($iso3, true);
+    $retval['conditional'] = array();
     if (count($pledge_years) > 0) {
         foreach ($pledge_years as $year) {
             $pledge_info = get_pledge_information($iso3, true, $year);
-            $retval['conditional'][$year] = process_pledges($pledge_info, $pathway, $db);
+            if (($pledge_info['public']=='1') || (Framework::is_dev())) {
+                $retval['conditional'][$year] = process_pledges($pledge_info, $pathway, $db);
+            }
         }
-    } else {
-        $retval['conditional'] = array();
     }
     
     $pledge_years = get_pledge_years($iso3, false);
+    $retval['unconditional'] = array();
     if (count($pledge_years) > 0) {
         foreach ($pledge_years as $year) {
             $pledge_info = get_pledge_information($iso3, false, $year);
-            $retval['unconditional'][$year] = process_pledges($pledge_info, $pathway, $db);
+            if (($pledge_info['public']=='1') || (Framework::is_dev())) {
+                $retval['unconditional'][$year] = process_pledges($pledge_info, $pathway, $db);
+            }
         }
-    } else {
-        $retval['unconditional'] = array();
     }
     return $retval;
 }
@@ -298,7 +300,7 @@ function process_pledges($pledge_info, $pathway, $db) {
     $output_array = array ();
     preg_match("/{.*}/", $pledge_info['caveat'], $output_array);
     // this if loop gets entered if there is any JSON encoded data in the
-    // caveat field, so deal with any possible cases accordingly
+    // caveat field, so deal with all possible cases accordingly
     if (isset($output_array[0])) { 
         $output = json_decode($output_array[0], TRUE);
         if (isset($output['description_override'])) { $description = $output['description_override']; }

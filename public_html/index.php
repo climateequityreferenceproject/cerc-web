@@ -347,6 +347,8 @@ $equity_nosplash = $equity_nosplash || isset($_GET['iso3']);
                                                 echo "    <input type='text' name='dl_start_year' maxlength='4' size='4'><br>";
                                                 echo "    Download End Year:";
                                                 echo "    <input type='text' name='dl_end_year' maxlength='4' size='4'><br>";
+                                                echo "    Download Certain Years:";
+                                                echo "    <input type='text' name='dl_years' size='12'> ('|' separated list, for example '2013|2020|2025|2030')<br>";
                                                 echo "    <input type='checkbox' name='tax_tables' value='1'>Include tax tables<br>";
                                                 echo "    <input type='submit' value='download'>";
                                                 echo "</form>";

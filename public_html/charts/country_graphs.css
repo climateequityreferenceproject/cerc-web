@@ -3,8 +3,8 @@ text.axis-title {font-size:13px; font-weight:bold;}
 text.axis-label-y {text-anchor:end;}
 text.axis-label-x {text-anchor:middle;}
 line {stroke:black;}
-line.axis {stroke:#366092; stroke-width:2;}
-line.yaxis {stroke:#366092; stroke-width:2;}
+line.axis {stroke:#999; stroke-width:2;}
+line.yaxis {stroke:#999; stroke-width:2;}
 line.hrule {width:1; stroke:black; stroke-dasharray:1,2;}
 polyline {stroke-width:1; stroke:black; fill:none;}
 polyline#historical {stroke-width:4; stroke:#555;}
@@ -21,7 +21,7 @@ polygon#supportedmit {fill:#e6e6e6;}
 
 .wedge_eff { fill: #92D050; fill-opacity: 0.5; } 
 .wedge_res { fill: #6092E0; fill-opacity: 0.5; }
-.neg_area { fill: #D9D9D9; fill-opacity: 0.5; }
+.neg_area { fill: #CCC; fill-opacity: 0.25; }
 
 .lfl_bar_green{ fill: #00B050; fill-opacity: 0.7; }
 .lfl_bar_yellow{ fill: #FFFF00; fill-opacity: 0.7; }
@@ -41,7 +41,6 @@ polygon#supportedmit {fill:#e6e6e6;}
 .noline {stroke:none;fill:none;}
 
 .historical {stroke-width:4; stroke:#555;}
-
 
 /* colors *******************
   #e6b350 ochre 100% (domestic mitigation before opacity reduction)

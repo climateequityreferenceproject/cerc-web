@@ -26,6 +26,15 @@ if (isset($_REQUEST['dl_start_year'])) {
 if (isset($_REQUEST['dl_end_year'])) {
     $dl_year_condition_string .= " AND year <= " . $_REQUEST['dl_end_year'];
 }
+if (isset($_REQUEST['dl_years'])) { // overwrites previous year conditions
+    $dl_year_condition_string = "";
+    $connector = " AND (";
+    foreach(explode("|",$_REQUEST['dl_years']) as $year) {
+        $dl_year_condition_string .= $connector . "(year = " . $year . ")";
+        $connector = " OR ";
+    }
+    $dl_year_condition_string .= ")";
+}
 if (isset($_REQUEST['tax_tables']) && ($_REQUEST['tax_tables'] == '1')) {
     $skip_tax_table = FALSE;
 } else {

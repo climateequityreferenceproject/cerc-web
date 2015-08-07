@@ -1,5 +1,0 @@
-RewriteEngine On
-RewriteRule ^([a-zA-Z0-9]+).svg$ http://calculator-dev.climateequityreference.org/_graph-test/index.php?iso3=$1 [P]
-RewriteRule ^([a-zA-Z0-9]+)_eff.svg$ http://calculator-dev.climateequityreference.org/_graph-test/index.php?view=eff&iso3=$1 [P]
-RewriteRule ^([a-zA-Z0-9]+)_res.svg$ http://calculator-dev.climateequityreference.org/_graph-test/index.php?view=res&iso3=$1 [P]
-

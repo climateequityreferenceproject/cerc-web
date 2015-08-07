@@ -1,0 +1,160 @@
+rev 463 (2015-08-07)
+- 'public' flag from pledge database is now respected: if public=0 the pledge does not show in the public version of the calculator (always shows in the -dev version)
+- Excel download now allows for list of distinct years (as opposed to just ranges) for download, via dl_years (with | separated list) URL param or "advanced Excel download" UI in dev calc
+- implemented new 'labels_match_scale' in graph_core module which allows for axis labels to be matched to the user-defined/hard-coded/pre-calculated (y-)axis dimensions passed to the module
+- some hacks in graph_core module related to secondary y-axis
+- '_graph-test' directory renamed to 'charts'
+- started implementing interactive chart legend in 'charts'
+- added styling for area below the x-axis to country_graphs.css
+- added CHANGELOG file to keep track of changes between and across commits
+
+rev 462 (2015-07-12)
+- version numbers for js and css (and some png) files to facilitate longer browser caching
+- a bunch of new code for generating "The Big Chart" (single country graph with effort sharing and resource sharing wedges) for INDC assessments
+
+rev 461 (2015-07-02) (toma-ecoequity)
+- New legend text
+
+rev 460 (2015-07-02) (krueschan)
+- still testing to include svn commit data in config.php for run time use
+
+rev 459 (2015-07-02) (krueschan)
+- testing to include svn commit data in config.php for run time use
+- optimized png header images for faster pageload
+- removed some abandoned code from index.php
+- private.properties file updated with post-move file locations
+
+rev 458 (2015-07-02) (krueschan)
+- made several minor changes to graph css; generally moving to class-based rather than id-based svg styling
+- expansions to graph-core module for future functionality (ignore specific series for common series, added class based styling (can now pass css class for each glyph, data series or wedge), output can be to file or directly as svg code)
+- pledges: now the "conditionality" status can be overriden via caveat JSON field
+- pledges: in country report pledges are now sorted by year 
+- pledges: caveat JSON field also provides additional space for textual pledge qualifier
+- shareability: now a link with all settings parameters is shows beneath the country graph; it also includes core db version and a warning is issued when a link with outdated core db version is clicked
+- config.php is now smarter in dealing with various possibilities (directory, subdomain etc) of access to calculator
+- is_dev function in Frameworks class now works with dev calc in subdomain
+- changed equity settings splash page to reflect new default "low equity" case (zero dev_thresh)
+- removed obsolete Excel download hack 
+- changed google analytics "dev-calc user awareness" to work after calculator move
+- several minor post-move URL changes
+- added graph text sandbox
+- added general "Christian's play area" filed to settings panel of dev calc to expose in-development items to UI for easier testing
+- added webfonts to cloudforge project
+
+rev 457 (2015-06-17) (krueschan)
+- prepared for calculator move: script now checks what folder on the server it's residing in and makes config selections on that basis.
+- prepared equity settings splash for new no-negative emissions pathways
+- started to code some load time testing (not yet working) for future calculator expansions
+- made some flexibility edits to the graph_core module, for example, overriding axis step size, offsetting graph elements along the xaxis and adding css classes to graph elements
+- minor GDRs --> CERP rebranding
+
+rev 456 (2015-05-31) (krueschan)
+- country report text now distinguishes between cases where a pledge "exceeds" and "falls short" of a fair share, and colours the per capita exceedance/shortfall number green or red, respectively
+
+rev 455 (2015-05-30) (krueschan)
+- changed equity splash page to new pathway names and descriptions
+- broke out adaptation and mitigation cost fair share per capita in country report
+- rewrite of "tax table" to include mitigation in t/cap (total and above DL) as well as a number of separate adaptation cost readouts
+- removed "gdrs_header" options from advanced XLS download expando-box
+
+rev 454 (2015-05-29) (krueschan)
+- slight amendment to "ugly htaccess workaround" introduced in last commit
+- give pledge glyphs unique ids in anticipation of future graph interactivity
+- dump svg code onto country report rather than displaying external svg image (also in anticipation of future graph interactivity)
+
+rev 453 (2015-05-22) (toma-ecoequity)
+- Eliminate Obligation, added Fair share
+
+rev 452 (2015-05-22) (krueschan)
+- implemented ugly workaround for htaccess redirect bug for Excel download when trying to download from the cerp.org namespace. This will become redundant (and needs to be deactivated at that point in time) when the calculator properly moved to cerp.org
+- suppress display of luxury threshold related settings (in the "show settings" table) when no luxury threshold is used
+- added checkbox to "progressivity" settings expando-box to show tax tables. they remain suppressed by default
+
+rev 451 (2015-05-21) (toma-ecoequity)
+- Country report text correction
+
+rev 450 (2015-05-21) (toma-ecoequity)
+- Country report text correction
+
+rev 449 (2015-05-20) (toma-ecoequity)
+- Country report lables always explicit about baseline
+
+rev 448 (2015-05-20) (krueschan)
+- FIXED: made all the "undocumented URL parameters" for Excel download available through the GUI for _dev calc
+
+rev 447 (2015-05-19) (krueschan)
+- added dl_end_year URL parameter to Excel table download (this time in a manner that actually works)
+- made all the "undocumented URL parameters" for Excel download available through the GUI for _dev calc
+- fixed a link to glossary section
+
+rev 446 (2015-05-14) (toma-ecoequity)
+- Reordered Nav bar to improve More Info experience
+
+rev 445 (2015-05-13) (toma-ecoequity)
+- Added Project About to Calculator Nav bar
+
+rev 444 (2015-05-13) (krueschan)
+- added dl_end_year URL parameter to Excel table download (this time in a manner that actually works)
+
+rev 443 (2015-05-13) (krueschan)
+- added dl_end_year URL parameter to Excel table download
+
+rev 442 (2015-05-13) (krueschan)
+- fixed an odd styling and display anomaly in the glossary popup
+- google analytics tracking code is now omitted for users of the public version of the calculator who are also users of the _dev version (identified via cookie) in order to avoid contamination of analytics stats with frequent admin page loads
+
+rev 441 (2015-05-12) (krueschan)
+- maintenance mode with proper HTTP return code (503) for search engines
+- sending google analytics code in index.php and glossary.php for public version of calc only; code it set in config.php
+
+rev 440 (2015-05-09) (toma-ecoequity)
+- just changed "cost" to "costs"
+
+rev 439 (2015-05-09) (toma-ecoequity)
+- Show key edits to eliminate "GDRs".  And another old dead doc reference
+
+rev 438 (2015-05-09) (toma-ecoequity)
+- Just some changes in the wording - incremental costs - including the country report readout
+
+rev 437 (2015-05-08) (krueschan)
+- moved adaptation and mitigation cost settings into their own "expando-box" underneath progressivity (TODO: write helpDB entry "incr_cost")
+- changed country report heading from "Mitigation Obligations (and pledges)" to "Fair shares (and pledges)"
+- "climate tax" expression of fair share in country table now reworded and not indented
+
+rev 436 (2015-05-08) (krueschan)
+- wrapped glossary popup display javascript into its own function to be able to call it directly outside the glossary framework
+- used this new function to add capability to define pledge specific help popup via JSON data in caveat field of the pledge db. The relevant JSON data fields are help_label = the label of the link shown next to the pledge description, help_title = the title of the popup window, help_text = the text of the popup.
+
+rev 435 (2015-05-07) (krueschan)
+- moved API URL setting to config.php
+- moved .htaccess credentials to access _dev version of API to config.php
+
+rev 434 (2015-05-07) (krueschan)
+- cleaning of temp folders (old user dbs, old svg files) now occurs upon every 25th page load (randomly), rather than external cron script
+- path to helpdb include files is now specified in config.php
+- new undocumented URL parameter for Excel download: gdrs_headers=1 keeps the Excel data table headers as specified in the core database, otherwise (default) they are overridden as per renaming mask in config.php
+- Excel download now includes markup (<--- START DATA TABLE ---> and <--- END DATA TABLE --->) to show the beginning and end of the main data table
+- all undocumented URL switches for Excel download are documented on top of download_tabsep.php
+
+rev 433 (2015-05-04) (krueschan)
+- moved a number of previously hard coded settings to a new config.php (path to temporary folder, path to databases, path to calculator engine, connection data for pledge db etc)
+- Webcalc should now be fully "domain namespace aware"
+- Excel download now uses user database name only (previously: full absolute path to user db)
+- Excel download now by default excludes tax tables (override with URL parameter tax_tables=1); this shrinks Excel files by >66%
+- Excel download can now be limited by years, regardless of historic responsibility start date via URL parameter, e.g. dl_start_year=1990
+
+rev 432 (2015-05-02) (krueschan)
+- description_override is now expected to be valid JSON format.
+
+rev 431 (2015-05-02) (krueschan)
+- changed hard-coded links to gdrights.org to name space aware links (exception: the mailto link in the footer is now hard coded to climateequityreference.org)
+
+rev 430 (2015-05-01) (krueschan)
+- First version of description override (no JSON yet)
+
+rev 429 (2015-05-01) (toma-ecoequity)
+- Commented out the SC link in Country Report.  Also the Tax Table
+
+
+
+[...no changelog for revisions prior to 429 (which is when krueschan started to work on this)...]

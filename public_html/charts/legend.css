@@ -1,0 +1,20 @@
+button.graph_button {
+    width:auto;
+    background:none;
+    border:none;
+    cursor:pointer;
+    padding-left:0;
+    padding-right:3px;
+    padding-bottom:1px;
+    border-color:#40822E;
+    border-style:dotted;
+    border-width:1px;
+    border-left:none;
+    border-top:none;
+    color:#40822E;
+    text-align: left;
+    text-decoration: none;
+    text-decoration-color: #40822E;
+    text-decoration-line: none;
+    text-decoration-style: solid;
+}
