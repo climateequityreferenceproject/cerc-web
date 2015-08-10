@@ -25,114 +25,101 @@ require_once "HTTP/Request.php";
         <h1>Climate Equity Reference Calculator - pledges database entry form</h1>
         <form name="add" id="add" method="post" action="">
             <input type="hidden" name="form" value="add"/>
+            <input type="hidden" id="db" name="db" value="<?php echo($_COOKIE['db']); ?>"/>
             <!-- Country and region drop-downs -->
             <?php
-            // before writing the regions dropdown field, we check the calculator
+            // before writing the regions dropdown field, we check via calculator API
             // whether there are any new regions that we should add
             check_for_new_regions(); 
             ?>
             <?php echo make_ctryregion_list($edit_array); ?>
+            <script>
+                // remove the GHG time series table if the country is changed.
+                $(document).ready(function(){ $("#iso3").change(function() { $('#datatable-container').html(""); }); });
+            </script>
             <!-- Conditional/unconditional-->
-            <?php
-            if (get_conditional_value($edit_array) == 1) {
-                $checked = 'checked="checked"';
-            } else {
-                $checked = '';
-            }
-            ?>
-            <input type="checkbox" name="conditional" id="conditional" value="1" <?php echo $checked; ?> />
+            <input type="checkbox" name="conditional" id="conditional" value="1" <?php echo ((get_conditional_value($edit_array) == 1) ? 'checked="checked"' : ''); ?> />
             <label for="conditional"> Conditional</label>
-             <?php
-            if (get_include_nonco2($edit_array) == 1) {
-                $checked = 'checked="checked"';
-            } else {
-                $checked = '';
-            }
-            ?>
-            <br /><span>BAU includes: </span>
-            <input type="checkbox" name="include_nonco2" id="include_nonco2" value="1" <?php echo $checked; ?> />
+            <input type="checkbox" name="public" id="public" value="1" <?php echo ((get_public_value($edit_array) == 1) ? 'checked="checked"' : ''); ?> />
+            <label for="public"> Pledge is public (otherwise only visible in dev-calculator)</label>
+            <!-- Pledge details-->
+            <br /><span>BAU/target includes: </span>
+            <input type="checkbox" name="include_nonco2" id="include_nonco2" value="1" <?php echo ((get_include_nonco2($edit_array) == 1) ? 'checked="checked"' : ''); ?> />
             <label for="include_nonco2"> non-CO<sub>2</sub></label>
-             <?php
-            if (get_include_lulucf($edit_array) == 1) {
-                $checked = 'checked="checked"';
-            } else {
-                $checked = '';
-            }
-            ?>
-            <input type="checkbox" name="include_lulucf" id="include_lulucf" value="1" <?php echo $checked; ?> />
+            <input type="checkbox" name="include_lulucf" id="include_lulucf" value="1" <?php echo ((get_include_lulucf($edit_array) == 1) ? 'checked="checked"' : ''); ?> />
             <label for="include_lulucf"> LULUCF</label>
             <br /><br />
+            <?php
+            $abs_checked = (get_quantity_value($edit_array) === 'absolute') ? 'checked = "checked"' : '';
+            $quant_checked = (get_quantity_value($edit_array) === 'intensity') ? 'checked = "checked"' : '';
+            $abs_Mt_checked = (get_quantity_value($edit_array) === 'absolute_Mt') ? 'checked = "checked"' : '';
+            $below_checked = (get_relto_value($edit_array) === 'below') ? 'checked = "checked"' : '';
+            $of_checked = (get_relto_value($edit_array) === 'of') ? 'checked = "checked"' : '';
+            $year_checked = (get_yearbau_value($edit_array) === 'year') ? 'checked = "checked"' : '';
+            $bau_checked  = (get_yearbau_value($edit_array) === 'bau')  ? 'checked = "checked"' : '';
+            ?>
             <table>
                 <tr>
-                    <td>Reduce</td>
-                    <td>
-                        <?php
-                        if (get_quantity_value($edit_array) === 'absolute') {
-                            $abs_checked = 'checked = "checked"';
-                            $quant_checked = '';
-                        } else {
-                            $abs_checked = '';
-                            $quant_checked = 'checked = "checked"';
-                        }
-                        ?>
+                    <td rowspan="3" style="vertical-align:middle;background:#ffffee;border-color:#523A0B;">Reduce</td>
+                    <td rowspan="2" style="vertical-align:middle;border-top-color:#523A0B;">
                         <label><input type="radio" name="quantity" value="absolute" <?php echo $abs_checked; ?>/> absolute emissions</label>
                         <br />
                         <label><input type="radio" name="quantity" value="intensity" <?php echo $quant_checked; ?> /> intensity</label>
                     </td>
-                    <td>to</td>
-                    <td>
-<!--                        <select name="reduction_percent" id="reduction_percent">
-                        <?php
-                        // option_number(1, 100, 1, get_reduction_percent($edit_array));
-                        ?>
-                        </select>-->
-                        <input name="reduction_percent" id="reduction_percent" type="text" style="width:5em;" value="<?php echo get_reduction_percent($edit_array); ?>"></input>%
+                    <td rowspan="2" style="vertical-align:middle;border-top-color:#523A0B;">
+                        to 
+                        <?php // option_number(1, 100, 1, get_reduction_percent($edit_array)); ?>
+                        <input name="reduction_percent" id="reduction_percent" type="text" style="width:5em;" value="<?php echo get_reduction_percent($edit_array); ?>"></input> %
                     </td>
-                    <td>
-                        <?php
-                        if (get_relto_value($edit_array) === 'below') {
-                            $below_checked = 'checked = "checked"';
-                            $of_checked = '';
-                        } else {
-                            $below_checked = '';
-                            $of_checked = 'checked = "checked"';
-                        }
-                        ?>
+                    <td rowspan="2" style="vertical-align:middle;border-top-color:#523A0B;">
                         <label><input type="radio" name="rel_to" value="below" <?php echo $below_checked; ?> /> below</label>
                         <br />
                         <label><input type="radio" name="rel_to" value="of" <?php echo $of_checked; ?> /> of</label>
                     </td>
-                    <td>
-                        <?php
-                        if (get_yearbau_value($edit_array) === 'year') {
-                            $year_checked = 'checked = "checked"';
-                            $bau_checked = '';
-                        } else {
-                            $year_checked = '';
-                            $bau_checked = 'checked = "checked"';
-                        }
-                        ?>
+                    <td rowspan="2" style="vertical-align:middle;border-top-color:#523A0B;">
                         <label><input type="radio" name="year_or_bau" value="year" <?php echo $year_checked; ?> /> value in</label>
+                        <select name="rel_to_year" id="rel_to_year">
+                        <?php option_number(1990, 2010, 1, get_relto_year($edit_array)); ?>
+                        </select>
                         <br />
                         <label><input type="radio" name="year_or_bau" value="bau" <?php echo $bau_checked; ?> /> BAU</label>
                     </td>
-                    <td>
-                        <select name="rel_to_year" id="rel_to_year">
-                        <?php
-                        option_number(1990, 2010, 1, get_relto_year($edit_array));
-                        ?>
-                        </select>
-                    </td>
-                    <td>by</td>
-                    <td>
+                    <td rowspan="3" style="vertical-align:middle;background:#ffffee;border-color:#523A0B;">
+                        by                         
                         <select name="by_year" id="by_year">
-                        <?php
-                        option_number(2010, 2050, 1, get_by_year($edit_array));
-                        ?>
+                        <?php option_number(2010, 2050, 1, get_by_year($edit_array)); ?>
                         </select>
                     </td>
                 </tr>
+                <tr>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td style="border-bottom-color:#523A0B;"><label><input type="radio" name="quantity" value="absolute_Mt" <?php echo $abs_Mt_checked; ?> /> to target emissions</label></td>
+                    <td colspan=3 style="border-bottom-color:#523A0B;">
+                        of
+                        <input name="target_Mt" id="target_Mt" type="text" style="width:5em;" value="<?php echo get_value($edit_array,'target_Mt'); ?>"></input> Mt CO<sub>2</sub>eq (total for gases selected)
+                    </td>
+                </tr>
             </table>
+            <table>
+                <thead>
+                    <tr><th colspan="4>">Provide the implicit, explicit or assumed breakdown of target year emissions<br>
+                    <tr><th></th><th>fossil CO<sub>2</sub></th><th>non-CO<sub>2</sub></th><th>LULUCF</th></tr>
+                </thead>
+                <tr>
+                    <td style="border-color:#523A0B;">Target year emissions breakdown: Mt CO<sub>2</sub>eq</td>
+                    <td style="border-color:#523A0B;"><input name="target_Mt_CO2" id="target_Mt_CO2" type="text" style="width:5em;" value="<?php echo get_value($edit_array,'target_Mt_CO2'); ?>"></input></td>
+                    <td style="border-color:#523A0B;"><input name="target_Mt_nonCO2" id="target_Mt_nonCO2" type="text" style="width:5em;" value="<?php echo get_value($edit_array,'target_Mt_nonCO2'); ?>"></input></td>
+                    <td style="border-color:#523A0B;"><input name="target_Mt_LULUCF" id="target_Mt_LULUCF" type="text" style="width:5em;" value="<?php echo get_value($edit_array,'target_Mt_LULUCF'); ?>"></input></td>
+                </tr>
+            </table>
+            The breakdown will be required if users choose to display a sector combination that is different from the pledge. <br />
+            You have to specify all three for this to work. These values are only used to determine the internal ratio of the <br />
+            overall pledge, not the size of the  pledge itself (which is determined by the information provided immediately above). 
+            If this breakdown is not provided, the default method (using sector ratio in our BAU for the target year) is used instead.
+            <br /><br />
+                
             <label>Link to more information: </label><input type="text" name="info_link" value="<?php echo get_text($edit_array, 'info_link');?>"/><br />
             <label>Source:</label><br/>
             <textarea name="source" cols="75" rows="2" ><?php echo get_text($edit_array, 'source');?></textarea><br />
@@ -159,7 +146,12 @@ require_once "HTTP/Request.php";
                     if (isset($output_array[0])) { 
                         $additional_caveat_data= json_decode($output_array[0], TRUE); 
                         $caveat_text = trim(str_replace($output_array[0],"", get_text($edit_array, 'caveat')));
+                    } else {
+                        $caveat_text = trim(get_text($edit_array, 'caveat'));
+
                     }
+//                    var_dump($output_array,$additional_caveat_data,$caveat_text);
+//                    die();
                     foreach ($caveat_fields as $caveat_data_type) {
                         echo '<label id="' . $caveat_data_type['name'] . '-label" style="position:relative;">' . $caveat_data_type['name'] . ': (hover for help)</label>' . "\n";
                         echo '<div id="' . $caveat_data_type['name'] . '-help" style="display: none;border:1px solid black;background-color:yellow;width:50em;position:absolute;top:2px;left:90px;padding:2px;line-height:12.5px">';
@@ -232,5 +224,21 @@ require_once "HTTP/Request.php";
                 </script>
             </div>
         </form>
+        <div id="datatable-wrapper" style="position:absolute;top:55px;left:800px;width:450px;height:500px;overflow:auto;">
+            <div id="datatable-button">
+                select a country and then <u>click here</u> to display its historical and BAU emissions data.
+            </div>
+            <div>
+            <div id="datatable-container">
+            </div>
+            <script>
+                $(document).ready(function(){
+                    $('#datatable-button').click(function () { 
+                        $('#datatable-container').html("Loading data for " + $("#iso3 option:selected").text());
+                        $('#datatable-container').load('http://climateequityreference.org/pledges/entry/datatable.php?country=' + $("#iso3 option:selected").val() + "&db=" + $("#db").val()); 
+                    }); 
+                });
+            </script>
+        </div>
     </body>
 </html>

@@ -24,6 +24,14 @@ function query_db($query) {
     return $result;
 }
 
+function remove_trailing_zeros($input) {
+    $temp=explode(".",$input);
+    $temp[1]=rtrim($temp[1],"0");
+    $output = $temp[0];
+    if (!empty($temp[1])) $output.='.'.$temp[1];
+    return $output;
+}
+
 function option_number($start, $end, $step, $default = NULL) {
     for ($i = $start; $i <= $end; $i += $step) {
         $selected = "";
@@ -39,6 +47,15 @@ function get_conditional_value($edit_array) {
         $retval = $edit_array['conditional'];
     } else {
         $retval = 0;
+    }
+    return $retval;
+}
+
+function get_public_value($edit_array) {
+    if ($edit_array) {
+        $retval = $edit_array['public'];
+    } else {
+        $retval = 1;
     }
     return $retval;
 }
@@ -66,6 +83,15 @@ function get_quantity_value($edit_array) {
         $retval = $edit_array['quantity'];
     } else {
         $retval = 'absolute';
+    }
+    return $retval;
+}
+
+function get_value($edit_array, $entry) {
+    if ($edit_array) {
+        $retval = $edit_array[$entry];
+    } else {
+        $retval = '';
     }
     return $retval;
 }
@@ -110,7 +136,7 @@ function get_by_year($edit_array) {
     if ($edit_array) {
         $retval = $edit_array['by_year'];
     } else {
-        $retval = 2020;
+        $retval = 2030;
     }
     return $retval;
 }
@@ -186,12 +212,14 @@ function check_for_new_regions() {
     
     // we don't really know where the calculator is accessed from, so we want to 
     // construct the API link to retain the current "domain name space"
-    if(isset($_SERVER['HTTP_X_FORWARDED_HOST'])) {
-        $URL_calc_api = 'http://' . $_SERVER['HTTP_X_FORWARDED_HOST'] . '/calculator/api/';
-    } else {
-        $URL_calc_api = 'http://' . $_SERVER['HTTP_HOST'] . '/calculator/api/';
-    }
-
+//    if(isset($_SERVER['HTTP_X_FORWARDED_HOST'])) {
+//        $URL_calc_api = 'http://' . $_SERVER['HTTP_X_FORWARDED_HOST'] . '/calculator/api/';
+//    } else {
+//        $URL_calc_api = 'http://' . $_SERVER['HTTP_HOST'] . '/calculator/api/';
+//    }
+    // above code is pre-move to cerp.org
+    $URL_calc_api = 'http://calculator.climateequityreference.org/api/';
+    
     // check is this database still exists
     if (isset($db)) {
         $req =& new HTTP_Request($URL_calc_api . "?q=regions&db=" . $db);

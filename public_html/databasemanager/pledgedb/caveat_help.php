@@ -14,10 +14,10 @@
     <body>
         <h1>Help text for the caveat field</h1>
         We use the Caveat field to store other random information about the pledge in JSON format. <br>
-        <ul><li>it is ok to write other random text into the caveat field; only the information in curly brackets will be interpreted as JSON data.</li>
-            <li>These additional JSON information appear all together in one set of curly brackets in this general syntax: <br>
-                    {"key_1":"value_1", "key_2":"value_2", ... , "key_n":"value_n"}</li>
-            <li>It is ok to mark up the texts within the JSON values with html, but any quotation marks must be written as html entities, i.e. &amp;quot; for double quotes and &amp;#39; for single quotes. Nowhere in the JSON data fields should quotation marks occur in plain (also be careful about other special chars like backslash, ampersand, question mark and hash symbol - test whether your input works as expected in the calculator).</li> 
+        <ul><li>The User Interface lists all the data fields currently in use; you don't need to worry about syntax except for those important points:</li>
+            <li>It is ok to mark up the texts within the JSON values with html, but any quotation marks must be written as html entities, i.e. &amp;quot; for double quotes and &amp;#39; for single quotes. Nowhere in the JSON data fields should quotation marks occur in plain (also be careful about other special chars like backslash, ampersand, question mark and hash symbol - test whether your input works as expected in the calculator).</li>
+            <li>there are a few fields (help_text), where even encoded single and double quotes break the system; don't use them there. If you need to use quotes there, use typographical quotes, for example &amp;ldquo; (left double quote) for an opening quote and &amp;rdquo; (right double quote) for a closing quotation mark.</li>
+            <li>quotation marks also break any HTML markup. For example, do not write <span style='font-family: monospace;'>&lt;a href="glossary.php#gloss_bau"&gt;</span> but rather <span style='font-family: monospace;'>&lt;a href=glossary.php#gloss_bau&gt;</span></li>
 <?php // TODO: create collapsable entry form for caveat field that encodes and decodes user input as needed and ensures proper JSON 
       // single and double quotes are tested and confirmed to break at least the custom helptext popup, if quotes are used as html encoded
       // entities in html tags, e.g. <a href=&quot;random_link.php&quot;> it also breaks. 

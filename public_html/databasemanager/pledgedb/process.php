@@ -15,6 +15,18 @@ if (isset($_POST['form']) && !isset($_POST['cancel'])) {
             } else {
                 $new_values['iso3'] = null;
             }
+            if ($new_values['quantity'] == 'absolute_Mt') {
+                $new_values['reduction_percent'] = null;
+                $new_values['rel_to'] = null;
+                $new_values['year_or_bau'] = null;
+                $new_values['rel_to_year'] = null;
+            } else {
+                $new_values['target_Mt'] = null;                
+            }
+            // save empty textboxes as NULL not 0
+            foreach (array('reduction_percent', 'target_Mt', 'target_Mt_CO2', 'target_Mt_nonCO2', 'target_Mt_LULUCF') as $textbox) {
+                if (strlen($new_values[$textbox])==0) { $new_values[$textbox] = NULL; }
+            }
             // construct the JSON data array for the caveat field
             $json = "";
             foreach ($caveat_fields as $caveat_data_type) {
@@ -30,8 +42,11 @@ if (isset($_POST['form']) && !isset($_POST['cancel'])) {
             $json .= (strlen($json)>0) ? "}" : "";
             $new_values['caveat'] = trim($new_values['caveat'] . $json);
 
+            var_dump($new_values);
+            die();
             // The following aren't fields in the database
             unset($new_values['country_or_region']);
+            unset($new_values['db']);
             if (isset($new_values['replace'])) {
                 $do_replace = true;
                 $edit_id = $new_values['edit_id'];
@@ -41,7 +56,7 @@ if (isset($_POST['form']) && !isset($_POST['cancel'])) {
                 $do_replace = false;
             }
             // Check boxes are odd--they just don't appear if unchecked
-            foreach (array('conditional', 'include_nonco2', 'include_lulucf') as $checkbox) {
+            foreach (array('conditional', 'public', 'include_nonco2', 'include_lulucf') as $checkbox) {
                 if (array_key_exists($checkbox, $new_values)) {
                     $new_values[$checkbox] = 1;
                 } else {
@@ -96,13 +111,14 @@ if (isset($_POST['form']) && !isset($_POST['cancel'])) {
                         $sql = "SELECT * FROM pledge WHERE id=" . $key;
                         $result = mysql_query($sql, $db);
                         $edit_array = mysql_fetch_array($result, MYSQL_ASSOC);
+                        break;
                     default:
-                        ;
+                        break;
                 }
             }
             break;
         default:
-            ;
+            break;
     }
     mysql_close($db);
 }
