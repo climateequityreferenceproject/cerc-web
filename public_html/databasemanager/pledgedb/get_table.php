@@ -52,7 +52,7 @@ function table_row($row=NULL) {
         $html .= "<td>" . ($row['include_nonco2'] ? "yes" : "no") . "</td>";
         $html .= "<td>" . ($row['include_lulucf'] ? "yes" : "no") . "</td>";
         $html .= "<td>" . $row['quantity'] . "</td>";
-        $html .= "<td>" . (($row['quantity']=="absolute_Mt") ? (remove_trailing_zeros($row['target_Mt'])."Mt") : (remove_trailing_zeros($row['reduction_percent'])."%")) . "</td>";
+        $html .= "<td>" . (($row['quantity']=="target_Mt") ? (remove_trailing_zeros($row['target_Mt'])."Mt") : (remove_trailing_zeros($row['reduction_percent'])."%")) . "</td>";
         $html .= "<td>" . $row['rel_to'] . "</td>";
         $html .= "<td>" . $row['year_or_bau'] . "</td>";
         $html .= "<td>" . ($row['rel_to_year'] ? $row['rel_to_year'] : "") . "</td>";

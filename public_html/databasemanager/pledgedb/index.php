@@ -52,7 +52,7 @@ require_once "HTTP/Request.php";
             <?php
             $abs_checked = (get_quantity_value($edit_array) === 'absolute') ? 'checked = "checked"' : '';
             $quant_checked = (get_quantity_value($edit_array) === 'intensity') ? 'checked = "checked"' : '';
-            $abs_Mt_checked = (get_quantity_value($edit_array) === 'absolute_Mt') ? 'checked = "checked"' : '';
+            $targ_Mt_checked = (get_quantity_value($edit_array) === 'target_Mt') ? 'checked = "checked"' : '';
             $below_checked = (get_relto_value($edit_array) === 'below') ? 'checked = "checked"' : '';
             $of_checked = (get_relto_value($edit_array) === 'of') ? 'checked = "checked"' : '';
             $year_checked = (get_yearbau_value($edit_array) === 'year') ? 'checked = "checked"' : '';
@@ -95,7 +95,7 @@ require_once "HTTP/Request.php";
                     <td></td>
                 </tr>
                 <tr>
-                    <td style="border-bottom-color:#523A0B;"><label><input type="radio" name="quantity" value="absolute_Mt" <?php echo $abs_Mt_checked; ?> /> to target emissions</label></td>
+                    <td style="border-bottom-color:#523A0B;"><label><input type="radio" name="quantity" value="target_Mt" <?php echo $targ_Mt_checked; ?> /> to target emissions</label></td>
                     <td colspan=3 style="border-bottom-color:#523A0B;">
                         of
                         <input name="target_Mt" id="target_Mt" type="text" style="width:5em;" value="<?php echo get_value($edit_array,'target_Mt'); ?>"></input> Mt CO<sub>2</sub>eq (total for gases selected)

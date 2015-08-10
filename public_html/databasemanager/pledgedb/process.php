@@ -1,6 +1,6 @@
 <?php
 include_once 'functions.php';
-
+       
 $edit_array = null;
 if (isset($_POST['form']) && !isset($_POST['cancel'])) {
     $db = db_connect();
@@ -15,7 +15,7 @@ if (isset($_POST['form']) && !isset($_POST['cancel'])) {
             } else {
                 $new_values['iso3'] = null;
             }
-            if ($new_values['quantity'] == 'absolute_Mt') {
+            if ($new_values['quantity'] == 'target_Mt') {
                 $new_values['reduction_percent'] = null;
                 $new_values['rel_to'] = null;
                 $new_values['year_or_bau'] = null;
@@ -42,8 +42,6 @@ if (isset($_POST['form']) && !isset($_POST['cancel'])) {
             $json .= (strlen($json)>0) ? "}" : "";
             $new_values['caveat'] = trim($new_values['caveat'] . $json);
 
-            var_dump($new_values);
-            die();
             // The following aren't fields in the database
             unset($new_values['country_or_region']);
             unset($new_values['db']);

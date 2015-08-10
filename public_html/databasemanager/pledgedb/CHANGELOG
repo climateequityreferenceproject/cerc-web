@@ -1,3 +1,7 @@
+rev 46 (2015-08-10)
+- removed orphaned debug code
+- renamed "absolute_Mt" to "target_Mt" to avoid confusion
+
 rev 45 (2015-08-10)
 - added the ability to express a target in absolute Mt terms
 - added the ability to specify the breakdown of a target for the three sectors
