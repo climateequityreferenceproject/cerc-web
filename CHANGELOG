@@ -1,3 +1,9 @@
+rev 464 (2015-08-11)
+- responsibility related settings now in their own expando-box
+- pledge expressed (in the pledge db) as absolute target (in Mt) is now understood
+- fixed advanced Excel download
+- remove trailing zeros from pledge percentages (which now allow 2 decimal points)
+
 rev 463 (2015-08-07)
 - 'public' flag from pledge database is now respected: if public=0 the pledge does not show in the public version of the calculator (always shows in the -dev version)
 - Excel download now allows for list of distinct years (as opposed to just ranges) for download, via dl_years (with | separated list) URL param or "advanced Excel download" UI in dev calc

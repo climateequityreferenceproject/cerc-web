@@ -177,6 +177,14 @@ function is_country($code)
     return mysql_num_rows($result) > 0;
 }
 
+function remove_trailing_zeros($input) {
+    $temp=explode(".",$input);
+    $temp[1]=rtrim($temp[1],"0");
+    $output = $temp[0];
+    if (!empty($temp[1])) $output.='.'.$temp[1];
+    return $output;
+}
+
 function process_pledges($pledge_info, $pathway, $db) {
     global $URL_calc_api, $URL_calc_api_dev, $dev_calc_creds;
     if (Framework::is_dev()) {
@@ -265,11 +273,11 @@ function process_pledges($pledge_info, $pathway, $db) {
         default:
             // Shouldn't get here
     }
-    $description = 'reduce ';
-    $by_factor = $pledge_info['reduction_percent'];
+    $description = '';
+    $by_factor = remove_trailing_zeros($pledge_info['reduction_percent']);
     switch ($pledge_info['quantity']) {
         case 'absolute':
-            $description .= 'total emissions ' . $reduce_text_1 . $by_factor . $reduce_text_2;
+            $description .= 'reduce total emissions ' . $reduce_text_1 . $by_factor . $reduce_text_2;
             if ($pledge_info['year_or_bau'] === 'bau') {
                 $description .= 'baseline';
                 $pledged_reduction = (1 - $factor) * $bau[$pledge_info['by_year']];
@@ -279,7 +287,7 @@ function process_pledges($pledge_info, $pathway, $db) {
             }
             break;
         case 'intensity':
-            $description .= 'emissions intensity ' . $reduce_text_1 . $by_factor . $reduce_text_2;
+            $description .= 'reduce emissions intensity ' . $reduce_text_1 . $by_factor . $reduce_text_2;
             if ($pledge_info['year_or_bau'] === 'bau') {
                 // This option actually makes no sense, but take care of it just in case:
                 $description .= 'baseline';
@@ -289,6 +297,11 @@ function process_pledges($pledge_info, $pathway, $db) {
                 $scaled_emiss = $gdp[$pledge_info['by_year']] * $bau[$pledge_info['rel_to_year']]/$gdp[$pledge_info['rel_to_year']];
                 $pledged_reduction = $bau[$pledge_info['by_year']] - $factor * $scaled_emiss;
             }
+            break;
+        case 'target_Mt':
+            $description .= ($bau[$pledge_info['by_year']] > $pledge_info['target_Mt']) ? "reduce " : "limit ";
+            $description .= 'total emissions to ' . remove_trailing_zeros($pledge_info['target_Mt']) . 'Mt';
+            $pledged_reduction = $bau[$pledge_info['by_year']] - $pledge_info['target_Mt'];
             break;
         default:
             // Shouldn't reach here

@@ -2,6 +2,7 @@
 // undocumented URL parameter switches for downloading xls tables:
 // - dl_start_year = independent of responsibility start date, xls file will only contain data from that year onward
 // - dl_end_year = independent of responsibility start date, xls file will only contain data up until that year 
+// - dl_years = a | separated list of individual years to download
 // - tax_tables = if tax_tables=1 the tax tables and tax data will be included, otherwise it won't
 // - gdrs_headers=1 keeps the Excel data table headers as specified in the core database, otherwise (default) they are overridden as per renaming mask in config.php
 
@@ -20,13 +21,13 @@ if (isset($_REQUEST['allyears']) && $_REQUEST['allyears'] == 'yes') {
     $all_years_condition_string = "AND combined.gdrs_alloc_MtCO2 IS NOT NULL";
 }
 $dl_year_condition_string = "";
-if (isset($_REQUEST['dl_start_year'])) {
+if ((isset($_REQUEST['dl_start_year'])) && (strlen($_REQUEST['dl_start_year'])>0)) { // GET method results in empty strings on  which isset() evaluates to true
     $dl_year_condition_string .= " AND year >= " . $_REQUEST['dl_start_year'];
 }
-if (isset($_REQUEST['dl_end_year'])) {
+if ((isset($_REQUEST['dl_end_year'])) && (strlen($_REQUEST['dl_end_year'])>0)) { // GET method results in empty strings on  which isset() evaluates to true
     $dl_year_condition_string .= " AND year <= " . $_REQUEST['dl_end_year'];
 }
-if (isset($_REQUEST['dl_years'])) { // overwrites previous year conditions
+if ((isset($_REQUEST['dl_years'])) && (strlen($_REQUEST['dl_years'])>0)) { // overwrites previous year conditions
     $dl_year_condition_string = "";
     $connector = " AND (";
     foreach(explode("|",$_REQUEST['dl_years']) as $year) {
@@ -86,7 +87,6 @@ $viewquery = <<< EOSQL
             FROM core LEFT JOIN gdrs ON core.year = gdrs.year AND core.iso3 = gdrs.iso3)
         AS combined WHERE country.iso3 = combined.iso3 $all_years_condition_string $dl_year_condition_string;
 EOSQL;
-
 $last_modified = Framework::get_db_time_string();
 
 $database = 'sqlite:'.$db_file;

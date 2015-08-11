@@ -73,7 +73,7 @@ function select_num($param, $param_list, $label, $label_class = null) {
 }
 
 // Print options list for select input field with a list of text values (option names)
-function select_options_list($param, $param_list, $label, $label_class = null) {
+function select_options_list($param, $param_list, $label, $label_class = null, $label_title = null) {
     $option_list = $param_list[$param]['list'];
     // otherwise print the select field with its label, NOT all between <li></li> tags, 
     // flagging the selected value in the option list
@@ -86,6 +86,9 @@ function select_options_list($param, $param_list, $label, $label_class = null) {
     $retval = '<label for="' . $param . '"';
     if (!is_null($label_class)) {
        $retval .= ' class="' . $label_class . '"'; 
+    }
+    if (!is_null($label_title)) {
+       $retval .= ' title="' . $label_title . '"';         
     }
     $retval .= '>' . $label . "</label>\n";
 
