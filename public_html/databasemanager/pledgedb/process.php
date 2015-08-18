@@ -30,13 +30,13 @@ if (isset($_POST['form']) && !isset($_POST['cancel'])) {
             // construct the JSON data array for the caveat field
             $json = "";
             foreach ($caveat_fields as $caveat_data_type) {
-                 if (isset($new_values[$caveat_data_type['name']])) {
-                     if (strlen($new_values[$caveat_data_type['name']])>0) {
+                 if (isset($new_values['caveat_' . $caveat_data_type['name']])) {
+                     if (strlen($new_values['caveat_' . $caveat_data_type['name']])>0) {
                         $json .= (strlen($json)==0) ? "\n\n" . "{" : ", ";
                         $json .= '"' . $caveat_data_type['name'] . '":';
-                        $json .= '"' . str_replace("'","&#39;",str_replace('"','&quot;',trim($new_values[$caveat_data_type['name']]))) . '"';
+                        $json .= '"' . str_replace("'","&#39;",str_replace('"','&quot;',trim($new_values['caveat_' . $caveat_data_type['name']]))) . '"';
                      }
-                     unset($new_values[$caveat_data_type['name']]);
+                     unset($new_values['caveat_' . $caveat_data_type['name']]);
                  }
             }
             $json .= (strlen($json)>0) ? "}" : "";

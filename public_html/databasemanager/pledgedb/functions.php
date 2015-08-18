@@ -264,9 +264,9 @@ function check_for_new_regions() {
         }
     }
  
-    // we save the code of the database we have used as a cookie so it can be 
-    // re-used, otherwise, every time the "region" drop down field is created, 
+    // we save the code of the database we have used as a one week cookie so it  
+    // can be re-used, otherwise, every time the "region" drop down field is created, 
     // a new copy of the database is created.
-    setcookie("db", $db, time()+3600);
+    setcookie("db", $db, time()+604800);
 }
 

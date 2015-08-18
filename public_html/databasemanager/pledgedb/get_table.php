@@ -19,7 +19,7 @@ function table_head($id="", $css_class="") {
     $html .= "<th rowspan=2>Delete</th>";
     $html .= "<th rowspan=2>Caveat/Additional Data</th>";
     $html .= "<th rowspan=2>Details</th>";
-    $html .= "<th rowspan=2>Info. link</th>";
+//    $html .= "<th rowspan=2>Info. link</th>";
     $html .= "<th rowspan=2>Source</th>";
     $html .= "</tr>";
     $html .= "<tr>";
@@ -65,7 +65,7 @@ function table_row($row=NULL) {
         $html .= '<td><input type="submit" value="Delete" name="' . $row['id'] . '"></td>';
         $html .= "<td>" . $row['caveat'] . "</td>";
         $html .= "<td>" . $row['details'] . "</td>";
-        $html .= "<td>" . $row['info_link'] . "</td>";
+//        $html .= "<td>" . $row['info_link'] . "</td>";
         $html .= "<td>" . $row['source'] . "</td>";
         $html .= "</tr>";
         return $html;

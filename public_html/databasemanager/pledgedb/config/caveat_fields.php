@@ -15,4 +15,6 @@ $caveat_fields = array(
           "description"=>"set to \"yes\" if a target is a conditional target but the data structure of the calculator forces you to enter it as an unconditional pledge."),
     array("name"=>"pledge_qualifier", "title" => "Pledge Qualifier text", "type"=>"textbox", 
           "description"=>"text that appears in brackets after the, for example, \"China unconditional pledge\" text - to be used for example, to distinguish between low and high ends of pledge ranges"),
+    array("name"=>"pledge_breakdown_assumptions", "title" => "Pledge Breakdown Assumptions Help Text", "type"=>"textarea", 
+          "description"=>"This is the text that will be included to the user when they receive a warning that the gases they chose to display differ from the gases specified in the INDC. If not specified, they will be shown the default assumptions description. You can include HTML markup, including links to external analysis/assumptions, but remember: no single or double quotes in HTML tags!"),
 );

@@ -1,3 +1,17 @@
+rev 47 (2015-08-17)
+- when displaying or exporting (display.php) the pledge db, the pledge is now converted into Mt, and the source break down provided in Mt 
+  as per data provided in pledge or default method (BAU composition in pledge year) (all based on downloads from core database)
+- display.php now looks better (styled table and floating table header)
+- moved common functions for accessing core database via calculator API to api_functions.php
+- the (core) database name (for time series and regions lookup) is now stored in a cookie for cross-session re-use
+- improved description text for pledge breakdown in entry form
+- removed depreciated "link to information" field from entry form and pledge table
+- added a caveat_ prefix to all caveat-related UI elements to avoid conflict with equally named non-ceveat UI elements (e.g. "conditional" 
+  existed in both scopes)
+- times series lookup can now be performed for regions as well as countries
+- new "pledge_breakdown_assumptions" caveat field
+- dumped current mysql database generation code into pledge.sql
+
 rev 46 (2015-08-10)
 - removed orphaned debug code
 - renamed "absolute_Mt" to "target_Mt" to avoid confusion

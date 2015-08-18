@@ -34,8 +34,9 @@ require_once "HTTP/Request.php";
             ?>
             <?php echo make_ctryregion_list($edit_array); ?>
             <script>
-                // remove the GHG time series table if the country is changed.
+                // remove the GHG time series table if the country/region is changed.
                 $(document).ready(function(){ $("#iso3").change(function() { $('#datatable-container').html(""); }); });
+                $(document).ready(function(){ $("#region").change(function() { $('#datatable-container').html(""); }); });
             </script>
             <!-- Conditional/unconditional-->
             <input type="checkbox" name="conditional" id="conditional" value="1" <?php echo ((get_conditional_value($edit_array) == 1) ? 'checked="checked"' : ''); ?> />
@@ -116,11 +117,15 @@ require_once "HTTP/Request.php";
             </table>
             The breakdown will be required if users choose to display a sector combination that is different from the pledge. <br />
             You have to specify all three for this to work. These values are only used to determine the internal ratio of the <br />
-            overall pledge, not the size of the  pledge itself (which is determined by the information provided immediately above). 
-            If this breakdown is not provided, the default method (using sector ratio in our BAU for the target year) is used instead.
+            pledged/implied emissions in the target year, not the size of the pledge itself (which is determined by the information <br />
+            provided immediately above). Note that the values that you enter here is not necessarily the breakdown of the pledge, but <br />
+            the breakdown of emissions that we expect in the pledge year given what has been pledged (e.g. if a pledge doesn't contain <br />
+            information about LULUCF, we might want to enter BAU values for LULUCF here). If this breakdown is not provided, the default <br />
+            method (using ratio of source categories in our BAU for the target year) is used instead. <br />
+            Also note that you really should include a helptext to describe your assumptions to the end-user (pledge_breakdown_assumptions).
             <br /><br />
                 
-            <label>Link to more information: </label><input type="text" name="info_link" value="<?php echo get_text($edit_array, 'info_link');?>"/><br />
+<!--            <label>Link to more information: </label><input type="text" name="info_link" value="<?php echo get_text($edit_array, 'info_link');?>"/><br />-->
             <label>Source:</label><br/>
             <textarea name="source" cols="75" rows="2" ><?php echo get_text($edit_array, 'source');?></textarea><br />
             <label>Caveat/Additional Data:</label><br/>
@@ -153,38 +158,38 @@ require_once "HTTP/Request.php";
 //                    var_dump($output_array,$additional_caveat_data,$caveat_text);
 //                    die();
                     foreach ($caveat_fields as $caveat_data_type) {
-                        echo '<label id="' . $caveat_data_type['name'] . '-label" style="position:relative;">' . $caveat_data_type['name'] . ': (hover for help)</label>' . "\n";
-                        echo '<div id="' . $caveat_data_type['name'] . '-help" style="display: none;border:1px solid black;background-color:yellow;width:50em;position:absolute;top:2px;left:90px;padding:2px;line-height:12.5px">';
+                        echo '<label id="caveat_' . $caveat_data_type['name'] . '-label" style="position:relative;">' . $caveat_data_type['name'] . ': (hover for help)</label>' . "\n";
+                        echo '<div id="caveat_' . $caveat_data_type['name'] . '-help" style="display: none;border:1px solid black;background-color:yellow;width:50em;position:absolute;top:2px;left:90px;padding:2px;line-height:12.5px">';
                         echo '<b>' . $caveat_data_type['title'] . '</b><br>';
                         echo $caveat_data_type['description'] . '</div>';
                         echo "<script>";
-                        echo "document.getElementById('" . $caveat_data_type['name'] . "-label').onmouseover = function() { document.getElementById('" . $caveat_data_type['name'] . "-help').style.display = 'block'; }; ";
-                        echo "document.getElementById('" . $caveat_data_type['name'] . "-label').onmouseout  = function() { document.getElementById('" . $caveat_data_type['name'] . "-help').style.display = 'none'; }; ";
+                        echo "document.getElementById('caveat_" . $caveat_data_type['name'] . "-label').onmouseover = function() { document.getElementById('caveat_" . $caveat_data_type['name'] . "-help').style.display = 'block'; }; ";
+                        echo "document.getElementById('caveat_" . $caveat_data_type['name'] . "-label').onmouseout  = function() { document.getElementById('caveat_" . $caveat_data_type['name'] . "-help').style.display = 'none'; }; ";
                         echo "</script>";
                         
                         switch ($caveat_data_type['type']) {
                             case 'textarea':
                                 echo '<br />' . "\n";
-                                echo '<textarea name="'.$caveat_data_type['name'].'" id="'.$caveat_data_type['name'].'" ';
+                                echo '<textarea name="caveat_'.$caveat_data_type['name'].'" id="caveat_'.$caveat_data_type['name'].'" ';
                                 echo 'cols="75" rows="3" class="mceNoEditor">';
                                 echo $additional_caveat_data[$caveat_data_type['name']];
                                 echo '</textarea><br />' . "\n" . '<br />' . "\n";
                                 break;
                             case 'textbox':
                                 echo '<br />' . "\n";
-                                echo '<input type="text" style="width:53em;" name="'.$caveat_data_type['name'].'" id="'.$caveat_data_type['name'].'" ';
+                                echo '<input type="text" style="width:53em;" name="caveat_'.$caveat_data_type['name'].'" id="caveat_'.$caveat_data_type['name'].'" ';
                                 echo 'value="' . $additional_caveat_data[$caveat_data_type['name']] . '">';
                                 echo '<br />' . "\n" . '<br />' . "\n";
                                 break;
                             case 'boolean': ///// NOTE: THIS ACTUALLY IS NOT FINALIZED CODE 
 //                                echo '&nbsp;&nbsp;&nbsp;' . "\n";
-//                                echo '<input type="checkbox" name="'.$caveat_data_type['name'].'" id="'.$caveat_data_type['name'].'" value="yes" />yes  ' . "\n";
-//                                echo '<input type="checkbox" name="'.$caveat_data_type['name'].'" id="'.$caveat_data_type['name'].'" value="no" />no' . "\n";
+//                                echo '<input type="checkbox" name="caveat_'.$caveat_data_type['name'].'" id="caveat_'.$caveat_data_type['name'].'" value="yes" />yes  ' . "\n";
+//                                echo '<input type="checkbox" name="caveat_'.$caveat_data_type['name'].'" id="caveat_'.$caveat_data_type['name'].'" value="no" />no' . "\n";
 //                                echo '<br />' . "\n" . '<br />' . "\n";
                                 break;
                             case 'yes':
                                 echo '&nbsp;&nbsp;&nbsp;' . "\n";
-                                echo '<input type="checkbox" name="'.$caveat_data_type['name'].'" id="'.$caveat_data_type['name'].'" value="yes"';
+                                echo '<input type="checkbox" name="caveat_'.$caveat_data_type['name'].'" id="caveat_'.$caveat_data_type['name'].'" value="yes"';
                                 echo (isset($additional_caveat_data[$caveat_data_type['name']]) ? ' checked="checked"' : '');
                                 echo ' />yes  ' . "\n";
                                 echo '<br />' . "\n" . '<br />' . "\n";
@@ -226,7 +231,7 @@ require_once "HTTP/Request.php";
         </form>
         <div id="datatable-wrapper" style="position:absolute;top:55px;left:800px;width:450px;height:500px;overflow:auto;">
             <div id="datatable-button">
-                select a country and then <u>click here</u> to display its historical and BAU emissions data.
+                select a country/region and then <u>click here</u> to display its historical and BAU emissions data.
             </div>
             <div>
             <div id="datatable-container">
@@ -234,8 +239,14 @@ require_once "HTTP/Request.php";
             <script>
                 $(document).ready(function(){
                     $('#datatable-button').click(function () { 
-                        $('#datatable-container').html("Loading data for " + $("#iso3 option:selected").text());
-                        $('#datatable-container').load('http://climateequityreference.org/pledges/entry/datatable.php?country=' + $("#iso3 option:selected").val() + "&db=" + $("#db").val()); 
+                        if ($('input[name=country_or_region]:checked').val()==="region") {
+                            $url = 'http://climateequityreference.org/pledges/entry/datatable.php?country=' + $("#region option:selected").val() + "&db=" + $("#db").val();
+                            $('#datatable-container').html("<br><br><br>Loading data for " + $("#region option:selected").text() + " (it is normal for this to take a while)<br />" + $url);
+                        } else {
+                            $url = 'http://climateequityreference.org/pledges/entry/datatable.php?country=' + $("#iso3 option:selected").val() + "&db=" + $("#db").val();
+                            $('#datatable-container').html("<br><br><br>Loading data for " + $("#iso3 option:selected").text() + " (it is normal for this to take a while)<br />" + $url);
+                        }
+                        $('#datatable-container').load($url); 
                     }); 
                 });
             </script>

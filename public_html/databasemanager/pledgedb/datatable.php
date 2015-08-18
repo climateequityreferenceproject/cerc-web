@@ -1,60 +1,4 @@
-<?php
-// the GRDs API example code used the old PEAR HTTP/Request package - 
-// this has been depreciated in favour of HTTP/Request2 since 2008; 
-// my hoster does not have the old one anymore, thus the manual install of HTTP/Request. 
-set_include_path('/home3/seekersr/pear/share/pear' . PATH_SEPARATOR . get_include_path());
-set_include_path('/Users/ch/Documents/ Documents/_SD Card/Copy/CERP/PHP INDC Comparable Effort/pear/share/pear' . PATH_SEPARATOR . get_include_path());
-require_once "HTTP/Request.php";
-
-
-function get_new_API_DB() {
-    $req =& new HTTP_Request("http://calculator.climateequityreference.org/api/?q=new_db");
-    $req->setMethod(HTTP_REQUEST_METHOD_GET);
-    if (!PEAR::isError($req->sendRequest())) {
-        $response = (array) json_decode($req->getResponseBody());
-    } else {
-        throw new Exception($req->getMessage());
-    }
-    return $response['db'];
-}
-
-function get_option_list($of_what, $db = NULL) {
-    $req_string = "http://calculator.climateequityreference.org/api/?q=" . $of_what;
-    if ($db) { $req_string .= "&db=" . $db; }
-    $req =& new HTTP_Request($req_string);
-    $req->setMethod(HTTP_REQUEST_METHOD_GET);
-    if (!PEAR::isError($req->sendRequest())) {
-        // Note: json_decode returns arrays as StdClass, so have to cast
-        $response = (array) json_decode($req->getResponseBody());
-    } else {
-        throw new Exception($req->getMessage());
-    }
-    return $response;
-}
-
-function get_data($parms, $db = NULL) {
-    $req =& new HTTP_Request("http://calculator.climateequityreference.org/api/");
-    $req->setMethod(HTTP_REQUEST_METHOD_POST);
-    if ($db) { $req->addPostData('db', $db); }
-    foreach ($parms as $key=>$value) {
-        $req->addPostData($key, $value); 
-	}
-    if (!PEAR::isError($req->sendRequest())) {
-        $response = json_decode($req->getResponseBody());
-        // For countries (but not for regions, CH) the decode procedure duplicates the first element: get the tail
-        if (sizeof($response)>1) { $response = array_slice($response, 1); }
-    } else {
-        throw new Exception($req->getMessage());
-    }
-    return $response;
-}
-
-?>
-
-<html>
-    <head>
-    </head>
-    <body>
+<?php include_once('api_functions.php'); ?>
 <?php
         $parms1 = array();
         if (isset($_REQUEST['country'])) {
@@ -74,7 +18,13 @@ function get_data($parms, $db = NULL) {
         $parms1['lux_thresh'] = 50000;
         $parms1['r_wt'] = 0.5;
 
-        if (isset($_REQUEST['db'])) { $db = $_REQUEST['db']; } else { $db = get_new_API_DB(); }
+        if (isset($_COOKIE['db'])) { 
+            $db = $_COOKIE['db']; 
+        } else { 
+            $db = get_new_API_DB(); 
+            // cookies must be sent before any output from your script
+            setcookie("db", $db, time()+604800);
+        }
         $data_list = get_data($parms1, $db);
         $keep_these_codes = array("year", "fossil_CO2_MtCO2", "LULUCF_MtCO2", "NonCO2_MtCO2e"); 
         $round_these_codes = array("fossil_CO2_MtCO2", "LULUCF_MtCO2", "NonCO2_MtCO2e", "total"); 
@@ -95,6 +45,10 @@ function get_data($parms, $db = NULL) {
         }
 ?>
         
+<html>
+    <head>
+    </head>
+    <body>
         <table class="table datatbl">
         <thead>
           <tr>
