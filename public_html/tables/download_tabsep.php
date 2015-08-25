@@ -2,9 +2,13 @@
 // undocumented URL parameter switches for downloading xls tables:
 // - dl_start_year = independent of responsibility start date, xls file will only contain data from that year onward
 // - dl_end_year = independent of responsibility start date, xls file will only contain data up until that year 
-// - dl_years = a | separated list of individual years to download
+// - dl_years = a | separated list of individual years to download, overrides dl_start_year and dl_end_year, if also specified
+// - filename = the name of the xls file to be sent to the browser
 // - tax_tables = if tax_tables=1 the tax tables and tax data will be included, otherwise it won't
 // - gdrs_headers=1 keeps the Excel data table headers as specified in the core database, otherwise (default) they are overridden as per renaming mask in config.php
+// - min_year/dl_min_year = aliasses for dl_start_year
+// - max_year/dl_max_year = aliasses for dl_end_year
+// - years = alias for dl_years
 
 if (isset($_REQUEST['debug']) && $_REQUEST['debug'] == 'yes') {
     ini_set('display_errors',1); 
@@ -21,10 +25,18 @@ if (isset($_REQUEST['allyears']) && $_REQUEST['allyears'] == 'yes') {
     $all_years_condition_string = "AND combined.gdrs_alloc_MtCO2 IS NOT NULL";
 }
 $dl_year_condition_string = "";
-if ((isset($_REQUEST['dl_start_year'])) && (strlen($_REQUEST['dl_start_year'])>0)) { // GET method results in empty strings on  which isset() evaluates to true
+if (!(isset($_REQUEST['dl_start_year']))) {
+    if (isset($_REQUEST['min_year']))    { $_REQUEST['dl_start_year'] = $_REQUEST['min_year'];}
+    if (isset($_REQUEST['dl_min_year'])) { $_REQUEST['dl_start_year'] = $_REQUEST['dl_min_year'];}
+}
+if (!(isset($_REQUEST['dl_end_year']))) {
+    if (isset($_REQUEST['max_year']))    { $_REQUEST['dl_end_year'] = $_REQUEST['max_year'];}
+    if (isset($_REQUEST['dl_max_year'])) { $_REQUEST['dl_end_year'] = $_REQUEST['dl_max_year'];}
+}
+if ((isset($_REQUEST['dl_start_year'])) && (strlen($_REQUEST['dl_start_year'])>0)) { // GET method results in empty strings which isset() evaluates to true
     $dl_year_condition_string .= " AND year >= " . $_REQUEST['dl_start_year'];
 }
-if ((isset($_REQUEST['dl_end_year'])) && (strlen($_REQUEST['dl_end_year'])>0)) { // GET method results in empty strings on  which isset() evaluates to true
+if ((isset($_REQUEST['dl_end_year'])) && (strlen($_REQUEST['dl_end_year'])>0)) { // GET method results in empty strings which isset() evaluates to true
     $dl_year_condition_string .= " AND year <= " . $_REQUEST['dl_end_year'];
 }
 if ((isset($_REQUEST['dl_years'])) && (strlen($_REQUEST['dl_years'])>0)) { // overwrites previous year conditions
@@ -97,7 +109,7 @@ if (!$db->query($viewquery)) {
     print_r($db->errorInfo());
 }
 
-$dlfile = $xls_file_slug . time() . ".xls";
+$dlfile = (strlen($_REQUEST['filename'])>0) ? $_REQUEST['filename'] : ($xls_file_slug . time() . ".xls");
 $tsfile = tempnam($xls_tmp_dir, $xls_file_slug ."tabsep-");
 
 $fp = fopen($tsfile, "w");

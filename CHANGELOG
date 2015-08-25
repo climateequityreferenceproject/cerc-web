@@ -1,10 +1,18 @@
-rev 464 (2015-08-11)
+rev 465 (2015-08-25) (krueschan)
+- in INDC Assessment Chart module (/charts/) prepared move to public calc (changing .htaccess and moving upload form to protected dir)
+- added a URL parameter 'filename' to Excel download script: if specified, this will be the file name used for the download
+- added a URL parameter 'download' to index.php - if set, index.php will forward to download_tabsep.php after the calculator 
+  has done all the calculations, in other words, full parameterized download URLs can now be constructed
+- for Excel download, added aliases for URL params for convenience: min_year/dl_min_year = dl_start_year, max_year/dl_max_year = dl_end_year, years = dl_years
+- fixed API URLs in API example (example.php)
+
+rev 464 (2015-08-11) (krueschan)
 - responsibility related settings now in their own expando-box
 - pledge expressed (in the pledge db) as absolute target (in Mt) is now understood
 - fixed advanced Excel download
 - remove trailing zeros from pledge percentages (which now allow 2 decimal points)
 
-rev 463 (2015-08-07)
+rev 463 (2015-08-07) (krueschan)
 - 'public' flag from pledge database is now respected: if public=0 the pledge does not show in the public version of the calculator (always shows in the -dev version)
 - Excel download now allows for list of distinct years (as opposed to just ranges) for download, via dl_years (with | separated list) URL param or "advanced Excel download" UI in dev calc
 - implemented new 'labels_match_scale' in graph_core module which allows for axis labels to be matched to the user-defined/hard-coded/pre-calculated (y-)axis dimensions passed to the module
@@ -14,7 +22,7 @@ rev 463 (2015-08-07)
 - added styling for area below the x-axis to country_graphs.css
 - added CHANGELOG file to keep track of changes between and across commits
 
-rev 462 (2015-07-12)
+rev 462 (2015-07-12) (krueschan)
 - version numbers for js and css (and some png) files to facilitate longer browser caching
 - a bunch of new code for generating "The Big Chart" (single country graph with effort sharing and resource sharing wedges) for INDC assessments
 

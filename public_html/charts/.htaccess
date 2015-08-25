@@ -1,13 +1,13 @@
 RewriteEngine On
 
-RewriteRule ^([a-zA-Z0-9]+).svg/?$ http://calculator-dev.climateequityreference.org/charts/index.php?iso3=$1 [P,QSA]
-RewriteRule ^([a-zA-Z0-9]+)_eff.svg/?$ http://calculator-dev.climateequityreference.org/charts/index.php?view=eff&iso3=$1 [P,QSA]
-RewriteRule ^([a-zA-Z0-9]+)_res.svg/?$ http://calculator-dev.climateequityreference.org/charts/index.php?view=res&iso3=$1 [P,QSA]
+RewriteRule ^([a-zA-Z0-9-]+).svg/?$ http://calculator.climateequityreference.org/charts/index.php?iso3=$1 [P,QSA]
+RewriteRule ^([a-zA-Z0-9-]+)_eff.svg/?$ http://calculator.climateequityreference.org/charts/index.php?view=eff&iso3=$1 [P,QSA]
+RewriteRule ^([a-zA-Z0-9-]+)_res.svg/?$ http://calculator.climateequityreference.org/charts/index.php?view=res&iso3=$1 [P,QSA]
 
-RewriteRule ^([a-zA-Z0-9]+).jpg/?$ http://calculator-dev.climateequityreference.org/charts/index.php?type=jpg&iso3=$1 [P,QSA]
-RewriteRule ^([a-zA-Z0-9]+)_eff.jpg/?$ http://calculator-dev.climateequityreference.org/charts/index.php?type=jpg&view=eff&iso3=$1 [P,QSA]
-RewriteRule ^([a-zA-Z0-9]+)_res.jpg/?$ http://calculator-dev.climateequityreference.org/charts/index.php?type=jpg&view=res&iso3=$1 [P,QSA]
+RewriteRule ^([a-zA-Z0-9-]+).jpg/?$ http://calculator.climateequityreference.org/charts/index.php?type=jpg&iso3=$1 [P,QSA]
+RewriteRule ^([a-zA-Z0-9-]+)_eff.jpg/?$ http://calculator.climateequityreference.org/charts/index.php?type=jpg&view=eff&iso3=$1 [P,QSA]
+RewriteRule ^([a-zA-Z0-9-]+)_res.jpg/?$ http://calculator.climateequityreference.org/charts/index.php?type=jpg&view=res&iso3=$1 [P,QSA]
 
-RewriteRule ^([a-zA-Z0-9]+).png/?$ http://calculator-dev.climateequityreference.org/charts/index.php?type=png&iso3=$1&$2 [P,QSA]
-RewriteRule ^([a-zA-Z0-9]+)_eff.png/?$ http://calculator-dev.climateequityreference.org/charts/index.php?type=png&view=eff&iso3=$1 [P,QSA]
-RewriteRule ^([a-zA-Z0-9]+)_res.png/?$ http://calculator-dev.climateequityreference.org/charts/index.php?type=png&view=res&iso3=$1 [P,QSA]
+RewriteRule ^([a-zA-Z0-9-]+).png/?$ http://calculator.climateequityreference.org/charts/index.php?type=png&iso3=$1&$2 [P,QSA]
+RewriteRule ^([a-zA-Z0-9-]+)_eff.png/?$ http://calculator.climateequityreference.org/charts/index.php?type=png&view=eff&iso3=$1 [P,QSA]
+RewriteRule ^([a-zA-Z0-9-]+)_res.png/?$ http://calculator.climateequityreference.org/charts/index.php?type=png&view=res&iso3=$1 [P,QSA]

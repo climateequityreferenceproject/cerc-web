@@ -40,6 +40,13 @@ $equity_nosplash = $equity_nosplash || isset($_POST['equity_submit']);
 $equity_nosplash = $equity_nosplash || isset($_POST['equity_submit_top']);
 $equity_nosplash = $equity_nosplash || (isset($_GET['equity']) && $_GET['equity'] === 'default');
 $equity_nosplash = $equity_nosplash || isset($_GET['iso3']);
+
+if ((isset($_REQUEST['download'])) || (isset($_REQUEST['dl']))) { 
+    $url  = (Framework::is_dev()) ? $URL_calc_dev : $URL_calc;
+    $url .= "tables/download_tabsep.php?" . $_SERVER['QUERY_STRING'] . "&db=" . basename($user_db);
+    header('Location: ' . $url, true, 303);
+    die();
+}
 ?>
 <!DOCTYPE html>
     <head>
@@ -355,6 +362,8 @@ $equity_nosplash = $equity_nosplash || isset($_GET['iso3']);
                                                 echo "    <input type='text' name='dl_end_year' maxlength='4' size='4'><br>";
                                                 echo "    Download Certain Years:";
                                                 echo "    <input type='text' name='dl_years' size='12'> ('|' separated list, for example '2013|2020|2025|2030')<br>";
+                                                echo "    Filename for the Download:";
+                                                echo "    <input type='text' name='filename' size='25'><br>";
                                                 echo "    <input type='checkbox' name='tax_tables' value='1'>Include tax tables<br>";
                                                 echo "    <input type='submit' value='download'>";
                                                 echo "</form>";

@@ -115,7 +115,7 @@ foreach ($data_input as $line) {
     }
 }
 unset($data_input);
-if (!isset($bau)) { die("Have no data for the country you are trying to view."); }
+if (!isset($bau)) { die("I have no data for the country you are trying to view (" . $country . ")."); }
 
 // removed pledge years with no pledge target
     foreach ($pledges as $key => $pledge) {

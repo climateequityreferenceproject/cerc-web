@@ -2,7 +2,7 @@
 require_once "HTTP/Request.php";
 
 function get_countries() {
-    $req =& new HTTP_Request("http://climateequityreference.org/calculator/api/?q=countries");
+    $req =& new HTTP_Request("http://calculator.climateequityreference.org/api/?q=countries");
     $req->setMethod(HTTP_REQUEST_METHOD_GET);
     if (!PEAR::isError($req->sendRequest())) {
         // Note: json_decode returns arrays as StdClass, so have to cast
@@ -14,7 +14,7 @@ function get_countries() {
 }
 
 function get_params() {
-    $req =& new HTTP_Request("http://climateequityreference.org/calculator/api/?q=params");
+    $req =& new HTTP_Request("http://calculator.climateequityreference.org/api/?q=params");
     $req->setMethod(HTTP_REQUEST_METHOD_GET);
     if (!PEAR::isError($req->sendRequest())) {
         $response = (array) json_decode($req->getResponseBody());
@@ -25,7 +25,7 @@ function get_params() {
 }
 
 function get_country_data($iso3) {
-    $req =& new HTTP_Request("http://climateequityreference.org/calculator/api/");
+    $req =& new HTTP_Request("http://calculator.climateequityreference.org/api/");
     $req->setMethod(HTTP_REQUEST_METHOD_POST);
     $req->addPostData('years', 2020); // Note hard-coded year
     $req->addPostData('countries', $iso3);

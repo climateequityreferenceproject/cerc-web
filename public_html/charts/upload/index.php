@@ -45,7 +45,7 @@ function display_contents($data) {
     echo'</table>';
 }
 
-$target_file = 'data.csv';
+$target_file = '../data.csv';
 // Check if image file is a actual image or fake image
 if(isset($_POST['submit'])) {
     if (move_uploaded_file($_FILES['fileToUpload']['tmp_name'], $target_file)) {
@@ -60,13 +60,13 @@ if(isset($_POST['submit'])) {
             fclose($fh);        
         }
         echo 'The file '. basename( $_FILES['fileToUpload']['name']). ' has been uploaded.<br />Here is the data that I received:<br /><br />';
-        display_contents(csv_to_array('data.csv'));
+        display_contents(csv_to_array('../data.csv'));
     } else {
         echo 'Sorry, there was an error uploading your file.';
     }
 } else {
 ?> 
-<form action='upload.php' method='post' enctype='multipart/form-data'>
+<form action='index.php' method='post' enctype='multipart/form-data'>
     Select csv file to upload:
     <input type='file' name='fileToUpload' id='fileToUpload'>
     <input type='submit' value='Upload File' name='submit'>
