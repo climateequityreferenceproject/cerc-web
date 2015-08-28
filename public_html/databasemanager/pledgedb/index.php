@@ -115,13 +115,14 @@ require_once "HTTP/Request.php";
                     <td style="border-color:#523A0B;"><input name="target_Mt_LULUCF" id="target_Mt_LULUCF" type="text" style="width:5em;" value="<?php echo get_value($edit_array,'target_Mt_LULUCF'); ?>"></input></td>
                 </tr>
             </table>
-            The breakdown will be required if users choose to display a sector combination that is different from the pledge. <br />
+            The breakdown is useful if users choose to display a sector combination that is different from the pledge. <br />
             You have to specify all three for this to work. These values are only used to determine the internal ratio of the <br />
             pledged/implied emissions in the target year, not the size of the pledge itself (which is determined by the information <br />
             provided immediately above). Note that the values that you enter here is not necessarily the breakdown of the pledge, but <br />
             the breakdown of emissions that we expect in the pledge year given what has been pledged (e.g. if a pledge doesn't contain <br />
             information about LULUCF, we might want to enter BAU values for LULUCF here). If this breakdown is not provided, the default <br />
-            method (using ratio of source categories in our BAU for the target year) is used instead. <br />
+            method (using ratio of source categories in our BAU for the target year for sources included in the pledge, hold non-included <br />
+            sources at BAU levels) is used instead. <br />
             Also note that you really should include a helptext to describe your assumptions to the end-user (pledge_breakdown_assumptions).
             <br /><br />
                 

@@ -1,3 +1,11 @@
+rev 48 (2015-08-27)
+- new default method for pledge decomposition applied to download/display.php: source categories included in a pledge will be split according
+  to their ratio in the BAU of the target year; non-included sources will be held at absolute Mt BAU levels.
+- display.php now supports the 'public' URL parameter to filter based on that value
+- display.php, when downloading (dl=1) the pledge table as xls, the filename for the download can now be specified via "filname=" URL parameter
+- FIXED: display.php sent a nonsensical content-length header for Excel download, breaking the download in certain circumstances
+- if the core database name that was stored in a cookie (for reuse purposes) doesn't exist anymore, get a new one from the calc-engine
+
 rev 47 (2015-08-17)
 - when displaying or exporting (display.php) the pledge db, the pledge is now converted into Mt, and the source break down provided in Mt 
   as per data provided in pledge or default method (BAU composition in pledge year) (all based on downloads from core database)

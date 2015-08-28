@@ -7,6 +7,20 @@
 require_once "HTTP/Request.php";
 
 
+function exists_API_DB($db = NULL) {
+    if (isset($db)) {
+        $req =& new HTTP_Request("http://calculator.climateequityreference.org/api/?q=data_ver&db=" . $db);
+        $req->setMethod(HTTP_REQUEST_METHOD_GET);
+        if (!PEAR::isError($req->sendRequest())) {
+            return ($req->getResponseCode()==200) ? TRUE : FALSE;
+        } else {
+            throw new Exception($req->getMessage());
+        }
+    } else {
+        return FALSE;
+    }
+}
+
 function get_new_API_DB() {
     $req =& new HTTP_Request("http://calculator.climateequityreference.org/api/?q=new_db");
     $req->setMethod(HTTP_REQUEST_METHOD_GET);

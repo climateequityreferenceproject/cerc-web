@@ -6,8 +6,8 @@
         } else {
             die("Need to specify the country via the 'country' URL parameter (or POST) as ISO3 code.");
         }
-        $parms1['years'] = "1990";
-        for ($x = 1991; $x <= 2030; $x++) { $parms1['years'] .= ",".$x; }
+        $parms1['years'] = "1989";
+        for ($x = 1990; $x <= 2030; $x++) { $parms1['years'] .= ",".$x; }
         //Global Settings
         $parms1['use_lulucf'] = 1;
         $parms1['use_nonco2'] = 1;
