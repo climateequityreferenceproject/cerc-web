@@ -1,3 +1,8 @@
+rev 467 (2015-10-08) (krueschan)
+- advanced Excel download: suppress output for regions and world if countries are specified; otherwise nonsensical output
+- changed the default for the display year in the country report to 2030
+- fixed a bug where greenline was always zero
+
 rev 466 (2015-10-08) (krueschan)
 - glossary_array.php now outputs html of a glossary item (if passed the html=1 URL parameter), with a <h3> formatted label, unless noheader=1 is specified (mainly for use in tooltip wordpress plugin)
 - updated jQuery code to version 1.6.4

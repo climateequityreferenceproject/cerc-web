@@ -176,6 +176,9 @@ EOSQL;
     $global_alloc_series = array();
     foreach ($db->query($query) as $record) {
         $yr_ndx = $record['year'];
+        $global_bau['fossil'][$yr_ndx] = $record['fossil_CO2_MtCO2'];
+        $global_bau['lulucf'][$yr_ndx] = $record['LULUCF_MtCO2'];
+        $global_bau['nonco2'][$yr_ndx] = $record['NonCO2_MtCO2e'];
         $global_bau_series[$yr_ndx] = $global_bau['fossil'][$yr_ndx] + ($use_lulucf * $global_bau['lulucf'][$yr_ndx]) + ($use_nonco2 * $global_bau['nonco2'][$yr_ndx]);
         $global_alloc_series[$yr_ndx] = $record['gdrs_alloc_MtCO2'];
     }
@@ -241,7 +244,7 @@ EOSQL;
         $min = min($min, $alloc_series[$yr_ndx]);
         $max = max($max, $bau_series[$yr_ndx]);
     }
-   
+//   var_dump($bau_series,$global_alloc_series, $global_bau_series , $dulline_series);die();
     // check if we need to change the chart scale to fit all pledges on the chart
     foreach (array('conditional', 'unconditional') as $condl) {
         $pledges = $dom_pledges[$condl];

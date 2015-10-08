@@ -208,10 +208,14 @@ $region_sql .= "flags.value = 1 AND flags.flag = ? GROUP BY year;";
 // Global
 $row_start = "WORLD\tWorld\t";
 foreach ($db->query($global_sql, PDO::FETCH_NUM) as $record) {
-    fwrite($fp, $row_start . implode("\t", $record) . "\n");
+    // if countries are specified, world and regions will only include the figures of those countries, which is wrong; until the queries are fixed to 
+    // account for that, we suppress world and regions output in this case
+    if (!(isset($_REQUEST['countries']))) {  
+        fwrite($fp, $row_start . implode("\t", $record) . "\n");
+    }
 }
 
-// Regional
+// Regions
 $region_query = $db->prepare($region_sql);
 foreach ($db->query('SELECT * FROM flag_names') as $flags) {
     $shortname = $flags["flag"];
@@ -219,7 +223,11 @@ foreach ($db->query('SELECT * FROM flag_names') as $flags) {
     $row_start = strtoupper($shortname) . "\t$longname\t";
     $region_query->execute(array($flags["flag"]));
     foreach ($region_query->fetchAll(PDO::FETCH_NUM) as $record) {
-        fwrite($fp, $row_start . implode("\t", $record) . "\n");
+        // if countries are specified, world and regions will only include the figures of those countries, which is wrong; until the queries are fixed to 
+        // account for that, we suppress world and regions output in this case
+        if (!(isset($_REQUEST['countries']))) {  
+            fwrite($fp, $row_start . implode("\t", $record) . "\n");
+        }
     }
 }
 // Mark up the boundaries of the data table
