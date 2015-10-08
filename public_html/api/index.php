@@ -12,7 +12,7 @@
             }
         }
     }
-    
+                    
     function process_request() {
         global $msg;
 

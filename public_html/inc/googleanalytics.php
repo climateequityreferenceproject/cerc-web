@@ -9,7 +9,9 @@ if ((strpos(dirname(__FILE__), '_dev')) || (strpos(dirname(__FILE__), '-dev'))) 
     setcookie("this_user_is_developer","true",time()+60*60*24*365.25/4, "/", $domain); // cookie life time = 1/4 of a year    
 }
 
-if (!($_COOKIE['this_user_is_developer']=='true')) {
+$user_is_developer = ($_COOKIE['this_user_is_developer']=='true');
+
+if (!($user_is_developer)) {
     $ga_script = "\n";
     $ga_script .= "<script>";
     $ga_script .= "\n";

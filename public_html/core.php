@@ -130,6 +130,21 @@
                                     'adv'=>array('display_name'=>'Advanced')
                                 )    
                             ),
+                             'display_gases' => array(
+                                'value'=>'gases_all',
+                                'advanced'=>false,
+                                'min'=>NULL,
+                                'max'=>NULL,
+                                'step'=>NULL,
+                                'list'=>array(
+//                                    'gases_all'=>array('display_name'=>'all gases/sectors'),
+//                                    'gases_fossil_only'=>array('display_name'=>'fossil CO₂ only'),
+//                                    'gases_fossil_nonCO2'=>array('display_name'=>'fossil CO₂ and non-CO₂'),
+//                                    'gases_fossil_LULUCF'=>array('display_name'=>'fossil CO₂ and LULUCF')
+                                    'gases_all'=>array('display_name'=>'include LULUCF'),
+                                    'gases_fossil_nonCO2'=>array('display_name'=>'exclude LULUCF'),
+                                )    
+                            ),
                              'display_yr' => array(
                                 'value'=>2020,
                                 'advanced'=>false,
@@ -273,9 +288,9 @@
     
 // clean up old files from temporary folders. times are from Eric's old cron
 // jobs - not clear why we keep svgs for a week (do they get re-used?)
-// It's sufficienty to call this on every 25th page view on average - if run, it 
+// It's sufficienty to call this on every 100th page view on average - if run, it 
 // adds about 200ms to each page load and we don't want to slow down every single time 
-if (rand(1,25) == 1) {
+if (rand(1,100) == 1) {
     delete_old_tempfiles ($user_db_store , 28800); // 8 hours
     delete_old_tempfiles ($xls_tmp_dir , 28800);   // 8 hours
     delete_old_tempfiles ($svg_tmp_dir , 604800);  // 7 days

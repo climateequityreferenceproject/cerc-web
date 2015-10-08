@@ -1,5 +1,12 @@
 <?php
 include("api_common.php");
+// getting rid of legacy GDRs stuff in field names, unless API version 1.0 is specified
+if (!($_POST['v']=="1.0")) {
+    global $excel_download_header_rename;
+    foreach ($excel_download_header_rename as $old=>$new ) {
+        $viewquery = str_replace($old, $new, $viewquery);
+    }
+}
 
 $database = 'sqlite:'.$user_db;
 

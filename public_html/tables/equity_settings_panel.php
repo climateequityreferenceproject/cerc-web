@@ -204,5 +204,5 @@ if (isset($_COOKIE['db'])) {
 <!--    <input type="button" name="equity_reset" id="equity_reset" class="click" value='<?php //echo _("Reset to defaults") ?>' />-->
     <input type="submit" name="equity_submit" id="equity_submit" class="click" value='<?php echo _("Save and continue") ?>' />
     <input type="submit" name="equity_cancel" id="equity_cancel" class="click" value='<?php echo _("Cancel") ?>' />
-
+    <script>document.onkeyup = function(evt) { evt = evt || window.event; if (evt.keyCode == 27) { $('#equity_cancel').click(); } }; </script>
 </form><!-- end equity_settings -->

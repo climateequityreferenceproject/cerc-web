@@ -31,7 +31,7 @@ function get_country_data($iso3) {
     $req->addPostData('countries', $iso3);
     if (!PEAR::isError($req->sendRequest())) {
         $response = json_decode($req->getResponseBody());
-        // Oddly, the decode procedure sometimes seems to duplicate the first element.
+        // Oddly, the decode procedure duplicates the first element.
         // Test by comparing to the number of elements we expect (1).
         if (count($response) > 1) {
            $response = array_slice($response, 1);
@@ -45,10 +45,10 @@ function get_country_data($iso3) {
 
 <html>
     <head>
-        <title>Testing CERC API</title>
+        <title>Testing CERc API</title>
     </head>
     <body>
-        <h1>Testing CERC API</h1>
+        <h1>Testing CERc API</h1>
         <form method="post">
             <select name="country">
                 <?php

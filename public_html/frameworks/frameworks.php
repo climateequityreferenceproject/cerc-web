@@ -33,7 +33,7 @@
         
         // ----------------------------------------------------------------
         // Return true or false if the calculator is or is not being
-        // called from a folder or server name with "dev" in it.
+        // called from a folder, file or server name with "dev" in it.
         // ----------------------------------------------------------------
         public static function is_dev() {
             // Note: might return "0" (a correct, non-false value)--have to check for false
@@ -42,6 +42,14 @@
             } else {
                 return true;
             }
+        }
+        
+        // ----------------------------------------------------------------
+        // Return true or false if the calculator is or is not being
+        // accessed from a browser that has the "is developer" cookie set
+        // ----------------------------------------------------------------
+        public static function user_is_developer() {
+            return ($_COOKIE['this_user_is_developer']=='true');
         }
         
         // ----------------------------------------------------------------

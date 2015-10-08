@@ -56,7 +56,8 @@ if ((isset($_REQUEST['download'])) || (isset($_REQUEST['dl']))) {
     <title>Climate Equity Reference Calculator</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    
+    <link rel="shortcut icon"  href="img/favicon_32.ico" />
     <link rel="stylesheet" href="css/cescalc.css?v=1.0">
     <link rel="stylesheet" href="css/tablesorter.css?v=1.0">
     <link rel="stylesheet" href="css/smoothness/jquery-ui-1.8.9.custom.css?v=1.0" />
@@ -66,8 +67,8 @@ if ((isset($_REQUEST['download'])) || (isset($_REQUEST['dl']))) {
     <!--[if IE 7]>
         <link href="css/ie7.css" media="screen, projection" rel="stylesheet" type="text/css" />
     <![endif]-->
-    <!--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>-->
-    <script type="text/javascript" src="js/jquery-1.4.4.min.js?v=1.0"></script>
+
+    <script type="text/javascript" src="js/jquery-1.6.4.min.js"></script>
     <script type="text/javascript" src="js/jquery-ui-1.8.9.custom.min.js?v=1.0"></script>
     <script type="text/javascript" src="js/jquery.tablesorter.js?v=1.0"></script>
     <script type="text/javascript" src="js/calc.js?v=1.0"></script>        
@@ -89,7 +90,8 @@ if ((isset($_REQUEST['download'])) || (isset($_REQUEST['dl']))) {
         ?>
         <div id="calc_container" class="group">
             <?php
-            if (Framework::is_dev()) {
+            if (Framework::is_dev() || (Framework::user_is_developer())) {
+                if (!(Framework::is_dev())) { echo '<div style="background-color:lightgreen;">This is the public calculator with some developer tools activated because I think you are a developer (there is a cookie on your computer that tells me that you have access to the developer version of the calculator)</div>'; }
                 echo '<!-- The data encoding type, enctype, MUST be specified as below -->';
                 echo '<form enctype="multipart/form-data" action="" name="upload_form" method="POST">';
                 echo '    <!-- MAX_FILE_SIZE must precede the file input field -->';
@@ -349,22 +351,23 @@ if ((isset($_REQUEST['download'])) || (isset($_REQUEST['dl']))) {
                                        <div id="save">
                     <?php
                                        if ($display_params['framework']['value'] === 'gdrs') {
-                                           if (Framework::is_dev()) {
+                                           if (Framework::is_dev() || (Framework::user_is_developer())) {
                                                 // Allow XLS download with various advanced parameters
                                                 echo '<ul>';
                                                 echo '<li class="advanced"><fieldset class="xls_download_advanced">';
                                                 echo '<legend class="closed"><span>&nbsp;</span>Advanced Excel download</legend>';
                                                 echo "<form method='get' action='tables/download_tabsep.php'>";
+                                                echo "<ul>";
                                                 echo "    <input type='hidden' name='db' value='" . Framework::get_db_name($user_db) . "'> ";
-                                                echo "    Download Start Year:";
-                                                echo "    <input type='text' name='dl_start_year' maxlength='4' size='4'><br>";
-                                                echo "    Download End Year:";
-                                                echo "    <input type='text' name='dl_end_year' maxlength='4' size='4'><br>";
-                                                echo "    Download Certain Years:";
-                                                echo "    <input type='text' name='dl_years' size='12'> ('|' separated list, for example '2013|2020|2025|2030')<br>";
-                                                echo "    Filename for the Download:";
-                                                echo "    <input type='text' name='filename' size='25'><br>";
-                                                echo "    <input type='checkbox' name='tax_tables' value='1'>Include tax tables<br>";
+                                                echo "    <li>Download Years:";
+                                                echo "    <input type='text' name='dl_years' size='12' style='width:16em;'><br>";
+                                                echo "(comma-separated list of individual years or ranges, for example '2013,2020,2030' or '1850,1950,1990,2010-2030')</li>";
+                                                echo "    <li>Download Countries:";
+                                                echo "    <input type='text' name='countries' size='12' style='width:16em;'><br>";
+                                                echo "(comma-separated list of individual iso3 <u>country</u> codes, for example 'IND,DEU,CHK'). Will download the specified countries.</li>";
+                                                echo "    <li>Filename for the Download:";
+                                                echo "    <input type='text' name='filename' size='45' style='width:16em;' value='" . ($xls_file_slug . time() . ".xls") . "'></li>";
+                                                echo "    <li><input type='checkbox' name='tax_tables' value='1'>Include tax tables</li>";
                                                 echo "    <input type='submit' value='download'>";
                                                 echo "</form>";
                                                 echo '</li>';
@@ -372,7 +375,7 @@ if ((isset($_REQUEST['download'])) || (isset($_REQUEST['dl']))) {
                                            }
                                            echo '<p>';
                                            echo '<a href="tables/download_tabsep.php?db=' . Framework::get_db_name($user_db) . '">' . _("Download complete Excel table") . '</a>';
-                                           if (Framework::is_dev()) {
+                                           if (Framework::is_dev() || (Framework::user_is_developer())) {
                                                 // Allow downloading of database
                                                 echo ' | <a href="util/download_db.php?db=' . Framework::get_db_name($user_db) .'">' . _("Download SQLite3 database") . '</a>';
                                             }

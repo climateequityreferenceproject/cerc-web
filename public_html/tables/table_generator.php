@@ -129,8 +129,8 @@
         $country_name = get_country_name($display_params, $country_list, $region_list);
         
         $db_time = Framework::get_db_time_string($user_db);
-        $version = '<p>Data version: ' . Framework::get_data_ver();
-        $version .= '&nbsp;(last change to database: ' . $db_time['master'] . ')';
+        $version = '<p>Data version: ' . Framework::get_data_ver($user_db);
+        $version .= '&nbsp;(last change to database: ' . $db_time['master'] . ', ' . Framework::get_db_name($user_db) . ')';
         $version .= '&nbsp;&nbsp; Calculator version: ' . Framework::get_calc_ver();
         $version .= "</p>\n";
         
@@ -159,7 +159,7 @@
                         break;
                     case 'gdrs_country_report':
                         include("tables/gdrs_country_report.php");
-                        return gdrs_country_report($user_db, $country_name, $shared_params, $display_params['display_ctry']['value'], $disp_year) . $version;
+                        return gdrs_country_report($user_db, $country_name, $shared_params, $display_params, $disp_year) . $version;
                         break;
                 }
                 break;

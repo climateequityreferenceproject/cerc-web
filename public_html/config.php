@@ -116,7 +116,9 @@ $excel_download_header_rename = array(
             "gdrs_c_blnUSDMER"       => "capacity_blnUSDMER",
             "gdrs_rci"               => "rci",
             "gdrs_pop_mln_above_dl"  => "pop_mln_above_dl",
-            "gdrs_pop_mln_above_lux" => "pop_mln_above_lux"
+            "gdrs_pop_mln_above_lux" => "pop_mln_above_lux",
+            "gdrs_c_frac"            => "c_frac",
+            "gdrs_r_frac"            => "r_frac"
             );
 
 // the _dev calculator might be .htaccess protected. If so, we need to pass creds

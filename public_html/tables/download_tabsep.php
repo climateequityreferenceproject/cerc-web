@@ -2,13 +2,17 @@
 // undocumented URL parameter switches for downloading xls tables:
 // - dl_start_year = independent of responsibility start date, xls file will only contain data from that year onward
 // - dl_end_year = independent of responsibility start date, xls file will only contain data up until that year 
-// - dl_years = a | separated list of individual years to download, overrides dl_start_year and dl_end_year, if also specified
+// - dl_years = a list (separated by , or for legacy reasons | ) of individual years to download, can also include ranges with -; e.g. 1990,2010-2030 overrides dl_start_year and dl_end_year, if also specified
 // - filename = the name of the xls file to be sent to the browser
 // - tax_tables = if tax_tables=1 the tax tables and tax data will be included, otherwise it won't
 // - gdrs_headers=1 keeps the Excel data table headers as specified in the core database, otherwise (default) they are overridden as per renaming mask in config.php
+// - allyears=yes - downloads data for all years, regardless of the historical responsibility start date
 // - min_year/dl_min_year = aliasses for dl_start_year
 // - max_year/dl_max_year = aliasses for dl_end_year
 // - years = alias for dl_years
+// - year = alias for dl_years
+// - countries = comma separated list of iso3 country codes -- downloads the specified countries only PLUS all regions that they are part of
+// - country = alias for countries
 
 if (isset($_REQUEST['debug']) && $_REQUEST['debug'] == 'yes') {
     ini_set('display_errors',1); 
@@ -33,21 +37,48 @@ if (!(isset($_REQUEST['dl_end_year']))) {
     if (isset($_REQUEST['max_year']))    { $_REQUEST['dl_end_year'] = $_REQUEST['max_year'];}
     if (isset($_REQUEST['dl_max_year'])) { $_REQUEST['dl_end_year'] = $_REQUEST['dl_max_year'];}
 }
+if (!(isset($_REQUEST['dl_years']))) {
+    if (isset($_REQUEST['years']))    { $_REQUEST['dl_years'] = $_REQUEST['years'];}
+    if (isset($_REQUEST['year']))    { $_REQUEST['dl_years'] = $_REQUEST['year'];}
+}
 if ((isset($_REQUEST['dl_start_year'])) && (strlen($_REQUEST['dl_start_year'])>0)) { // GET method results in empty strings which isset() evaluates to true
-    $dl_year_condition_string .= " AND year >= " . $_REQUEST['dl_start_year'];
+    $dl_year_condition_string .= " AND year >= " . filter_var($_REQUEST['dl_start_year'], FILTER_SANITIZE_NUMBER_INT);
 }
 if ((isset($_REQUEST['dl_end_year'])) && (strlen($_REQUEST['dl_end_year'])>0)) { // GET method results in empty strings which isset() evaluates to true
-    $dl_year_condition_string .= " AND year <= " . $_REQUEST['dl_end_year'];
+    $dl_year_condition_string .= " AND year <= " . filter_var($_REQUEST['dl_end_year'], FILTER_SANITIZE_NUMBER_INT);
 }
 if ((isset($_REQUEST['dl_years'])) && (strlen($_REQUEST['dl_years'])>0)) { // overwrites previous year conditions
     $dl_year_condition_string = "";
     $connector = " AND (";
-    foreach(explode("|",$_REQUEST['dl_years']) as $year) {
-        $dl_year_condition_string .= $connector . "(year = " . $year . ")";
+    if (strpos($_REQUEST['dl_years'],"|")) { $separator = "|"; } else {$separator = ","; }
+    foreach(explode($separator,$_REQUEST['dl_years']) as $year) {
+        if (strpos($year,"-")) { // a range of years
+            $range_bounds = explode("-",$year);
+            $dl_year_condition_string .= $connector . "(year >= " . filter_var($range_bounds[0], FILTER_SANITIZE_NUMBER_INT) . " AND year <= " . filter_var($range_bounds[1], FILTER_SANITIZE_NUMBER_INT) . ")";
+        } else { // a single year number
+            $dl_year_condition_string .= $connector . "(year = " . filter_var($year, FILTER_SANITIZE_NUMBER_INT) . ")";
+        }
         $connector = " OR ";
     }
     $dl_year_condition_string .= ")";
 }
+
+$dl_country_condition_string = "";
+if (!(isset($_REQUEST['countries']))) {   // country is an alias for countries
+    if (isset($_REQUEST['country']))    { $_REQUEST['countries'] = $_REQUEST['country'];}
+}
+if ((isset($_REQUEST['countries'])) && (strlen($_REQUEST['countries'])>0)) {
+    $dl_country_condition_string = "";
+    $connector = " AND (";
+    foreach(explode(",", $_REQUEST['countries']) as $country) {
+        $country = filter_var($country, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW);
+        $country = filter_var($country, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+        $dl_country_condition_string .= $connector . "(country.iso3=\"" . strtoupper($country) . "\")";
+        $connector = " OR ";
+    }
+    $dl_country_condition_string .= ")";
+}
+
 if (isset($_REQUEST['tax_tables']) && ($_REQUEST['tax_tables'] == '1')) {
     $skip_tax_table = FALSE;
 } else {
@@ -97,9 +128,10 @@ $viewquery = <<< EOSQL
                         (11.0/3.0) * gdrs.kyoto_gap_MtC AS kyoto_gap_MtCO2
                         $tax_string_gdrs
             FROM core LEFT JOIN gdrs ON core.year = gdrs.year AND core.iso3 = gdrs.iso3)
-        AS combined WHERE country.iso3 = combined.iso3 $all_years_condition_string $dl_year_condition_string;
+        AS combined WHERE country.iso3 = combined.iso3 $all_years_condition_string $dl_year_condition_string $dl_country_condition_string;
 EOSQL;
 $last_modified = Framework::get_db_time_string();
+//var_dump($dl_country_condition_string,$viewquery);die();
 
 $database = 'sqlite:'.$db_file;
 
@@ -174,7 +206,7 @@ $region_sql .= " FROM disp_temp, flags WHERE flags.iso3 = disp_temp.iso3 AND ";
 $region_sql .= "flags.value = 1 AND flags.flag = ? GROUP BY year;";
 
 // Global
-$row_start = "\tWorld\t";
+$row_start = "WORLD\tWorld\t";
 foreach ($db->query($global_sql, PDO::FETCH_NUM) as $record) {
     fwrite($fp, $row_start . implode("\t", $record) . "\n");
 }
@@ -182,8 +214,9 @@ foreach ($db->query($global_sql, PDO::FETCH_NUM) as $record) {
 // Regional
 $region_query = $db->prepare($region_sql);
 foreach ($db->query('SELECT * FROM flag_names') as $flags) {
+    $shortname = $flags["flag"];
     $longname = $flags["long_name"];
-    $row_start = "\t$longname\t";
+    $row_start = strtoupper($shortname) . "\t$longname\t";
     $region_query->execute(array($flags["flag"]));
     foreach ($region_query->fetchAll(PDO::FETCH_NUM) as $record) {
         fwrite($fp, $row_start . implode("\t", $record) . "\n");

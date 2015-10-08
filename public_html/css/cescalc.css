@@ -365,7 +365,7 @@ dl#ctry_report_legend dt { font-weight:bold; margin-top:1em;}
 dl#ctry_report_legend dd { padding-left:25px;}
 /*dl#ctry_report_legend dd { display: none;}*/
 dl#ctry_report_legend dt span {
-    background:url(../img/graph_leg_sprite.png?v=1.0) no-repeat;
+    background:url(../img/graph_leg_sprite.png?v=1.1) no-repeat;
     display:block;
     float:left;
     height:14px;
@@ -381,6 +381,7 @@ dl#ctry_report_legend dt.key-intl span { background-position:0 -80px; } /* inter
 dl#ctry_report_legend dt.key-sup span { background-position:0 -100px; } /* supported mitigation, or mitigation funded by other countries */
 dl#ctry_report_legend dt.key-uncond span { background-position:0 -117px; } /* unconditional pledge */
 dl#ctry_report_legend dt.key-cond span { background-position:0 -138px; } /* conditional pledge */
+dl#ctry_report_legend dt.key-natl-bau span { background-position:0 -154px; } /* baseline or bau line */
 
 /*** typography ***********************************************/
 body {

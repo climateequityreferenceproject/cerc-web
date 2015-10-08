@@ -136,7 +136,8 @@
             $this->glyphs[$id] = array(
                 'xtrans' => $xtransf,
                 'ytrans' => $this->dim['height'] - $ytransf,
-                'def' => $glyph_string
+                'def' => $glyph_string,
+                'original_values' => array('x' => $x, 'y' => $y)
             );
         }
         
@@ -500,6 +501,8 @@
                     'vertical_at' => NULL
                 );
             }
+            // defaults
+            if (is_null($params['show_data_tooltips'])) { $params['show_data_tooltips'] = FALSE; }
             // Must have axes and series to plot
             if (!$this->xaxis || !$this->yaxis || count($this->series) == 0) {
                 return;
@@ -530,19 +533,23 @@
                 $prev_y = NULL;
                 foreach (array_keys($ref_series) as $ndx => $x) {
                     $yval = NULL;
-                    foreach ($scaled_series as $id => $points_array) {
-                        if (!in_array($id, $params['ignore_for_common'])) {
-                            if (!$yval) {
-                                $yval = $points_array[$x];
-                            } else {
-                                if ($points_array[$x] !== $yval) {
-                                    $finished = TRUE;
-                                    break;
+                    if (!($finished)) { // ie. if all series still match each other (except the ones to be ignored)
+                        // for value ($yval) of current $x, loop through all series (except ones to be ignored) and find out if all match
+                        foreach ($scaled_series as $id => $points_array) {
+                            if (!in_array($id, $params['ignore_for_common'])) {
+                                if (!$yval) {
+                                    $yval = $points_array[$x];
+                                } else {
+                                    // if points deviate by more than 0.005% they are considered not equal to each other
+                                    if ((abs($points_array[$x] - $yval)/$yval) > 0.00005) {
+    //                                if ($points_array[$x] !== $yval) {
+                                        $finished = TRUE;
+                                        break;
+                                    }
                                 }
-                            }
-                        }   
-                    }
-                    if ($finished) {
+                            }   
+                        }
+                    } else {
                         if ($prev_x && $prev_y) {
                             $prepend = array($prev_x => $prev_y);
                             foreach ($scaled_series as $id => $val) {
@@ -559,7 +566,9 @@
                     $prev_y = $ref_series[$x];
                     $common_series[$x] = $ref_series[$x];
                     foreach ($scaled_series as $id => $val) {
-                        unset($scaled_series[$id][$x]);
+                        if (!in_array($id, $params['ignore_for_common'])) {  // don't delete current point if the series it to be ignored for the matching alg
+                            unset($scaled_series[$id][$x]);
+                        }
                     }
                 }
                 $scaled_series[$params['common_id']] = $common_series;
@@ -646,11 +655,38 @@
                 }
                 $svg .= ' points="' . $points . '" />' . "\n";
             }
-            
+            $tooltips = "";
+            $marker_id=0;
             foreach ($scaled_series as $id => $point_array) {
                 $points = "";
+                if ($params['show_data_tooltips']) {
+                    if ($params['common_id'] == $id) {  // if the current series is the series where we stored common values, it will be the one that contains the x/y coordinates but doesn't contain the original values, so we pick anohter one
+                        while (list($key) = each($scaled_series)) {
+                            if ((!in_array($key, $params['ignore_for_common'])) && ($key != $id)) {
+                                $current_series = $this->series[$key];
+                                $year_idx = 0;
+                            }
+                        }
+                    } else {
+                        $current_series = $this->series[$id];
+                        $year_idx = count($current_series) - count($scaled_series[$id]);
+                    }
+                    $years = array_keys($current_series);
+                }
                 foreach ($point_array as $x => $y) {
                     $points .= $x . "," . ($this->dim['height'] - $y) . " " ;
+
+                    if ($params['show_data_tooltips']) {
+                        if(!in_array($id, $params['ignore_for_tooltips'])) {
+                            $value = $current_series[$years[$year_idx]];
+                            $value = number_format($value, max(0, 1 - floor(log10(abs($value)))));
+                            $tooltips .= '<circle id="marker' . $marker_id . '" class="linemarker" cx="' . $x . '" cy="' . ($this->dim['height'] - $y) . '" r="4" />';
+                            $tooltips .= '<circle id="target' . $marker_id . '" class="tooltiptarget" cx="' . $x . '" cy="' . ($this->dim['height'] - $y) . '" r="8" ';
+                            $tooltips .= 'data="' . $years[$year_idx] . ": " . $value . ' Mt" />';
+                            $marker_id ++;
+                            $year_idx ++;
+                        }
+                    }
                 }
                 $svg .= '<polyline id="' . $id . '"';
                 if ($this->css_classes[$id]) { $svg .= ' class="' . $this->css_classes[$id] . '"'; }
@@ -666,12 +702,39 @@
             
             // Place glyphs
             foreach ($this->glyphs as $id => $glyph) {
+//                var_dump($glyph);
                 $svg .= '<use id="use-' . $id . '" xlink:href="#' . $id . '" ';
                 $svg .= self::translate($glyph['xtrans'], $glyph['ytrans']);
                 $svg .= ' class="' . substr($id, 0, (strpos($id, "glyph") + 5)) .'" />' . "\n";
+
+                if ($params['show_data_tooltips']) {
+                    $value = $glyph['original_values']['y'];
+                    $value = number_format($value, max(0, 1 - floor(log10(abs($value)))));
+                    $tooltips .= '<circle id="target' . $marker_id . '" class="tooltiptarget" cx="' . $glyph['xtrans'] . '" cy="' . $glyph['ytrans'] . '" r="8" ';
+                    $tooltips .= 'data="' . $glyph['original_values']['x'] . ": " . $value . ' Mt" />';
+                    $marker_id ++;
+                }
             }
             
+            
+            $tooltips .= '<g id="tooltipgroup" style="display:none;"><rect class="tooltipbgrd" y="-12" x="-40" width="80" height="15" />';
+            $tooltips .= '<text id="tooltiptext" class="tooltiptext">' . $glyph['original_values']['x'] . ": " . $value . ' Mt</text></g>';
+            $tooltipscript = '<script>$(document).ready(function() {
+                                $(".tooltiptarget").mouseenter( function(){
+                                    $("#tooltipgroup").attr("style","display:block;");
+                                    $("#tooltipgroup").attr("transform","translate(" + $(this).attr("cx") + "," + ($(this).attr("cy") - 10) + ")");
+                                    $("#tooltiptext").text( $(this).attr("data") );
+                                    $("#marker" + $(this).attr("id").substr(6)).attr("style","display:block;");
+                                });
+                                $(".tooltiptarget").mouseleave( function(){
+                                    $("#tooltiptext").text( "" );
+                                    $("#tooltipgroup").attr("style","display:none;");
+                                    $("#marker" + $(this).attr("id").substr(6)).attr("style","display:none;");
+                                });
+                              });</script>';
+            if ($params['show_data_tooltips']) { $svg .= $tooltips; }
             $svg .= $this->svg_end();
+            if ($params['show_data_tooltips']) { $svg .= $tooltipscript; }  // some browsers might take issue with jquery code inside the svg. 
 
             if ($params['code_output']) {
                 return $svg;

@@ -7,10 +7,10 @@ line.axis {stroke:#999; stroke-width:2;}
 line.hrule {width:1; stroke:black; stroke-dasharray:1,2;}
 line#vertical {width:1; stroke:#999;}
 polyline {stroke-width:1; stroke:black; fill:none;}
-polyline#bau {stroke-width:2; stroke:#555;}
+/*polyline#bau {stroke-width:2; stroke:#555;}*/ 
 polyline#historical {stroke-width:4; stroke:#555;}
-polyline#alloc {stroke-width:4; stroke:#0066b3;}
-polyline#physical {stroke-width:4; stroke:#7e9f51; stroke-dasharray:4,4;}
+/*polyline#alloc {stroke-width:4; stroke:#0066b3;}*/
+/*polyline#physical {stroke-width:4; stroke:#7e9f51; stroke-dasharray:4,4;}*/
 polygon {stroke-width:0; stroke:black; fill-opacity:0.8;}
 polygon#mitoblig {fill:#e6b350;}
 polygon#intloblig {fill:#e6b350;}
@@ -22,10 +22,20 @@ polygon#supportedmit {fill:#e6e6e6;}
 
 /* shift to class-based, instead of id-based css-ing */
 .bau {stroke-width:2; stroke:#555;}
+.natl_bau {stroke-width:2; stroke:#555; stroke-dasharray:3,2;}
 .historical {stroke-width:4; stroke:#555;}
+.bau_details_fossil {stroke-width:1; stroke:#000000; stroke-dasharray:2,2;}
+.bau_details_nonco2 {stroke-width:1; stroke:#0613A4; stroke-dasharray:2,2;}
+.bau_details_lulucf {stroke-width:1; stroke:#198604; stroke-dasharray:2,2;}
 .alloc {stroke-width:4; stroke:#0066b3;}
 .physical {stroke-width:4; stroke:#7e9f51; stroke-dasharray:4,4;}
 .neg_area { fill: #CCC; fill-opacity: 0.25; }
+
+/* this stuff is for the tooltips */
+.linemarker { stroke-width:none; fill:#000000; fill-opacity:1.0; display:none; } 
+.tooltip { display:none; }
+.tooltipbgrd { fill:#ffffff;fill-opacity:0.7;}
+.tooltiptarget { stroke-width:none; fill:#ffffff; fill-opacity:0.0; }  // this is the circle that triggers the tool tip being shown
 
 polygon#greenband {fill:#00A400;}
 

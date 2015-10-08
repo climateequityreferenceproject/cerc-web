@@ -1,3 +1,5 @@
+/* NB: This CSS file is for the INDC assessment charts only - country chart CSS is in the /css/ folder */
+
 text {text-anchor:middle; font-family:Arial,sans-serif; font-size:11px;}
 text.axis-title {font-size:13px; font-weight:bold;}
 text.axis-label-y {text-anchor:end;}
@@ -7,7 +9,7 @@ line.axis {stroke:#999; stroke-width:2;}
 line.yaxis {stroke:#999; stroke-width:2;}
 line.hrule {width:1; stroke:black; stroke-dasharray:1,2;}
 polyline {stroke-width:1; stroke:black; fill:none;}
-polyline#historical {stroke-width:4; stroke:#555;}
+polyline#historical {stroke-width:4; stroke:#444;}
 polyline#gdrsalloc {stroke-width:4; stroke:#0066b3;}
 polyline#physical {stroke-width:4; stroke:#7e9f51; stroke-dasharray:4,4;}
 polygon {stroke-width:0; stroke:black; fill-opacity:0.8;}
@@ -19,7 +21,7 @@ polygon#supportedmit {fill:#e6e6e6;}
 .uncond-glyph {stroke:#000;stroke-width:1px;fill:#ff3c3c;}
 .cond-glyph {stroke:#000;stroke-width:1px;fill:#96dcff;}
 
-.wedge_eff { fill: #92D050; fill-opacity: 0.5; } 
+.wedge_eff { fill: #00B050; fill-opacity: 0.5; } 
 .wedge_res { fill: #6092E0; fill-opacity: 0.5; }
 .neg_area { fill: #CCC; fill-opacity: 0.25; }
 
@@ -27,11 +29,11 @@ polygon#supportedmit {fill:#e6e6e6;}
 .lfl_bar_yellow{ fill: #FFFF00; fill-opacity: 0.7; }
 .lfl_bar_red{ fill: #FC4C4E; fill-opacity: 0.8; }
 
-.bau {fill: none; stroke: #555; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1,5; }
+.bau {fill: none; stroke: #444; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1,5; }
 
 .high_eff {fill: none;stroke: #4F81BD;stroke-width: 2;stroke-linecap: round;stroke-linejoin: round;}
 .medium_eff { fill: none; stroke: #FFC000;stroke-width: 2;stroke-linecap: round;stroke-linejoin: round;}
-.low_eff{fill: none;stroke: #FF0000;stroke-width: 2;stroke-linecap: round;stroke-linejoin: round;}
+.low_eff {fill: none;stroke: #FF0000;stroke-width: 2;stroke-linecap: round;stroke-linejoin: round;}
  
 .high_res{fill: none;stroke: #4F81BD;stroke-width: 2;stroke-linecap: round;stroke-linejoin: round;stroke-dasharray: 4,5;}
 .medium_res{fill: none;stroke: #FFC000;stroke-width: 2;stroke-linecap: round;stroke-linejoin: round;stroke-dasharray: 4,5;}
@@ -40,7 +42,17 @@ polygon#supportedmit {fill:#e6e6e6;}
                     
 .noline {stroke:none;fill:none;}
 
-.historical {stroke-width:4; stroke:#555;}
+/*Special styling for the CSO review charts*/
+.low_eff_cso {fill: none;stroke: #666;stroke-width: 2;stroke-linecap: round;stroke-linejoin: round;stroke-dasharray: 5,5,1,5;}
+.low_res_cso {fill: none;stroke: #FC4C4E;stroke-width: 2;stroke-linecap: round;stroke-linejoin: round;stroke-dasharray: 4,5;} /* don't really need this because CSO special doesn't show resource sharing bands, but might save me later bug chasing */
+.lfl_bar_yellow_cso{ fill: #00B050; fill-opacity: 0.7; }
+.bau_cso {fill: none; stroke: #444; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* this stuff is for the tooltips */
+.linemarker { stroke-width:none; fill:#000000; fill-opacity:1.0; display:none; } 
+.tooltip { display:none; }
+.tooltipbgrd { fill:#ffffff;fill-opacity:0.7; }
+.tooltiptarget { stroke-width:none; fill:#ffffff; fill-opacity:0.0; }  // this is the circle that triggers the tool tip being shown
 
 /* colors *******************
   #e6b350 ochre 100% (domestic mitigation before opacity reduction)
