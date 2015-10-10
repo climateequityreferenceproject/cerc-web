@@ -616,7 +616,7 @@ EOHTML;
         foreach ($pledges as $pledge_year => $pledge_info) {
             $mit_oblig = $bau[$pledge_year] - $ctry_val[$pledge_year]["gdrs_alloc_MtCO2"];
             $conditionality = isset($pledge_info['conditionality_override']) ? $pledge_info['conditionality_override'] : $condl;
-            $common_str = sprintf(_('%1$s %2$s pledge%3$s: %4$s by %5$d %7$s %6$s'),
+            $common_str = sprintf(_('%1$s %2$s pledge%3$s: %4$s by %5$d %6$s'),
                     $country_name,
                     $condl_term[$conditionality],
                     $pledge_info['pledge_qualifier'],

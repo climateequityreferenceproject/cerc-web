@@ -1,3 +1,6 @@
+rev 468 (2015-10-10) (krueschan)
+- fixed small bug in pledge description that got introduced in the partial commit in rev 466
+
 rev 467 (2015-10-08) (krueschan)
 - advanced Excel download: suppress output for regions and world if countries are specified; otherwise nonsensical output
 - changed the default for the display year in the country report to 2030
