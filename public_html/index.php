@@ -58,7 +58,7 @@ if ((isset($_REQUEST['download'])) || (isset($_REQUEST['dl']))) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
     <link rel="shortcut icon"  href="img/favicon_32.ico" />
-    <link rel="stylesheet" href="css/cescalc.css?v=1.0">
+    <link rel="stylesheet" href="css/cescalc.css?v=1.1">
     <link rel="stylesheet" href="css/tablesorter.css?v=1.0">
     <link rel="stylesheet" href="css/smoothness/jquery-ui-1.8.9.custom.css?v=1.0" />
     <!--[if IE 6]>

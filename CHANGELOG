@@ -1,3 +1,6 @@
+rev 469 (2015-10-16) (krueschan)
+- added new logo to header branding and amended css to play nice with it
+
 rev 468 (2015-10-10) (krueschan)
 - fixed small bug in pledge description that got introduced in the partial commit in rev 466
 

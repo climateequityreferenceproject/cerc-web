@@ -178,7 +178,7 @@ td, th {
 /*** header layout ***/
 header, #header { 
     font-size:90%;
-    height:5em; 
+    height:105px;
     overflow:hidden; 
     position:relative
 }
@@ -188,7 +188,7 @@ header h1, #header h1 {
     letter-spacing: 0.05em;
     line-height:1em; 
     margin:0; 
-    padding:0.75em; 
+    padding-top:0.1em; 
     position:absolute; 
     text-align:center;
     top:0; 
@@ -203,7 +203,8 @@ header h1 span, #header h1 span {
     font-style:italic;
     font-weight:bold;
     position:absolute;
-    right:-2.75em;
+    top:2em; 
+    right:-3.5em;
 }
 #partners {
     bottom:0;
@@ -471,10 +472,10 @@ tr.blank {
 /*** color ****************************************************/
 body { color:#333; }
 #container { background:#fff; }
-header h1, #header h1 { 
+/*header h1, #header h1 { 
     background:#4d59a4; 
     color:#fff; 
-}
+}*/
 #headerlinks {
     background-color:#4d59a4;
 }
