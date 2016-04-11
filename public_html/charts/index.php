@@ -209,7 +209,8 @@ if (!isset($bau)) { die("I have no data for the country you are trying to view (
                 );
     // The TRUE means use the specified limits for the graph; the FALSE means don't format numbers
     $graph->set_xaxis(1990, 2030, "", "", TRUE, FALSE, 5);
-    $graph->set_yaxis($min, $max, "Mt CO&#8322;eq", "", TRUE, TRUE, $step);
+    $yaxislabel = $_REQUEST['special']=='cso' ? "million tonnes of CO&#8322;eq" : "Mt CO&#8322;eq";
+    $graph->set_yaxis($min, $max, $yaxislabel, "", TRUE, TRUE, $step);
     $graph->add_series($bau, "bau", "bau" . ($_REQUEST['special']=='cso' ? '_cso' : ''));
     
     foreach ($types as $type) {
@@ -242,8 +243,9 @@ if (!isset($bau)) { die("I have no data for the country you are trying to view (
     }
 
     if (!($_REQUEST['no2y'] == '1')) {
-        // $graph->set_yaxis2($min, $max, "Mt CO&#8322;eq", "", TRUE, TRUE, $step);
-        $graph->set_yaxis2($min2, $max2, "Mt CO&#8322;eq/capital below baseline in 2030", "", TRUE, TRUE, $step2, $dec);
+        // $graph->set_yaxis2($min, $max, "t CO&#8322;eq", "", TRUE, TRUE, $step);
+        $yaxislabel = $_REQUEST['special']=='cso' ? "tons of CO&#8322;eq/capita below baseline in 2030" : "t CO&#8322;eq/capita below baseline in 2030";
+        $graph->set_yaxis2($min2, $max2, $yaxislabel, "", TRUE, TRUE, $step2, $dec);
     }
     
     $wedges = array();

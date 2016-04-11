@@ -77,6 +77,7 @@ $(function() {
     
     $('#display_yr').change(submit);
     $('#display_ctry').change(submit);
+    $('#display_gases').change(submit);
     $('#decimal_pl').change(submit);
     $('#emergency_path').change(submit);
     
@@ -93,7 +94,7 @@ $(function() {
     $('#interp_btwn_thresh').change(submit);
     $('#show_tax_tables').change(submit);
     
-    $('#r_wt').change(submit);
+    $('#cum_since_yr').change(submit);
     // $('#percent_gwp').change(submit);
     $('#percent_gwp_MITIGATION').change(submit);
     $('#percent_gwp_ADAPTATION').change(submit);
@@ -123,7 +124,7 @@ $(function() {
         cbdr_select();
     });
     
-    $('#r100, #r50c50, #c100').click(cbdr_select);
+    $('#d1850, #d1950, #d1990').click(cbdr_select);
     
     $('#equity_reset, #equity_reset_top').click(function() {
         $('#equity_progressivity').val(0);
@@ -256,13 +257,13 @@ function cbdr_grid_select() {
     
     switch (rvsc.toString()) {
         case '0':
-            $('#r100').attr('checked',true);
+            $('#d1850').attr('checked',true);
             break;
         case '1':
-            $('#r50c50').attr('checked',true);
+            $('#d1950').attr('checked',true);
             break;
         case '2':
-            $('#c100').attr('checked',true);
+            $('#d1990').attr('checked',true);
             break;
         default:
             ;
@@ -293,14 +294,14 @@ function cbdr_grid_select() {
 }
 
 function cbdr_select() {
-    switch ($('#equity_settings input[name=r_wt]:checked').attr("id")) {
-        case 'r100':
+        switch ($('#equity_settings input[name=cum_since_yr]:checked').attr("id")) {
+        case 'd1850':
             id = 0;
             break;
-        case 'r50c50':
+        case 'd1950':
             id = 3;
             break;
-        case 'c100':
+        case 'd1990':
             id = 6;
             break;
         default:
@@ -441,10 +442,12 @@ function set_display() {
     timeseries_set = {gdrs_RCI: 1, gdrs_alloc: 1, gdrs_alloc_pc: 1};
     if ($('#table_view').val() in country_set) {
         $('#display_ctry').parent().show();
+        $('#display_gases').parent().show();
         $('#chart_settings').parent().show();
         $('#decimal_pl').parent().hide();
     } else {
         $('#display_ctry').parent().hide();
+        $('#display_gases').parent().hide();
         $('#chart_settings').parent().hide();
         $('#decimal_pl').parent().show();
     }
@@ -456,8 +459,7 @@ function set_display() {
 
 }
 
-function uniqid()
-{
+function uniqid() {
     var newDate = new Date;
     return newDate.getTime();
 }
@@ -590,7 +592,6 @@ function filterResult(){
     
 }
 
-function moveElement(selectFrom,selectTo)
-{
+function moveElement(selectFrom,selectTo) {
     $('#'+selectFrom+'>option:selected').appendTo($('#'+selectTo));
 }

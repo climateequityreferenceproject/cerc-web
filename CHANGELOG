@@ -1,3 +1,7 @@
+rev 470 (2016-04-11) (krueschan)
+- changed elements on the Equity Splash page around (now responsibiliy and capability on the 3x3 equity dial pad)
+- now using a svg version of the logo instead of png for cleaner rendering
+
 rev 469 (2015-10-16) (krueschan)
 - added new logo to header branding and amended css to play nice with it
 
