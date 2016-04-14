@@ -58,7 +58,7 @@ if ((isset($_REQUEST['download'])) || (isset($_REQUEST['dl']))) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
     <link rel="shortcut icon"  href="img/favicon_32.ico" />
-    <link rel="stylesheet" href="css/cescalc.css?v=1.1">
+    <link rel="stylesheet" href="css/cescalc.css?v=1.2">
     <link rel="stylesheet" href="css/tablesorter.css?v=1.0">
     <link rel="stylesheet" href="css/smoothness/jquery-ui-1.8.9.custom.css?v=1.0" />
     <!--[if IE 6]>
@@ -68,8 +68,10 @@ if ((isset($_REQUEST['download'])) || (isset($_REQUEST['dl']))) {
         <link href="css/ie7.css" media="screen, projection" rel="stylesheet" type="text/css" />
     <![endif]-->
 
-    <script type="text/javascript" src="js/jquery-1.6.4.min.js"></script>
-    <script type="text/javascript" src="js/jquery-ui-1.8.9.custom.min.js?v=1.0"></script>
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.12.3.min.js"></script>
+    <script type="text/javascript" src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+    <!--<script type="text/javascript" src="js/jquery-1.6.4.min.js"></script>-->
+    <!--<script type="text/javascript" src="js/jquery-ui-1.8.9.custom.min.js?v=1.0"></script>-->
     <script type="text/javascript" src="js/jquery.tablesorter.js?v=1.0"></script>
     <script type="text/javascript" src="js/calc.js?v=1.0"></script>        
     <script type="text/javascript" src="graphs/graph_interactivity.js?v=1.0"></script>        
@@ -151,6 +153,13 @@ if ((isset($_REQUEST['download'])) || (isset($_REQUEST['dl']))) {
                                     $display_params['display_ctry']['value'] = null;
                                     $display_params['table_view']['value'] = $table_view_default;
                                 }
+                            ?>
+                        </li>
+                        <li>
+
+                            <?php 
+                            // echo select_options_list('display_gases', $display_params, _("Gases to display:"), "select", _("Gases/sectors to include in the pledge assessments in the country report. This setting is independent from the inclusion of non-CO2 and LULUCF in the calculation of responsibility (below).")); 
+                            echo select_options_list('display_gases', $display_params, _("Include LULUCF in report:"), "select", _("Select whether you want to include LULUCF in the chart and tables in the country report. This setting is independent from the inclusion of LULUCF in the calculation of responsibility (below).")); 
                             ?>
                         </li>
                         <li>

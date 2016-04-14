@@ -688,11 +688,11 @@ li.separator {
 #equity_settings label { float:none; margin-right:0; width:auto; }
 #equity_settings label input.click { margin-top:0.2em; }
 #equity_settings li { margin-bottom:0.5em; }
-#equity_settings #cbdr-radio-container { float:left; width:36em; }
+#equity_settings #cbdr-radio-container { float:left; width:38em; }
 
-#equity_settings #cbdr-grid-container { float:left; font-size:85%; margin:1em 0 0 0; position:relative; width:27em; }
+#equity_settings #cbdr-grid-container { float:left; font-size:85%; margin:1em 0 0 0; position:relative; width:25.5em; }
 #equity_settings #cbdr-grid-container #grid-col-1 { float:left; margin-right:3%; width:5em; }
-#equity_settings #cbdr-grid-container #grid-col-2 { float:left; margin-right:0; position:relative; width:16em; }
+#equity_settings #cbdr-grid-container #grid-col-2 { float:left; margin-right:0; position:relative; width:14.5em; }
 #equity_settings #cbdr-grid-container #grid-col-3 { float:left; width:5em; }
 #equity_settings #cbdr-grid-container p { line-height:1.2; padding-top:0; }
 #equity_settings #cbdr-grid-container #grid-row-middle { position:relative; margin:0 auto; text-align:center; width:100%; }
@@ -711,5 +711,14 @@ li.separator {
 #equity_settings #cbdr-grid-container li a:active,
 #equity_settings #cbdr-grid-container li a.selected { background:#221E6B; }
 
-#r_weight { margin-top:0.5em; margin-bottom:0.5em; }
-#r_weight label { float:left; margin-right:2em; }
+#rci_weight_dropdown { margin-top:0.75em; padding-bottom:0.25em; }
+#r_wt_label_div { float: left; width: 30em; }
+#c_wt_label_div { float: right; }
+#r_wt_dropdown { float: left;  margin-top:0.5em; width: 5.25em; }
+#c_wt_dropdown { float: right; margin-top:0.5em; width: 5.25em;}
+#rci_wt_slider { float: left; border:0; margin-left: 2.04em; margin-top:0.75em; width: 51.5em;}
+
+#rci_wt_slider { background:#40822e; }
+#rci_wt_slider .ui-slider-handle { background:#221E6B; border-color:#221E6B; }
+#rci_wt_slider .ui-state-focus   { background:#8884D1; border-color:#8884D1; }
+#rci_wt_slider .ui-state-hover   { background:#8884D1; border-color:#8884D1; }

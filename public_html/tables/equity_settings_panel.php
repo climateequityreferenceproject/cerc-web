@@ -47,14 +47,6 @@ if (isset($_COOKIE['db'])) {
         }
     }
     
-    if ($fw_params['r_wt']['value'] == 1.0) {
-        $rc_checked["r100"] = $checked_string;
-    } elseif ($fw_params['r_wt']['value'] == 0.5) {
-        $rc_checked["r50c50"] = $checked_string;
-    } elseif ($fw_params['r_wt']['value'] == 0.0) {
-        $rc_checked["c100"] = $checked_string;
-    }
-    
     if ($shared_params['cum_since_yr']['value'] == 1850) {
         $cumsince_checked[1850] = $checked_string;
         $cbdr_ndx = 0;
@@ -183,11 +175,56 @@ if (isset($_COOKIE['db'])) {
                     </div>
                 </div>
                 <h4><?php echo $glossary->getLink('r_weight', false, _("Relative Weight")); ?> for Historical Responsibility vs Economic Capability to Act</h4>
-                <div class="input_set group" id="r_weight">
-                    <label for="r100"><input type="radio" name="r_wt" id="r100" class="click" value="1.00" <?php echo $rc_checked["r100"]; ?> />100% Responsibility</label>
-                    <label for="r50c50"><input type="radio" name="r_wt" id="r50c50" class="click" value="0.50" <?php echo $rc_checked["r50c50"]; ?> />50% Responsibility - 50% Capability</label>
-                    <label for="c100"><input type="radio" name="r_wt" id="c100" class="click" value="0.00" <?php echo $rc_checked["c100"]; ?> />100% Capability</label>
+                <div class="input_set group" id="rci_weight_dropdown">
+                    <select name="r_wt" id="r_wt_dropdown">
+                        <?php 
+                            for ($i = 0; $i <= 10; $i++) {
+                                var_dump($r_wt, $i);
+                                echo "<option value=\"" . ($i/10) . "\"" . (($fw_params['r_wt']['value'] == ($i/10)) ? " selected=\"selected\">" : ">") . ($i * 10) . "%</option>";
+                            }
+                        ?>
+                    </select>
+                    <div id="rci_wt_slider"></div>
+                    <select name="c_wt" id="c_wt_dropdown">
+                        <?php 
+                            for ($i = 0; $i <= 10; $i++) {
+                                echo "<option value=\"" . ($i/10) . "\"" . (($fw_params['r_wt']['value'] == (1 - ($i/10))) ? " selected=\"selected\">" : ">") . ($i * 10) . "%</option>";
+                            }
+                        ?>
+                    </select>
                 </div>
+                <div class="input_set group" id="rci_weight_labels">
+                    <div id="r_wt_label_div">
+                        Responsibility
+                    </div>
+                    <div id="c_wt_label_div">
+                        Capability
+                    </div>
+                </div>
+                <script>  
+                    $(function() {
+                      var r_select = $( "#r_wt_dropdown" );
+                      var c_select = $( "#c_wt_dropdown" );
+                      var slider = $( "#rci_wt_slider" ).slider({
+                        min: 0,
+                        max: 10,
+                        step: 1,
+                        value: <?php echo ((1 - $fw_params['r_wt']['value']) * 10); ?>,
+                        slide: function( event, ui ) {
+                          r_select[ 0 ].selectedIndex = 10 - ui.value;
+                          c_select[ 0 ].selectedIndex = ui.value;
+                        }
+                      });
+                      $( "#r_wt_dropdown" ).change(function() {
+                        slider.slider( "value", 10 - this.selectedIndex );
+                        c_select[ 0 ].selectedIndex = 10 - this.selectedIndex;
+                      });
+                      $( "#c_wt_dropdown" ).change(function() {
+                        slider.slider( "value", this.selectedIndex );
+                        r_select[ 0 ].selectedIndex = 10 - this.selectedIndex;
+                      });
+                    });
+                </script>
             </fieldset>
         </li>
 
@@ -196,4 +233,4 @@ if (isset($_COOKIE['db'])) {
     <input type="submit" name="equity_submit" id="equity_submit" class="click" value='<?php echo _("Save and continue") ?>' />
     <input type="submit" name="equity_cancel" id="equity_cancel" class="click" value='<?php echo _("Cancel") ?>' />
     <script>document.onkeyup = function(evt) { evt = evt || window.event; if (evt.keyCode == 27) { $('#equity_cancel').click(); } }; </script>
-</form><!-- end equity_settings -->
+</form><!-- end equity_settings --> 
