@@ -155,13 +155,15 @@ if ((isset($_REQUEST['download'])) || (isset($_REQUEST['dl']))) {
                                 }
                             ?>
                         </li>
+                        <?php // for now, we only want LULUCF selection for country report in the _dev version
+                        if (Framework::is_dev()) { ?>
                         <li>
-
                             <?php 
                             // echo select_options_list('display_gases', $display_params, _("Gases to display:"), "select", _("Gases/sectors to include in the pledge assessments in the country report. This setting is independent from the inclusion of non-CO2 and LULUCF in the calculation of responsibility (below).")); 
                             echo select_options_list('display_gases', $display_params, _("Include LULUCF in report:"), "select", _("Select whether you want to include LULUCF in the chart and tables in the country report. This setting is independent from the inclusion of LULUCF in the calculation of responsibility (below).")); 
                             ?>
                         </li>
+                        <?php } ?>
                         <li>
                             <?php echo select_num('decimal_pl', $display_params, _("Decimal places:")); ?>
                         </li>

@@ -1,8 +1,11 @@
+rev 472 (2016-04-18) (krueschan)
+- temporarily disabled settings for LULUCF inclusion in country report for public version (it's still present in the -dev version)
+
 rev 471 (2016-04-14) (krueschan)
 - further revisions to splash page (R-C weight is now a slider)
 - hotlinked to "cloud-hosted" versions of jquery code (on code.jquery.com) instead of locally hosted files
 
-    rev 470 (2016-04-11) (krueschan)
+rev 470 (2016-04-11) (krueschan)
 - changed elements on the Equity Splash page around (now responsibiliy and capability on the 3x3 equity dial pad)
 - now using a svg version of the logo instead of png for cleaner rendering
 
