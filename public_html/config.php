@@ -62,7 +62,7 @@ if (strpos(dirname(__FILE__), "gd/gdrights.org")) {
     //$xls_file_slug = "gdrs_all_output_"; // this is the beginning of the file name of the Excel download
     //$xls_copyright_notice = "Greenhouse Development Rights Online Calculator (http://" . $host_name . ")"; // this is the message for cell A1 in the downloaded Excel file
     $xls_file_slug = "cerc_all_output_"; // this is the beginning of the file name of the Excel download
-    $xls_copyright_notice = "Climate Equity Reference Project Online Calculator (http://" . $host_name . ")"; // this is the message for cell A1 in the downloaded Excel file
+    $xls_copyright_notice = "Climate Equity Reference Project Online Calculator (https://" . $host_name . ")"; // this is the message for cell A1 in the downloaded Excel file
 
     // calculator engine
     $calc_engine_path = "/***REMOVED***/gdrscode/engine/gdrsclib/dist/Public/GNU-Linux-x86/gdrsclib";
@@ -80,24 +80,24 @@ if (strpos(dirname(__FILE__), "gd/gdrights.org")) {
     // need ===false to cover the possible (even very likely) non-false value 0
     if ((strpos($host_name, "calculator-dev.") === false) && (strpos($host_name, "calculator.") === false)) {
         // accessed through directory (should not occur due to redirects, but better safe than sorry)
-        $URL_calc = 'http://' . $host_name . '/calculator/';
-        $URL_calc_dev = 'http://' . $host_name . '/calculator-dev/';
-        $URL_sc = 'http://' . $host_name . '/scorecard/';
-        $URL_sc_dev = 'http://' . $host_name . '/scorecard_dev/';
-        $URL_gloss = "http://" . $host_name . "/calculator/glossary.php";
-        $URL_gloss_dev = "http://" . $host_name . "/calculator-dev/glossary.php";
-        $URL_calc_api = 'http://' . $host_name . '/calculator/api/';
-        $URL_calc_api_dev = 'http://' . $host_name . '/calculator-dev/api/';        
+        $URL_calc = 'https://' . $host_name . '/calculator/';
+        $URL_calc_dev = 'https://' . $host_name . '/calculator-dev/';
+        $URL_sc = 'https://' . $host_name . '/scorecard/';
+        $URL_sc_dev = 'https://' . $host_name . '/scorecard_dev/';
+        $URL_gloss = "https://" . $host_name . "/calculator/glossary.php";
+        $URL_gloss_dev = "https://" . $host_name . "/calculator-dev/glossary.php";
+        $URL_calc_api = 'https://' . $host_name . '/calculator/api/';
+        $URL_calc_api_dev = 'https://' . $host_name . '/calculator-dev/api/';        
     } else {
         // accessed through subdomain
-        $URL_calc = 'http://calculator.climateequityreference.org/';
-        $URL_calc_dev = 'http://calculator-dev.climateequityreference.org/';
-        $URL_sc = 'http://calculator.climateequityreference.org/scorecard/';           // this doesn't really work, but also should not be needed; scorecard is not in the same subdomain...
-        $URL_sc_dev = 'http://calculator.climateequityreference.org/scorecard_dev/';   // this doesn't really work, but also should not be needed; scorecard is not in the same subdomain...
-        $URL_gloss = 'http://calculator.climateequityreference.org/glossary.php';
-        $URL_gloss_dev = 'http://calculator-dev.climateequityreference.org/glossary.php';
-        $URL_calc_api = 'http://calculator.climateequityreference.org/api/';
-        $URL_calc_api_dev = 'http://calculator-dev.climateequityreference.org/api/';
+        $URL_calc = 'https://calculator.climateequityreference.org/';
+        $URL_calc_dev = 'https://calculator-dev.climateequityreference.org/';
+        $URL_sc = 'https://calculator.climateequityreference.org/scorecard/';           // this doesn't really work, but also should not be needed; scorecard is not in the same subdomain...
+        $URL_sc_dev = 'https://calculator.climateequityreference.org/scorecard_dev/';   // this doesn't really work, but also should not be needed; scorecard is not in the same subdomain...
+        $URL_gloss = 'https://calculator.climateequityreference.org/glossary.php';
+        $URL_gloss_dev = 'https://calculator-dev.climateequityreference.org/glossary.php';
+        $URL_calc_api = 'https://calculator.climateequityreference.org/api/';
+        $URL_calc_api_dev = 'https://calculator-dev.climateequityreference.org/api/';
     }
 }
 

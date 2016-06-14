@@ -1,5 +1,5 @@
         <div id="footer">
-            <p><a href="http://<?php echo $main_domain_host; ?>">The Climate Equity Reference Project</a> is a project of <a href="http://www.ecoequity.org/">EcoEquity</a> and the <a href="http://www.sei-international.org">Stockholm Environment Institute</a> &#169; 2008&ndash;<?php echo date("Y"); ?></p>
+            <p><a href="https://<?php echo $main_domain_host; ?>">The Climate Equity Reference Project</a> is a project of <a href="http://www.ecoequity.org/">EcoEquity</a> and the <a href="http://www.sei-international.org">Stockholm Environment Institute</a> &#169; 2008&ndash;<?php echo date("Y"); ?></p>
 <?php
 // this is the encoded version of the email address calculator@gdrights.org
 // &#99;&#97;&#108;&#99;&#117;&#108;&#97;&#116;&#111;&#114;&#64;&#103;&#100;&#114;&#105;&#103;&#104;&#116;&#115;&#46;&#111;&#114;&#103;

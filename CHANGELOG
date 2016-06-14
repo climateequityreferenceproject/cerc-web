@@ -1,3 +1,8 @@
+rev 473 (2016-06-14) (krueschan)
+- small changes to "not-logged-in" info screen when public users stumble upon the developer version of the calculator
+- API calls now through https
+- changed links to urls within CERP webspace to https
+
 rev 472 (2016-04-18) (krueschan)
 - temporarily disabled settings for LULUCF inclusion in country report for public version (it's still present in the -dev version)
 
@@ -45,7 +50,6 @@ rev 466 (2015-10-08) (krueschan)
 - for dev calc (or when running the public calc in a browser identified as a developer's (via cookie)) the "shareable link" is now _also_ available as a link to the dev calc
 - in dev calc (or when identified as developer via cookie) show break down into sources/gases in country chart and country report table
 - a bunch of dev calc functionality is now exposed to the public calculator (upload/download of databases, advanced Excel download) if we assume (via cookie) that the user is a developer
-
 
 rev 465 (2015-08-25) (krueschan)
 - in INDC Assessment Chart module (/charts/) prepared move to public calc (changing .htaccess and moving upload form to protected dir)
