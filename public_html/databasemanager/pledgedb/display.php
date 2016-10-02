@@ -2,7 +2,7 @@
 
 require_once "config/config.php";
 include_once 'functions.php';
-include_once('api_functions.php');
+include_once 'api_functions.php';
 
 function db_get_country_table($min_by_year = NULL, $max_by_year = NULL, $region = FALSE, $public = NULL) {
     $db = db_connect();
@@ -61,7 +61,7 @@ function db_get_pledge_countries($pledge_years = NULL, $regions=FALSE) {
         $yearwhere .= (strlen($yearwhere)>0) ? "OR " : "";
         $yearwhere .= "pledge.by_year = " . $pledge_year . " "; 
     }
-    $query = "SELECT " . $region_or_country . " FROM pledge WHERE " . $yearwhere . "ORDER BY " . $region_or_country . ";";
+    $query = "SELECT " . $region_or_country . " FROM pledge " . ((strlen($yearwhere)>0) ? "WHERE " . $yearwhere : "") . "ORDER BY " . $region_or_country . ";";
     $result = mysql_query($query, $db);
     mysql_close($db);
     if (!$result) { die('Invalid query(c): ' . mysql_error() . " (" . $query . ")"); } 
@@ -75,9 +75,10 @@ function db_get_pledge_countries($pledge_years = NULL, $regions=FALSE) {
 }    
 
 // get pledges from the pledge database 
-$min_year = isset($_REQUEST['min_year']) ? intval($_REQUEST['min_year']) : NULL;
-$max_year = isset($_REQUEST['max_year']) ? intval($_REQUEST['max_year']) : NULL;
+$min_year = (isset($_REQUEST['min_year']) & (strlen($_REQUEST['min_year'])>0)) ? intval($_REQUEST['min_year']) : NULL;
+$max_year = (isset($_REQUEST['max_year']) & (strlen($_REQUEST['max_year'])>0)) ? intval($_REQUEST['max_year']) : NULL;
 $public = isset($_REQUEST['public']) ? ((($_REQUEST['public']=='0') || ($_REQUEST['public']=='no')) ? 0 : 1) : NULL;
+$api_params['dev'] = (($_REQUEST['dev']=='1') || ($_REQUEST['dev']=='yes') || ($_REQUEST['dev']=='dev')) ? true : false;
 $data = array();
 $result = db_get_country_table($min_year, $max_year, FALSE, $public);
 while($row = mysql_fetch_assoc($result)) { $data[$row['id']] = $row; }
@@ -95,14 +96,14 @@ $parms1['countries'] = trim(implode(",",db_get_pledge_countries($pledge_years)),
 $pledge_regions = db_get_pledge_countries($pledge_years,TRUE); 
 if (count($pledge_regions)>0) { $parms1['countries'] .= ((strlen($parms1['countries'])>0) ? "," : "") . trim(implode(",",$pledge_regions),","); }
 $db = $_COOKIE['db']; 
-if (!(exists_API_DB($db))) { 
-    $db = get_new_API_DB(); 
+if (!(exists_API_DB($db, $api_params))) { 
+    $db = get_new_API_DB($api_params); 
     setcookie("db", $db, time()+604800);    // cookies must be sent before any output from your script
 }
-$data_list = get_data($parms1, $db);
+$data_list = get_data($parms1, $db, $api_params);
 $bau = array();
 $keep_these_codes = array ("fossil_CO2_MtCO2","LULUCF_MtCO2","NonCO2_MtCO2e","gdp_blnUSDMER");
-foreach ($data_list as $entry) {
+foreach ($data_list as $entry) { 
     $temp = (array) $entry;
     foreach ($temp as $key => $value) {
         if (in_array($key,$keep_these_codes)) { $bau[$temp['code']][$temp['year']][$key] = floatval($value); }
@@ -119,7 +120,7 @@ foreach ($data as $pledge_info) {
             $factor = $pledge_info['reduction_percent']/100.0;
             break;
         default:
-            // Shouldn't get here
+            break;
     }
     $baseline  = $bau[$pledge_info['iso3']][$pledge_info['by_year']]['fossil_CO2_MtCO2'];
     $baseline += $bau[$pledge_info['iso3']][$pledge_info['by_year']]['LULUCF_MtCO2']     * intval($pledge_info['include_lulucf']);
@@ -147,13 +148,17 @@ foreach ($data as $pledge_info) {
             }
             break;
         case 'target_Mt':
-            $pledged_reduction = $baseline - $pledge_info['target_Mt'];
+            if ((floatval($pledge_info['target_Mt_CO2'])!=0) && (floatval($pledge_info['target_Mt_LULUCF'])!=0) && (floatval($pledge_info['target_Mt_nonCO2'])!=0)) {
+                $pledged_reduction = $baseline - $pledge_info['target_Mt_CO2'] - (intval($pledge_info['include_nonco2']) * floatval($pledge_info['target_Mt_nonCO2'])) - (intval($pledge_info['include_lulucf']) * floatval($pledge_info['target_Mt_LULUCF']));                
+            } else {
+                $pledged_reduction = $baseline - $pledge_info['target_Mt'];
+            }
             break;
         default:
-            // Shouldn't reach here
+            break;
     }
     // add BAU info to output data array
-    $data[$pledge_info['id']]['BAU_Mt_CO2'] =  $bau[$pledge_info['iso3']][$pledge_info['by_year']]['fossil_CO2_MtCO2'];
+    $data[$pledge_info['id']]['BAU_Mt_CO2']    =  $bau[$pledge_info['iso3']][$pledge_info['by_year']]['fossil_CO2_MtCO2'];
     $data[$pledge_info['id']]['BAU_Mt_LULUCF'] =  $bau[$pledge_info['iso3']][$pledge_info['by_year']]['LULUCF_MtCO2'];
     $data[$pledge_info['id']]['BAU_Mt_nonCO2'] =  $bau[$pledge_info['iso3']][$pledge_info['by_year']]['NonCO2_MtCO2e'];
     // calculate (and add to output data array) the breakdown of the pledge into source categories

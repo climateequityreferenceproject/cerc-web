@@ -207,18 +207,9 @@ function check_for_new_regions() {
     // 2. get the regions currently used by the calculator 
     // let's check if we have been passed an API database to reuse through the form
     //$db = $_REQUEST['db'];
-    $db = $_COOKIE['db'];
-    
-    
-    // we don't really know where the calculator is accessed from, so we want to 
-    // construct the API link to retain the current "domain name space"
-//    if(isset($_SERVER['HTTP_X_FORWARDED_HOST'])) {
-//        $URL_calc_api = 'http://' . $_SERVER['HTTP_X_FORWARDED_HOST'] . '/calculator/api/';
-//    } else {
-//        $URL_calc_api = 'http://' . $_SERVER['HTTP_HOST'] . '/calculator/api/';
-//    }
-    // above code is pre-move to cerp.org
-    $URL_calc_api = 'http://calculator.climateequityreference.org/api/';
+    $db = $_COOKIE['db'];    
+
+    $URL_calc_api = Constants::api_url(['public']) ;
     
     // check is this database still exists
     if (isset($db)) {

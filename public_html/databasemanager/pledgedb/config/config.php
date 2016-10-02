@@ -45,7 +45,15 @@ class Constants {
                 "host" => "localhost"
             )  
         ),
-        "is_dev" => null
+        "is_dev" => null,
+        "dev_calc_creds" => array (
+                "user"=>"***REMOVED***", 
+                "pass"=>"***REMOVED***"
+        ),
+        "api_url" => array (
+                "public"=>"https://calculator.climateequityreference.org/api/",
+                "dev"=>"https://calculator-dev.climateequityreference.org/api/"
+        )
     );
     
     /**
@@ -55,7 +63,7 @@ class Constants {
      */
     public static function is_dev() {
         if (is_null(self::$config["is_dev"])) {
-            self::$config["is_dev"] = strpos($_SERVER['REQUEST_URI'],"dev") !== false;
+            self::$config["is_dev"] = (strpos($_SERVER['REQUEST_URI'],"-dev") !== false) || (strpos($_SERVER['REQUEST_URI'],"_dev") !== false);
         }
         return self::$config["is_dev"];
     }
@@ -80,6 +88,19 @@ class Constants {
             } else {
                 return self::$config['db']['public_new'];
             }            
+        }
+    }
+    
+    public static function dev_calc_creds() {
+        return self::$config['dev_calc_creds'];
+    }
+
+    public static function api_url($key = NULL) {
+        if (isset($key)) {
+            $value = self::$config['api_url'];
+            return $value[$key[0]];
+        } else {
+            return self::$config['api_url'];
         }
     }
 }

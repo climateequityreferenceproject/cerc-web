@@ -1,3 +1,11 @@
+rev 49 (2016-10-02)
+- in display.php, you can now specify (via URL parameter dev=dev) if you want to use the core database of the development calculator, rather than the public version (default)
+- credentials for accessing the API of the dev calc added to config.php
+- now can add nationally submitted BAUs to the pledge
+- API URL is now part of the configuation file config.php
+- FIXED: the calculator API is now called via https
+- FIXED: passing empty URL parameters for download script doesn't break download anymore
+
 rev 48 (2015-08-27)
 - new default method for pledge decomposition applied to download/display.php: source categories included in a pledge will be split according
   to their ratio in the BAU of the target year; non-included sources will be held at absolute Mt BAU levels.

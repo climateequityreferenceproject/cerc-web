@@ -6,7 +6,7 @@ if (isset($_POST['form']) && !isset($_POST['cancel'])) {
     $db = db_connect();
     switch ($_POST['form']) {
         case 'add':
-            $new_values = array_slice($_POST, 1);
+            $new_values = array_slice($_POST, 1);  /// this is pretty unsafe (SQL injection) but since this entry form is for internal use only; I won't bother sanitizing
             if ($new_values['year_or_bau'] == 'bau') {
                 $new_values['rel_to_year'] = null;
             }
@@ -29,14 +29,14 @@ if (isset($_POST['form']) && !isset($_POST['cancel'])) {
             }
             // construct the JSON data array for the caveat field
             $json = "";
-            foreach ($caveat_fields as $caveat_data_type) {
-                 if (isset($new_values['caveat_' . $caveat_data_type['name']])) {
-                     if (strlen($new_values['caveat_' . $caveat_data_type['name']])>0) {
+            foreach ($new_values as $key=>$val) { 
+                 if (!(strpos($key, "caveat_")===false)) {
+                     if (strlen($val)>0) {
                         $json .= (strlen($json)==0) ? "\n\n" . "{" : ", ";
-                        $json .= '"' . $caveat_data_type['name'] . '":';
-                        $json .= '"' . str_replace("'","&#39;",str_replace('"','&quot;',trim($new_values['caveat_' . $caveat_data_type['name']]))) . '"';
+                        $json .= '"' . str_replace("caveat_", "", $key) . '":';
+                        $json .= '"' . str_replace("'","&#39;",str_replace('"','&quot;',trim($val))) . '"';
                      }
-                     unset($new_values['caveat_' . $caveat_data_type['name']]);
+                     unset($new_values[$key]);
                  }
             }
             $json .= (strlen($json)>0) ? "}" : "";

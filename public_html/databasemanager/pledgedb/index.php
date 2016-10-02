@@ -195,8 +195,23 @@ require_once "HTTP/Request.php";
                                 echo ' />yes  ' . "\n";
                                 echo '<br />' . "\n" . '<br />' . "\n";
                                 break;
+                            case 'bau':
+                                echo '<br />' . "\n";
+                                echo 'Year: <input type="text" style="width:4em;" name="caveat_'.$caveat_data_type['name'].'_year" id="caveat_'.$caveat_data_type['name'].'_year" ';
+                                echo 'value="' . $additional_caveat_data[$caveat_data_type['name'] . '_year'] . '">&nbsp;';
+                                echo 'Total: <input type="text" style="width:4em;" name="caveat_'.$caveat_data_type['name'].'_total" id="caveat_'.$caveat_data_type['name'].'_total" ';
+                                echo 'value="' . $additional_caveat_data[$caveat_data_type['name'] . '_total'] . '">&nbsp;';
+                                echo 'Fossil: <input type="text" style="width:4em;" name="caveat_'.$caveat_data_type['name'].'_fossil" id="caveat_'.$caveat_data_type['name'].'_fossil" ';
+                                echo 'value="' . $additional_caveat_data[$caveat_data_type['name'] . '_fossil'] . '">&nbsp;';
+                                echo 'LULUCF: <input type="text" style="width:4em;" name="caveat_'.$caveat_data_type['name'].'_lulucf" id="caveat_'.$caveat_data_type['name'].'_lulucf" ';
+                                echo 'value="' . $additional_caveat_data[$caveat_data_type['name'] . '_lulucf'] . '">&nbsp;';
+                                echo 'nonCO2: <input type="text" style="width:4em;" name="caveat_'.$caveat_data_type['name'].'_nonco2" id="caveat_'.$caveat_data_type['name'].'_nonco2" ';
+                                echo 'value="' . $additional_caveat_data[$caveat_data_type['name'] . '_nonco2'] . '">&nbsp;';
+                                echo '<br />' . "\n" . '<br />' . "\n";                                
+                                break;
                             default:
                                 // Shouldn't reach here
+                                break;
                         }
                     }
                 ?>
@@ -241,10 +256,10 @@ require_once "HTTP/Request.php";
                 $(document).ready(function(){
                     $('#datatable-button').click(function () { 
                         if ($('input[name=country_or_region]:checked').val()==="region") {
-                            $url = 'http://climateequityreference.org/pledges/entry/datatable.php?country=' + $("#region option:selected").val() + "&db=" + $("#db").val();
+                            $url = 'https://climateequityreference.org/pledges/entry/datatable.php?country=' + $("#region option:selected").val() + "&db=" + $("#db").val();
                             $('#datatable-container').html("<br><br><br>Loading data for " + $("#region option:selected").text() + " (it is normal for this to take a while)<br />" + $url);
                         } else {
-                            $url = 'http://climateequityreference.org/pledges/entry/datatable.php?country=' + $("#iso3 option:selected").val() + "&db=" + $("#db").val();
+                            $url = 'https://climateequityreference.org/pledges/entry/datatable.php?country=' + $("#iso3 option:selected").val() + "&db=" + $("#db").val();
                             $('#datatable-container').html("<br><br><br>Loading data for " + $("#iso3 option:selected").text() + " (it is normal for this to take a while)<br />" + $url);
                         }
                         $('#datatable-container').load($url); 
