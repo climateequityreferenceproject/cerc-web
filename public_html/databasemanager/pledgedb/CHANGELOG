@@ -1,3 +1,6 @@
+rev 50 (2016-10-06)
+- in pledge data display and download (display.php) replaced the confusion-causing "calcd_target_Mt_Total" column with a placeholder and clarified name of pledged_reduction column
+
 rev 49 (2016-10-02)
 - in display.php, you can now specify (via URL parameter dev=dev) if you want to use the core database of the development calculator, rather than the public version (default)
 - credentials for accessing the API of the dev calc added to config.php

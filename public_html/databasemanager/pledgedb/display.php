@@ -170,7 +170,8 @@ foreach ($data as $pledge_info) {
         $nonco2 = $pledge_info['target_Mt_nonCO2'];
         $calcd_target_Mt_Total = $baseline - $pledged_reduction;
         $calcd_target_Mt_CO2   = $calcd_target_Mt_Total * $co2/($co2+(intval($pledge_info['include_nonco2'])*$nonco2)+(intval($pledge_info['include_lulucf'])*$lulucf));
-        $data[$pledge_info['id']]['calcd_target_Mt_Total'] = $calcd_target_Mt_Total;
+//        $data[$pledge_info['id']]['calcd_target_Mt_Total'] = $calcd_target_Mt_Total;
+        $data[$pledge_info['id']]['obsolete'] = "obsolete";  // this was a source of confusion since it was unclear whether it contained all sectors or just those coverd by the pledge. keeping this in here to maintain structure of xls download
         $data[$pledge_info['id']]['calcd_target_Mt_CO2']   = $calcd_target_Mt_CO2;
         $data[$pledge_info['id']]['calcd_target_Mt_LULUCF']= $lulucf/$co2 * $calcd_target_Mt_CO2;
         $data[$pledge_info['id']]['calcd_target_Mt_nonCO2']= $nonco2/$co2 * $calcd_target_Mt_CO2;
@@ -182,12 +183,13 @@ foreach ($data as $pledge_info) {
         $lulucf = $bau[$pledge_info['iso3']][$pledge_info['by_year']]['LULUCF_MtCO2'];  // BAU LULUCF CO2 in target year
         $nonco2 = $bau[$pledge_info['iso3']][$pledge_info['by_year']]['NonCO2_MtCO2e']; // BAU non-CO2 in target year
         $calcd_target_Mt_Total = $baseline - $pledged_reduction;
-        $data[$pledge_info['id']]['calcd_target_Mt_Total'] = $calcd_target_Mt_Total;
+//        $data[$pledge_info['id']]['calcd_target_Mt_Total'] = $calcd_target_Mt_Total;
+        $data[$pledge_info['id']]['obsolete'] = "obsolete";  // this was a source of confusion since it was unclear whether it contained all sectors or just those coverd by the pledge. keeping this in here to maintain structure of xls download
         $data[$pledge_info['id']]['calcd_target_Mt_CO2']   = $calcd_target_Mt_Total * $co2 / $baseline; // remember, $baseline only includes the sources specified in the pledge
         $data[$pledge_info['id']]['calcd_target_Mt_LULUCF']= ($pledge_info['include_lulucf'] == 1 ) ? ($calcd_target_Mt_Total * $lulucf / $baseline) : $lulucf;
         $data[$pledge_info['id']]['calcd_target_Mt_nonCO2']= ($pledge_info['include_nonco2'] == 1 ) ? ($calcd_target_Mt_Total * $nonco2 / $baseline) : $nonco2;
     }
-    $data[$pledge_info['id']]['pledged_reduction']=$pledged_reduction;
+    $data[$pledge_info['id']]['pledged_reduction_all_sectors']=$pledged_reduction;
 }
  
 $colNames = array_keys(reset($data));
