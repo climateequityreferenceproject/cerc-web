@@ -69,7 +69,7 @@ if ((isset($_REQUEST['download'])) || (isset($_REQUEST['dl']))) {
     <![endif]-->
 
     <script type="text/javascript" src="//code.jquery.com/jquery-1.12.3.min.js"></script>
-    <script type="text/javascript" src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="//code.jquery.com/ui/1.9.2/jquery-ui.min.js"></script>
     <!--<script type="text/javascript" src="js/jquery-1.6.4.min.js"></script>-->
     <!--<script type="text/javascript" src="js/jquery-ui-1.8.9.custom.min.js?v=1.0"></script>-->
     <script type="text/javascript" src="js/jquery.tablesorter.js?v=1.0"></script>

@@ -1,3 +1,6 @@
+rev 474 (2017-03-02) (krueschan)
+- temporarily reverted to jQuery UI version 1.9.2 because it's the most recent version with which the UI pop up for displaying helptext works
+
 rev 473 (2016-06-14) (krueschan)
 - small changes to "not-logged-in" info screen when public users stumble upon the developer version of the calculator
 - API calls now through https
