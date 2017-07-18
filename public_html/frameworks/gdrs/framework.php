@@ -1,6 +1,7 @@
 <?php
     class GreenhouseDevRights extends Framework {
         public static $exec_path = NULL;
+        public static $param_log = NULL;
         
         private $fw_params_default = array(
                             'dev_thresh' => array(
@@ -131,19 +132,29 @@
             // Does the gdrs table even exist? If not, say "changed"
             $params_changed = !$this->db_table_exists('gdrs');
             
+            $log_params = date("Y-m-d H:i:s") . " ||| " ;
+            $log_params .= ($this->user_is_developer() ? "dev    " : "non-dev") . " ||| " ;
+            $log_params .= str_pad(filter_input(INPUT_SERVER, 'REMOTE_ADDR', FILTER_VALIDATE_IP), 15);
+            
             foreach ($shared_params as $id => $param_array) {
                 if ($this->update_param($param_array)) {
                     $params_changed = true;
                 }
+                $log_params .= " ||| " . $param_array['db_param'] . "=" . $param_array['value'];
             }
             
             foreach ($fw_params as $id => $param_array) {
                 if ($this->update_param($param_array)) {
                     $params_changed = true;
                 }
+                $log_params .= " ||| " . $param_array['db_param'] . "=" . $param_array['value'];
             }
-            
+
             $this->db_close();
+            if (($fh = fopen(self::$param_log, 'a'))!==false ) {
+                fwrite ($fh, $log_params . PHP_EOL);
+                fclose ($fh);
+            }
             
             $year_range = $this->get_year_range($user_db);
             if ($shared_params['cum_since_yr']['value'] < $year_range['min_year']) {

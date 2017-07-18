@@ -51,3 +51,4 @@
     } else {
         GreenhouseDevRights::$exec_path = $calc_engine_path;
     }
+    GreenhouseDevRights::$param_log = $param_log_file_name;

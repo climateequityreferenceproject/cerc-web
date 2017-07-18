@@ -58,6 +58,7 @@ if (strpos(dirname(__FILE__), "gd/gdrights.org")) {
     // note, when changing the various temporary storage paths, ensure make sure to also change the cron job that deletes old junk there (this might not be necessary anymore since the WebGUI itself is not deleting old junk (I think))
     $user_db_store = "/***REMOVED***/sessions/user-dbs";  // temporary copies of user databases
     $svg_tmp_dir = "/***REMOVED***/html/tmp"; // svg files of country graphs are generated here
+    $param_log_file_name = "/***REMOVED***/sessions/param_log.txt"; // each time the database is recalculated we log all the parameter settings here to see how people use the calculator
     $xls_tmp_dir = $user_db_store; // where temporary files are saved when xls download is generated
     //$xls_file_slug = "gdrs_all_output_"; // this is the beginning of the file name of the Excel download
     //$xls_copyright_notice = "Greenhouse Development Rights Online Calculator (http://" . $host_name . ")"; // this is the message for cell A1 in the downloaded Excel file
