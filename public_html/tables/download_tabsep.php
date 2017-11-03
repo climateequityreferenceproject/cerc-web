@@ -67,7 +67,8 @@ $dl_country_condition_string = "";
 if (!(isset($_REQUEST['countries']))) {   // country is an alias for countries
     if (isset($_REQUEST['country']))    { $_REQUEST['countries'] = $_REQUEST['country'];}
 }
-if ((isset($_REQUEST['countries'])) && (strlen($_REQUEST['countries'])>0)) {
+if (!(strlen($_REQUEST['countries'])>0)) { unset ($_REQUEST['countries']); } // form submits parameters empty (but set) if no value entered by user
+if (isset($_REQUEST['countries'])) {
     $dl_country_condition_string = "";
     $connector = " AND (";
     foreach(explode(",", $_REQUEST['countries']) as $country) {
@@ -83,6 +84,11 @@ if (isset($_REQUEST['tax_tables']) && ($_REQUEST['tax_tables'] == '1')) {
     $skip_tax_table = FALSE;
 } else {
     $skip_tax_table = TRUE;
+}
+if (isset($_REQUEST['dl_wide']) && ($_REQUEST['dl_wide'] == '1')) {
+    $wide_format = TRUE;
+} else {
+    $wide_format = FALSE;
 }
 if (isset($_REQUEST['gdrs_headers']) && ($_REQUEST['gdrs_headers'] == '1')) {
     $keep_gdrs_headers = TRUE;
@@ -151,19 +157,41 @@ if (!is_resource($fp))
 }
 
 // Meta-data
-fwrite($fp, $xls_copyright_notice . "\n");
-fwrite($fp, "Last modified " . $last_modified['master'] . "\n");
-$record = $db->query("SELECT calc_version FROM meta")->fetchAll();
-fwrite($fp, "Calculator version " . $record[0][0] . "\n");
-$record = $db->query("SELECT data_version FROM meta")->fetchAll();
-fwrite($fp, "Data version " . $record[0][0] . "\n");
+$params_wide = "";
+$params_wide_header = "";
+if ($wide_format) {
+    $record = $db->query("SELECT calc_version FROM meta")->fetchAll();
+    $params_wide = $record[0][0] . "\t";
+    $params_wide_header = "meta_calc_version" . "\t";
+    $record = $db->query("SELECT data_version FROM meta")->fetchAll();
+    $params_wide .= $record[0][0] . "\t";
+    $params_wide_header .= "meta_db_version" . "\t";
+} else {
+    fwrite($fp, $xls_copyright_notice . "\n");
+    fwrite($fp, "Last modified " . $last_modified['master'] . "\n");
+    $record = $db->query("SELECT calc_version FROM meta")->fetchAll();
+    fwrite($fp, "Calculator version " . $record[0][0] . "\n");
+    $record = $db->query("SELECT data_version FROM meta")->fetchAll();
+    fwrite($fp, "Data version " . $record[0][0] . "\n");
+}
 foreach ($db->query("SELECT param_id, int_val, descr FROM params WHERE int_val IS NOT NULL") as $record) {
-    fwrite($fp, $record["param_id"] . "\t" . $record["int_val"] . "\t".  $record["descr"] . "\n");
+    if ($wide_format) {
+        $params_wide .= $record["int_val"] . "\t";
+        $params_wide_header .= "meta_" . $record["param_id"] . "\t";
+    } else {
+        fwrite($fp, $record["param_id"] . "\t" . $record["int_val"] . "\t".  $record["descr"] . "\n");
+    }
 }
 foreach ($db->query("SELECT param_id, real_val, descr FROM params WHERE real_val IS NOT NULL") as $record) {
-    fwrite($fp, $record["param_id"] . "\t" . $record["real_val"] . "\t" . $record["descr"] . "\n");
+    if ($wide_format) {
+        $params_wide .= $record["real_val"] . "\t";
+        $params_wide_header .= "meta_" . $record["param_id"] . "\t";
+    } else {
+        fwrite($fp, $record["param_id"] . "\t" . $record["real_val"] . "\t" . $record["descr"] . "\n");
+    }
 }
 
+if ($wide_format) { $skip_tax_table = TRUE; }
 if (!($skip_tax_table)) {
     fwrite($fp, "Tax table:\n");
     fwrite($fp, "\t\"For income at tax, compute tax_income_dens_#/tax_pop_dens_#\"\n");
@@ -175,7 +203,7 @@ if (!($skip_tax_table)) {
     }
 }
 // Mark up the boundaries of the data table
-fwrite($fp, "\n<--- START DATA TABLE --->\n");    
+if (!($wide_format)) { fwrite($fp, "\n<--- START DATA TABLE --->\n"); }
 
 // Country-level data
 $query = $db->query("SELECT * FROM disp_temp ORDER BY country;");
@@ -187,9 +215,9 @@ if ($record = $query->fetch(PDO::FETCH_ASSOC)) {
 	}
  
     }
-    fwrite($fp, $table_header . "\n");
+    fwrite($fp, $table_header . "\t" . $params_wide_header . "\n");
     do {
-        fwrite($fp, implode("\t", $record) . "\n");
+        fwrite($fp, implode("\t", $record) . "\t" . $params_wide . "\n");
     } while ($record = $query->fetch(PDO::FETCH_ASSOC));
 }
 
@@ -211,7 +239,7 @@ foreach ($db->query($global_sql, PDO::FETCH_NUM) as $record) {
     // if countries are specified, world and regions will only include the figures of those countries, which is wrong; until the queries are fixed to 
     // account for that, we suppress world and regions output in this case
     if (!(isset($_REQUEST['countries']))) {  
-        fwrite($fp, $row_start . implode("\t", $record) . "\n");
+        fwrite($fp, $row_start . implode("\t", $record) . "\t" . $params_wide . "\n");
     }
 }
 
@@ -226,12 +254,12 @@ foreach ($db->query('SELECT * FROM flag_names') as $flags) {
         // if countries are specified, world and regions will only include the figures of those countries, which is wrong; until the queries are fixed to 
         // account for that, we suppress world and regions output in this case
         if (!(isset($_REQUEST['countries']))) {  
-            fwrite($fp, $row_start . implode("\t", $record) . "\n");
+            fwrite($fp, $row_start . implode("\t", $record) . "\t" . $params_wide . "\n");
         }
     }
 }
 // Mark up the boundaries of the data table
-fwrite($fp, "<--- END DATA TABLE --->\n");    
+if (!($wide_format)) { fwrite($fp, "\n<--- END DATA TABLE --->\n"); }
 
 fclose($fp);
 
