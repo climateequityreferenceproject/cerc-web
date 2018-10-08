@@ -1,3 +1,6 @@
+rev 477 (2018-10-07) (krueschan)
+- add LICENSE to project, fix license where conflict existed
+
 rev 476 (2017-11-02) (krueschan)
 - added URL parameter 'dl_wide' to tsv download (download_tabsep.php). If dl_wide=1, the download omits the info and settings table at the top but
   adds settings, calc_version and db_version to each data entry (the idea is to enable more straightforward parsing into statistics software)

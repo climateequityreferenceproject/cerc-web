@@ -1,5 +1,5 @@
 <?php
-
+ 
 // we don't really know where the calculator is accessed from, so we want to 
 // construct certain links to retain the current "domain name space"
 if(isset($_SERVER['HTTP_X_FORWARDED_HOST'])) {

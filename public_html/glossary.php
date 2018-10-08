@@ -6,7 +6,7 @@
  *
  * @package GDRsCalculator
  * @copyright 2011-2014 EcoEquity and Stockholm Environment Institute
- * @license All rights reserved
+ * @license GNU GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
  * @link http://www.gdrights.org/
  */
 
