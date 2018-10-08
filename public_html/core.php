@@ -1,7 +1,11 @@
 <?php
     require_once('i18n.php');
-    require_once('config.php');
-    
+    if (is_readable($filename)) {
+        require_once('config.php');
+    } else {
+        die("Cannot read config.php file. If this is a new installation, locate the config.php.new file, enter the required information, and rename if config.php.");
+    }
+        
     include_once("help/HWTHelp/HWTHelp.php");
     require_once("frameworks/frameworks.php");
     require_once("tables/table_generator.php");
