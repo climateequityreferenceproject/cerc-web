@@ -1,0 +1,93 @@
+rev 50 (2016-10-06)
+- in pledge data display and download (display.php) replaced the confusion-causing "calcd_target_Mt_Total" column with a placeholder and clarified name of pledged_reduction column
+
+rev 49 (2016-10-02)
+- in display.php, you can now specify (via URL parameter dev=dev) if you want to use the core database of the development calculator, rather than the public version (default)
+- credentials for accessing the API of the dev calc added to config.php
+- now can add nationally submitted BAUs to the pledge
+- API URL is now part of the configuation file config.php
+- FIXED: the calculator API is now called via https
+- FIXED: passing empty URL parameters for download script doesn't break download anymore
+
+rev 48 (2015-08-27)
+- new default method for pledge decomposition applied to download/display.php: source categories included in a pledge will be split according
+  to their ratio in the BAU of the target year; non-included sources will be held at absolute Mt BAU levels.
+- display.php now supports the 'public' URL parameter to filter based on that value
+- display.php, when downloading (dl=1) the pledge table as xls, the filename for the download can now be specified via "filname=" URL parameter
+- FIXED: display.php sent a nonsensical content-length header for Excel download, breaking the download in certain circumstances
+- if the core database name that was stored in a cookie (for reuse purposes) doesn't exist anymore, get a new one from the calc-engine
+
+rev 47 (2015-08-17)
+- when displaying or exporting (display.php) the pledge db, the pledge is now converted into Mt, and the source break down provided in Mt 
+  as per data provided in pledge or default method (BAU composition in pledge year) (all based on downloads from core database)
+- display.php now looks better (styled table and floating table header)
+- moved common functions for accessing core database via calculator API to api_functions.php
+- the (core) database name (for time series and regions lookup) is now stored in a cookie for cross-session re-use
+- improved description text for pledge breakdown in entry form
+- removed depreciated "link to information" field from entry form and pledge table
+- added a caveat_ prefix to all caveat-related UI elements to avoid conflict with equally named non-ceveat UI elements (e.g. "conditional" 
+  existed in both scopes)
+- times series lookup can now be performed for regions as well as countries
+- new "pledge_breakdown_assumptions" caveat field
+- dumped current mysql database generation code into pledge.sql
+
+rev 46 (2015-08-10)
+- removed orphaned debug code
+- renamed "absolute_Mt" to "target_Mt" to avoid confusion
+
+rev 45 (2015-08-10)
+- added the ability to express a target in absolute Mt terms
+- added the ability to specify the breakdown of a target for the three sectors
+- added new fields to display table
+- pledge entry user can now get a data table with historical and BAU emissions data for an arbitrary country from the core db (datatable.php)
+- expose "public" flag to entry GUI, defaulting to public
+- removed unused entry.php file (according to changelog notes (rev 29) this was a new form that EKB was working on but didn't get very far)
+- updated caveat_help.php to reflect entry of JSON data via GUI
+- added CHANGELOG file
+
+rev 44 (2015-08-06)
+- pledge table header now floats on top of the window rather than scrolling out of view.
+
+rev 43 (2015-08-06)
+- additional JSON array data for caveat field is now entered through the GUI - new caveat fields are added through the "caveat_fields.php" config file
+- Afghanistan is no longer pre-selected as country for the entry mask (which had resulted in many accidental fake entries for AFG)
+- added jQuery extension for floating table head for pledge table (but didn't get it to work yet)
+- pledge data export (display.php) now supports direct download as Excel (tab-seperated) file via ?dl=1 URL parameter
+
+rev 42 (2015-07-12)
+- more caveat help
+- display.php now reads config file to connect to database
+
+rev 41 (2015-07-02)
+- additional caveat field use
+
+rev 40 (2015-06-17)
+- made the script actually use the config.php configurations when connecting to the pledge database
+
+rev 39 (2015-06-17)
+- getting rid of (last?) hardcoded gdrights.org links and "GDRs" branding
+
+rev 38 (2015-06-17)
+- preparing for calculator move
+
+rev 37 (2015-06-08)
+- updated helptext for caveat field.
+
+rev 36 (2015-05-08)
+- slight caveat help text improvements
+
+rev 35 (2015-05-08)
+- moved help text for special uses of caveat field into separate help file
+- disabled Rich Text Editor for caveat field (was messing up with special uses, breaking markup and such)
+
+rev 34 (2015-05-02)
+- added helptext for JSON syntax for adding additional random data via repurposed caveat field
+
+rev 33 (2015-05-01)
+- slightly improved the way new regions are pulled from the calculator (re-use DB ID now passed as cookie instead of hidden form field (=persists after closing the page) and now checks whether re-use DB has gone from API)
+
+rev 32 (2015-05-01)
+- New regions are pulled from calculator API and added to pledge DB if they don't exist there yet.
+- Also, added display.php which outputs pledge DB in a easy to copy'n'paste format.
+
+[...no CHANGELOG prior to rev 32 (which is when CH took over from EKB)...]
