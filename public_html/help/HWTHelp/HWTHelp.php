@@ -6,7 +6,7 @@
  *
  * @package HWTHelp
  * @copyright 2012 Tyler Kemp-Benedict
- * @license All rights reserved
+ * @license GNU GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
  * @link http://www.hardworkingtype.com/
  */
 
