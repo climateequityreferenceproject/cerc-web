@@ -1,4 +1,5 @@
 <?php
+require_once('../../../config.php'); // local global config file
 /**
  * Configuration master file
  * 
@@ -15,44 +16,32 @@
  * This is a small class, and is only one of several definitions and commands
  * in the configuration file. Its purpose is to encapsulate constants
  * used elswehere, without polluting the global namespace.
- *  
+ * 
  */
 class Constants {
     private static $config = array(  
         "db" => array(
             "public" => array(  
-                "dbname" => "pledges",
-                "user" => "pledges",
-                "pwd" => "***REMOVED***",
-                "host" => "localhost"
+                "dbname" => $pledge_db_config["dbname"],
+                "user"   => $pledge_db_config["user"],
+                "pwd"    => $pledge_db_config["pwd"],
+                "host"   => $pledge_db_config["host"]
             ),
             "development" => array(  
-                "dbname" => "pledges-dev",
-                "user" => "pledges-dev",
-                "pwd" => "***REMOVED***",
-                "host" => "localhost"
-            ),  
-            "public_new" => array(  
-                "dbname" => "pledges_cerp",
-                "user" => "pledges_cerp",
-                "pwd" => "***REMOVED***",
-                "host" => "localhost"
-            ),
-            "development_new" => array(  
-                "dbname" => "pledges_cerp-dev",
-                "user" => "pledges_cerp-dev",
-                "pwd" => "***REMOVED***",
-                "host" => "localhost"
+                "dbname" => $pledge_db_config["dbname"],
+                "user"   => $pledge_db_config["user"],
+                "pwd"    => $pledge_db_config["pwd"],
+                "host"   => $pledge_db_config["host"]
             )  
         ),
         "is_dev" => null,
         "dev_calc_creds" => array (
-                "user"=>"***REMOVED***", 
-                "pass"=>"***REMOVED***"
+                "user" => $dev_calc_creds["user"], 
+                "pass" => $dev_calc_creds["pass"]
         ),
         "api_url" => array (
-                "public"=>"https://calculator.climateequityreference.org/api/",
-                "dev"=>"https://calculator-dev.climateequityreference.org/api/"
+                "public" => $URL_calc_api,
+                "dev"    => $URL_calc_api_dev
         )
     );
     
@@ -74,21 +63,11 @@ class Constants {
      * @return array
      */
     public static function db_info() {
-        if (strpos(dirname(__FILE__), "gd/gdrights.org")) {
-            // pre-move calculator 
-            if (self::is_dev()) {
-                return self::$config['db']['development'];
-            } else {
-                return self::$config['db']['public'];
-            }
+        if (self::is_dev()) {
+            return self::$config['db']['development'];
         } else {
-            // post-move calculator 
-            if (self::is_dev()) {
-                return self::$config['db']['development_new'];
-            } else {
-                return self::$config['db']['public_new'];
-            }            
-        }
+            return self::$config['db']['public'];
+        }            
     }
     
     public static function dev_calc_creds() {
