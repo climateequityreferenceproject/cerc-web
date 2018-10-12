@@ -1,6 +1,6 @@
 <?php
     require_once('i18n.php');
-    if (is_readable($filename)) {
+    if (is_readable('config.php')) {
         require_once('config.php');
     } else {
         die("Cannot read config.php file. If this is a new installation, locate the config.php.new file, enter the required information, and rename if config.php.");
