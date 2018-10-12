@@ -1,0 +1,7 @@
+# How to contribute
+
+ - **Questions**: If you have a question on the installation of cerc-web, first make sure that you really want your own installation. We maintain an installation of cerc-web [on our website](https://calculator.climateequityreference.org) and if you're only interested in *using* the calculator, this might be your best option. If you want your own install, make sure to follow all instruction precisely, but if you still have issues, feel free to create a new [issue](https://github.com/climateequityreferenceproject/cerc-web/issues) with your question or contact us via [our website](https://climateequityreference.org).
+ - **Bugs**: Known bugs are left as [open issues](https://github.com/climateequityreferenceproject/cerc-web/issues) on GitHub, if you find a new one, please report it there.
+ - **Enhancements**: Feel free to suggest new features or improvements by [opening a new ticket](https://github.com/climateequityreferenceproject/cerc-web/issues).
+ - **Modifications**: If you find a bug that you think you can patch yourself or think of an enhancement you can code yourself, feel free to send us your patch, but please don't be offended if we reject it or rewrite it ourselves from scratch. In the first instance, we maintain cerc-web to support our own work, so we are mainly interested in keeping it fit for our own purposes. Of course, with cerc-web being open source, you are always free to fork your own version and implement whatever changes you wish there.
+ 
