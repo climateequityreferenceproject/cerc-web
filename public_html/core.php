@@ -5,7 +5,7 @@
     } else {
         die("Cannot read config.php file. If this is a new installation, locate the config.php.new file, enter the required information, and rename if config.php.");
     }
-        
+
     include_once("help/HWTHelp/HWTHelp.php");
     require_once("frameworks/frameworks.php");
     require_once("tables/table_generator.php");
@@ -20,7 +20,7 @@
     
     // Generic cookie array
     $cookie_info=array();
-    $cookie_info['time'] = time()+60*60*24*28;
+    $cookie_info['time'] = time()+60*60*24*28; 
     $cookie_info['server'] = preg_replace("/^\.|www\./","",$_SERVER['HTTP_HOST']);
     
     // Always using GDRs framework now

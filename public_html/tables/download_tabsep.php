@@ -170,7 +170,7 @@ if ($wide_format) {
     fwrite($fp, $xls_copyright_notice . "\n");
     fwrite($fp, "Last modified " . $last_modified['master'] . "\n");
     $record = $db->query("SELECT calc_version FROM meta")->fetchAll();
-    fwrite($fp, "Calculator version " . $record[0][0] . "\n");
+    fwrite($fp, "Calculator version " . $record[0][0] . "(engine); " .  Framework::get_webcalc_ver() . " (cerc-web)\n");
     $record = $db->query("SELECT data_version FROM meta")->fetchAll();
     fwrite($fp, "Data version " . $record[0][0] . "\n");
 }

@@ -78,7 +78,8 @@ if ((isset($_REQUEST['download'])) || (isset($_REQUEST['dl']))) {
     <?php include("inc/googleanalytics.php"); ?>
     </head>
     <body id="gdrs_calculator">
-        <div id="loading"></div>
+        <?php if (is_file('inc/popup_notice.php')) { require_once('inc/popup_notice.php'); }?>
+        <div id="loading"></div> 
         <div id="container">
         <?php include("inc/calc_branding.inc.php"); ?>
         <?php include("inc/calc_nav_menu_main.inc.php"); ?>
@@ -208,7 +209,8 @@ if ((isset($_REQUEST['download'])) || (isset($_REQUEST['dl']))) {
                             <li id="cum_since_yr_wrapper">
                                 <?php echo select_num('cum_since_yr', $shared_params, $glossary->getLink('cum_respons', false, _('Cumulative since')) . ": "); ?>
                             </li>
-                            <li>
+<!--- we don't support LULUCF anymore but I just want to make sure the use_lulucf=0 parameter is passed on correctly, so I'm just hiding the control, not removing it for now -->
+                            <li style="display:none;">
                                 <input type="checkbox" name="use_lulucf" id="use_lulucf" class="click" value="1" <?php if ((int) $shared_params["use_lulucf"]['value'] === 1)
                                 echo 'checked="checked"'; ?>  />
                                 <label for="use_lulucf" class="click"> <?php echo sprintf(_('Include %s'), $glossary->getLink('lu_emissions', false, _('land-use emissions'))); ?></label>

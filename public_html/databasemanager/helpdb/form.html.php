@@ -1,39 +1,27 @@
-<?php include_once 'includes/helpers.inc.php'; ?>
+<?php 
+include_once 'includes/helpers.inc.php'; 
+if (is_readable('../../config.php')) {  // load global config file
+    require_once('../../config.php');
+} else {
+    die("Cannot read config.php file. If this is a new installation, locate the config.php.new file, enter the required information, and rename if config.php.");
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <title><?php htmlout($pageTitle); ?> | <?php echo $site_title; ?></title>
-	<link rel="stylesheet" href="style.css">
-    <script type="text/javascript" src="tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
-    
-    <script type="text/javascript">
-    tinyMCE.init({
-            mode : "textareas",
-        	//theme : "simple",
-			theme : "advanced",
-        plugins : "spellchecker, paste", 
-                
-        // Theme options - button# indicated the row# only
-        theme_advanced_buttons1 : "cut,copy,paste,|,bold,italic,|,sub,sup,|,formatselect,removeformat,|,undo,redo",
-        theme_advanced_buttons2 : "bullist,numlist,|,outdent,indent,|,link,unlink,anchor,image,|,spellchecker,|,charmap",
-        theme_advanced_toolbar_location : "top",
-        theme_advanced_toolbar_align : "left",
-        theme_advanced_statusbar_location : "bottom",
-        theme_advanced_resizing : true,
-        theme_advanced_buttons2_add : ",|,pastetext,pasteword,selectall,|,code,preview",
-        paste_auto_cleanup_on_paste : true,
-//        paste_preprocess : function(pl, o) {
-//            // Content string containing the HTML from the clipboard
-//            alert(o.content);
-//            o.content = "-: CLEANED :-\n" + o.content;
-//        },
-//        paste_postprocess : function(pl, o) {
-//            // Content DOM node containing the DOM structure of the clipboard
-//            alert(o.node.innerHTML);
-//            o.node.innerHTML = o.node.innerHTML + "\n-: CLEANED :-";
-//        }
-    });
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cloud.tinymce.com/stable/tinymce.min.js?apiKey=<?php echo $TinyMCE_APIKey; ?>"></script>    
+    <script>tinymce.init({ 
+            selector:'textarea' ,
+            min_height: 300 ,
+            menubar: false ,
+            plugins: 'lists link anchor image spellchecker charmap paste table',
+            toolbar1: 'cut copy paste | bold italic underline | subscript superscript | formatselect removeformat | undo redo ' ,
+            toolbar2: 'bullist numlist | outdent indent | link unlink anchor image | spellchecker | charmap | pastetext | table' ,
+            statusbar: false
+            });
     </script>
   </head>
   <body class="entry_form">

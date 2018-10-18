@@ -9,15 +9,19 @@ $core_db_dev = "/PATH/TO/YOUR/gdrs_core.sql3"; // if your installation has a sep
 $user_db_store = "/PATH/TO/YOUR/temp-user-dbs";  // temporary copies of user databases
 $svg_tmp_dir   = "/PATH/TO/YOUR/temp-svgs"; // svg files of country graphs are generated here
 $xls_tmp_dir = $user_db_store; // where temporary files are saved when xls download is generated
+$param_log_file_name = "/PATH/TO/YOUR/param_log.txt"; // each time the database is recalculated we log all the parameter settings here to see how people use the calculator
 
 $xls_file_slug = "cerc_all_output_"; // this is the beginning of the file name of the Excel download
-$xls_copyright_notice = "Climate Equity Reference Project Online Calculator (http://calculator.climateequityreference.org)"; // this is the message for cell A1 in the downloaded Excel file
+$xls_copyright_notice = "Climate Equity Reference Project Online Calculator (https://calculator.climateequityreference.org)"; // this is the message for cell A1 in the downloaded Excel file
 
 // calculator engine -- this is the path to the executable of the "calculator c-engine"
 $calc_engine_path = "//PATH/TO/YOUR/gdrscode/engine/gdrsclib/dist/Public/GNU-Linux-x86/gdrsclib";
 $calc_engine_path_dev = "//PATH/TO/YOUR/gdrscode/engine/gdrsclib/dist/Development/GNU-Linux-x86/gdrsclib";
 
-// pledge db connection information
+// should not normally be changed
+$webcalc_version = "3.2.0";
+
+// pledge db connection information (MySQL database)
 $pledge_db_config = array( 
             "dbname" => "dbname",
             "user" => "user",
@@ -34,8 +38,21 @@ $URL_calc_api = 'https://calculator.climateequityreference.org/api/';
 $URL_calc_api_dev = 'https://calculator-dev.climateequityreference.org/api/';
 
 // this is the directory where the include files of the help db project
-// specifically, db_gdrs_help.inc.php and error.html.php
-$helpdb_include_path = $_SERVER['DOCUMENT_ROOT'] . '/helpdb/includes/';
+// specifically, db_gdrs_help.inc.php and error.html.php; should be absolute path
+$helpdb_include_path = dirname(__FILE__) . '/databasemanager/helpdb/includes/';
+
+// help db connection information (MySQL database)
+$help_db_config = array( 
+            "dbname" => "dbname",
+            "user" => "user",
+            "pwd" => "pwd",
+            "host" => "host"
+            );
+
+// the input forms of the database managers use cloud-hosted TimyMCE code
+// if the "This domain is not registered" nag pop up bothers you, get a free (or paid)
+// API key at https://www.tiny.cloud/get-tiny/ and enter it below
+$TinyMCE_APIKey = "your_tinymce_api_key_here";
 
 // Excel download table header replacements
 // this array provides for a rename mask for the 

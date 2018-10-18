@@ -131,7 +131,8 @@
         $db_time = Framework::get_db_time_string($user_db);
         $version = '<p>Data version: ' . Framework::get_data_ver($user_db);
         $version .= '&nbsp;(last change to database: ' . $db_time['master'] . ', ' . Framework::get_db_name($user_db) . ')';
-        $version .= '&nbsp;&nbsp; Calculator version: ' . Framework::get_calc_ver();
+        $version .= "<br>\n";
+        $version .= 'Calculator version: ' . Framework::get_calc_ver() . " (engine); " . Framework::get_webcalc_ver() . " (cerc-web)";
         $version .= "</p>\n";
         
         switch ($display_params["framework"]['value']) {

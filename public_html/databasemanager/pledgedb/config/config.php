@@ -1,5 +1,4 @@
 <?php
-require_once('../../../config.php'); // local global config file
 /**
  * Configuration master file
  * 
@@ -10,6 +9,12 @@ require_once('../../../config.php'); // local global config file
  * @copyright 2012-2013 Stockholm Environment Institute and EcoEquity
  */
 
+if (is_readable('../../config.php')) {  // load global config file
+    require_once('../../config.php');
+} else {
+    die("Cannot read config.php file. If this is a new installation, locate the config.php.new file, enter the required information, and rename if config.php.");
+}
+
 /**
  * Constants class
  * 
@@ -19,32 +24,10 @@ require_once('../../../config.php'); // local global config file
  * 
  */
 class Constants {
-    private static $config = array(  
-        "db" => array(
-            "public" => array(  
-                "dbname" => $pledge_db_config["dbname"],
-                "user"   => $pledge_db_config["user"],
-                "pwd"    => $pledge_db_config["pwd"],
-                "host"   => $pledge_db_config["host"]
-            ),
-            "development" => array(  
-                "dbname" => $pledge_db_config["dbname"],
-                "user"   => $pledge_db_config["user"],
-                "pwd"    => $pledge_db_config["pwd"],
-                "host"   => $pledge_db_config["host"]
-            )  
-        ),
-        "is_dev" => null,
-        "dev_calc_creds" => array (
-                "user" => $dev_calc_creds["user"], 
-                "pass" => $dev_calc_creds["pass"]
-        ),
-        "api_url" => array (
-                "public" => $URL_calc_api,
-                "dev"    => $URL_calc_api_dev
-        )
-    );
-    
+     private static $config = array(
+        "is_dev" => null
+     );
+ 
     /**
      * Get whether this is the development version
      * 
@@ -63,23 +46,31 @@ class Constants {
      * @return array
      */
     public static function db_info() {
-        if (self::is_dev()) {
-            return self::$config['db']['development'];
+        global $pledge_db_config;
+        if (self::is_dev()) {  // in theory supporting the option to have different databases for developer calculator, but not currently used
+            return $pledge_db_config;
         } else {
-            return self::$config['db']['public'];
+            return $pledge_db_config;
         }            
     }
     
     public static function dev_calc_creds() {
-        return self::$config['dev_calc_creds'];
+		global $dev_calc_creds;
+        return $dev_calc_creds;
     }
 
     public static function api_url($key = NULL) {
+        global $URL_calc_api;
+        global $URL_calc_api_dev;
         if (isset($key)) {
-            $value = self::$config['api_url'];
-            return $value[$key[0]];
+            if ($key="dev") {
+                $value = $URL_calc_api_dev;
+            } else {
+                $value = $URL_calc_api;
+            }
+            return $value;
         } else {
-            return self::$config['api_url'];
+            return $URL_calc_api;
         }
     }
 }

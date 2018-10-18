@@ -223,7 +223,12 @@
             $query_result = $db_cnx->query('SELECT calc_version FROM meta;')->fetchAll();
             return $query_result[0]['calc_version'];
         }
-        
+
+        public static function get_webcalc_ver($user_db = NULL) {
+            global $webcalc_version;
+            return $webcalc_version;
+        }
+
         public static function get_year_range($user_db = NULL) {
             $db_cnx = self::db_cnx($user_db);
             

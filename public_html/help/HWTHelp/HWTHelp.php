@@ -74,7 +74,8 @@ class HWTHelp implements Iterator
     private static function getHelpDB($filter = null)
     {
         global $helpdb_include_path;
-        include $helpdb_include_path . 'db_gdrs_help.inc.php';
+        $includefile = $helpdb_include_path . 'db_gdrs_help.inc.php';
+        if (is_file($includefile)) { include $includefile; } else { die("Can't read " . $includefile); }
         if ($filter) {
             $filter_text = ' WHERE ' . $filter . '=1';
         } else {

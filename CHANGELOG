@@ -1,3 +1,22 @@
+rev 545 (2018-10-18) (krueschan)
+- Major: 
+  - added new 1.5°C LED scenario to splash page, removed old G8 Pathway
+  - we decided to drop support for LLULUCF in the NDC analysis (the data just isn't good enough). Thus, "include LULUCF" checkbox has been removed. In a later update, we will reinstate including LULUCF in the calculation of historical responsibility but not in NDC assessment.
+- Minor: 
+  - fix issues arising from merging helpdb and pledge db projects, including re-adding TinyMCE to the helpdb
+  - added infrastructure to support ability to make popup notice appear on calculator load
+  - updated helpdb
+  - added display of webcalc version to footer
+
+
+rev 544 (2018-10-17) (krueschan)
+- Adding JOSS paper draft
+
+--------------------------------------- NOTICE ---------------------------------------------- 
+commit/rev numbers below are out of sync as a result of merging the 
+commit history of cerc-web, pledgedb and helpdb projects and rebasing the merged repository
+-------------------------------------- /NOTICE ----------------------------------------------
+
 rev 479 (2018-10-08) (tylerkb)
 - change license of HWTHelp.php file
 
