@@ -1,3 +1,7 @@
+rev 546 (2018-10-19) (krueschan)
+- edit .gitignore file
+- add .htaccess file for database manager
+
 rev 545 (2018-10-18) (krueschan)
 - Major: 
   - added new 1.5°C LED scenario to splash page, removed old G8 Pathway
