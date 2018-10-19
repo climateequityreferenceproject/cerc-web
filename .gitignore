@@ -1,3 +1,5 @@
-/nbproject/private/
+nbproject/
 /public_html/config.php
 !/public_html/config.php.new
+/public_html/inc/popup_notice.php
+private/
