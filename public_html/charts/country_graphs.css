@@ -52,7 +52,7 @@ polygon#supportedmit {fill:#e6e6e6;}
 .linemarker { stroke-width:none; fill:#000000; fill-opacity:1.0; display:none; } 
 .tooltip { display:none; }
 .tooltipbgrd { fill:#ffffff;fill-opacity:0.7; }
-.tooltiptarget { stroke-width:none; fill:#ffffff; fill-opacity:0.0; }  // this is the circle that triggers the tool tip being shown
+.tooltiptarget { stroke-width:none; fill:#ffffff; fill-opacity:0.0; }  /* this is the circle that triggers the tool tip being shown */
 
 /* colors *******************
   #e6b350 ochre 100% (domestic mitigation before opacity reduction)

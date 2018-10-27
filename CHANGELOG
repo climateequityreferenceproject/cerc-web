@@ -1,3 +1,8 @@
+rev 547 (2018-10-22) (krueschan)
+- changes to paper
+- enable "tax-table" output in wide data download
+- minor css syntax fix
+
 rev 546 (2018-10-19) (krueschan)
 - clarifying system requirements in README.md
 - edit .gitignore file

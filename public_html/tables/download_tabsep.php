@@ -1,5 +1,6 @@
 <?php
 // undocumented URL parameter switches for downloading xls tables:
+// - dl_wide = if 1 download data in "wide format" where meta data (settings) are each in their own variable (column) repeated for each record (intended to facilitate automatic retrieval by statistical software)
 // - dl_start_year = independent of responsibility start date, xls file will only contain data from that year onward
 // - dl_end_year = independent of responsibility start date, xls file will only contain data up until that year 
 // - dl_years = a list (separated by , or for legacy reasons | ) of individual years to download, can also include ranges with -; e.g. 1990,2010-2030 overrides dl_start_year and dl_end_year, if also specified
@@ -170,7 +171,7 @@ if ($wide_format) {
     fwrite($fp, $xls_copyright_notice . "\n");
     fwrite($fp, "Last modified " . $last_modified['master'] . "\n");
     $record = $db->query("SELECT calc_version FROM meta")->fetchAll();
-    fwrite($fp, "Calculator version " . $record[0][0] . "(engine); " .  Framework::get_webcalc_ver() . " (cerc-web)\n");
+    fwrite($fp, "Calculator version " . $record[0][0] . " (engine); " .  Framework::get_webcalc_ver() . " (cerc-web)\n");
     $record = $db->query("SELECT data_version FROM meta")->fetchAll();
     fwrite($fp, "Data version " . $record[0][0] . "\n");
 }
@@ -191,14 +192,13 @@ foreach ($db->query("SELECT param_id, real_val, descr FROM params WHERE real_val
     }
 }
 
-if ($wide_format) { $skip_tax_table = TRUE; }
-if (!($skip_tax_table)) {
+if ( (!($skip_tax_table)) & (!($wide_format)) ) {
     fwrite($fp, "Tax table:\n");
     fwrite($fp, "\t\"For income at tax, compute tax_income_dens_#/tax_pop_dens_#\"\n");
     fwrite($fp, "\t\"For tax rate, compute tax_revenue_dens_#/tax_income_dens_#\"\n");
     fwrite($fp, "\t\"For tax per capita, compute tax_revenue_dens_#/tax_pop_dens_#\"\n");
     fwrite($fp, "\tSequence number\tLabel\n");
-    foreach ($db->query("SELECT seq_no, label FROM tax_levels;") as $record) {
+    foreach ($db->query("SELECT seq_no, label FROM tax_levels ORDER BY seq_no;") as $record) {
         fwrite($fp, "\t" . $record['seq_no']. "\t\"" . $record['label'] . "\"\n");
     }
 }
@@ -213,7 +213,6 @@ if ($record = $query->fetch(PDO::FETCH_ASSOC)) {
         foreach ($excel_download_header_rename as $old=>$new) {
             $table_header = str_replace($old, $new, $table_header); 
 	}
- 
     }
     fwrite($fp, $table_header . "\t" . $params_wide_header . "\n");
     do {
