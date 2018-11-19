@@ -225,8 +225,9 @@ if ((isset($_REQUEST['download'])) || (isset($_REQUEST['dl']))) {
                                echo 'checked="checked"'; ?>  />
                                 <label for="use_netexports" class="click"> <?php echo sprintf(_('Include %s'), $glossary->getLink('embodied_emissions', false, _('emissions embodied in trade'))); ?></label>
                             </li>
-                                </li><?php echo select_num('r_wt', $fw_params, $glossary->getLink('r_weight', false, _('Responsibility weight')) . ":"); ?>
                             <li>
+                                    <?php echo select_num('r_wt', $fw_params, $glossary->getLink('r_weight', false, _('Responsibility weight')) . ":"); ?>
+                            </li>
                         </ul>
                         </fieldset>
                         </li>

@@ -86,6 +86,7 @@ $(function() {
     $('#use_lulucf').change(submit);
     $('#use_nonco2').change(submit);
     $('#use_netexports').change(submit);
+    $('#r_wt').change(submit);
     
     $('#dev_thresh').change(submit);
     $('#lux_thresh').change(submit);
