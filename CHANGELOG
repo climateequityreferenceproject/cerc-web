@@ -1,3 +1,12 @@
+rev 555  (2018-11-23) (krueschan)
+- expanded research contribution section to paper.md and added relevant paper.bib entries
+- minor changes to README.md
+- correcting a few spelling mistakes
+
+rev 548-554 (2018-11-19/20) (krueschan)
+- merge commit
+- minor changes to paper
+
 rev 547 (2018-10-22) (krueschan)
 - changes to paper
 - enable "tax-table" output in wide data download
@@ -10,10 +19,10 @@ rev 546 (2018-10-19) (krueschan)
 - add .htaccess file for database manager
 
 rev 545 (2018-10-18) (krueschan)
-- Major: 
+- Major:
   - added new 1.5°C LED scenario to splash page, removed old G8 Pathway
   - we decided to drop support for LLULUCF in the NDC analysis (the data just isn't good enough). Thus, "include LULUCF" checkbox has been removed. In a later update, we will reinstate including LULUCF in the calculation of historical responsibility but not in NDC assessment.
-- Minor: 
+- Minor:
   - fix issues arising from merging helpdb and pledge db projects, including re-adding TinyMCE to the helpdb
   - added infrastructure to support ability to make popup notice appear on calculator load
   - updated helpdb
@@ -23,8 +32,8 @@ rev 545 (2018-10-18) (krueschan)
 rev 544 (2018-10-17) (krueschan)
 - Adding JOSS paper draft
 
---------------------------------------- NOTICE ---------------------------------------------- 
-commit/rev numbers below are out of sync as a result of merging the 
+--------------------------------------- NOTICE ----------------------------------------------
+commit/rev numbers below are out of sync as a result of merging the
 commit history of cerc-web, pledgedb and helpdb projects and rebasing the merged repository
 -------------------------------------- /NOTICE ----------------------------------------------
 
@@ -88,8 +97,8 @@ rev 466 (2015-10-08) (krueschan)
 - added API documentation to Netbeans project and updated example.php to match documentation
 - equity settings panel can now be closed by pressing the ESCAPE keyboard key
 - Excel download now has "pseudo-ISO3" codes for regions (essentially, the flag shortname in all caps)
-- in /charts/ module, for the CSO review, we can specify a "special=cso" switch that excludes "low equity" from the equity band 
-- in /charts/ module, .htaccess rewrite now always points back to index.php and we can pass parameters as URL "path" elements, eg: ..charts/200/dl/nobands/eff/cso/nolegend/usa.png would download (dl) a (200) dpi .(png) file of the effort sharing view (eff) 
+- in /charts/ module, for the CSO review, we can specify a "special=cso" switch that excludes "low equity" from the equity band
+- in /charts/ module, .htaccess rewrite now always points back to index.php and we can pass parameters as URL "path" elements, eg: ..charts/200/dl/nobands/eff/cso/nolegend/usa.png would download (dl) a (200) dpi .(png) file of the effort sharing view (eff)
   for the (USA), without the equity bands shown (nobands) and for the special (cso) case, while omitting the legend (nolegend)
 - in the chart of the country report (or, more generally, in all charts generated with graph_core.php) we now show underlying data in tooltips on mouseover, if wanted
 - fixed code to ignore specified time series in determination of common time series in graph_core module
@@ -103,7 +112,7 @@ rev 466 (2015-10-08) (krueschan)
 rev 465 (2015-08-25) (krueschan)
 - in INDC Assessment Chart module (/charts/) prepared move to public calc (changing .htaccess and moving upload form to protected dir)
 - added a URL parameter 'filename' to Excel download script: if specified, this will be the file name used for the download
-- added a URL parameter 'download' to index.php - if set, index.php will forward to download_tabsep.php after the calculator 
+- added a URL parameter 'download' to index.php - if set, index.php will forward to download_tabsep.php after the calculator
   has done all the calculations, in other words, full parameterized download URLs can now be constructed
 - for Excel download, added aliases for URL params for convenience: min_year/dl_min_year = dl_start_year, max_year/dl_max_year = dl_end_year, years = dl_years
 - fixed API URLs in API example (example.php)
@@ -144,13 +153,13 @@ rev 458 (2015-07-02) (krueschan)
 - made several minor changes to graph css; generally moving to class-based rather than id-based svg styling
 - expansions to graph-core module for future functionality (ignore specific series for common series, added class based styling (can now pass css class for each glyph, data series or wedge), output can be to file or directly as svg code)
 - pledges: now the "conditionality" status can be overriden via caveat JSON field
-- pledges: in country report pledges are now sorted by year 
+- pledges: in country report pledges are now sorted by year
 - pledges: caveat JSON field also provides additional space for textual pledge qualifier
 - shareability: now a link with all settings parameters is shows beneath the country graph; it also includes core db version and a warning is issued when a link with outdated core db version is clicked
 - config.php is now smarter in dealing with various possibilities (directory, subdomain etc) of access to calculator
 - is_dev function in Frameworks class now works with dev calc in subdomain
 - changed equity settings splash page to reflect new default "low equity" case (zero dev_thresh)
-- removed obsolete Excel download hack 
+- removed obsolete Excel download hack
 - changed google analytics "dev-calc user awareness" to work after calculator move
 - several minor post-move URL changes
 - added graph text sandbox

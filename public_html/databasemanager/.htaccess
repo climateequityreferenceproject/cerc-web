@@ -1,7 +1,7 @@
-# it's not mandatory, but strongly recommended to protect this diretory somehow. 
-# if the path/to/your/.htpasswd-file doesn't actually point to a valid password file 
+# it's not mandatory, but strongly recommended to protect this directory somehow. 
+# if the path/to/your/.htpasswd-file doesn't actually point to a valid password file
 # visitors will get a HTTP 500 Server error, which also works for keeping them out :)
-# in the case that you don't want to protect this directory (again, we don't recommend this!) 
+# in the case that you don't want to protect this directory (again, we don't recommend this!)
 # simply delete this .htaccess file
 
 AuthType	Basic
