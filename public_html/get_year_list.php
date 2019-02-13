@@ -9,10 +9,10 @@
         $db_array = Framework::dup_master_db('calc', true);
         $master_db = $db_array['db'];
         $tmp_db = Framework::get_user_db($master_db);
-        $shared_params = Framework::get_shared_params($tmp_db);
+        $shared_params = (New EmptyFramwork)->get_shared_params($tmp_db);
         unlink($tmp_db);
     } else {
-        $shared_params = Framework::get_shared_params($user_db);
+        $shared_params = (New EmptyFramwork)->get_shared_params($user_db);
     }
     
     $advanced = true;

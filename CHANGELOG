@@ -1,7 +1,21 @@
+rev 559 (2019-02-12) (krueschan)
+- created new 'EmptyFramework' class which is an extension of the abstract 'Framework' class without actually extending anything. this is so the methods of the abstract class can be accessed through initiated instances of the class without having to chose a specific framework (e.g. 'GreenhouseDevRights')
+- changed several static public functions in abstract class 'Framework' to be non-static (specifically, those that are called both statically and non-statically, depending on whether they are called through the abstract class or through an instance thereof)
+- throughout the code, changed static calls of several methods of class 'Framework' to become non-static calls of instances of class 'EmptyFramework'
+- fixed bug where the cookie of the popup notice code could not be set since it was included in index.php after the header was already sent
+- fixed bug where not-yet-set cookie would throw exception
+- removed outdated "beta" label from title
+
+rev 558 (2019-02-12) (krueschan)
+- Updates to popup_notice.php
+
+rev 557 (2019-02-08) (krueschan)
+- Updates to help_db.sql
+
 rev 556  (2018-11-23) (krueschan)
 - minor changes to paper.md
 
-rev 555  (2018-11-23) (krueschan)
+rev 555 (2018-11-23) (krueschan)
 - expanded research contribution section to paper.md and added relevant paper.bib entries
 - minor changes to README.md
 - correcting a few spelling mistakes

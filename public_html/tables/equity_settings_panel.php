@@ -9,9 +9,9 @@ $glossary = new HWTHelp('def_link', 'glossary.php', 'calc_gloss');
 * and open the template in the editor.
 */
 
-$emerg_path_id["LED"] = Framework::get_emerg_path_id('1.5LowEnergyDemand');
-$emerg_path_id["1.5"] = Framework::get_emerg_path_id('1.5Cmarkerpathway');
-$emerg_path_id["2.0"] = Framework::get_emerg_path_id('2.0Cmarkerpathway');
+$emerg_path_id["LED"] = (New EmptyFramework)->get_emerg_path_id('1.5LowEnergyDemand');
+$emerg_path_id["1.5"] = (New EmptyFramework)->get_emerg_path_id('1.5Cmarkerpathway');
+$emerg_path_id["2.0"] = (New EmptyFramework)->get_emerg_path_id('2.0Cmarkerpathway');
 
 $ambition_checked["LED"] = '';
 $ambition_checked["1.5"] = '';
@@ -35,14 +35,14 @@ $cbdr_ndx = 5;
 
 if (isset($_COOKIE['db'])) {
     // NOTE: Use '==', not '===': sometimes comparing strings to ints
-    
+
     $checked_string = 'checked="checked"';
     foreach ($emerg_path_id as $key => $val) {
         if ($val == $shared_params['emergency_path']['value']) {
             $ambition_checked[$key] = $checked_string;
         }
     }
-    
+
     if ($shared_params['cum_since_yr']['value'] == 1850) {
         $cumsince_checked[1850] = $checked_string;
         $cbdr_ndx = 0;
@@ -71,7 +71,7 @@ if (isset($_COOKIE['db'])) {
         // If the current settings do not match the options on the settings panel
         $cbdr_ndx = -10;
     }
-    
+
 }
 
 ?>
@@ -82,7 +82,7 @@ if (isset($_COOKIE['db'])) {
 <!--    <input type="button" name="equity_reset_top" id="equity_reset_top" class="click" value='<?php //echo _("Reset to defaults") ?>' />-->
     <input type="submit" name="equity_submit_top" id="equity_submit_top" class="click" value='<?php echo _("Save and continue") ?>' />
     <input type="submit" name="equity_cancel_top" id="equity_cancel_top" class="click" value='<?php echo _("Cancel") ?>' />
-    
+
     <ul>
         <li class="setting">
             <fieldset id="pathway">
@@ -159,7 +159,7 @@ if (isset($_COOKIE['db'])) {
                 <h4><?php echo $glossary->getLink('r_weight', false, _("Relative Weight")); ?> for Historical Responsibility vs Economic Capability to Act</h4>
                 <div class="input_set group" id="rci_weight_dropdown">
                     <select name="r_wt" id="r_wt_dropdown">
-                        <?php 
+                        <?php
                             for ($i = 0; $i <= 10; $i++) {
                                 var_dump($r_wt, $i);
                                 echo "<option value=\"" . ($i/10) . "\"" . (($fw_params['r_wt']['value'] == ($i/10)) ? " selected=\"selected\">" : ">") . ($i * 10) . "%</option>";
@@ -168,7 +168,7 @@ if (isset($_COOKIE['db'])) {
                     </select>
                     <div id="rci_wt_slider"></div>
                     <select name="c_wt" id="c_wt_dropdown">
-                        <?php 
+                        <?php
                             for ($i = 0; $i <= 10; $i++) {
                                 echo "<option value=\"" . ($i/10) . "\"" . (($fw_params['r_wt']['value'] == (1 - ($i/10))) ? " selected=\"selected\">" : ">") . ($i * 10) . "%</option>";
                             }
@@ -183,7 +183,7 @@ if (isset($_COOKIE['db'])) {
                         Capability
                     </div>
                 </div>
-                <script>  
+                <script>
                     $(function() {
                       var r_select = $( "#r_wt_dropdown" );
                       var c_select = $( "#c_wt_dropdown" );
@@ -215,4 +215,4 @@ if (isset($_COOKIE['db'])) {
     <input type="submit" name="equity_submit" id="equity_submit" class="click" value='<?php echo _("Save and continue") ?>' />
     <input type="submit" name="equity_cancel" id="equity_cancel" class="click" value='<?php echo _("Cancel") ?>' />
     <script>document.onkeyup = function(evt) { evt = evt || window.event; if (evt.keyCode == 27) { $('#equity_cancel').click(); } }; </script>
-</form><!-- end equity_settings --> 
+</form><!-- end equity_settings -->

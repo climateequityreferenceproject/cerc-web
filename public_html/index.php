@@ -47,6 +47,12 @@ if ((isset($_REQUEST['download'])) || (isset($_REQUEST['dl']))) {
     header('Location: ' . $url, true, 303);
     die();
 }
+
+if (is_file('inc/popup_notice.php')) {
+    require_once('inc/popup_notice.php');
+    $popup_code = get_popup_code();
+}
+
 ?>
 <!DOCTYPE html>
     <head>
@@ -78,8 +84,8 @@ if ((isset($_REQUEST['download'])) || (isset($_REQUEST['dl']))) {
     <?php include("inc/googleanalytics.php"); ?>
     </head>
     <body id="gdrs_calculator">
-        <?php if (is_file('inc/popup_notice.php')) { require_once('inc/popup_notice.php'); }?>
-        <div id="loading"></div> 
+        <?php if(isset($popup_code)) { echo ($popup_code); } ?>
+        <div id="loading"></div>
         <div id="container">
         <?php include("inc/calc_branding.inc.php"); ?>
         <?php include("inc/calc_nav_menu_main.inc.php"); ?>
@@ -431,7 +437,7 @@ if ((isset($_REQUEST['download'])) || (isset($_REQUEST['dl']))) {
                                             echo '<p class="alert">' . _("The calculator or database has been updated since you last visited. Your settings have been reset.") . '</p>';
                                         }
                                         if (isset($_REQUEST['dataversion'])) {
-                                            if (!(Framework::get_data_ver() == $_REQUEST['dataversion'])) {
+                                            if (!((New EmptyFramwork)->get_data_ver() == $_REQUEST['dataversion'])) {
                                                 echo '<p class="alert">' . _("Please note that the calculator database has been updated since your link was generated. Your settings have been preserved but the results may differ slightly.") . '</p>';
                                             }
                                         }

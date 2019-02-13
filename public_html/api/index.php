@@ -21,7 +21,7 @@
 
         $fw = new Framework::$frameworks['gdrs']['class'];
 
-        $shared_params_default = Framework::get_shared_params();
+        $shared_params_default = $fw->get_shared_params();
         $fw_params_default = $fw->get_fw_params();
         $params_default = array_merge($shared_params_default, $fw_params_default);
         
@@ -39,7 +39,7 @@
                 $user_db = null;
             }
             if ($user_db) {
-                $shared_params = Framework::get_shared_params($user_db);
+                $shared_params = $fw->get_shared_params($user_db);
                 $fw_params = $fw->get_fw_params($user_db);
             } else {
                 $user_db_exists = false;
@@ -94,37 +94,37 @@
                         $status = $msg['OK'];
                     } elseif ($_GET['q'] === 'year_range') {
                         if ($_GET['db']) {
-                            $data = json_encode(Framework::get_year_range($user_db));
+                            $data = json_encode($fw->get_year_range($user_db));
                         } else {
-                            $data = json_encode(Framework::get_year_range());
+                            $data = json_encode($fw->get_year_range());
                         }
                         $status = $msg['OK'];
                     }  elseif ($_GET['q'] === 'pathways') {
                         if ($_GET['db']) {
-                            $data = json_encode(Framework::get_emerg_paths($user_db));
+                            $data = json_encode($fw->get_emerg_paths($user_db));
                         } else {
-                            $data = json_encode(Framework::get_emerg_paths());
+                            $data = json_encode($fw->get_emerg_paths());
                         }
                         $status = $msg['OK'];
                     } elseif ($_GET['q'] === 'data_ver') {
                         if ($_GET['db']) {
-                            $data = json_encode(Framework::get_data_ver($user_db));
+                            $data = json_encode($fw->get_data_ver($user_db));
                         } else {
-                            $data = json_encode(Framework::get_data_ver());
+                            $data = json_encode($fw->get_data_ver());
                         }
                         $status = $msg['OK'];
                     } elseif ($_GET['q'] === 'calc_ver') {
                         if ($_GET['db']) {
-                            $data = json_encode(Framework::get_calc_ver($user_db));
+                            $data = json_encode($fw->get_calc_ver($user_db));
                         } else {
-                            $data = json_encode(Framework::get_calc_ver());
+                            $data = json_encode($fw->get_calc_ver());
                         }
                         $status = $msg['OK'];
                     } elseif ($_GET['q'] === 'countries') {
                         if ($_GET['db']) {
-                            $data = json_encode(Framework::get_country_list($user_db));
+                            $data = json_encode($fw->get_country_list($user_db));
                         } else {
-                            $data = json_encode(Framework::get_country_list());
+                            $data = json_encode($fw->get_country_list());
                         }
                         $status = $msg['OK'];
                     } elseif ($_GET['q'] === 'regions') {
@@ -134,9 +134,9 @@
                             $iso3 = null;
                         }
                         if ($_GET['db']) {
-                            $data = json_encode(Framework::get_region_list($iso3, $user_db));
+                            $data = json_encode($fw->get_region_list($iso3, $user_db));
                         } else {
-                            $data = json_encode(Framework::get_region_list($iso3));
+                            $data = json_encode($fw->get_region_list($iso3));
                         }
                         $status = $msg['OK'];
                     } else {

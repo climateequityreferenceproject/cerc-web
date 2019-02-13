@@ -129,10 +129,10 @@
         $country_name = get_country_name($display_params, $country_list, $region_list);
         
         $db_time = Framework::get_db_time_string($user_db);
-        $version = '<p>Data version: ' . Framework::get_data_ver($user_db);
+        $version = '<p>Data version: ' . (New EmptyFramework)->get_data_ver($user_db);
         $version .= '&nbsp;(last change to database: ' . $db_time['master'] . ', ' . Framework::get_db_name($user_db) . ')';
         $version .= "<br>\n";
-        $version .= 'Calculator version: ' . Framework::get_calc_ver() . " (engine); " . Framework::get_webcalc_ver() . " (cerc-web)";
+        $version .= 'Calculator version: ' . (New EmptyFramework)->get_calc_ver() . " (engine); " . Framework::get_webcalc_ver() . " (cerc-web)";
         $version .= "</p>\n";
         
         switch ($display_params["framework"]['value']) {

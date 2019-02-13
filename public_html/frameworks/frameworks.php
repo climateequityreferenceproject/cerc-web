@@ -49,7 +49,7 @@
         // accessed from a browser that has the "is developer" cookie set
         // ----------------------------------------------------------------
         public static function user_is_developer() {
-            return ($_COOKIE['this_user_is_developer']=='true');
+            return (isset($_COOKIE['this_user_is_developer']) && ($_COOKIE['this_user_is_developer']=='true'));
         }
         
         // ----------------------------------------------------------------
@@ -209,15 +209,15 @@
             
             return $db_cnx;
         }
-        
-        public static function get_data_ver($user_db = NULL) {
+
+        public function get_data_ver($user_db = NULL) {
             $db_cnx = self::db_cnx($user_db);
             
             $query_result = $db_cnx->query('SELECT data_version FROM meta;')->fetchAll();
             return $query_result[0]['data_version'];
         }
 
-        public static function get_calc_ver($user_db = NULL) {
+        public function get_calc_ver($user_db = NULL) {
             $db_cnx = self::db_cnx($user_db);
             
             $query_result = $db_cnx->query('SELECT calc_version FROM meta;')->fetchAll();
@@ -229,7 +229,7 @@
             return $webcalc_version;
         }
 
-        public static function get_year_range($user_db = NULL) {
+        public function get_year_range($user_db = NULL) {
             $db_cnx = self::db_cnx($user_db);
             
             $query = "SELECT MIN(year) AS min_year FROM view_base_with_ep WHERE Baseline_MtC IS NOT NULL;";           
@@ -248,8 +248,8 @@
             return array('min_year' => $min_year, 'max_year' => $max_year);
             
         }
-        
-        public static function get_emerg_path_id($short_name, $user_db = NULL) {
+
+        public function get_emerg_path_id($short_name, $user_db = NULL) {
             $db_cnx = self::db_cnx($user_db);
             
             $query = "SELECT pathway_id FROM pathway_names WHERE name_short = '" . $short_name . "';";
@@ -257,8 +257,8 @@
             $query_result = $db_cnx->query($query)->fetchAll();
             return $query_result[0]['pathway_id'];
         }
-        
-        public static function get_emerg_paths($user_db = NULL) {
+
+        public function get_emerg_paths($user_db = NULL) {
             $db_cnx = self::db_cnx($user_db);
            
             $retval = array();
@@ -283,8 +283,8 @@ EOSQL;
             
             return $retval;
         }
-        
-        public static function get_country_list($user_db = NULL) {
+
+        public function get_country_list($user_db = NULL) {
             $db_cnx = self::db_cnx($user_db);
             
             $query_result = $db_cnx->query('SELECT iso3, name FROM country ORDER BY NAME;')->fetchAll(PDO::FETCH_ASSOC);
@@ -295,8 +295,8 @@ EOSQL;
             return $query_result;
         }
 
-        
-        public static function get_region_list($iso3, $user_db = NULL) {
+
+        public function get_region_list($iso3, $user_db = NULL) {
             $db_cnx = self::db_cnx($user_db);
             
             if ($iso3) {
@@ -328,7 +328,7 @@ EOSQL;
         // pathways from the database to fill into the shared parameters
         // array.
         // ----------------------------------------------------------------
-        public static function get_shared_params($user_db = NULL) {
+        public function get_shared_params($user_db = NULL) {
             $retval = self::$shared_params_default;
             $db_cnx = self::db_cnx($user_db);
             

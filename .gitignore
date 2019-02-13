@@ -3,3 +3,4 @@ nbproject/
 !/public_html/config.php.new
 /public_html/inc/popup_notice.php
 /public_html/private/
+.htaccess

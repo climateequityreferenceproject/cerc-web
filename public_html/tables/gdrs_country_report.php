@@ -415,7 +415,7 @@ EOSQL;
     $retval .= '</dl>';
     $retval .= '<p style="position:absolute; left:125px; top:1px">';
     $fw = new Framework::$frameworks['gdrs']['class'];
-    $query_string = $fw->get_params_as_query($dbfile) . '&dataversion=' . Framework::get_data_ver() . '&iso3=' . $iso3;
+    $query_string = $fw->get_params_as_query($dbfile) . '&dataversion=' . $fw->get_data_ver() . '&iso3=' . $iso3;
     unset($fw);
     $retval .= '<a href="' . $URL_calc . '?' . $query_string . '">Shareable Link to this view</a>';
     if ((Framework::is_dev()) || (Framework::user_is_developer())) { $retval .= '&nbsp;&nbsp;&nbsp;<a href="' . $URL_calc_dev . '?' . $query_string . '">Link (dev version)</a>'; }
