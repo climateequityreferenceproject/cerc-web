@@ -437,7 +437,7 @@ if (is_file('inc/popup_notice.php')) {
                                             echo '<p class="alert">' . _("The calculator or database has been updated since you last visited. Your settings have been reset.") . '</p>';
                                         }
                                         if (isset($_REQUEST['dataversion'])) {
-                                            if (!((New EmptyFramwork)->get_data_ver() == $_REQUEST['dataversion'])) {
+                                            if (!((New EmptyFramework)->get_data_ver() == $_REQUEST['dataversion'])) {
                                                 echo '<p class="alert">' . _("Please note that the calculator database has been updated since your link was generated. Your settings have been preserved but the results may differ slightly.") . '</p>';
                                             }
                                         }
