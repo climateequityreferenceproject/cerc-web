@@ -216,31 +216,8 @@ EOSQL;
         $bau_data['LULUCF_MtCO2'][$yr_ndx] = $record['LULUCF_MtCO2'];
         $bau_data['NonCO2_MtCO2e'][$yr_ndx] = $record['NonCO2_MtCO2e'];
         $alloc_series[$yr_ndx] = $record['gdrs_alloc_MtCO2'];
-        
-        // TODO really, I should figure out how params are passed to $display_params 
-        // and best used here, CH. Also, this check should go outside of the loop eventually. leaving it here for now to kep relevant code together
-        // update: ($diplay_params are now passed to this function. defaults are set in core.php)
-        if (Framework::is_dev()) {
-            $greenband = isset($_REQUEST['greenband']);
-        }
-        // we need some good logic and algs here. probably put algs into a function
-        if ($greenband) {
-            if ((round($global_alloc_series[$yr_ndx]/$global_bau_series[$yr_ndx], 4)) != 1) {  // adjusted greenline only once emergency pathway starts
-                $low = 0.8 *$bau_series[$yr_ndx] * ($global_alloc_series[$yr_ndx]/$global_bau_series[$yr_ndx]);
-                $low = max($low, $alloc_series[$yr_ndx]);
-                $low = min($low, $bau_series[$yr_ndx]);
-                $high = 1.2 *$bau_series[$yr_ndx] * ($global_alloc_series[$yr_ndx]/$global_bau_series[$yr_ndx]);
-                $high = max($high, $alloc_series[$yr_ndx]);
-                $high = min($high, $bau_series[$yr_ndx]);
-                $dulline_series[$yr_ndx]=min($low,$high);
-                $dulline_series_max[$yr_ndx]=max($low,$high);
-            } else {
-                $dulline_series[$yr_ndx] = $bau_series[$yr_ndx];
-                $dulline_series_max[$yr_ndx] = $bau_series[$yr_ndx];
-            }
-        } else {
-            $dulline_series[$yr_ndx] = $bau_series[$yr_ndx] * ($global_alloc_series[$yr_ndx]/$global_bau_series[$yr_ndx]);            
-        }
+
+        $dulline_series[$yr_ndx] = $bau_series[$yr_ndx] * ($global_alloc_series[$yr_ndx]/$global_bau_series[$yr_ndx]);
         $min = min($min, $alloc_series[$yr_ndx]);
         $max = max($max, $bau_series[$yr_ndx]);
     }
@@ -274,9 +251,6 @@ EOSQL;
         $graph->add_series($bau_data['fossil_CO2_MtCO2'], "fossil_CO2_MtCO2", "bau_details_fossil");
         $graph->add_series($bau_data['LULUCF_MtCO2'], "LULUCF_MtCO2", "bau_details_lulucf");
         $graph->add_series($bau_data['NonCO2_MtCO2e'], "NonCO2_MtCO2e", "bau_details_nonco2");
-    }
-    if ($greenband) {
-        $graph->add_series($dulline_series_max, "physical_max", "physical");
     }
     $graph->add_series($dulline_series, "physical", "physical");
     $graph->add_series($alloc_series, "alloc",  "alloc");
@@ -318,18 +292,9 @@ EOSQL;
         $wedge_id = 'supportedmit';
         $stripes = NULL;
     }
-    if ($greenband) {
-        $greenband_wedge = array(
-                            'id' => 'greenband',
-                            'between' => array('physical', 'physical_max'),
-                            'color' => '#00A400',
-                            'stripes' => NULL,
-                            'opacity' => 0.8
-                            );
-    }
     if (!(Framework::is_dev() || (Framework::user_is_developer()))) {
-        // in tooltips, only shows greenlines for devs - we need to decide whether showing 
-        // numbers reifies the greenline? 
+        // in tooltips, only shows greenlines for devs - we need to decide whether showing
+        // numbers reifies the greenline?
         $ignore_for_tooltips = array("physical");
     }
 //    $graph_file = $graph->svgplot_wedges(array(    // old start of the plot command, to write to svg file - would also have "code_output" as false
@@ -349,8 +314,7 @@ EOSQL;
                             'color' => $gap_color,
                             'stripes' => $stripes,
                             'opacity' => 0.8
-                        ),
-                        $greenband_wedge
+                        )
                     ), array(
                         'common_id' => 'historical',
                         'ignore_for_common' => array('natl_bau', 'fossil_CO2_MtCO2', 'LULUCF_MtCO2', 'NonCO2_MtCO2e'),

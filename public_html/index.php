@@ -1,8 +1,8 @@
 <?php
 if (isset($_GET['debug']) && $_GET['debug'] == 'yes') {
-    ini_set('display_errors',1); 
+    ini_set('display_errors',1);
     error_reporting(E_ALL);
-} 
+}
 // implements maintenance mode - check _maintenance-off file for details and usage
 if (file_exists("_maintenance-on")) {
     include("_maintenance-on");
@@ -41,7 +41,7 @@ $equity_nosplash = $equity_nosplash || isset($_POST['equity_submit_top']);
 $equity_nosplash = $equity_nosplash || (isset($_GET['equity']) && $_GET['equity'] === 'default');
 $equity_nosplash = $equity_nosplash || isset($_GET['iso3']);
 
-if ((isset($_REQUEST['download'])) || (isset($_REQUEST['dl']))) { 
+if ((isset($_REQUEST['download'])) || (isset($_REQUEST['dl']))) {
     $url  = (Framework::is_dev()) ? $URL_calc_dev : $URL_calc;
     $url .= "tables/download_tabsep.php?" . $_SERVER['QUERY_STRING'] . "&db=" . basename($user_db);
     header('Location: ' . $url, true, 303);
@@ -62,7 +62,7 @@ if (is_file('inc/popup_notice.php')) {
     <title>Climate Equity Reference Calculator</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
+
     <link rel="shortcut icon"  href="img/favicon_32.ico" />
     <link rel="stylesheet" href="css/cescalc.css?v=1.2">
     <link rel="stylesheet" href="css/tablesorter.css?v=1.0">
@@ -79,8 +79,8 @@ if (is_file('inc/popup_notice.php')) {
     <!--<script type="text/javascript" src="js/jquery-1.6.4.min.js"></script>-->
     <!--<script type="text/javascript" src="js/jquery-ui-1.8.9.custom.min.js?v=1.0"></script>-->
     <script type="text/javascript" src="js/jquery.tablesorter.js?v=1.0"></script>
-    <script type="text/javascript" src="js/calc.js?v=1.0"></script>        
-    <script type="text/javascript" src="graphs/graph_interactivity.js?v=1.0"></script>        
+    <script type="text/javascript" src="js/calc.js?v=1.0"></script>
+    <script type="text/javascript" src="graphs/graph_interactivity.js?v=1.0"></script>
     <?php include("inc/googleanalytics.php"); ?>
     </head>
     <body id="gdrs_calculator">
@@ -165,21 +165,20 @@ if (is_file('inc/popup_notice.php')) {
                         <?php // for now, we only want LULUCF selection for country report in the _dev version
                         if (Framework::is_dev()) { ?>
                         <li>
-                            <?php 
-                            // echo select_options_list('display_gases', $display_params, _("Gases to display:"), "select", _("Gases/sectors to include in the pledge assessments in the country report. This setting is independent from the inclusion of non-CO2 and LULUCF in the calculation of responsibility (below).")); 
-                            echo select_options_list('display_gases', $display_params, _("Include LULUCF in report:"), "select", _("Select whether you want to include LULUCF in the chart and tables in the country report. This setting is independent from the inclusion of LULUCF in the calculation of responsibility (below).")); 
+                            <?php
+                            // echo select_options_list('display_gases', $display_params, _("Gases to display:"), "select", _("Gases/sectors to include in the pledge assessments in the country report. This setting is independent from the inclusion of non-CO2 and LULUCF in the calculation of responsibility (below)."));
+                            echo select_options_list('display_gases', $display_params, _("Include LULUCF in report:"), "select", _("Select whether you want to include LULUCF in the chart and tables in the country report. This setting is independent from the inclusion of LULUCF in the calculation of responsibility (below)."));
                             ?>
                         </li>
                         <?php } ?>
                         <li>
                             <?php echo select_num('decimal_pl', $display_params, _("Decimal places:")); ?>
                         </li>
-                        <?php // for now, we only want advanced chart settings in the -dev calculator 
+                        <?php // for now, we only want advanced chart settings in the -dev calculator
                         if (Framework::is_dev()) { ?>
                         <li class="advanced">
                             <fieldset class="ch_settings" id="ch_settings">
                             <legend class="closed"><span>&nbsp;</span>Christian's Play Area</legend>
-                            <input type="checkbox" id="greenband" name="greenband" value="1"><label for="greenband">Use Green Band</label>
                             <ul class="group">
                                 <li>
                                     <button onclick="toggledisplay_by_class('physical')">toggle</button>
@@ -208,9 +207,9 @@ if (is_file('inc/popup_notice.php')) {
                                 </select>
                             </li>-->
                         </li>
-                        
+
                         <li class="advanced"><fieldset class="responsibility">
-                        <legend class="open"><span>&nbsp;</span><?php echo $glossary->getLink('gloss_responsibility', false, _('Responsibility')); ?></legend> 
+                        <legend class="open"><span>&nbsp;</span><?php echo $glossary->getLink('gloss_responsibility', false, _('Responsibility')); ?></legend>
                         <ul class="group">
                             <li id="cum_since_yr_wrapper">
                                 <?php echo select_num('cum_since_yr', $shared_params, $glossary->getLink('cum_respons', false, _('Cumulative since')) . ": "); ?>
@@ -237,7 +236,7 @@ if (is_file('inc/popup_notice.php')) {
                         </ul>
                         </fieldset>
                         </li>
-                                    
+
                         <?php
                             // Progressivity
                             echo '<li class="advanced"><fieldset class="progressivity">';
@@ -367,7 +366,7 @@ if (is_file('inc/popup_notice.php')) {
                                                 <button id="equity_settings_button" type="submit">Review equity settings</button>
                                             </div>
                                         </form>
-                                       
+
                                        <div id="save">
                     <?php
                                        if ($display_params['framework']['value'] === 'gdrs') {
@@ -431,7 +430,7 @@ if (is_file('inc/popup_notice.php')) {
                                     echo '</tbody></table></div>';
                                 }
                                 ?>
-                               
+
                                     <?php
                                         if (isset($_COOKIE['db']) && !$up_to_date) {
                                             echo '<p class="alert">' . _("The calculator or database has been updated since you last visited. Your settings have been reset.") . '</p>';
@@ -442,18 +441,18 @@ if (is_file('inc/popup_notice.php')) {
                                             }
                                         }
                                     ?>
-                                                                
+
                                     <div id="calc_parameters">
                                         <?php echo generate_params_table($display_params, $fw_params, $shared_params, $country_list, $region_list, $table_views); ?>
                                     </div><!-- end #calc_parameters -->
 
                                     <div id="calc_results">
-                                        <?php 
+                                        <?php
                                         $time_start = microtime_float();
-                                        echo generate_results_table($display_params, $shared_params, $country_list, $region_list, $user_db); 
+                                        echo generate_results_table($display_params, $shared_params, $country_list, $region_list, $user_db);
                                         // include("tables/sample_table.php");
                                         // this only works for the first country report. needs fixing.
-                                        // specifically, what I am actually interested in is figuring out how much time re-calculation of db 
+                                        // specifically, what I am actually interested in is figuring out how much time re-calculation of db
                                         // takes and how much time the retrieval of values and processing for display
                                         // echo "<div>processed in " . round(microtime_float() - $time_start,3) . " seconds</div>";
                                         ?>
@@ -463,7 +462,7 @@ if (is_file('inc/popup_notice.php')) {
                            </div><!-- end #calc_container -->
                            <div id="popup"></div><!-- help #popup window -->
             <br class="clear"/>
-        </div><!-- end #container -->      
+        </div><!-- end #container -->
         <?php include("inc/calc_footer.inc.php"); ?>
     </body>
 </html>
