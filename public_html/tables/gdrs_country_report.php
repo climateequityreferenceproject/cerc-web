@@ -340,8 +340,8 @@ EOSQL;
     $retval .= '<p id="toggle-key">' . _('Show graph key') . '</p>';
     $retval .= '<dl id="ctry_report_legend">';
     $retval .= '<dt class="key-bau"><span></span>' . _('Baseline Emissions') . '</dt>';
-    $retval .= '<dd>' . _('GHG emissions baselines (these are <strong>*not*</strong> business-as-usual pathways) are calculated as counter-factual ' . $glossary->getLink('gloss_bau', false, _('non-policy baselines')) . '. The method is convergence from recent historical growth rates to long-term (2030) growth rates from the projections of McKinsey and Co. (Version 2.1). CO<sub>2</sub> from land use is projected constant at at levels equal to the average of the last 10 years of historical data. GDP estimates are taken from IMF (WEO2013) through 2018 and converge to growth rates from McKinsey and Co. in 2030. See <a href="http://' . $main_domain_host . '/calculator-information/gdp-and-emissions-baselines/">Definition, sourcing, and updating of the emissions baselines</a> for details.') . '</dd>';    
-    
+    $retval .= '<dd>' . _('GHG emissions baselines (these are <strong>*not*</strong> business-as-usual pathways) are calculated as counter-factual ' . $glossary->getLink('gloss_bau', false, _('non-policy baselines')) . '. The method applies recent improvements of carbon intensity to GDP forecast estimates. GDP estimates based on national data from the IMF&#39;s Worls Economic Outlook (WEO)for the next 5 years and then on regional data from IPCC (Fifth Assessment Report) through 2030. See <a href="http://' . $main_domain_host . '/calculator-information/gdp-and-emissions-baselines/">Definition, sourcing, and updating of the emissions baselines</a> for details.') . '</dd>';
+
     $retval .= '<dt class="key-gdrs"><span></span>' . _('"Fair share" allocation') . '</dt>';
     $retval .= '<dd>' . sprintf(_('National allocation trajectory, as calculated for %s using the specified pathways and parameters. 
         The mitigation implied by this allocation can be either domestic or international &#8211; The Climate Equity Reference Project effort-sharing framework says nothing about how or where it occurs.'), $country_name) . '</dd>';
