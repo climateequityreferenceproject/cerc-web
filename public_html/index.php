@@ -217,8 +217,8 @@ if (is_file('inc/popup_notice.php')) {
                             </li>
 <!--- we don't support LULUCF anymore but I just want to make sure the use_lulucf=0 parameter is passed on correctly, so I'm just hiding the control, not removing it for now -->
                             <li style="display:none;">
-                                <input type="checkbox" name="use_lulucf" id="use_lulucf" class="click" value="1" <?php if ((int) $shared_params["use_lulucf"]['value'] === 1)
-                                echo 'checked="checked"'; ?>  />
+                                <input type="checkbox" name="use_lulucf" id="use_lulucf" class="click" value="1"
+                                     <?php //if ((int) $shared_params["use_lulucf"]['value'] === 1) //echo 'checked="checked"'; ?>  />
                                 <label for="use_lulucf" class="click"> <?php echo sprintf(_('Include %s'), $glossary->getLink('lu_emissions', false, _('land-use emissions'))); ?></label>
                             </li>
                             <li>
