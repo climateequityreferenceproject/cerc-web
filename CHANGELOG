@@ -1,3 +1,10 @@
+rev 560-564 (2019-02-15) (krueschan)
+- updated baseline description in chart key
+- removed obsolete experimental code (greenband)
+- fixed LULUCF exclusion in index.php sidebar
+- minor changes to paper bibliography
+- fixed typo bug from rev 559
+
 rev 559 (2019-02-12) (krueschan)
 - created new 'EmptyFramework' class which is an extension of the abstract 'Framework' class without actually extending anything. this is so the methods of the abstract class can be accessed through initiated instances of the class without having to chose a specific framework (e.g. 'GreenhouseDevRights')
 - changed several static public functions in abstract class 'Framework' to be non-static (specifically, those that are called both statically and non-statically, depending on whether they are called through the abstract class or through an instance thereof)

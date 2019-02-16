@@ -1,43 +1,42 @@
 <?php
-require_once "HTTP/Request.php";
+include_once "guzzle.phar"; // currently using version 6.3.3 from https://github.com/guzzle/guzzle
 
 function get_countries() {
-    $req =& new HTTP_Request("http://calculator.climateequityreference.org/api/?q=countries");
-    $req->setMethod(HTTP_REQUEST_METHOD_GET);
-    if (!PEAR::isError($req->sendRequest())) {
-        // Note: json_decode returns arrays as StdClass, so have to cast
-        $response = (array) json_decode($req->getResponseBody());
-    } else {
-        throw new Exception($req->getMessage());
+    $client = new \GuzzleHttp\Client();
+    try {
+         $response = (array) json_decode($client->request('GET', "http://calculator.climateequityreference.org/api/?q=countries")->getBody());
+    } catch (Exception $e) {
+         throw $e;
     }
     return $response;
 }
 
 function get_params() {
-    $req =& new HTTP_Request("http://calculator.climateequityreference.org/api/?q=params");
-    $req->setMethod(HTTP_REQUEST_METHOD_GET);
-    if (!PEAR::isError($req->sendRequest())) {
-        $response = (array) json_decode($req->getResponseBody());
-    } else {
-        throw new Exception($req->getMessage());
+    $client = new \GuzzleHttp\Client();
+    try {
+         $response = (array) json_decode($client->request('GET', "http://calculator.climateequityreference.org/api/?q=params")->getBody());
+    } catch (Exception $e) {
+         throw $e;
     }
     return $response;
 }
 
 function get_country_data($iso3) {
-    $req =& new HTTP_Request("http://calculator.climateequityreference.org/api/");
-    $req->setMethod(HTTP_REQUEST_METHOD_POST);
-    $req->addPostData('years', 2020); // Note hard-coded year
-    $req->addPostData('countries', $iso3);
-    if (!PEAR::isError($req->sendRequest())) {
-        $response = json_decode($req->getResponseBody());
+    $POST_params['years'] = 2030; // Note hard-coded year
+    $POST_params['countries'] = $iso3;
+    $client = new \GuzzleHttp\Client();
+    try {
+        $response = $client->request('POST', "http://calculator.climateequityreference.org/api/", [
+                    'form_params' => $POST_params,
+                    'allow_redirects' => ['strict' => true]]);
+        $response = (array) json_decode($response->getBody());
         // Oddly, the decode procedure duplicates the first element.
         // Test by comparing to the number of elements we expect (1).
         if (count($response) > 1) {
            $response = array_slice($response, 1);
         }
-    } else {
-        throw new Exception($req->getMessage());
+    } catch (Exception $e) {
+      throw $e;
     }
     return $response;
 }
@@ -81,7 +80,7 @@ function get_country_data($iso3) {
                     echo $row;
                 }
                 echo '</table>';
-                
+
                 echo '<h2>parameters</h2>';
                 echo '<table>';
                 echo '<tr><td>item</td><td>value</td></tr>';
