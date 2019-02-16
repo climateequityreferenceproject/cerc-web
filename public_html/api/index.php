@@ -29,7 +29,7 @@
         $user_db_exists = true;
         $made_temp_db = false;
         // Note that add_user_db_path will return FALSE if the file doesn't exist
-        if ($_POST['db'] || $_GET['db']) {
+        if (isset($_POST['db']) || isset($_GET['db'])) {
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $user_db = Framework::add_user_db_path($_POST['db']);
             } else {
@@ -47,7 +47,7 @@
         }
         if (!$user_db) {
             if (isset($_GET['old_db'])) {
-                $old_db = Framework::add_user_db_path($_GET['old_db']);
+                $old_db = Framework::add_user_db_path(filter_input(INPUT_GET, 'old_db', FILTER_SANITIZE_URL));
                 // Copy the old database as a master
                 $user_db = Framework::get_user_db($old_db, 'api');
             } else {
@@ -81,59 +81,59 @@
                 break;
             case 'GET':
                 if ($user_db_exists) {
-                    if ($_GET['q'] === 'new_db') {
+                    if (filter_input(INPUT_GET, 'q', FILTER_SANITIZE_URL) === 'new_db') {
                         $data = json_encode(array('db' => Framework::get_db_name($user_db)));
                         $status = $msg['OK'];
                         $made_temp_db = false;
-                    } elseif ($_GET['q'] === 'params') {
-                        if ($_GET['db']) {
+                    } elseif (filter_input(INPUT_GET, 'q', FILTER_SANITIZE_URL) === 'params') {
+                        if (isset($_GET['db'])) {
                             $data = json_encode($params);
                         } else {
                             $data = json_encode($params_default);
                         }
                         $status = $msg['OK'];
-                    } elseif ($_GET['q'] === 'year_range') {
-                        if ($_GET['db']) {
+                    } elseif (filter_input(INPUT_GET, 'q', FILTER_SANITIZE_URL) === 'year_range') {
+                        if (isset($_GET['db'])) {
                             $data = json_encode($fw->get_year_range($user_db));
                         } else {
                             $data = json_encode($fw->get_year_range());
                         }
                         $status = $msg['OK'];
-                    }  elseif ($_GET['q'] === 'pathways') {
-                        if ($_GET['db']) {
+                    }  elseif (filter_input(INPUT_GET, 'q', FILTER_SANITIZE_URL) === 'pathways') {
+                        if (isset($_GET['db'])) {
                             $data = json_encode($fw->get_emerg_paths($user_db));
                         } else {
                             $data = json_encode($fw->get_emerg_paths());
                         }
                         $status = $msg['OK'];
-                    } elseif ($_GET['q'] === 'data_ver') {
-                        if ($_GET['db']) {
+                    } elseif (filter_input(INPUT_GET, 'q', FILTER_SANITIZE_URL) === 'data_ver') {
+                        if (isset($_GET['db'])) {
                             $data = json_encode($fw->get_data_ver($user_db));
                         } else {
                             $data = json_encode($fw->get_data_ver());
                         }
                         $status = $msg['OK'];
-                    } elseif ($_GET['q'] === 'calc_ver') {
-                        if ($_GET['db']) {
+                    } elseif (filter_input(INPUT_GET, 'q', FILTER_SANITIZE_URL) === 'calc_ver') {
+                        if (isset($_GET['db'])) {
                             $data = json_encode($fw->get_calc_ver($user_db));
                         } else {
                             $data = json_encode($fw->get_calc_ver());
                         }
                         $status = $msg['OK'];
-                    } elseif ($_GET['q'] === 'countries') {
-                        if ($_GET['db']) {
+                    } elseif (filter_input(INPUT_GET, 'q', FILTER_SANITIZE_URL) === 'countries') {
+                        if (isset($_GET['db'])) {
                             $data = json_encode($fw->get_country_list($user_db));
                         } else {
                             $data = json_encode($fw->get_country_list());
                         }
                         $status = $msg['OK'];
-                    } elseif ($_GET['q'] === 'regions') {
+                    } elseif (filter_input(INPUT_GET, 'q', FILTER_SANITIZE_URL) === 'regions') {
                         if (isset($_GET['country'])) {
-                            $iso3 = $_GET['country'];
+                            $iso3 = filter_input(INPUT_GET, 'country', FILTER_SANITIZE_URL);
                         } else {
                             $iso3 = null;
                         }
-                        if ($_GET['db']) {
+                        if (isset($_GET['db'])) {
                             $data = json_encode($fw->get_region_list($iso3, $user_db));
                         } else {
                             $data = json_encode($fw->get_region_list($iso3));
@@ -153,9 +153,9 @@
                 break;
             case 'POST':
                 if ($user_db_exists) {
-                    if ($_POST['years']) {
+                    if (isset($_POST['years'])) {
                         $yearquery = '(';
-                        foreach (explode(',', $_POST['years']) as $year) {
+                        foreach (explode(',', urldecode(filter_input(INPUT_POST, 'years', FILTER_SANITIZE_URL))) as $year) {
                             // Is this a range?
                             if (strpos($year,':') === false) {
                                 $yearquery .= 'year = ' . $year . ' OR ';
@@ -169,9 +169,9 @@
                         $yearquery = '1'; // If no years, then return a true value
                     }
                     $countries = array();
-                    if ($_POST['countries']) {
+                    if (isset($_POST['countries'])) {
                         $countryquery = '(';
-                        foreach (explode(',', $_POST['countries']) as $country) {
+                        foreach (explode(',', urldecode(filter_input(INPUT_POST, 'countries', FILTER_SANITIZE_URL))) as $country) {
                             $countries[] = $country;
                             $countryquery .= 'code = "' . $country . '" OR ';
                         }
@@ -179,7 +179,7 @@
                     } else {
                         $countryquery = '1';
                     }
-                    if ($_POST['reset']) {
+                    if (isset($_POST['reset'])) {
                         $shared_params = $shared_params_default;
                         $fw_params = $fw_params_default;
                     }
