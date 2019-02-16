@@ -1,6 +1,6 @@
 <?php
 // Use the API: over time, will make things more consistent
-require_once "HTTP/Request.php";
+require_once "guzzle.phar"; // currently using version 6.3.3 from https://github.com/guzzle/guzzle
 require_once "frameworks/frameworks.php";
 require "config.php";
 
@@ -197,25 +197,24 @@ function process_pledges($pledge_info, $pathway, $db) {
     if ($db) {
         $querystring .= '&db=' . $db;
     }
-    $req = new HTTP_Request($api_url . $querystring);
-    if (Framework::is_dev()) { $req->setBasicAuth($dev_calc_creds['user'], $dev_calc_creds['pass']); }
-    $req->setMethod(HTTP_REQUEST_METHOD_GET);
-    if (!PEAR::isError($req->sendRequest())) {
-         $params = (array) json_decode($req->getResponseBody());
-    } else {
-        $params = NULL;
+    $auth = NULL;
+    if (Framework::is_dev()) { $auth = array($dev_calc_creds['user'], $dev_calc_creds['pass']); }
+    $client = new \GuzzleHttp\Client();
+    try {
+         $response = $client->request('GET', $api_url . $querystring, ['auth' => $auth]);
+         $params = (array) json_decode($response->getBody());
+    } catch (Exception $e) {
+         echo $e->getMessage();
+         $params = NULL;
     }
     
     $use_lulucf = (array) $params['use_lulucf'];
     $use_nonco2 = (array) $params['use_nonco2'];
     
     // Announce that we'd like to free up memory before reusing the variable
-    unset($req);
-    
+    unset($client);
+
     // Build up API query
-    $req = new HTTP_Request($api_url);
-    if (Framework::is_dev()) { $req->setBasicAuth($dev_calc_creds['user'], $dev_calc_creds['pass']); }
-    $req->setMethod(HTTP_REQUEST_METHOD_POST);
     if ($pledge_info['rel_to_year']) {
         $years = $pledge_info['rel_to_year'] . "," . $pledge_info['by_year'];
         $numitems = 2;
@@ -223,7 +222,7 @@ function process_pledges($pledge_info, $pathway, $db) {
         $years = $pledge_info['by_year'];
         $numitems = 1;
     }
-    $req->addPostData("years", $years);
+    $POST_params['years'] = $years;
     if (isset($pledge_info['iso3'])) {
         $ctryrgn = $pledge_info['iso3'];
     } elseif (isset($pledge_info['region'])) {
@@ -231,18 +230,23 @@ function process_pledges($pledge_info, $pathway, $db) {
     } else {
         $ctryrgn = null;
     }
-    $req->addPostData("countries", $ctryrgn);
-    $req->addPostData("emergency_path", $pathway);
+    $POST_params['countries'] = $ctryrgn;
+    $POST_params['emergency_path'] = $pathway;
     if ($db) {
-        $req->addPostData("db", $db);
+        $POST_params['db'] = $db;
     }
-    if (!PEAR::isError($req->sendRequest())) {
-         $response = (array) json_decode($req->getResponseBody());
-         // Oddly, the decode procedure sometimes seems to duplicate the first element.
-         if (count($response) > $numitems) {
-            $response = array_slice($response, 1);
-         }
-    } else {
+    $auth = NULL;
+    if (Framework::is_dev()) { $auth = array($dev_calc_creds['user'], $dev_calc_creds['pass']); }
+    $client = new \GuzzleHttp\Client();
+    try {
+        $response = $client->request('POST', $api_url, ['form_params' => $POST_params, 'auth' => $auth, 'allow_redirects' => ['strict' => true]]);
+        $response = (array) json_decode($response->getBody());
+        // Oddly, the decode procedure sometimes seems to duplicate the first element.
+        if (count($response) > $numitems) {
+           $response = array_slice($response, 1);
+        }
+    } catch (Exception $e) {
+        echo $e->getMessage();
         return NULL;
     }
     
