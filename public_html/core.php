@@ -70,7 +70,7 @@
                 } else {
                     $array[$key]['value'] = $_GET[$key];
                 }
-            } elseif (isset($_POST['submit']) && $fw->is_bool($key, $array)) {
+            } elseif (isset($_POST['submit']) && (New EmptyFramework)->is_bool($key, $array)) {
                 // This is a checkbox: if not checked, it does not exist in $_POST
                 $array[$key]['value'] = 0;
             }

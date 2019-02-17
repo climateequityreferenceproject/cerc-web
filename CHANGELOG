@@ -1,3 +1,10 @@
+rev 565-569 (2019-02-16) (krueschan)
+- serialize/unserialize database name for cookie storage
+- replaced PEAR HTTP_Request with guzzle HTTP client lib in db manager
+- replaced PEAR HTTP_Request with guzzle HTTP client lib to get pledges
+- sanitize GET/POST parameters in API
+- replaced PEAR HTTP_Request with guzzle HTTP client library in API example code
+
 rev 560-564 (2019-02-15) (krueschan)
 - updated baseline description in chart key
 - removed obsolete experimental code (greenband)

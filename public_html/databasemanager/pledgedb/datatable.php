@@ -18,12 +18,12 @@
         $parms1['lux_thresh'] = 50000;
         $parms1['r_wt'] = 0.5;
 
-        if (isset($_COOKIE['db'])) { 
-            $db = $_COOKIE['db']; 
-        } else { 
-            $db = get_new_API_DB(); 
+        if (isset($_COOKIE['db'])) {
+            $db = unserialize($_COOKIE['db']); 
+        } else {
+            $db = get_new_API_DB();
             // cookies must be sent before any output from your script
-            setcookie("db", $db, time()+604800);
+            setcookie("db", serialize($db), time()+604800);
         }
         $data_list = get_data($parms1, $db);
         $keep_these_codes = array("year", "fossil_CO2_MtCO2", "LULUCF_MtCO2", "NonCO2_MtCO2e"); 

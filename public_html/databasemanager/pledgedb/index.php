@@ -24,7 +24,7 @@ include_once "guzzle.phar"; // needed to access calc API; currently using versio
         <h1>Climate Equity Reference Calculator - pledges database entry form</h1>
         <form name="add" id="add" method="post" action="">
             <input type="hidden" name="form" value="add"/>
-            <input type="hidden" id="db" name="db" value="<?php echo($_COOKIE['db']); ?>"/>
+            <input type="hidden" id="db" name="db" value="<?php echo(unserialize($_COOKIE['db'])); ?>"/>
             <!-- Country and region drop-downs -->
             <?php
             // before writing the regions dropdown field, we check via calculator API

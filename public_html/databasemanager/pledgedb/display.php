@@ -95,10 +95,10 @@ $parms1['years'] = trim(implode(",",$pledge_years2),",");
 $parms1['countries'] = trim(implode(",",db_get_pledge_countries($pledge_years)),",");
 $pledge_regions = db_get_pledge_countries($pledge_years,TRUE); 
 if (count($pledge_regions)>0) { $parms1['countries'] .= ((strlen($parms1['countries'])>0) ? "," : "") . trim(implode(",",$pledge_regions),","); }
-$db = $_COOKIE['db']; 
-if (!(exists_API_DB($db, $api_params))) { 
-    $db = get_new_API_DB($api_params); 
-    setcookie("db", $db, time()+604800);    // cookies must be sent before any output from your script
+$db = unserialize($_COOKIE['db']); 
+if (!(exists_API_DB($db, $api_params))) {
+    $db = get_new_API_DB($api_params);
+    setcookie("db", serialize($db), time()+604800);    // cookies must be sent before any output from your script
 }
 $data_list = get_data($parms1, $db, $api_params);
 $bau = array();

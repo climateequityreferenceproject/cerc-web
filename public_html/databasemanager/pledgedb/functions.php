@@ -207,7 +207,7 @@ function check_for_new_regions() {
     // 2. get the regions currently used by the calculator 
     // let's check if we have been passed an API database to reuse through the form
     //$db = $_REQUEST['db'];
-    $db = $_COOKIE['db'];    
+    $db = unserialize($_COOKIE['db']);
 
     $URL_calc_api = Constants::api_url(['public']) ;
     
@@ -255,5 +255,5 @@ function check_for_new_regions() {
     // we save the code of the database we have used as a one week cookie so it  
     // can be re-used, otherwise, every time the "region" drop down field is created, 
     // a new copy of the database is created.
-    setcookie("db", $db, time()+604800);
+    setcookie("db", serialize($db), time()+604800);
 }
