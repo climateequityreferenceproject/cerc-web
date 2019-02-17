@@ -63,7 +63,7 @@ class Constants {
         global $URL_calc_api;
         global $URL_calc_api_dev;
         if (isset($key)) {
-            if ($key="dev") {
+            if ($key=="dev") {
                 $value = $URL_calc_api_dev;
             } else {
                 $value = $URL_calc_api;

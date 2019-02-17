@@ -213,35 +213,32 @@ function check_for_new_regions() {
     
     // check is this database still exists
     if (isset($db)) {
-        $req =& new HTTP_Request($URL_calc_api . "?q=regions&db=" . $db);
-        $req->setMethod(HTTP_REQUEST_METHOD_GET);
-        $req->sendRequest();
-        $code = $req->getResponseCode();
-        if ( $code == 410) {
-            unset($db);
+        $client = new \GuzzleHttp\Client();
+        try {
+             $response = $client->request('GET', $URL_calc_api . "?q=regions&db=" . $db)->getBody();
+        } catch (Exception $e) {
+             unset($db); // API returns a 410 error code when the DB doesn't exist anymore on the server, so let's forget it
         }
     }
     
     // if we don't have a database to reuse, we request a new copy from the calculator API
-    if (!$db) { 
-        $req =& new HTTP_Request($URL_calc_api . "?q=new_db");
-        $req->setMethod(HTTP_REQUEST_METHOD_GET);
-        if (!PEAR::isError($req->sendRequest())) {
-            $response = (array) json_decode($req->getResponseBody());
-            $db = $response['db'];
-        } else {
-            throw new Exception($req->getMessage());
+    if (!$db) {
+        $client = new \GuzzleHttp\Client();
+        try {
+             $response = (array) json_decode($client->request('GET', $URL_calc_api . "?q=new_db", ['auth' => NULL])->getBody());
+             $db = $response['db'];
+        } catch (Exception $e) {
+             throw $e;
         }
     }
 
     // now let's get the actual list of regions using this database copy
-    $req =& new HTTP_Request($URL_calc_api . "?q=regions&db=" . $db);
-    $req->setMethod(HTTP_REQUEST_METHOD_GET);
-    if (!PEAR::isError($req->sendRequest())) {
-        // Note: json_decode returns arrays as StdClass, so have to cast
-        $calc_regions = (array) json_decode($req->getResponseBody());
-    } else {
-        throw new Exception($req->getMessage());
+    $client = new \GuzzleHttp\Client();
+    try {
+         $response = $client->request('GET', $URL_calc_api . "?q=regions&db=" . $db)->getBody();
+         $calc_regions = (array) json_decode($response);
+    } catch (Exception $e) {
+         throw $e;
     }
     
     // 3. go through the list and check if it's also part of the pledge
@@ -260,4 +257,3 @@ function check_for_new_regions() {
     // a new copy of the database is created.
     setcookie("db", $db, time()+604800);
 }
-

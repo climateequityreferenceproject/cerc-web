@@ -2,8 +2,7 @@
 include_once 'config/config.php';
 include_once('config/caveat_fields.php');
 include_once 'process.php';
-// need this to use the calculator API
-require_once "HTTP/Request.php";
+include_once "guzzle.phar"; // needed to access calc API; currently using version 6.3.3 from https://github.com/guzzle/guzzle
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -68,7 +67,7 @@ require_once "HTTP/Request.php";
                         <label><input type="radio" name="quantity" value="intensity" <?php echo $quant_checked; ?> /> intensity</label>
                     </td>
                     <td rowspan="2" style="vertical-align:middle;border-top-color:#523A0B;">
-                        to 
+                        to
                         <?php // option_number(1, 100, 1, get_reduction_percent($edit_array)); ?>
                         <input name="reduction_percent" id="reduction_percent" type="text" style="width:5em;" value="<?php echo get_reduction_percent($edit_array); ?>"></input> %
                     </td>
@@ -86,7 +85,7 @@ require_once "HTTP/Request.php";
                         <label><input type="radio" name="year_or_bau" value="bau" <?php echo $bau_checked; ?> /> BAU</label>
                     </td>
                     <td rowspan="3" style="vertical-align:middle;background:#ffffee;border-color:#523A0B;">
-                        by                         
+                        by
                         <select name="by_year" id="by_year">
                         <?php option_number(2010, 2050, 1, get_by_year($edit_array)); ?>
                         </select>
@@ -125,7 +124,7 @@ require_once "HTTP/Request.php";
             sources at BAU levels) is used instead. <br />
             Also note that you really should include a helptext to describe your assumptions to the end-user (pledge_breakdown_assumptions).
             <br /><br />
-                
+
 <!--            <label>Link to more information: </label><input type="text" name="info_link" value="<?php echo get_text($edit_array, 'info_link');?>"/><br />-->
             <label>Source:</label><br/>
             <textarea name="source" cols="75" rows="2" ><?php echo get_text($edit_array, 'source');?></textarea><br />
@@ -144,13 +143,13 @@ require_once "HTTP/Request.php";
                 </script>
 
                 <?php
-                   
+
                     $output_array = array ();
                     $additional_caveat_data = array();
                     preg_match("/{.*}/", get_text($edit_array, 'caveat'), $output_array);
-                    
-                    if (isset($output_array[0])) { 
-                        $additional_caveat_data= json_decode($output_array[0], TRUE); 
+
+                    if (isset($output_array[0])) {
+                        $additional_caveat_data= json_decode($output_array[0], TRUE);
                         $caveat_text = trim(str_replace($output_array[0],"", get_text($edit_array, 'caveat')));
                     } else {
                         $caveat_text = trim(get_text($edit_array, 'caveat'));
@@ -167,7 +166,7 @@ require_once "HTTP/Request.php";
                         echo "document.getElementById('caveat_" . $caveat_data_type['name'] . "-label').onmouseover = function() { document.getElementById('caveat_" . $caveat_data_type['name'] . "-help').style.display = 'block'; }; ";
                         echo "document.getElementById('caveat_" . $caveat_data_type['name'] . "-label').onmouseout  = function() { document.getElementById('caveat_" . $caveat_data_type['name'] . "-help').style.display = 'none'; }; ";
                         echo "</script>";
-                        
+
                         switch ($caveat_data_type['type']) {
                             case 'textarea':
                                 echo '<br />' . "\n";
@@ -182,7 +181,7 @@ require_once "HTTP/Request.php";
                                 echo 'value="' . $additional_caveat_data[$caveat_data_type['name']] . '">';
                                 echo '<br />' . "\n" . '<br />' . "\n";
                                 break;
-                            case 'boolean': ///// NOTE: THIS ACTUALLY IS NOT FINALIZED CODE 
+                            case 'boolean': ///// NOTE: THIS ACTUALLY IS NOT FINALIZED CODE
 //                                echo '&nbsp;&nbsp;&nbsp;' . "\n";
 //                                echo '<input type="checkbox" name="caveat_'.$caveat_data_type['name'].'" id="caveat_'.$caveat_data_type['name'].'" value="yes" />yes  ' . "\n";
 //                                echo '<input type="checkbox" name="caveat_'.$caveat_data_type['name'].'" id="caveat_'.$caveat_data_type['name'].'" value="no" />no' . "\n";
@@ -207,7 +206,7 @@ require_once "HTTP/Request.php";
                                 echo 'value="' . $additional_caveat_data[$caveat_data_type['name'] . '_lulucf'] . '">&nbsp;';
                                 echo 'nonCO2: <input type="text" style="width:4em;" name="caveat_'.$caveat_data_type['name'].'_nonco2" id="caveat_'.$caveat_data_type['name'].'_nonco2" ';
                                 echo 'value="' . $additional_caveat_data[$caveat_data_type['name'] . '_nonco2'] . '">&nbsp;';
-                                echo '<br />' . "\n" . '<br />' . "\n";                                
+                                echo '<br />' . "\n" . '<br />' . "\n";
                                 break;
                             default:
                                 // Shouldn't reach here
@@ -218,7 +217,7 @@ require_once "HTTP/Request.php";
                 The actual caveats:<br>
                 <textarea name="caveat" cols="75" rows="2"><?php echo $caveat_text; ?></textarea><br /><br />
             </div>
-            
+
 
             <label>Details:</label><br />
             <textarea name="details" cols="75" rows="2" ><?php echo get_text($edit_array, 'details');?></textarea>
@@ -254,7 +253,7 @@ require_once "HTTP/Request.php";
             </div>
             <script>
                 $(document).ready(function(){
-                    $('#datatable-button').click(function () { 
+                    $('#datatable-button').click(function () {
                         if ($('input[name=country_or_region]:checked').val()==="region") {
                             $url = 'https://climateequityreference.org/pledges/entry/datatable.php?country=' + $("#region option:selected").val() + "&db=" + $("#db").val();
                             $('#datatable-container').html("<br><br><br>Loading data for " + $("#region option:selected").text() + " (it is normal for this to take a while)<br />" + $url);
@@ -262,8 +261,8 @@ require_once "HTTP/Request.php";
                             $url = 'https://climateequityreference.org/pledges/entry/datatable.php?country=' + $("#iso3 option:selected").val() + "&db=" + $("#db").val();
                             $('#datatable-container').html("<br><br><br>Loading data for " + $("#iso3 option:selected").text() + " (it is normal for this to take a while)<br />" + $url);
                         }
-                        $('#datatable-container').load($url); 
-                    }); 
+                        $('#datatable-container').load($url);
+                    });
                 });
             </script>
         </div>
