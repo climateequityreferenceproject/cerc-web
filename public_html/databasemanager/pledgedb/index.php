@@ -162,7 +162,9 @@ check_for_new_regions();
                         echo "document.getElementById('caveat_" . $caveat_data_type['name'] . "-label').onmouseover = function() { document.getElementById('caveat_" . $caveat_data_type['name'] . "-help').style.display = 'block'; }; ";
                         echo "document.getElementById('caveat_" . $caveat_data_type['name'] . "-label').onmouseout  = function() { document.getElementById('caveat_" . $caveat_data_type['name'] . "-help').style.display = 'none'; }; ";
                         echo "</script>";
-
+                        foreach (array("", "_year", "_total", "_fossil", "_lulucf", "_nonco2") as &$suffix) {
+                            if (!isset($additional_caveat_data[$caveat_data_type['name'] . $suffix])) { $additional_caveat_data[$caveat_data_type['name'] . $suffix] = ""; }
+                        }
                         switch ($caveat_data_type['type']) {
                             case 'textarea':
                                 echo '<br />' . "\n";
@@ -186,7 +188,7 @@ check_for_new_regions();
                             case 'yes':
                                 echo '&nbsp;&nbsp;&nbsp;' . "\n";
                                 echo '<input type="checkbox" name="caveat_'.$caveat_data_type['name'].'" id="caveat_'.$caveat_data_type['name'].'" value="yes"';
-                                echo (isset($additional_caveat_data[$caveat_data_type['name']]) ? ' checked="checked"' : '');
+                                echo (($additional_caveat_data[$caveat_data_type['name']]=="yes") ? ' checked="checked"' : '');
                                 echo ' />yes  ' . "\n";
                                 echo '<br />' . "\n" . '<br />' . "\n";
                                 break;

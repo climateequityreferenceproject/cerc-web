@@ -402,7 +402,7 @@ EOHTML;
     
     // BAU emissions
     $retval .= "<tr>";
-    $retval .= "<td class=\"lj\">" . sprintf(_('%1$s baseline emissions %3$s, projected to %2$d'), $country_name, $year, $bau_gases) . "</td>";
+    $retval .= "<td class=\"lj\">" . sprintf(_('%1$s baseline emissions, projected to %2$d'), $country_name, $year) . "</td>";
     $val = $bau[$year];
     $retval .= '<td class="cj">&nbsp;</td>';
     $retval .= "<td>" . nice_number('', $val, '') . ' Mt' . $gases . "</td>";
@@ -583,13 +583,13 @@ EOHTML;
             $common_str = sprintf(_('%1$s %2$s pledge%3$s: %4$s by %5$d %6$s'),
                     $country_name,
                     $condl_term[$conditionality],
-                    $pledge_info['pledge_qualifier'],
-                    $pledge_info['description'],
+                    (isset($pledge_info['pledge_qualifier']) ? $pledge_info['pledge_qualifier'] : ""),
+                    (isset($pledge_info['description']) ? $pledge_info['description'] : ""),
                     $pledge_year,
-                    $pledge_info['helptext']);
+                    (isset($pledge_info['helptext']) ? $pledge_info['helptext'] : ""));
             $ouput_idx = $pledge_year * 10 + (($conditionality == "unconditional") ? 5 : 0); // need to use $condl here so conditionality override doesn't overwrite output
-            while (strlen($pledge_table_output[$ouput_idx])>0) { $ouput_idx = $ouput_idx - 1; }
-            
+            while ((isset($pledge_table_output[$ouput_idx])) && (strlen($pledge_table_output[$ouput_idx])>0)) { $ouput_idx = $ouput_idx - 1; }
+
             $pledge_table_output[$ouput_idx] = '<tr><td class="lj" colspan="3">' . $common_str . '</td></tr>';
             if (Framework::is_dev() || Framework::user_is_developer()) { 
                 // pledge target breakdown in Mt
