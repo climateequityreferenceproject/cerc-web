@@ -3,7 +3,8 @@ include_once 'config/config.php';
 include_once('config/caveat_fields.php');
 include_once 'process.php';
 include_once "guzzle.phar"; // needed to access calc API; currently using version 6.3.3 from https://github.com/guzzle/guzzle
-
+// check via calculator API whether there are any new regions in the core DB that we should add (has to be done here since it may set a cookie)
+check_for_new_regions();
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US">
@@ -26,11 +27,6 @@ include_once "guzzle.phar"; // needed to access calc API; currently using versio
             <input type="hidden" name="form" value="add"/>
             <input type="hidden" id="db" name="db" value="<?php echo(unserialize($_COOKIE['db'])); ?>"/>
             <!-- Country and region drop-downs -->
-            <?php
-            // before writing the regions dropdown field, we check via calculator API
-            // whether there are any new regions that we should add
-            check_for_new_regions(); 
-            ?>
             <?php echo make_ctryregion_list($edit_array); ?>
             <script>
                 // remove the GHG time series table if the country/region is changed.

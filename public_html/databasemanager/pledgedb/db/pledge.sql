@@ -583,7 +583,7 @@ INSERT INTO `region` (`region_code`, `name`) VALUES
 ('Africa', 'Africa'),
 ('Middle_East', 'Middle East'),
 ('Latin_America', 'Latin America'),
-('Non-OECD', 'Non-OECD'),
+('Non_OECD', 'Non-OECD'),
 ('world', 'World'),
 ('eu13', 'EU 13'),
 ('ASEAN', 'ASEAN'),

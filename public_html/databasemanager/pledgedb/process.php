@@ -85,9 +85,9 @@ if (isset($_POST['form']) && !isset($_POST['cancel'])) {
                 $sql .= implode(",", array_values($new_values));
                 $sql .= ")";
             }
-            if (!mysql_query($sql, $db)) {
-                mysql_close($db);
-                die('Invalid query: ' . mysql_error() . ' from SQL: ' . $sql);
+            if (!mysqli_query($db, $sql)) {
+                mysqli_close($db);
+                die('Invalid query: ' . mysqli_error($db) . ' from SQL: ' . $sql);
             }
             break;
         case 'table':
@@ -95,20 +95,20 @@ if (isset($_POST['form']) && !isset($_POST['cancel'])) {
                 switch ($value) {
                     case 'Delete':
                         $sql = "DELETE FROM pledge WHERE id=" . $key;
-                        mysql_query($sql, $db);
+                        mysqli_query($db, $sql);
                         break;
                     case 'Publish':
                         $sql = "UPDATE pledge SET public = 1 WHERE id=" . $key;
-                        mysql_query($sql, $db);
+                        mysqli_query($db, $sql);
                         break;
                     case 'Hide':
                         $sql = "UPDATE pledge SET public = 0 WHERE id=" . $key;
-                        mysql_query($sql, $db);
+                        mysqli_query($db, $sql);
                         break;
                     case 'Edit':
                         $sql = "SELECT * FROM pledge WHERE id=" . $key;
-                        $result = mysql_query($sql, $db);
-                        $edit_array = mysql_fetch_array($result, MYSQL_ASSOC);
+                        $result = mysqli_query($db, $sql);
+                        $edit_array = mysqli_fetch_array($result, MYSQLI_ASSOC);
                         break;
                     default:
                         break;
@@ -118,6 +118,6 @@ if (isset($_POST['form']) && !isset($_POST['cancel'])) {
         default:
             break;
     }
-    mysql_close($db);
+    mysqli_close($db);
 }
 ?>

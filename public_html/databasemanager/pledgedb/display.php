@@ -25,10 +25,10 @@ function db_get_country_table($min_by_year = NULL, $max_by_year = NULL, $region 
         $query .= "ORDER BY name, by_year, conditional;";
     }
 
-    $result = mysql_query($query, $db);
-    mysql_close($db);
+    $result = mysqli_query($db, $query);
+    mysqli_close($db);
     if (!$result) {
-        die('Invalid query(b): ' . mysql_error() . " (" . $query . ")");
+        die('Invalid query(b): ' . mysqli_error($db) . " (" . $query . ")");
     } else {
         return $result;
     }
@@ -41,15 +41,15 @@ function db_get_pledge_years($min_by_year = NULL, $max_by_year = NULL) {
     if (isset($max_by_year)) { $where .= " AND pledge.by_year <= " . $max_by_year . " "; }
 
     $query = "SELECT by_year FROM pledge WHERE " . $where . "ORDER BY by_year;";
-    $result = mysql_query($query, $db);
-    mysql_close($db);
-    if (!$result) { die('Invalid query(a): ' . mysql_error() . " (" . $query . ")"); } 
+    $result = mysqli_query($db, $query);
+    mysqli_close($db);
+    if (!$result) { die('Invalid query(a): ' . mysqli_error($db) . " (" . $query . ")"); }
     $years = array();
-    while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+    while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         $years[] = $row['by_year'];
     }
     sort($years, SORT_NUMERIC);
-    mysql_free_result($result);
+    mysqli_free_result($result);
     return array_unique($years, SORT_NUMERIC);
 }    
 
@@ -62,15 +62,15 @@ function db_get_pledge_countries($pledge_years = NULL, $regions=FALSE) {
         $yearwhere .= "pledge.by_year = " . $pledge_year . " "; 
     }
     $query = "SELECT " . $region_or_country . " FROM pledge " . ((strlen($yearwhere)>0) ? "WHERE " . $yearwhere : "") . "ORDER BY " . $region_or_country . ";";
-    $result = mysql_query($query, $db);
-    mysql_close($db);
-    if (!$result) { die('Invalid query(c): ' . mysql_error() . " (" . $query . ")"); } 
+    $result = mysqli_query($db, $query);
+    mysqli_close($db);
+    if (!$result) { die('Invalid query(c): ' . mysqli_error($db) . " (" . $query . ")"); }
     $countries = array();
-    while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+    while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         $countries[] = $row[$region_or_country];
     }
     sort($countries, SORT_STRING);
-    mysql_free_result($result);
+    mysqli_free_result($result);
     return array_unique($countries, SORT_STRING);
 }    
 
@@ -81,10 +81,10 @@ $public = isset($_REQUEST['public']) ? ((($_REQUEST['public']=='0') || ($_REQUES
 $api_params['dev'] = (($_REQUEST['dev']=='1') || ($_REQUEST['dev']=='yes') || ($_REQUEST['dev']=='dev')) ? true : false;
 $data = array();
 $result = db_get_country_table($min_year, $max_year, FALSE, $public);
-while($row = mysql_fetch_assoc($result)) { $data[$row['id']] = $row; }
+while($row = mysqli_fetch_assoc($result)) { $data[$row['id']] = $row; }
 //get pledges for regions, too
 $result = db_get_country_table($min_year, $max_year, TRUE, $public);
-while($row = mysql_fetch_assoc($result)) { $data[$row['id']] = $row; }
+while($row = mysqli_fetch_assoc($result)) { $data[$row['id']] = $row; }
 
 // get the BAU values for the relevant years from the core database
 $pledge_years = db_get_pledge_years($min_year, $max_year);

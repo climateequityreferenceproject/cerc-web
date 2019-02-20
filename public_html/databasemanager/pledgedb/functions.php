@@ -2,25 +2,21 @@
 
 function db_connect() {
     $db_data = Constants::db_info();
-    $db = mysql_connect($db_data['host'], $db_data['user'], $db_data['pwd']);
+    $db = mysqli_connect($db_data['host'], $db_data['user'], $db_data['pwd'], $db_data['dbname']);
     if (!$db) {
-        die('Could not connect: ' . mysql_error());
+        die('Could not connect: ' . mysqli_connect_error());
     }
-    mysql_select_db($db_data['dbname'], $db);
     return $db;
 }
 
 function query_db($query) {
     $db = db_connect();
-    
-    $result = mysql_query($query, $db);
+    $result = mysqli_query($db, $query);
     if (!$result) {
-        mysql_close($db);
-        die('Invalid query: ' . mysql_error());
+        mysqli_close($db);
+        die('Invalid query: ' . mysqli_error($db));
     }
-    
-    mysql_close($db);
-    
+    mysqli_close($db);
     return $result;
 }
 
@@ -165,7 +161,7 @@ $html = <<<HTML
 HTML;
         $html .= '<option value="blank"></option>';
         $result = query_db("SELECT iso3, name FROM country ORDER BY name;");
-        while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+        while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
             if ($edit_array && $row['iso3']===$edit_array['iso3']) {
                 $selected = ' selected="selected"';
             } else {
@@ -173,14 +169,14 @@ HTML;
             }
             $html .= sprintf('<option value="%s"%s>%s</option>', $row['iso3'], $selected, $row['name']);
         }
-        mysql_free_result($result);
+        mysqli_free_result($result);
 $html .= <<<HTML
     </select><br />
     <input type="radio" name="country_or_region" value="region" $region_checked /><label for="region">Region: </label>
     <select name="region" id="region">
 HTML;
         $result = query_db("SELECT region_code, name FROM region ORDER BY name;");
-        while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+        while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
             if ($edit_array && $row['region_code']===$edit_array['region']) {
                 $selected = ' selected="selected"';
             } else {
@@ -188,7 +184,7 @@ HTML;
             }
             $html .= sprintf('<option value="%s"%s>%s</option>', $row['region_code'], $selected, $row['name']);  
         }
-        mysql_free_result($result);
+        mysqli_free_result($result);
 $html .= <<<HTML
     </select><br />
 HTML;
@@ -200,8 +196,8 @@ function check_for_new_regions() {
     // 1. get the currently known regions from the pledge database
     $pledge_db_regions = array ();
     $result = query_db("SELECT region_code, name FROM region ORDER BY name;");
-    while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
-        $pledge_db_regions[] = $row['region_code'] ;  
+    while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+        $pledge_db_regions[] = $row['region_code'] ;
     }
     
     // 2. get the regions currently used by the calculator 

@@ -86,54 +86,54 @@ SELECT public, id, country.iso3 AS iso3, name, conditional, quantity, reduction_
     WHERE country.iso3 = pledge.iso3
     ORDER BY name, by_year, conditional;
 SQL;
-    
-    $result = mysql_query($query, $db);
-    if (!$result) { mysql_close($db); die('Invalid query: ' . mysql_error()); }
-    
-    mysql_close($db);
+
+    $result = mysqli_query($db, $query);
+    if (!$result) { mysqli_close($db); die('Invalid query: ' . mysqli_error($db)); }
+
+    mysqli_close($db);
 
     $html = table_head("country_tbl", "table countrytbl");
     $html .= '<tbody>';
-    while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+    while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         $html .= table_row($row);
     }
     $html .= '</tbody>';
     $html .= "</table>";
-    mysql_free_result($result);
-    
+    mysqli_free_result($result);
+
     return $html;
 }
 
 function db_get_region_table() {
     $db = db_connect();
-    
+
 $query = <<<SQL
 SELECT public, id, region.region_code AS region_code, name, conditional, quantity, reduction_percent,
-    rel_to, include_nonco2, include_lulucf, year_or_bau, rel_to_year, target_Mt, target_Mt_CO2, 
+    rel_to, include_nonco2, include_lulucf, year_or_bau, rel_to_year, target_Mt, target_Mt_CO2,
     target_Mt_nonCO2, target_Mt_LULUCF, by_year, info_link, source, caveat, details
     FROM region, pledge
     WHERE region.region_code = pledge.region
     ORDER BY name, by_year, conditional;
 SQL;
-    
-    $result = mysql_query($query, $db);
+
+    $result = mysqli_query($db, $query);
     if (!$result) {
-        mysql_close($db);
-        die('Invalid query: ' . mysql_error());
+        mysqli_close($db);
+        die('Invalid query: ' . mysqli_error($db));
     }
-    
-    mysql_close($db);
+
+    mysqli_close($db);
 
     $html = table_head("region_tbl", "table regiontbl");
     $html .= '<tbody>';
-    while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+    while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         $row['iso3'] = $row['region_code'];
         $html .= table_row($row);
     }
     $html .= '</tbody>';
     $html .= "</table>";
-    mysql_free_result($result);
-    
+    mysqli_free_result($result);
+
     return $html;
 }
 
