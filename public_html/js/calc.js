@@ -472,7 +472,7 @@ function spinoff_window() {
     '       <meta charset="utf-8">\n' +
     '       <meta http-equiv="X-UA-Compatible" content="IE=edge">\n' +
     '       <title>View -- generated from the Climate Equity Reference Calculator</title>\n' +
-    '       <link rel="stylesheet" href="http://calculator-dev.climateequityreference.org/css/cescalc.css" media="screen, projection" />\n' +
+    '       <link rel="stylesheet" href="' + window.location.protocol + "//" + window.location.hostname + '/css/cescalc.css" media="screen, projection" />\n' +
     '       <style type="text/css">\n' +
     '         #input_values caption {' +
     '           display:none;' +
@@ -493,11 +493,11 @@ function spinoff_window() {
     html += '         </div>\n' +
     '      </div>\n' +
     '      <div id="footer">\n' +
-    '           <p><strong>Greenhouse Development Rights</strong> is a project of <a href="http://www.ecoequity.org/">EcoEquity</a> and the <a href="http://www.sei-international.org">Stockholm Environment Institute</a> &#169; 2008-' + d.getFullYear() + ' </p>\n' +
+    '           <p><strong><a href="https://climateequityreference.org">The Climate Equity Reference Project</a></strong> is a project of <a href="http://www.ecoequity.org/">EcoEquity</a> and the <a href="http://www.sei.org">Stockholm Environment Institute</a> &#169; 2008-' + d.getFullYear() + ' </p>\n' +
     '      </div>\n' +
     '   </body>\n' +
     '</html>\n';
-    spinoffWindow = window.open('','GDRsCalcSpinoff' + uniqid(),'width=800,height=400,left=200,top=100,scrollbars=1');
+    spinoffWindow = window.open('','CERcSpinoff' + uniqid(),'width=800,height=400,left=200,top=100,scrollbars=1');
     spinoffWindow.document.write(html);
     spinoffWindow.document.close();
     spinoffWindow.focus();
