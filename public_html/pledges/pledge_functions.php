@@ -6,26 +6,23 @@ require "config.php";
 
 function pledge_db_connect() {
     global $pledge_db_config;
-    $db = mysql_connect($pledge_db_config['host'], $pledge_db_config['user'], $pledge_db_config['pwd']);
+    $db = mysqli_connect($pledge_db_config['host'], $pledge_db_config['user'], $pledge_db_config['pwd'], $pledge_db_config['dbname']);
     if (!$db) {
-        die('Could not connect: ' . mysql_error());
+        die('Could not connect: ' . mysqli_connect_error());
     }
-    mysql_select_db($pledge_db_config['dbname'], $db);
-    
     return $db;
 }
 
 function pledge_query_db($query) {
     $db = pledge_db_connect();
-    
-    $result = mysql_query($query, $db);
+
+    $result = mysqli_query($db, $query);
     if (!$result) {
-        mysql_close($db);
-        die('Invalid query: ' . mysql_error());
+        mysqli_close($db);
+        die('Invalid query: ' . mysqli_error($db));
     }
-    
-    mysql_close($db);
-    
+    mysqli_close($db);
+
     return $result;
 }
 
@@ -49,7 +46,7 @@ function get_intl_pledge($iso3, $year) {
     $result = pledge_query_db($sql);
     $sources_array = array();
     $pledge_mlnUSD = 0;
-    while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+    while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         $pledge_mlnUSD += $row['pledge'];
         $sources_array[] = $row['source'];
     }
@@ -58,7 +55,7 @@ function get_intl_pledge($iso3, $year) {
     $sql = "SELECT c_price_USD_per_tCO2e AS price FROM carbon_price WHERE year='" . $year . "'";
     $result = pledge_query_db($sql);
     // Only one row
-    $row = mysql_fetch_row($result);
+    $row = mysqli_fetch_row($result);
     $price = $row[0];
     
     $pledge_MtCO2e = $pledge_mlnUSD/$price;
@@ -77,13 +74,13 @@ function get_min_target_year($code, $conditional) {
     }
     $sql = 'SELECT MIN(by_year) AS year FROM pledge WHERE conditional=' . $conditional_bool . ' AND ' . $ctryrgn_str . ' AND public = 1;';
     $result = pledge_query_db($sql);
-    $row = mysql_fetch_array($result, MYSQL_ASSOC);
-    mysql_free_result($result);
+    $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+    mysqli_free_result($result);
     if (!$row) {
         return NULL;
     } else {
-    return $row['year'];
-}
+        return $row['year'];
+    }
 }
 
 function get_pledge_information($code, $conditional, $year) {
@@ -97,8 +94,8 @@ function get_pledge_information($code, $conditional, $year) {
     }
     $sql = 'SELECT * FROM pledge WHERE conditional=' . $conditional_bool . ' AND ' . $ctryrgn_str . ' AND by_year=' . $year_checked . ';';
     $result = pledge_query_db($sql);
-    $row = mysql_fetch_array($result, MYSQL_ASSOC);
-    mysql_free_result($result);
+    $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+    mysqli_free_result($result);
     return $row;
 }
 
@@ -118,11 +115,11 @@ function get_pledge_years($code, $conditional=null) {
     $sql = 'SELECT by_year FROM pledge WHERE ' . $conditional_string . $ctryrgn_str . ' AND by_year<=2030;';
     $result = pledge_query_db($sql);
     $years = array();
-    while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+    while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         $years[] = $row['by_year'];
     }
     sort($years, SORT_NUMERIC);
-    mysql_free_result($result);
+    mysqli_free_result($result);
     return array_unique($years, SORT_NUMERIC);
 }
 
@@ -161,20 +158,18 @@ function get_processed_pledges($iso3, $shared_params, $dbfile=NULL) {
     return $retval;
 }
 
-function is_country($code)
-{
+function is_country($code) {
     $db = pledge_db_connect();
-    
     $sql = 'SELECT iso3 FROM country WHERE iso3="' . $code . '";';
-    
-    $result = mysql_query($sql, $db);
+
+    $result = mysqli_query($db, $sql);
     if (!$result) {
-        mysql_close($db);
-        die('Invalid query: ' . mysql_error());
+        mysqli_close($db);
+        die('Invalid query: ' . mysqli_error($db));
     }
-    mysql_close($db);
-    
-    return mysql_num_rows($result) > 0;
+    mysqli_close($db);
+
+    return mysqli_num_rows($result) > 0;
 }
 
 function remove_trailing_zeros($input) {
