@@ -2,7 +2,7 @@
 include_once 'config/config.php';
 include_once('config/caveat_fields.php');
 include_once 'process.php';
-include_once "guzzle.phar"; // needed to access calc API; currently using version 6.3.3 from https://github.com/guzzle/guzzle
+require_once realpath(__DIR__ . "/../../inc/dependencies/autoload.php"); // loading guzzle http client - needed to access calc API
 // check via calculator API whether there are any new regions in the core DB that we should add (has to be done here since it may set a cookie)
 check_for_new_regions();
 ?>

@@ -1,0 +1,8 @@
+{
+    "config": {
+        "vendor-dir": "inc/dependencies"
+    },
+    "require": {
+        "guzzlehttp/guzzle": "~6.0"
+    }
+}

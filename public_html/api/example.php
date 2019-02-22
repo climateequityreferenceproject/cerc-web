@@ -1,5 +1,5 @@
 <?php
-include_once "guzzle.phar"; // currently using version 6.3.3 from https://github.com/guzzle/guzzle
+require_once realpath(__DIR__ . "/../inc/dependencies/autoload.php"); // loading guzzle http client
 
 function get_countries() {
     $client = new \GuzzleHttp\Client();

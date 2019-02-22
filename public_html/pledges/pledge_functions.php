@@ -1,6 +1,6 @@
 <?php
 // Use the API: over time, will make things more consistent
-require_once "guzzle.phar"; // currently using version 6.3.3 from https://github.com/guzzle/guzzle
+require_once realpath(__DIR__ . "/../inc/dependencies/autoload.php"); // loading guzzle http client
 require_once "frameworks/frameworks.php";
 require "config.php";
 

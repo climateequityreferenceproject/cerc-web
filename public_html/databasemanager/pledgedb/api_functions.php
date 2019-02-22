@@ -1,5 +1,5 @@
 <?php
-include_once "guzzle.phar"; // currently using version 6.3.3 from https://github.com/guzzle/guzzle
+require_once realpath(__DIR__ . "/../../inc/dependencies/autoload.php"); // loading guzzle http client
 
 function exists_API_DB($db = NULL, $api_params = NULL) {
     if (isset($db)) {
