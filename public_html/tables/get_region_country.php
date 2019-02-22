@@ -21,7 +21,7 @@ foreach ($db->query('SELECT * FROM flag_names') as $flag) {
     INNER JOIN flags ON country . iso3 = flags . iso3
     WHERE flag='$regionName' AND value=1 ORDER BY country.name
 EOSQL;
-    $countrys = '';
+    $countrys = array();
     foreach ($db->query($queryGetRegion) as $country) {
         $countrys[] = $country['iso3'];
     }

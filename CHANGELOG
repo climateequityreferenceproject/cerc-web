@@ -1,3 +1,11 @@
+rev 574 (2019-02-21) (krueschan)
+- minor bug fixes
+
+rev 570-573 (2019-02-20) (krueschan)
+- fixed undefined index and variable warnings in gdrs_country_report and pledge database manager
+- removed old GDRs reference and static css link from calc.js
+- replaced deprecated mysql_* methods in pledge functions and pledge db manager
+
 rev 565-569 (2019-02-16) (krueschan)
 - serialize/unserialize database name for cookie storage
 - replaced PEAR HTTP_Request with guzzle HTTP client lib in db manager

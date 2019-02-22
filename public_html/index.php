@@ -360,7 +360,7 @@ if (is_file('inc/popup_notice.php')) {
                                         echo $welcome_string;
                                         ?></p>
 
-                                        <a id="scorecard_2" target="_blank" href="<?php echo $scorecard_url ?>"><?php echo _("") ?></a>
+                                        <!-- <a id="scorecard_2" target="_blank" href="<?php // echo $scorecard_url ?>"><?php echo _("") ?></a> -->
                                         <form action="index.php" method="post" name="eqbtn_form" id="eqbtn_form">
                                             <div id="review_equity_settings">
                                                 <button id="equity_settings_button" type="submit">Review equity settings</button>
