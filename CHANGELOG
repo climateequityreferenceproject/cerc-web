@@ -1,4 +1,4 @@
-rev 577 (2019-02-22) (krueschan)
+rev 577-578 (2019-02-22) (krueschan)
 - added Dockerfile and documentation for dockerized install of cerc-web
 
 rev 574-576 (2019-02-21) (krueschan)
