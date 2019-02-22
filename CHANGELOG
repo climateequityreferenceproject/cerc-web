@@ -1,3 +1,6 @@
+rev 577 (2019-02-22) (krueschan)
+- added Dockerfile and documentation for dockerized install of cerc-web
+
 rev 574-576 (2019-02-21) (krueschan)
 - installing guzzle via composer after all
 - minor bug fixes
