@@ -190,12 +190,12 @@ $(function() {
                            }
                         );
                         // Update the url
-                        $.post(
-                            "get_params_as_query.php",
-                            function(new_url) {
-                                $("a#scorecard_url").attr("href", new_url);
-                            }
-                        );
+                        // $.post(
+                        //     "get_params_as_query.php",
+                        //     function(new_url) {
+                        //         $("a#scorecard_url").attr("href", new_url);
+                        //     }
+                        // );
                     }
                 );
             }

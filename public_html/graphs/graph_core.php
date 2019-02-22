@@ -191,14 +191,14 @@
         }
         
         // For now, axes are set once, not resest
-        public function set_xaxis($min, $max, $label, $unit, $use_limits=FALSE, $number_format=TRUE, $step=NULL) {
+        public function set_xaxis($min, $max, $label, $unit, $use_limits=FALSE, $number_format=TRUE, $step=NULL, $dec=NULL) {
             if (!$this->xaxis) {
-                $this->xaxis = new Axis($min, $max, $label, $unit, $use_limits, $number_format, $step);
+                $this->xaxis = new Axis($min, $max, $label, $unit, $use_limits, $number_format, $step, $dec);
             }
         }
-        public function set_yaxis($min, $max, $label, $unit, $use_limits=FALSE, $number_format=TRUE, $step=NULL) {
+        public function set_yaxis($min, $max, $label, $unit, $use_limits=FALSE, $number_format=TRUE, $step=NULL, $dec=NULL) {
             if (!$this->yaxis) {
-                $this->yaxis = new Axis($min, $max, $label, $unit, $use_limits, $number_format, $step);
+                $this->yaxis = new Axis($min, $max, $label, $unit, $use_limits, $number_format, $step, $dec);
             }
         }
         public function set_yaxis2($min, $max, $label, $unit, $use_limits=FALSE, $number_format=TRUE, $step=NULL, $dec=NULL) {
