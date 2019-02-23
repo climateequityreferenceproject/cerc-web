@@ -5,7 +5,7 @@ This directory contains the Dockerfile used to generate a fully self-contained D
 1. Obtain Docker for your operating system from https://www.docker.com/
 * If you use Docker Desktop, you can pull the docker image (climateequityreferenceproject/cerc-web) directly from within Docker Desktop otherwise run on your command line: `docker pull climateequityreferenceproject/cerc-web`.
 * Alternatively, you can use the Dockerfile contained in this folder to automatically build the image yourself from source (only the Dockerfile is needed, everything else will be pulled from various sources as needed). Run `docker build -t climateequityreferenceproject/cerc-web .` from the command line within the directory where the Dockerfile is located.
-* To start the image from the commandline, type `docker run -it -rum -d --name cerc-web -p 8080:80  climateequityreferenceproject/cerc-web:latest` (if applicable, replace 'latest' with the specific release you're using, for example "version-3.2.1"). If you want you can replace the 8080 in the last comment with a different port number, just make use to replace it in the URL below also.
+* To start the image from the commandline, type `docker run -it -rm -d --name cerc-web -p 8080:80  climateequityreferenceproject/cerc-web:latest` (if applicable, replace 'latest' with the specific release you're using, for example "version-3.2.1"). If you want you can replace the 8080 in the last comment with a different port number, just make use to replace it in the URL below also.
 * In your browser, navigate to `http://localhost:8080/index.php` to start cerc-web.  
 
 ## Troubleshooting
