@@ -10,7 +10,7 @@ You will need a web server with php enabled and sqlite3 installed. The web serve
 
 ## Pre-installed docker file
 Since installation of cerc-web is a bit complicated, a self-containing docker image with all of the required code elements and dependencies is available at https://hub.docker.com/r/climateequityreferenceproject/cerc-web
-The Dockerfile used to build the docker image from source and further details (e.g. download and run instructions) are also contained in the docker sub directory of this repository. Docker is available for all major operating systems and can be downloaded from https://www.docker.com/ 
+The Dockerfile used to build the docker image from source and further details (e.g. download and run instructions) are also contained in the docker sub directory of this repository. Docker is available for all major operating systems and can be downloaded from https://www.docker.com/
 
 ## Your own Installation
 This repository contains all files of the web interface, however, there are several databases to obtain and/or create and you also need to obtain or compile an executable of the calculator "engine."
@@ -23,7 +23,7 @@ Instead of installing your own version of the software, you can also simply head
    3. Create a "pledge" database. The pledge database is a MySQL database, so you need a MySQL server that can be accessed from the webserver where you put the web interface code. The repository includes [a sql file](https://github.com/climateequityreferenceproject/cerc-web/blob/master/public_html/databasemanager/pledgedb/db/pledgedb_new.sql) which can be run on your MySQL server to create the necessary database structure. From time to time we dump our own [current pledge database](https://github.com/climateequityreferenceproject/cerc-web/blob/master/public_html/databasemanager/pledgedb/db/pledge.sql) in the same folder in the repository. Contact us if you want our most recent version, but you can also run cerc-web with an empty pledge database. Or enter your own quantifications of pledges using the included pledgedb manager.  
    4. Create a "helptext" database. The helptext database is a MySQL database. Similar to the pledge database, [an sql file exists](https://github.com/climateequityreferenceproject/cerc-web/blob/master/public_html/databasemanager/helpdb/db/help_db.sql) to assist you in creating this database on your server.   
 3. Obtain and/or compile the Climate Equity Reference calculator "engine," which is also released as open source package and can be obtained [on SourceForge](http://gdrs.sourceforge.net).
-4. Rename the config.php.new file to config.php and enter the relevant information, in particular, the location of the engine and the core database file as well as the connection data to the two MySQL files you created above. Typically, this will also involve the creation of temporary folders and such; make sure to set those folders' permissions such that the php process on your server has read/write access to them.
+4. Rename the config.php.new file to config.php and enter the relevant information, in particular, the location of the engine and the core database file as well as the connection data to the two MySQL databases you created above. Typically, this will also involve the creation of temporary folders and such; make sure to set those folders' permissions such that the php process on your server has read/write access to them.
 5. Done.
 
 # Contact and trouble shooting

@@ -1,3 +1,7 @@
+rev 579 (2019-02-23) (krueschan)
+- changed suggested docker install to port 8080
+- edit calc.js to work with non-standard ports
+
 rev 577-578 (2019-02-22) (krueschan)
 - added Dockerfile and documentation for dockerized install of cerc-web
 

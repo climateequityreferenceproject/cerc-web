@@ -3,9 +3,9 @@ var clickedDef = false;
 var popup_size = {width: null, length: null};
 
 $(function() {
-    
+
     init_calc_behavior();
-    
+
     // fieldset show/hide
     $("legend").click(function() {
         if (!clickedDef) {
@@ -19,7 +19,7 @@ $(function() {
             }
         }
     });
-	
+
     $("#country_list_button button").click(function() {
         $('#filterDiv').dialog('open');
     });
@@ -27,16 +27,16 @@ $(function() {
 
     $("legend").siblings().hide();
     $("legend.open").siblings().show();
-	
+
     $('#loading').hide();
-	   
+
     $('#save').append('<button id="spinoff_button" type="button">Copy view to new window</button>');
-    
+
     // If JS is enabled, hide the submit button & show the region-country filter + basic/adv
     $('#submit').hide();
-//    $('#region_country_filter').show(); // country report is now default, 
+//    $('#region_country_filter').show(); // country report is now default,
 //    so by default, region_country_filter should hide
-    
+
     // Region list actions
     $('#regionList').click(changeRegionList);
     $('#btnAdd').click(function () {
@@ -45,12 +45,12 @@ $(function() {
     $('#btnRemove').click(function () {
         moveElement('country_selected','country_available');
     });
-    
+
     // Make sure display options are shown/hidden consistent with the chosen view
     set_display();
-    
+
     $('#loading').html('<img src="img/spinner.gif" alt="loading indicator" />');
-    
+
     //--------------------------------------------------
     // User actions that result in a refresh of the page
     //--------------------------------------------------
@@ -58,7 +58,7 @@ $(function() {
         set_display();
         submit();
     });
-    
+
     $('#table_view').change(function () {
         set_display();
         submit();
@@ -68,45 +68,45 @@ $(function() {
             $('#region_country_filter').show();
         }
     });
-    
+
     // Equity settings panel
     $("a[id|='cbdr']").click(cbdr_grid_select);
-    
+
     // Toggle lux threshold
     $('#do_luxcap, #interp_btwn_thresh').click(lux_thresh_activate);
-    
+
     $('#display_yr').change(submit);
     $('#display_ctry').change(submit);
     $('#display_gases').change(submit);
     $('#decimal_pl').change(submit);
     $('#emergency_path').change(submit);
-    
+
     $('#baseline').change(submit);
     $('#cum_since_yr').change(submit);
     $('#use_lulucf').change(submit);
     $('#use_nonco2').change(submit);
     $('#use_netexports').change(submit);
     $('#r_wt').change(submit);
-    
+
     $('#dev_thresh').change(submit);
     $('#lux_thresh').change(submit);
     $('#do_luxcap').change(submit);
     $('#luxcap_mult').change(submit);
     $('#interp_btwn_thresh').change(submit);
     $('#show_tax_tables').change(submit);
-    
+
     $('#cum_since_yr').change(submit);
     // $('#percent_gwp').change(submit);
     $('#percent_gwp_MITIGATION').change(submit);
     $('#percent_gwp_ADAPTATION').change(submit);
     $('#em_elast').change(submit);
-    
+
     $('#use_kab').change(submit);
     $('#dont_use_kab').change(submit);
     $('#kab_only_ratified').change(submit);
-    
+
     $('#use_mit_lag').change(submit);
-    
+
     $('#use_sequencing').change(submit);
     // TODO: These should only be run if use sequencing is checked
     $('#percent_a1_rdxn').change(submit);
@@ -114,7 +114,7 @@ $(function() {
     $('#end_commitment_period').change(submit);
     $('#a1_smoothing').change(submit);
     $('#mit_gap_borne').change(submit);
-    
+
     // Equity settings
     $('#dev-low, #dev-med').click(function() {
         $('#equity_progressivity').val(0);
@@ -124,9 +124,9 @@ $(function() {
         $('#equity_progressivity').val(1);
         cbdr_select();
     });
-    
+
     $('#d1850, #d1950, #d1990').click(cbdr_select);
-    
+
     $('#equity_reset, #equity_reset_top').click(function() {
         $('#equity_progressivity').val(0);
         $('#ambition-high').attr('checked','checked');
@@ -146,7 +146,7 @@ $(function() {
         $('#loading').show();
         // Get current year
         var curr_year = $('#cum_since_yr').val();
-        
+
         $.post(
             "core.php",
             "getdb=yes",
@@ -165,7 +165,7 @@ $(function() {
 
                         // No longer updating year list: just issue an alert
                         // TODO: this does not work: it should be triggered when user selects <1970 year when nonCO2
-                        // is selected but not if non-CO2 is not selected. for that, we'd have to fetch the first 
+                        // is selected but not if non-CO2 is not selected. for that, we'd have to fetch the first
                         // data year for nonCO2 from DB (or hardcode to 1970)
                         $('#cum_since_yr').load('get_year_list.php option', $('#form1').serialize(), function(){
                             var min_year = $('#cum_since_yr option').attr('value');
@@ -204,7 +204,7 @@ $(function() {
         // Short-circuit form submission
         return false;
     });
-        
+
     $('#spinoff_button').click(function() {
         spinoff_window();
     });
@@ -252,10 +252,10 @@ $(function() {
 function cbdr_grid_select() {
     var id_match = /\d+/.exec($(this).attr('id'));
     var id = parseInt(id_match[0]);
-    
+
     var rvsc = Math.floor((id - 1)/3);
     var prog = (id - 1) % 3;
-    
+
     switch (rvsc.toString()) {
         case '0':
             $('#d1850').attr('checked',true);
@@ -283,7 +283,7 @@ function cbdr_grid_select() {
         default:
             ;
     }
-    
+
     for (var i = 1; i <= 9; i++) {
         var istring = '#cbdr-' + i;
         if (i === id) {
@@ -308,7 +308,7 @@ function cbdr_select() {
         default:
             id = -10;
     }
-    
+
     switch ($('#equity_settings input[name=dev_thresh]:checked').attr("id")) {
         case 'dev-low':
             id += 1;
@@ -338,7 +338,7 @@ function get_def_by_id(e) {
     setTimeout(function() {clickedDef = false;},10);
     href = $(e.currentTarget).attr("href");
     def_id = href.substr(href.lastIndexOf('#') + 1);
-    
+
     $.getJSON('glossary_array.php', {id: def_id}, function(definition){
        display_popup (definition.label, definition.text);
     });
@@ -363,7 +363,7 @@ function display_popup (label, text) {
     });
 
     $('#popup').dialog('open');
-              
+
     $('#popup').find('a').each(function() {
         $(this).addClass('def_link');
         if ($(this).attr('target') == '_self') {
@@ -425,7 +425,7 @@ function init_calc_behavior() {
 //        $(this).addClass('pretty-hover');
 //    }, function() {
 //        $(this).removeClass('pretty-hover');
-//    });    
+//    });
 }
 
 function testajax() {
@@ -467,12 +467,17 @@ function uniqid() {
 
 function spinoff_window() {
     //$("#spinoff #input_values caption").show();
+    css_url = window.location.protocol + "//" + window.location.hostname;
+    if (window.location.port.length > 0) {
+        css_url += ":" + window.location.port;
+    }
+    css_url += "/css/cescalc.css";
     html = '<!DOCTYPE html>\n' +
     '    <head>\n' +
     '       <meta charset="utf-8">\n' +
     '       <meta http-equiv="X-UA-Compatible" content="IE=edge">\n' +
     '       <title>View -- generated from the Climate Equity Reference Calculator</title>\n' +
-    '       <link rel="stylesheet" href="' + window.location.protocol + "//" + window.location.hostname + '/css/cescalc.css" media="screen, projection" />\n' +
+    '       <link rel="stylesheet" href="' + css_url + '" media="screen, projection" />\n' +
     '       <style type="text/css">\n' +
     '         #input_values caption {' +
     '           display:none;' +
@@ -556,7 +561,7 @@ function changeRegionList(){
                 });
                 $('#country_available').append('<option value="'+iso3+'">'+countryName+'</option>');
             }
-            
+
         });
     }
 }
@@ -590,7 +595,7 @@ function filterResult(){
             }
         });
     }
-    
+
 }
 
 function moveElement(selectFrom,selectTo) {

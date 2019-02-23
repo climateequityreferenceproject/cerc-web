@@ -91,7 +91,7 @@ RUN echo "##### install fix permissions (or rather: ownership - make php process
          echo 'status=$?; if [ $status -ne 0 ]; then echo "Failed to start mysql: $status"; exit $status; fi' >> /start.sh; \
          echo 'echo "Starting PHP-fpm ... "; service php7.2-fpm start' >> /start.sh; \
          echo 'status=$?; if [ $status -ne 0 ]; then echo "Failed to start PHP-fpm: $status"; exit $status; fi' >> /start.sh; \
-         echo 'echo "Starting nginx in foreground ... Visit localhost/index.php in your browser."; nginx -g "daemon off;"' >> /start.sh; \
+         echo 'echo "Starting nginx in foreground ... Visit localhost:8080/index.php in your browser."; nginx -g "daemon off;"' >> /start.sh; \
          echo 'status=$?; if [ $status -ne 0 ]; then echo "Failed to start nginx: $status"; exit $status; fi' >> /start.sh;\
          chmod a+x /start.sh;\
     echo "##### install dumb-init #####";\
