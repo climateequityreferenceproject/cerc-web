@@ -214,16 +214,16 @@ if (is_file('inc/popup_notice.php')) {
                             <li id="cum_since_yr_wrapper">
                                 <?php echo select_num('cum_since_yr', $shared_params, $glossary->getLink('cum_respons', false, _('Cumulative since')) . ": "); ?>
                             </li>
-<!--- we don't support LULUCF anymore but I just want to make sure the use_lulucf=0 parameter is passed on correctly, so I'm just hiding the control, not removing it for now -->
-                            <li style="display:none;">
-                                <input type="checkbox" name="use_lulucf" id="use_lulucf" class="click" value="1"
-                                     <?php //if ((int) $shared_params["use_lulucf"]['value'] === 1) //echo 'checked="checked"'; ?>  />
-                                <label for="use_lulucf" class="click"> <?php echo sprintf(_('Include %s'), $glossary->getLink('lu_emissions', false, _('land-use emissions'))); ?></label>
-                            </li>
                             <li>
                                 <input type="checkbox" name="use_nonco2" id="use_nonco2" class="click" value="1" <?php if ((int) $shared_params["use_nonco2"]['value'] === 1)
                                echo 'checked="checked"'; ?>  />
                                 <label for="use_nonco2" class="click"> <?php echo sprintf(_('Include %s'), $glossary->getLink('non_co2_gases', false, _('non-CO<sub>2</sub> gases')));?></label>
+                            </li>
+                            <!--- we don't support LULUCF anymore but will show the unchecked checkbox to indirectly communicate that decision -->
+                            <li>
+                                <input type="checkbox" name="use_lulucf" id="use_lulucf" class="click" value="1" disabled
+                                     <?php //if ((int) $shared_params["use_lulucf"]['value'] === 1) //echo 'checked="checked"'; ?>  />
+                                <label for="use_lulucf" class="click" style="color:grey !important;"><?php echo sprintf(_('Include %s'), $glossary->getLink('lu_emissions', false, _('land-use emissions'))); ?></label>
                             </li>
                             <li>
                                 <input type="checkbox" name="use_netexports" id="use_netexports" class="click" value="1" <?php if ((int) $shared_params["use_netexports"]['value'] === 1)

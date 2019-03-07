@@ -145,6 +145,10 @@ EOSQL;
         $gases .= "e";
         $gases_svg .= '<tspan dy="-3">e</tspan>';
     }
+    if (!($use_lulucf)) {
+        // $gases .= " (excl. LULUCF)"; // looks weird in the table
+        $gases_svg .= ' (excl. LULUCF)';
+    }
     $i = 0;
     foreach ($year_list as $y) {
         $ctry_val[$y] = $record[$i];
@@ -483,7 +487,7 @@ EOHTML;
     // Financial expression (formerly known as "climate tax")
     // $climate_tax_link = '<a href="#tax-table">' . _('climate tax') . '</a>';
     $retval .= '<tr>';
-    $retval .= "<td class=\"lj\">Per capita fair share of global costs, expressed in financial terms</td>";
+    $retval .= "<td class=\"lj\">Averagge per capita fair share of global costs, expressed in financial terms</td>";
     $retval .= '<td class="cj">&nbsp;</td>';
     $retval .= '<td class="cj">&nbsp;</td>';
     $retval .= '</tr>';
