@@ -85,6 +85,14 @@ if (isset($_COOKIE['db'])) {
 
     <ul>
         <li class="setting">
+            <fieldset id="firsttimer">
+                <legend class="<?php echo(isset($_COOKIE['db']) ? "closed" : "open"); ?>"><span>&nbsp;</span>Introduction to the Climate Equity Reference Calculator</legend>
+                <div style="display: block; margin-top:.75em; margin-bottom:.75em;">
+                    For first time users of the Climate Equity Reference Calculator, we recommend first learning about our <a href="https://climateequityreference.org/about-the-climate-equity-reference-project-effort-sharing-approach/">effort-sharing approach</a> to better understand the significance of the settings they can make below.
+                </div>
+            </fieldset>
+        </li>
+        <li class="setting">
             <fieldset id="pathway">
                 <legend class="open"><span>&nbsp;</span><?php echo $glossary->getLink('gloss_path', false, _("Level of Global Ambition")); ?></legend>
                 <div class="input_set group">
