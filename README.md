@@ -1,3 +1,4 @@
+[![DOI](http://joss.theoj.org/papers/10.21105/joss.01273/status.svg)](https://doi.org/10.21105/joss.01273) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.2592644.svg)](https://doi.org/10.5281/zenodo.2592644) [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 # Overview
 
 cerc-web is the web interface to the Climate Equity Reference Calculator. It is mainly written in PHP with some user interface elements written in javascript to achieve dynamic interactivity.
