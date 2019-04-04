@@ -5,3 +5,4 @@ nbproject/
 /public_html/private/
 .htaccess
 composer.phar
+.DS_Store
