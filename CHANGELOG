@@ -1,3 +1,6 @@
+rev 591 (2019-08-28) (krueschan)
+- fixed: Excel download didn't work at all due to underspecified internal function call
+
 rev 590 (2019-04-04) (krueschan)
 - adopt Contributor Covenant
 

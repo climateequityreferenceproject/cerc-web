@@ -11,7 +11,7 @@ You will need a web server with php enabled and sqlite3 installed. The web serve
 
 ## Pre-installed docker file
 Since installation of ``cerc-web`` is a bit complicated, a self-containing docker image with all of the required code elements and dependencies is available at https://hub.docker.com/r/climateequityreferenceproject/cerc-web
-The Dockerfile used to build the docker image from source and further details (e.g. download and run instructions) are also contained in the docker sub directory of this repository. Docker is available for all major operating systems and can be downloaded from https://www.docker.com/
+The Dockerfile used to build the docker image from source and further details (e.g. download and run instructions) are also contained in the docker sub directory of this repository. Docker is free virtualization software, is available for all major operating systems, and can be downloaded from https://www.docker.com/
 
 ## Your own Installation
 This repository contains all files of the web interface, however, there are several databases to obtain and/or create and you also need to obtain or compile an executable of the calculator "engine."

@@ -137,7 +137,7 @@ $viewquery = <<< EOSQL
             FROM core LEFT JOIN gdrs ON core.year = gdrs.year AND core.iso3 = gdrs.iso3)
         AS combined WHERE country.iso3 = combined.iso3 $all_years_condition_string $dl_year_condition_string $dl_country_condition_string;
 EOSQL;
-$last_modified = Framework::get_db_time_string();
+$last_modified = Framework::get_db_time_string($user_db);
 //var_dump($dl_country_condition_string,$viewquery);die();
 
 $database = 'sqlite:'.$db_file;
