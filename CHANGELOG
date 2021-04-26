@@ -1,3 +1,6 @@
+rev 592 (2021-04-26) (krueshan)
+- users can now select a base year/reference year for the country table
+
 rev 591 (2019-08-28) (krueschan)
 - fixed: Excel download didn't work at all due to underspecified internal function call
 

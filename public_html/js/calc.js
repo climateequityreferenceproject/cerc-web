@@ -77,6 +77,7 @@ $(function() {
 
     $('#display_yr').change(submit);
     $('#display_ctry').change(submit);
+    $('#reference_yr').change(submit);
     $('#display_gases').change(submit);
     $('#decimal_pl').change(submit);
     $('#emergency_path').change(submit);
@@ -443,11 +444,13 @@ function set_display() {
     timeseries_set = {gdrs_RCI: 1, gdrs_alloc: 1, gdrs_alloc_pc: 1};
     if ($('#table_view').val() in country_set) {
         $('#display_ctry').parent().show();
+        $('#reference_yr').parent().show();
         $('#display_gases').parent().show();
         $('#chart_settings').parent().show();
         $('#decimal_pl').parent().hide();
     } else {
         $('#display_ctry').parent().hide();
+        $('#reference_yr').parent().hide();
         $('#display_gases').parent().hide();
         $('#chart_settings').parent().hide();
         $('#decimal_pl').parent().show();

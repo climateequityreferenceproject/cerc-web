@@ -157,6 +157,14 @@
                                 'step'=>1,
                                 'list'=>NULL
                             ),
+                             'reference_yr' => array(
+                                'value'=>1990,
+                                'advanced'=>false,
+                                'min'=>1990,
+                                'max'=>2030,
+                                'step'=>1,
+                                'list'=>NULL
+                            ),
                              'display_ctry' => array(
                                 'value'=>NULL,
                                 'advanced'=>false,

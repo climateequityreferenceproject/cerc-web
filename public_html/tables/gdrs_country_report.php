@@ -40,11 +40,11 @@ function is_country_gdrsdb($db, $code)
 
 function get_kyoto_commitment($db, $iso3) {
     $retval = null;
-    
+
     $sql = "SELECT int_val FROM params WHERE param_id='use_kab'";
     $record = $db->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     if ($record[0]['int_val']) {
-    
+
 $sql = <<<EOSQL
        SELECT commitment_percent FROM country LEFT OUTER JOIN
     (SELECT iso3, commitment_percent FROM kyoto_info, params WHERE
@@ -56,7 +56,7 @@ EOSQL;
             $retval = 0.01 * $record[0]['commitment_percent'];
         }
     }
-    
+
     return $retval;
 }
 
@@ -69,25 +69,26 @@ function gdrs_country_report($dbfile, $country_name, $shared_params, $display_pa
     $year_list = get_pledge_years($iso3);
     $year_list[] = $year;
     $year_list[] = 1990;
+    $year_list[] = intval($display_params['reference_yr']['value']);
     $year_list[] = 2012;
     sort($year_list, SORT_NUMERIC);
     $year_list = array_unique($year_list, SORT_NUMERIC);
     $year_list_string = 'year=' . implode(' OR year=', $year_list);
-    
+
     $world_code = Framework::get_world_code();
-    
+
     $viewquery = get_common_table_query($dbfile);
 
     $database = 'sqlite:'.$dbfile;
 
     $db = new PDO($database) OR die("<p>Can't open database</p>");
-        
+
     // Get value for percent of GWP as a convenience -- used in a couple of places
     $perc_gwp = $shared_params['percent_gwp']['value'];
 
     // Start with the core SQL view
     $db->query($viewquery);
-       
+
 $worldquery = <<< EOSQL
 SELECT SUM(pop_mln) AS pop, SUM(gdp_blnUSDMER) AS gdp_mer,
         SUM(gdp_blnUSDPPP) AS gdp_ppp, SUM(gdrs_alloc_MtCO2) AS gdrs_alloc,
@@ -136,7 +137,7 @@ EOSQL;
     } else {
         $record = $db->query($regionquery)->fetchAll();
     }
-    
+
     $use_nonco2 = (int) $shared_params['use_nonco2']['value'];
     $use_lulucf = (int) $shared_params['use_lulucf']['value'];
     $gases = "CO<sub>2</sub>";
@@ -153,15 +154,15 @@ EOSQL;
     foreach ($year_list as $y) {
         $ctry_val[$y] = $record[$i];
         $pop[$y] = $ctry_val[$y]['pop_mln'];
-        $bau[$y] = $ctry_val[$y]['fossil_CO2_MtCO2'] + 
-            $use_nonco2 * $ctry_val[$y]['NonCO2_MtCO2e'] + 
+        $bau[$y] = $ctry_val[$y]['fossil_CO2_MtCO2'] +
+            $use_nonco2 * $ctry_val[$y]['NonCO2_MtCO2e'] +
             $use_lulucf * $ctry_val[$y]['LULUCF_MtCO2'];
         $i++;
     }
-    $world_bau = $world_tot['fossil_CO2'] + 
-        $use_nonco2 * $world_tot['NonCO2'] + 
+    $world_bau = $world_tot['fossil_CO2'] +
+        $use_nonco2 * $world_tot['NonCO2'] +
         $use_lulucf * $world_tot['LULUCF'];
-    
+
     $retval = '';
 
     /*
@@ -169,13 +170,13 @@ EOSQL;
      */
     $dom_pledges = get_processed_pledges($iso3, $shared_params, $dbfile);
     $num_pledges = count($dom_pledges, COUNT_RECURSIVE) - count($dom_pledges, COUNT_NORMAL);
-    
+
 $query = <<< EOSQL
 SELECT year, SUM(gdrs_alloc_MtCO2) AS gdrs_alloc_MtCO2, SUM(fossil_CO2_MtCO2) AS fossil_CO2_MtCO2,
        SUM(LULUCF_MtCO2) AS LULUCF_MtCO2, SUM(NonCO2_MtCO2e) AS NonCO2_MtCO2e FROM disp_temp
        WHERE year >= 1990 AND year <= 2030 GROUP BY year ORDER BY year;
 EOSQL;
-    
+
     $global_bau_series = array();
     $global_alloc_series = array();
     foreach ($db->query($query) as $record) {
@@ -206,7 +207,7 @@ EOSQL;
         }
     }
     $query .= ' year >= 1990 AND year <= 2030 GROUP BY year ORDER BY year;';
-    
+
     $bau_series = array();
     $bau_data = array();
     $alloc_series = array();
@@ -215,7 +216,7 @@ EOSQL;
     $max = 0;
     foreach ($db->query($query) as $record) {
         $yr_ndx = $record['year'];
-        $bau_series[$yr_ndx] = $record['fossil_CO2_MtCO2'] + ($use_lulucf * $record['LULUCF_MtCO2']) + ($use_nonco2 * $record['NonCO2_MtCO2e']); 
+        $bau_series[$yr_ndx] = $record['fossil_CO2_MtCO2'] + ($use_lulucf * $record['LULUCF_MtCO2']) + ($use_nonco2 * $record['NonCO2_MtCO2e']);
         $bau_data['fossil_CO2_MtCO2'][$yr_ndx] = $record['fossil_CO2_MtCO2'];
         $bau_data['LULUCF_MtCO2'][$yr_ndx] = $record['LULUCF_MtCO2'];
         $bau_data['NonCO2_MtCO2e'][$yr_ndx] = $record['NonCO2_MtCO2e'];
@@ -251,7 +252,7 @@ EOSQL;
     $graph->set_xaxis(1990, 2030, "", "", TRUE, FALSE);
     $graph->set_yaxis($min, $max, "Mt" . $gases_svg, "");
     $graph->add_series($bau_series, "bau", "bau");
-    if (Framework::is_dev() || Framework::user_is_developer()) { 
+    if (Framework::is_dev() || Framework::user_is_developer()) {
         $graph->add_series($bau_data['fossil_CO2_MtCO2'], "fossil_CO2_MtCO2", "bau_details_fossil");
         $graph->add_series($bau_data['LULUCF_MtCO2'], "LULUCF_MtCO2", "bau_details_lulucf");
         $graph->add_series($bau_data['NonCO2_MtCO2e'], "NonCO2_MtCO2e", "bau_details_nonco2");
@@ -323,23 +324,23 @@ EOSQL;
                         'common_id' => 'historical',
                         'ignore_for_common' => array('natl_bau', 'fossil_CO2_MtCO2', 'LULUCF_MtCO2', 'NonCO2_MtCO2e'),
                         'vertical_at' => $year,
-                        'show_data_tooltips' => (Framework::is_dev() || (Framework::user_is_developer())), 
-                        'ignore_for_tooltips' => $ignore_for_tooltips, 
+                        'show_data_tooltips' => (Framework::is_dev() || (Framework::user_is_developer())),
+                        'ignore_for_tooltips' => $ignore_for_tooltips,
                         'code_output' => true
                     )
                     );
 
-// below, old code that constructs an object to display the external svg image 
-// file instead of dumping svg code onto the page         
-//    $graph_file = "/tmp/" . basename($graph_file);   
+// below, old code that constructs an object to display the external svg image
+// file instead of dumping svg code onto the page
+//    $graph_file = "/tmp/" . basename($graph_file);
 //    $width_string = $graph_width . "px";
-//    $height_string = ($graph_height + $legend_height) . "px"; 
+//    $height_string = ($graph_height + $legend_height) . "px";
 //$retval .= <<< EOHTML
 //<object data="$graph_file" type="image/svg+xml" style="width:$width_string; height:$height_string; border: 1px solid #CCC;">
 //    <p>No SVG support</p>
 //</object>
 //EOHTML;
-    
+
     $retval .= '<div id="ctry_report_legend_ctr" style="position:relative;">';
     $retval .= '<p id="toggle-key">' . _('Show graph key') . '</p>';
     $retval .= '<dl id="ctry_report_legend">';
@@ -347,9 +348,9 @@ EOSQL;
     $retval .= '<dd>' . _('GHG emissions baselines (these are <strong>*not*</strong> business-as-usual pathways) are calculated as counter-factual ' . $glossary->getLink('gloss_bau', false, _('non-policy baselines')) . '. The method applies recent improvements of carbon intensity to GDP forecast estimates. GDP estimates based on national data from the IMF&#39;s Worls Economic Outlook (WEO)for the next 5 years and then on regional data from IPCC (Fifth Assessment Report) through 2030. See <a href="http://' . $main_domain_host . '/calculator-information/gdp-and-emissions-baselines/">Definition, sourcing, and updating of the emissions baselines</a> for details.') . '</dd>';
 
     $retval .= '<dt class="key-gdrs"><span></span>' . _('"Fair share" allocation') . '</dt>';
-    $retval .= '<dd>' . sprintf(_('National allocation trajectory, as calculated for %s using the specified pathways and parameters. 
+    $retval .= '<dd>' . sprintf(_('National allocation trajectory, as calculated for %s using the specified pathways and parameters.
         The mitigation implied by this allocation can be either domestic or international &#8211; The Climate Equity Reference Project effort-sharing framework says nothing about how or where it occurs.'), $country_name) . '</dd>';
-    
+
     if ($iso3 != $world_code) {
         $retval .= '<dt class="key-phys"><span></span>' . _('Domestic emissions') . '</dt>';
         $retval .= '<dd>' . sprintf(_('An example domestic emissions pathway for %s, one that’s consistent with the selected parameters. '), $country_name);
@@ -357,7 +358,7 @@ EOSQL;
 
         $retval .= '<dt class="key-dom"><span></span>';
         if ($fund_others) {
-            $retval .= _('Domestically-funded mitigation') . '</dt>'; // if we decide to make a distinction, this one would be Domestic mitigation, with its own definition 
+            $retval .= _('Domestically-funded mitigation') . '</dt>'; // if we decide to make a distinction, this one would be Domestic mitigation, with its own definition
             $retval .= '<dd>'. sprintf(_('Mitigation funded by %s and carried out within its own borders. The fraction of a country\'s mitigation fair share that is discharged domestically is not specified by the CERP effort-sharing framework, but is rather a result of the international cost and mitigation sharing arrangements that it chooses to participate in.'), $country_name) . '</dd>';
         } else {
             $retval .= _('Domestically-funded mitigation') . '</dt>';
@@ -403,7 +404,7 @@ $retval .= <<< EOHTML
 <caption>$caption</caption>
     <tbody>
 EOHTML;
-    
+
     // BAU emissions
     $retval .= "<tr>";
     $retval .= "<td class=\"lj\">" . sprintf(_('%1$s baseline emissions, projected to %2$d'), $country_name, $year) . "</td>";
@@ -411,32 +412,32 @@ EOHTML;
     $retval .= '<td class="cj">&nbsp;</td>';
     $retval .= "<td>" . nice_number('', $val, '') . ' Mt' . $gases . "</td>";
     $retval .= "</tr>";
-    if (Framework::is_dev() || Framework::user_is_developer()) { 
-        $retval .= "<tr>";    
+    if (Framework::is_dev() || Framework::user_is_developer()) {
+        $retval .= "<tr>";
         $retval .= "<td class=\"lj level2\">" . sprintf(_('%1$s fossil CO<sub>2</sub> emissions, projected to %2$d'), $country_name, $year) . "</td>";
         $val = $bau_data['fossil_CO2_MtCO2'][$year];
         $retval .= '<td class="cj">&nbsp;</td>';
         $retval .= "<td>" . nice_number('', $val, '') . ' Mt CO<sub>2</sub></td>';
         $retval .= "</tr>";
-        $retval .= "<tr>";    
+        $retval .= "<tr>";
         $retval .= "<td class=\"lj level2\">" . sprintf(_('%1$s LULUCF emissions, projected to %2$d'), $country_name, $year) . "</td>";
         $val = $bau_data['LULUCF_MtCO2'][$year];
         $retval .= '<td class="cj">&nbsp;</td>';
         $retval .= "<td>" . nice_number('', $val, '') . ' Mt CO<sub>2</sub></td>';
         $retval .= "</tr>";
-        $retval .= "<tr>";    
+        $retval .= "<tr>";
         $retval .= "<td class=\"lj level2\">" . sprintf(_('%1$s non-CO<sub>2</sub> emissions, projected to %2$d'), $country_name, $year) . "</td>";
         $val = $bau_data['NonCO2_MtCO2e'][$year];
         $retval .= '<td class="cj">&nbsp;</td>';
         $retval .= "<td>" . nice_number('', $val, '') . ' Mt CO<sub>2</sub>e</td>';
         $retval .= "</tr>";
-        $retval .= "<tr>";    
+        $retval .= "<tr>";
         $retval .= "<td class=\"lj level2\">" . sprintf(_('%1$s population, in %2$d'), $country_name, $year) . "</td>";
         $val = $pop[$year]*1000000;
         $retval .= '<td class="cj">&nbsp;</td>';
         $retval .= "<td>" . nice_number('', $val, '') . '</td>';
         $retval .= "</tr>";
-        
+
     }
 
     // year Global mitigation fair share as MtCO2e below BAU
@@ -507,11 +508,11 @@ EOHTML;
     $retval .= "</tr>";
     // Blank line
     $retval .= "<tr class=\"blank\"><td colspan=\"3\">&nbsp;</td></tr>";
-    // Emissions in 1990
+    // Emissions in Baseyear
     $retval .= "<tr>";
-    $retval .= "<td class=\"lj\">" . sprintf(_('%s 1990 emissions'), $country_name) . "</td>";
+    $retval .= "<td class=\"lj\">" . sprintf(_('%1s %2$d emissions'), $country_name, $display_params['reference_yr']['value']) . "</td>";
     $retval .= '<td class="cj">&nbsp;</td>';
-    $val = $bau[1990];
+    $val = $bau[intval($display_params['reference_yr']['value'])];
     $retval .= "<td>" . nice_number('', $val, '') . ' Mt' . $gases . "</td>";
     $retval .= "</tr>";
     // GDRs allocation
@@ -534,19 +535,19 @@ EOHTML;
     $val = $ctry_val[$year]["gdrs_alloc_MtCO2"]/$pop[$year];
     $retval .= "<td>" . nice_number('', $val, '', 1) . ' t' . $gases . "/cap</td>";
     $retval .= "</tr>";
-    // GDRs 2020 allocation as percent of 1990 emissions
+    // GDRs 2020 allocation as percent of baseyear emissions
     $retval .= "<tr>";
-    $retval .= "<td class=\"lj level2\">" . _("as percent of 1990 emissions") . "</td>";
+    $retval .= "<td class=\"lj level2\">" . sprintf(_('as percent of %1$d emissions'), $display_params['reference_yr']['value']) . "</td>";
     $retval .= '<td class="cj">&nbsp;</td>';
-    $val = 100.0 * $ctry_val[$year]["gdrs_alloc_MtCO2"]/$bau[1990];
+    $val = 100.0 * $ctry_val[$year]["gdrs_alloc_MtCO2"]/$bau[intval($display_params['reference_yr']['value'])];
     $retval .= "<td>" . nice_number('', $val, '%') . "</td>";
     $retval .= "</tr>";
-    // GDRs 2020 allocation as percent reduction of 1990 emissions
-    $val = 100.0 * (1 - $ctry_val[$year]["gdrs_alloc_MtCO2"]/$bau[1990]);
+    // GDRs 2020 allocation as percent reduction of baseyear emissions
+    $val = 100.0 * (1 - $ctry_val[$year]["gdrs_alloc_MtCO2"]/$bau[intval($display_params['reference_yr']['value'])]);
     if ($val >= 0) {
-        $string = _("as percent below 1990 emissions");
+        $string = sprintf(_('as percent below %1$d emissions'), $display_params['reference_yr']['value']);
     } else {
-        $string = _("as percent above 1990 emissions");
+        $string = sprintf(_('as percent above %1$d emissions'), $display_params['reference_yr']['value']);
     }
     $retval .= "<tr>";
     $retval .= "<td class=\"lj level2\">" . $string . "</td>";
@@ -560,7 +561,7 @@ EOHTML;
     } else {
         $scorecard_url = $URL_sc;
     }
-    
+
     // Pledges
 //    $free_rider_adj = get_kyoto_commitment($db, $iso3);
 //    if (is_null($free_rider_adj)) {
@@ -573,7 +574,7 @@ EOHTML;
 //            $free_rider_adj = 1 - $free_rider_adj;
 //        }
 //    }
-    
+
 
     $condl_term = array('conditional' => _('conditional'), 'unconditional' => _('unconditional'));
     $condl_code['unconditional'] = '0';
@@ -595,7 +596,7 @@ EOHTML;
             while ((isset($pledge_table_output[$ouput_idx])) && (strlen($pledge_table_output[$ouput_idx])>0)) { $ouput_idx = $ouput_idx - 1; }
 
             $pledge_table_output[$ouput_idx] = '<tr><td class="lj" colspan="3">' . $common_str . '</td></tr>';
-            if (Framework::is_dev() || Framework::user_is_developer()) { 
+            if (Framework::is_dev() || Framework::user_is_developer()) {
                 // pledge target breakdown in Mt
 //                $pledge_table_output[$ouput_idx] .= "<tr>";
 //                $pledge_table_output[$ouput_idx] .= "<td class=\"lj level2\">... target emissions for fossil CO2</td>";
@@ -603,7 +604,7 @@ EOHTML;
 //                $val = $pledge_info['pledge'];
 //                $pledge_table_output[$ouput_idx] .= "<td>" . nice_number('', $val, '') . ' Mt</td>';
 //                $pledge_table_output[$ouput_idx] .= "</tr>";
-                
+
             }
             // Total
             $pledge_table_output[$ouput_idx] .= "<tr>";
@@ -639,7 +640,7 @@ EOHTML;
                 $pledge_table_output[$ouput_idx] .= "<td class=\"lj level2\">Amount by which this pledge exceeds the mitigation fair share</td>";
                 $pledge_table_output[$ouput_idx] .= '<td class="cj">&nbsp;</td>';
                 $pledge_table_output[$ouput_idx] .= "<td>" . nice_number('<span class="num_pos_green">', $val, '</span>', 1) . ' t' . $gases . '/cap' . "</td>";
-                $pledge_table_output[$ouput_idx] .= "</tr>";                
+                $pledge_table_output[$ouput_idx] .= "</tr>";
             }
         }
     }
@@ -647,14 +648,14 @@ EOHTML;
     foreach ($pledge_table_output as $value) {
         $retval .= $value;
     }
-    
+
     // Close the table
     $retval .= '</tbody></table>';
     $retval .= '<br />';
-    
-    
+
+
     // Tax table - only display it when explicitly wanted
-    if (isset($_REQUEST['show_tax_tables'])) { 
+    if (isset($_REQUEST['show_tax_tables'])) {
         // CH: even though the varibale name is $cost_of_mitigation, I think it
         // calculates the total of mitigation and adaptation cost
         $cost_of_mitigation = 0.01 * $perc_gwp * $world_tot['gdp_mer']/($world_bau - $world_tot['gdrs_alloc']);
@@ -714,11 +715,11 @@ EOHTML;
                 $retval .= '<td style="border: none;">&nbsp;</th>';
                 // This was calculated above as tax (% income) * income
                 $retval .= "<td>" . nice_number('', $per_cap_tax, '') . "</td>";
-                $val = 0.001 * (1/$cost_of_mitigation) * $ctry_val[$year]['tax_revenue_mer_dens_' . $record['seq_no']]/$ctry_val[$year]['tax_pop_dens_' . $record['seq_no']];        
+                $val = 0.001 * (1/$cost_of_mitigation) * $ctry_val[$year]['tax_revenue_mer_dens_' . $record['seq_no']]/$ctry_val[$year]['tax_pop_dens_' . $record['seq_no']];
                 $retval .= "<td>" . nice_number('', $val, '') . "</td>";
                 $retval .= '</tr>';
             }
- 
+
             $retval .= <<< EOHTML
                 </tbody>
             </table>

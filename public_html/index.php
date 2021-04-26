@@ -162,6 +162,9 @@ if (is_file('inc/popup_notice.php')) {
                                 }
                             ?>
                         </li>
+                        <li>
+                            <?php echo select_num('reference_yr', $display_params, _("Base Year for table:")); ?>
+                        </li>
                         <?php // for now, we only want LULUCF selection for country report in the _dev version
                         if (Framework::is_dev()) { ?>
                         <li>
