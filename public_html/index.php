@@ -98,6 +98,7 @@ if (is_file('inc/popup_notice.php')) {
         }
         ?>
         <div id="calc_container" class="group">
+            <?php include("inc/banner.php"); // includes one or several dismissable banner(s) ?>
             <?php
             if (Framework::is_dev() || (Framework::user_is_developer())) {
                 if (!(Framework::is_dev())) { echo '<div style="background-color:lightgreen;">This is the public calculator with some developer tools activated because I think you are a developer (there is a cookie on your computer that tells me that you have access to the developer version of the calculator)</div>'; }
