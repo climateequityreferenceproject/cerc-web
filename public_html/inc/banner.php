@@ -1,4 +1,6 @@
-<!--
+<?php
+/*
+
 Credit for code: Mat Swainson https://medium.com/front-end-weekly/creating-a-dismissible-banner-component-ad02493b1cc2
 
 Usage: create a <div> for each dismissable banner using the template below (insert the divs above the <script> tag).
@@ -11,7 +13,7 @@ The "data-type" defines the styling of the banner. permitted values: [empty], in
 	data-value="<strong>Welcome to the site.</strong>"
 ></div>
 
---->
+*/ ?>
 
 
 

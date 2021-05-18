@@ -1,3 +1,6 @@
+rev 594 (2021-05-17) (krueshan)
+- change from html comment to php comment in banner.php
+
 rev 593 (2021-05-17) (krueshan)
 - include dismissible banner at the top of the calculator to inform users about important changes/details
 
