@@ -55,11 +55,13 @@ function select_num($param, $param_list, $label, $label_class = null) {
     $retval .= '>' . $label . "</label>\n";
     $retval .= '<select name="' . $param . '" id="' . $param  . '" ' . $select_class . ">\n";
     $test_val = $param_list[$param]['value'];
+    $test_val_found = false;
     // If you don't use "round" then small rounding errors can throw this off
     for ($val=round($low, $prec); $val<=round($high, $prec); $val += $step) {
         $val = round($val, $prec);
         if ($val==$test_val) {
             $retval .= "<option value=\"".sprintf($fmt, $val)."\" selected=\"selected\">".sprintf($fmt, $val)."</option>\n";
+            $test_val_found = true;
         } else {
             $retval .= "<option value=\"".sprintf($fmt, $val)."\">".sprintf($fmt, $val)."</option>\n";
         }
@@ -67,6 +69,10 @@ function select_num($param, $param_list, $label, $label_class = null) {
             $step_ndx++;
             $step = $step_array[$step_ndx]['step'];
         }
+    }
+    // if the currently selected value (e.g. pass by URL parameter) is not yet in the list, add and select it
+    if (!($test_val_found)) {
+        $retval .= "<option value=\"".sprintf($fmt, $test_val)."\" selected=\"selected\">".sprintf($fmt, $test_val)."</option>\n";
     }
     $retval .= "</select>\n";
     return $retval;

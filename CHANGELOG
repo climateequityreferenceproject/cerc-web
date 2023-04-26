@@ -1,3 +1,6 @@
+rev 595 (2023-04-25) (krueshan)
+- bug fix issue #7 (calculator settings passed via URL params didn't "stick" in certain situations)
+
 rev 594 (2021-05-17) (krueshan)
 - change from html comment to php comment in banner.php
 
