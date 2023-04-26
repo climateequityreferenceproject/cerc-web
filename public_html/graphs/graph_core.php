@@ -503,6 +503,7 @@
             }
             // defaults
             if (is_null($params['show_data_tooltips'])) { $params['show_data_tooltips'] = FALSE; }
+            if (is_null($params['ignore_for_tooltips'])) { $params['ignore_for_tooltips'] = array(); }
             // Must have axes and series to plot
             if (!$this->xaxis || !$this->yaxis || count($this->series) == 0) {
                 return;

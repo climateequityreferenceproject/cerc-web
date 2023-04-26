@@ -1,3 +1,6 @@
+rev 597 (2023-04-26) (krueshan)
+- resolved incompatibilities with PHP v8.2
+
 rev 596 (2023-04-26) (krueshan)
 - resolved some incompatibilities with PHP v8.2
 
