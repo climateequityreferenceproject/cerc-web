@@ -661,7 +661,7 @@
                 $points = "";
                 if ($params['show_data_tooltips']) {
                     if ($params['common_id'] == $id) {  // if the current series is the series where we stored common values, it will be the one that contains the x/y coordinates but doesn't contain the original values, so we pick anohter one
-                        while (list($key) = each($scaled_series)) {
+                        foreach(array_keys($scaled_series) as $key) {
                             if ((!in_array($key, $params['ignore_for_common'])) && ($key != $id)) {
                                 $current_series = $this->series[$key];
                                 $year_idx = 0;

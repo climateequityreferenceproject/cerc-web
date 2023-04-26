@@ -450,7 +450,7 @@ EOHTML;
     // Share of global RCI in year
     $retval .= "<tr>";
     if ($shared_params['use_mit_lag']['value']) {
-        $retval .= "<td class=\"lj\">" . sprintf(_('%1$s share of global Responsibility Capacity Index in %2$s to %3$d period'), $country_name, strftime("%Y"), $year) . "</td>";
+        $retval .= "<td class=\"lj\">" . sprintf(_('%1$s share of global Responsibility Capacity Index in %2$s to %3$d period'), $country_name, date("Y"), $year) . "</td>";
     } else {
         $retval .= "<td class=\"lj\">" . sprintf(_('%1$s share of global Responsibility Capacity Index, projected to %2$d'), $country_name, $year) . "</td>";
     }
