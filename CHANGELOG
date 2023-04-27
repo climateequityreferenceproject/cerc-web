@@ -1,3 +1,6 @@
+rev 598 (2023-04-27) (krueshan)
+- display additional non-UI settings and other changes to calculator settings display
+
 rev 597 (2023-04-26) (krueshan)
 - resolved incompatibilities with PHP v8.2
 

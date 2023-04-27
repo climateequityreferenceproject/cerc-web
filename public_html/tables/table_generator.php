@@ -76,9 +76,9 @@
         }
         $retval .= "</tr>\n";
         $retval .= "<tr>\n";
-        $retval .= generate_entry(_("Include land-use emissions: "), $shared_params["use_lulucf"]['value'] ? _("yes") : _("no"));
-        $retval .= generate_entry(_("Include non-CO<sub>2</sub> gases: "), $shared_params["use_nonco2"]['value'] ? _("yes") : _("no"));
         $retval .= generate_entry(_("Include emiss. embodied in trade: "), $shared_params["use_netexports"]['value'] ? _("yes") : _("no"));
+        $retval .= generate_entry(_("Include non-CO<sub>2</sub> gases: "), $shared_params["use_nonco2"]['value'] ? _("yes") : _("no"));
+        $retval .= generate_entry(_("Include land-use emissions: "), $shared_params["use_lulucf"]['value'] ? _("yes") : _("no"));
         $retval .= "</tr>\n";
         $retval .= "<tr>\n";
         $retval .= generate_entry(_("Cumulative since: "), $shared_params["cum_since_yr"]['value']);
@@ -108,6 +108,11 @@
                     break;
             }
             $retval .= generate_entry(_("Mitigation requirement gap borne by: "), $val);
+            $retval .= "</tr>\n";
+        }
+        if ($fw_params["do_luxcap"]['value'] == 1) {
+            $retval .= "<tr>\n";
+            $retval .= generate_entry(_("Use luxury-capped baselines: "), $fw_params["do_luxcap"]['value'] ? _("yes") : _("no"));
             $retval .= "</tr>\n";
         }
         $retval .= '</tbody></table><!-- /input_values -->' . "\n";
