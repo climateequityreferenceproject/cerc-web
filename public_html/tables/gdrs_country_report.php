@@ -6,7 +6,11 @@ require_once("table_common.php");
 require_once("frameworks/frameworks.php");
 
 function dec($num) {
-    return max(0, 1 - floor(log10(abs($num))));
+    if($num==0) {
+        return 0; //the algorithm would break with $num==0 (php returns infinite as the log of 0)
+    } else {
+        return max(0, 1 - floor(log10(abs($num))));
+    }
 }
 
 function nice_number($prefix, $num, $postfix, $decimal = NULL) {

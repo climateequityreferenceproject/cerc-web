@@ -262,6 +262,13 @@ if (is_file('inc/popup_notice.php')) {
                             echo "<li>";
                             echo select_num('em_elast', $shared_params, $glossary->getLink('emiss_elast', false, _('Emissions elasticity')) . ":");
                             echo "</li>";
+                            
+                            echo '<li class="advanced" ';
+                            echo (Framework::is_dev() || (Framework::user_is_developer())) ? '>' : 'style="display:none;" >';
+                            echo '<input type="checkbox" name="do_luxcap" id="do_luxcap" class="click" value="1" ' . ($fw_params["do_luxcap"]['value'] ? 'checked="checked"' : '') . '/>';
+                            echo '<label for="do_luxcap" class="click"> ' . _("Use luxury-capped baselines") . '</label>';
+                            echo "</li>";
+
                             echo '<li class="advanced">';
                             echo '<input type="checkbox" name="show_tax_tables" id="show_tax_tables" class="click" value="1" ' . (isset($_REQUEST['show_tax_tables']) ? 'checked="checked"' : '') . '/>';
                             echo '<label for="show_tax_tables" class="click"> ' . _("Show illustrative \"tax table\"") . '</label>';

@@ -433,7 +433,7 @@ EOSQL;
                                 'type' => 'int'
                             ),
                             'use_nonco2' => array(
-                                'description' => 'Include non-CO2 gases in baseline (from 1990 only)',
+                                'description' => 'Include non-CO2 gases in baseline',
                                 'advanced' => false,
                                 'db_param' => 'use_nonco2',
                                 'value' => NULL,
