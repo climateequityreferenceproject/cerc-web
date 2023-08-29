@@ -8,7 +8,7 @@ tags:
   - UNFCCC
   - mitigation
 authors:
-  - name: Christian Holz
+  - name: Ceecee Holz
     orcid: 0000-0003-0722-1044
     affiliation: 1
   - name: Eric Kemp-Benedict
