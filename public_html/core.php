@@ -28,6 +28,23 @@
 
     /*** Databases ************************************************************/
 
+    // if user requests (typically via an URL parameter) to "activate" a custom db,
+    // we copy it to the usersession directory and set the db parameter to that value
+    if (isset($_GET['activate_db']) || isset($_POST['activate_db'])) {
+        $activate_db = basename($_REQUEST['activate_db']);
+        $origin = $database_folder = pathinfo($core_db)['dirname'] . "/" . $activate_db;
+        $destination = $user_db_store . "/" . $activate_db;
+        if (file_exists($origin)) {
+            if (!copy($origin, $destination)) {
+                // fail quiety for now 
+        } else {
+            $_REQUEST['db'] = $activate_db; // i know this is clunky but it's also fast
+            $_GET['db']     = $activate_db; // i know this is clunky but it's also fast
+            $_POST['db']    = $activate_db; // i know this is clunky but it's also fast
+        }
+        }
+    }    
+
     $user_db = $fw->get_good_db();
     if (isset($_POST['reset'])) {
         if ($user_db) {
@@ -153,7 +170,7 @@
                                 'value'=>2030,
                                 'advanced'=>false,
                                 'min'=>1990,
-                                'max'=>2030,
+                                'max'=>2035,
                                 'step'=>1,
                                 'list'=>NULL
                             ),
@@ -161,9 +178,26 @@
                                 'value'=>1990,
                                 'advanced'=>false,
                                 'min'=>1990,
-                                'max'=>2030,
+                                'max'=>2035,
                                 'step'=>1,
                                 'list'=>NULL
+                            ),
+                             'chart_range' => array(
+                                'value'=>'1990-2030',
+                                'advanced'=>false,
+                                'min'=>NULL,
+                                'max'=>NULL,
+                                'step'=>NULL,
+                                'list'=>array(
+                                    '1990-2030'=>array('display_name'=>'1990-2030'),
+                                    '1990-2035'=>array('display_name'=>'1990-2035'),
+                                    '2000-2030'=>array('display_name'=>'2000-2030'),
+                                    '2000-2035'=>array('display_name'=>'2000-2035'),
+                                    '2005-2030'=>array('display_name'=>'2005-2030'),
+                                    '2005-2035'=>array('display_name'=>'2005-2035'),
+                                    '2010-2030'=>array('display_name'=>'2010-2030'),
+                                    '2010-2035'=>array('display_name'=>'2010-2035'),
+                                )
                             ),
                              'display_ctry' => array(
                                 'value'=>NULL,

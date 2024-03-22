@@ -1,8 +1,7 @@
 <?php
 include("config.php");
 
-$db = $_REQUEST['db'];
-echo $user_db_store;
+$db = basename($_REQUEST['db']);
 
 $origin = $database_folder = pathinfo($core_db)['dirname'] . "/" . $db;
 $destination = $user_db_store . "/" . $db;

@@ -1,5 +1,5 @@
 FROM ubuntu:xenial
-LABEL maintainer = "Christian Holz <cholz@climate.works>" \
+LABEL maintainer = "Ceecee Holz <cholz@climate.works>" \
       version = "3.2.1" \
       description = "This is an image of a complete Ubuntu LEMP stack with a complete installation of the cerc-web project with all dependencies and databases." \
       url = "http://github.com/climateequityreferenceproject/cerc-web/" \

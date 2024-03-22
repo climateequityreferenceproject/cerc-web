@@ -131,9 +131,6 @@ if (is_file('inc/popup_notice.php')) {
                             <?php echo select_options_list('table_view', $display_params, _("Table view: ")); ?>
                         </li>
                         <li>
-                            <?php echo select_num('display_yr', $display_params, _("Year to display:")); ?>
-                        </li>
-                        <li>
                             <?php
                                 // Choose country or region to display for country report
                                 echo '<label for="display_ctry" class="select" title="' . _("Country or region to display for country report") . '">' . _("Country or region to display:") . '</label>';
@@ -164,7 +161,15 @@ if (is_file('inc/popup_notice.php')) {
                             ?>
                         </li>
                         <li>
+                            <?php echo select_num('display_yr', $display_params, _("Year to display:")); ?>
+                        </li>
+                        <li>
                             <?php echo select_num('reference_yr', $display_params, _("Base Year for table:")); ?>
+                        </li>
+                        <li>
+                            <?php
+                            echo select_options_list('chart_range', $display_params, _("Year range for chart:"));
+                            ?>
                         </li>
                         <?php // for now, we only want LULUCF selection for country report in the _dev version
                         if (Framework::is_dev()) { ?>
@@ -182,7 +187,7 @@ if (is_file('inc/popup_notice.php')) {
                         if (Framework::is_dev()) { ?>
                         <li class="advanced">
                             <fieldset class="ch_settings" id="ch_settings">
-                            <legend class="closed"><span>&nbsp;</span>Christian's Play Area</legend>
+                            <legend class="closed"><span>&nbsp;</span>Ceecee's Play Area</legend>
                             <ul class="group">
                                 <li>
                                     <button onclick="toggledisplay_by_class('physical')">toggle</button>

@@ -1,25 +1,39 @@
-rev 599 (2023-05-01) (krueshan)
+
+rev 605 (2024-03-22) (krueschan)
+- make year range (x-axis) of country chart user-definable
+- new URL parameter switch activate_db - pass the filename of one of the custom databases in the CERc server's database folder to use it for the calculator, makes a new copy every time
+- minor correction to paper bibliography
+- minor corrections to comments in random spots
+
+rev 604 (2024-03-22) (krueschan)
+- added activate_db.php to allow users to "activate" custom databases already on the Calculator server by copying them into the user sessions directory
+  (Todo: add similar functionality to index.php for one-stop URL parameter custom db activation)
+
+rev 600-603 (2023-08-29 - 2023-09-04) (krueschan)
+- minor corrections to paper bibliography
+
+rev 599 (2023-05-01) (krueschan)
 - minor fixes
 
-rev 598 (2023-04-27) (krueshan)
+rev 598 (2023-04-27) (krueschan)
 - display additional non-UI settings and other changes to calculator settings display
 
-rev 597 (2023-04-26) (krueshan)
+rev 597 (2023-04-26) (krueschan)
 - resolved incompatibilities with PHP v8.2
 
-rev 596 (2023-04-26) (krueshan)
+rev 596 (2023-04-26) (krueschan)
 - resolved some incompatibilities with PHP v8.2
 
-rev 595 (2023-04-25) (krueshan)
+rev 595 (2023-04-25) (krueschan)
 - bug fix issue #7 (calculator settings passed via URL params didn't "stick" in certain situations)
 
-rev 594 (2021-05-17) (krueshan)
+rev 594 (2021-05-17) (krueschan)
 - change from html comment to php comment in banner.php
 
-rev 593 (2021-05-17) (krueshan)
+rev 593 (2021-05-17) (krueschan)
 - include dismissible banner at the top of the calculator to inform users about important changes/details
 
-rev 592 (2021-04-26) (krueshan)
+rev 592 (2021-04-26) (krueschan)
 - users can now select a base year/reference year for the country table
 
 rev 591 (2019-08-28) (krueschan)

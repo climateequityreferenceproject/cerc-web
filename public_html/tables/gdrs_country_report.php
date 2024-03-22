@@ -70,11 +70,16 @@ function gdrs_country_report($dbfile, $country_name, $shared_params, $display_pa
     global $URL_sc, $URL_sc_dev, $URL_calc, $svg_tmp_dir;
     global $glossary;
     $iso3 = $display_params['display_ctry']['value'];
+    $chart_start_yr = intval(substr($display_params['chart_range']['value'], 0,4));
+    $chart_end_yr   = intval(substr($display_params['chart_range']['value'],-4,4));
     $year_list = get_pledge_years($iso3);
-    $year_list[] = $year;
+    $year_list[] = intval($year);
     $year_list[] = 1990;
     $year_list[] = intval($display_params['reference_yr']['value']);
     $year_list[] = 2012;
+    $year_list[] = $chart_start_yr;
+    $year_list[] = $chart_end_yr;
+
     sort($year_list, SORT_NUMERIC);
     $year_list = array_unique($year_list, SORT_NUMERIC);
     $year_list_string = 'year=' . implode(' OR year=', $year_list);
@@ -175,11 +180,9 @@ EOSQL;
     $dom_pledges = get_processed_pledges($iso3, $shared_params, $dbfile);
     $num_pledges = count($dom_pledges, COUNT_RECURSIVE) - count($dom_pledges, COUNT_NORMAL);
 
-$query = <<< EOSQL
-SELECT year, SUM(gdrs_alloc_MtCO2) AS gdrs_alloc_MtCO2, SUM(fossil_CO2_MtCO2) AS fossil_CO2_MtCO2,
-       SUM(LULUCF_MtCO2) AS LULUCF_MtCO2, SUM(NonCO2_MtCO2e) AS NonCO2_MtCO2e FROM disp_temp
-       WHERE year >= 1990 AND year <= 2030 GROUP BY year ORDER BY year;
-EOSQL;
+	$query  = "SELECT year, SUM(gdrs_alloc_MtCO2) AS gdrs_alloc_MtCO2, SUM(fossil_CO2_MtCO2) AS fossil_CO2_MtCO2, ";
+	$query .= "SUM(LULUCF_MtCO2) AS LULUCF_MtCO2, SUM(NonCO2_MtCO2e) AS NonCO2_MtCO2e FROM disp_temp ";
+	$query .= "WHERE year >= " . $chart_start_yr . " AND year <= " . $chart_end_yr . " GROUP BY year ORDER BY year;";
 
     $global_bau_series = array();
     $global_alloc_series = array();
@@ -210,7 +213,7 @@ EOSQL;
             $query .= ' flags.flag="' . $iso3 . '" AND';
         }
     }
-    $query .= ' year >= 1990 AND year <= 2030 GROUP BY year ORDER BY year;';
+    $query .= ' year >= ' . $chart_start_yr . ' AND year <= ' . $chart_end_yr . ' GROUP BY year ORDER BY year;';
 
     $bau_series = array();
     $bau_data = array();
@@ -253,7 +256,7 @@ EOSQL;
                 )
                 );
     // The TRUE means use the specified limits for the graph; the FALSE means don't format numbers
-    $graph->set_xaxis(1990, 2030, "", "", TRUE, FALSE);
+    $graph->set_xaxis($chart_start_yr, $chart_end_yr, "", "", TRUE, FALSE);
     $graph->set_yaxis($min, $max, "Mt" . $gases_svg, "");
     $graph->add_series($bau_series, "bau", "bau");
     if (Framework::is_dev() || Framework::user_is_developer()) {
@@ -286,7 +289,7 @@ EOSQL;
 
     $maxgap = 0;
     $fund_others = false;
-    for ($i = 1990; $i <= 2030; $i++ ) {
+    for ($i = $chart_start_yr; $i <= $chart_end_yr; $i++ ) {
         if (abs($alloc_series[$i] - $dulline_series[$i]) > $maxgap) {
             $maxgap = abs($alloc_series[$i] - $dulline_series[$i]);
             $fund_others = $alloc_series[$i] < $dulline_series[$i];
@@ -525,7 +528,7 @@ EOHTML;
     $retval .= '<td class="cj">&nbsp;</td>';
     $retval .= '<td>&nbsp;</td>';
     $retval .= "</tr>";
-    // GDRs 2020 allocation as MtCO2e
+    // GDRs allocation in 'display_yr' as MtCO2e
     $retval .= "<tr>";
     $retval .= "<td class=\"lj level2\">" . _("as tonnes") . "</td>";
     $retval .= '<td class="cj">&nbsp;</td>';
@@ -539,14 +542,14 @@ EOHTML;
     $val = $ctry_val[$year]["gdrs_alloc_MtCO2"]/$pop[$year];
     $retval .= "<td>" . nice_number('', $val, '', 1) . ' t' . $gases . "/cap</td>";
     $retval .= "</tr>";
-    // GDRs 2020 allocation as percent of baseyear emissions
+    // GDRs allocation in 'display_yr' as percent of baseyear emissions
     $retval .= "<tr>";
     $retval .= "<td class=\"lj level2\">" . sprintf(_('as percent of %1$d emissions'), $display_params['reference_yr']['value']) . "</td>";
     $retval .= '<td class="cj">&nbsp;</td>';
     $val = 100.0 * $ctry_val[$year]["gdrs_alloc_MtCO2"]/$bau[intval($display_params['reference_yr']['value'])];
     $retval .= "<td>" . nice_number('', $val, '%') . "</td>";
     $retval .= "</tr>";
-    // GDRs 2020 allocation as percent reduction of baseyear emissions
+    // GDRs allocation in 'display_yr' as percent reduction of baseyear emissions
     $val = 100.0 * (1 - $ctry_val[$year]["gdrs_alloc_MtCO2"]/$bau[intval($display_params['reference_yr']['value'])]);
     if ($val >= 0) {
         $string = sprintf(_('as percent below %1$d emissions'), $display_params['reference_yr']['value']);

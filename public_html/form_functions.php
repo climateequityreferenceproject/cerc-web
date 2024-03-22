@@ -106,6 +106,7 @@ function select_options_list($param, $param_list, $label, $label_class = null, $
     $retval .= '<select name="' . $param . '"' . $class . ' id="' . $param . '" >' . "\n";
     
     $test_val = $param_list[$param]['value'];
+    $test_val_found = false;
     foreach($option_list as $key => $val) {
         if (isset($val['advanced']) && $val['advanced']) {
             $class = ' class="advanced"';
@@ -114,9 +115,14 @@ function select_options_list($param, $param_list, $label, $label_class = null, $
         }
         if ($key==$test_val) {
             $retval .= '<option' . $class . ' value="' .$key. '" selected="selected">' .$val['display_name']. '</option>'  . "\n";
+            $test_val_found = true;
         } else {
             $retval .= '<option' . $class . ' value="' .$key. '">' .$val['display_name'] . '</option>' . "\n";
         }
+    }
+    // if the currently selected value (e.g. pass by URL parameter) is not yet in the list, add and select it
+    if (!($test_val_found)) {
+        $retval .= '<option' . $class . ' value="' .$test_val. '" selected="selected">' . $test_val. '</option>'  . "\n";
     }
     $retval .= "</select>\n";
     return $retval;
