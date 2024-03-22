@@ -1,3 +1,5 @@
+rev 606 (2024-03-22) (krueschan)
+- change calc.js version number to force browsers to re-load it
 
 rev 605 (2024-03-22) (krueschan)
 - make year range (x-axis) of country chart user-definable
