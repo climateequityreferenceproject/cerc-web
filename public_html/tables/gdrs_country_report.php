@@ -641,8 +641,6 @@ function gdrs_country_report($dbfile, $country_name, $shared_params, $display_pa
         $retval .= results_table_cell_cluster($val2, '', '', '%');
         $retval .= "</tr>";
     }
-    // Blank line
-    $retval .= '<tr class="blank"><td colspan="'. (3 + count($iso3_list)) . '">&nbsp;</td></tr>';
     // Pledges
     if (Framework::is_dev()) {
         $scorecard_url = $URL_sc_dev;
@@ -651,8 +649,6 @@ function gdrs_country_report($dbfile, $country_name, $shared_params, $display_pa
     }
     $country_idx = 0;
     foreach ($iso3_list as $iso3) {
-        // Blank line if multiple countries
-        if ($country_idx > 0) { $retval .= '<tr class="blank"><td colspan="'. (3 + count($iso3_list)) . '">&nbsp;</td></tr>'; }
         $country_label = get_country_name($display_params, $country_list, $region_list, $iso3);
         $condl_term = array('conditional' => _('conditional'), 'unconditional' => _('unconditional'));
         $condl_code['unconditional'] = '0';
@@ -725,15 +721,20 @@ function gdrs_country_report($dbfile, $country_name, $shared_params, $display_pa
                     if ($country_idx + 1 < count($iso3_list)) { $pledge_table_output[$ouput_idx] .= '<td class="cj" colspan="' . (count($iso3_list) - ($country_idx + 1)) . '">&nbsp;</td>'; }
                     $pledge_table_output[$ouput_idx] .= "</tr>";
                 }
+                $has_pledges[country_idx] = true;
             }
         }
         krsort($pledge_table_output);
+        // Blank line before output
+        if (count($pledge_table_output) > 0) { $retval .= '<tr class="blank"><td colspan="'. (3 + count($iso3_list)) . '">&nbsp;</td></tr>'; }
+        // Output pledge table
         foreach ($pledge_table_output as $value) {
             $retval .= $value;
         }
         $country_idx ++;
     }
     // Close the table
+    $retval .= '<tr class="blank"><td colspan="'. (3 + count($iso3_list)) . '">&nbsp;</td></tr>'; 
     $retval .= '</tbody></table>';
     $retval .= '<br />';
 
