@@ -46,7 +46,18 @@
         if (!$table_views[$display_params["table_view"]['value']]['time_series']) {
             $table_name = sprintf(_('%1$s in %2$s'), $table_name, $display_params["display_yr"]['value']);
         }
-        $country_name = get_country_name($display_params, $country_list, $region_list);
+        $iso3_list[] = $display_params['display_ctry']['value'];
+        if (strlen($display_params['display_ctry_2']['value'])>0) { $iso3_list[] = $display_params['display_ctry_2']['value']; }
+        if (strlen($display_params['display_ctry_3']['value'])>0) { $iso3_list[] = $display_params['display_ctry_3']['value']; }
+        if (strlen($display_params['display_ctry_4']['value'])>0) { $iso3_list[] = $display_params['display_ctry_4']['value']; }
+        $idx = 1;
+        $country_name = '';
+        foreach ($iso3_list as $iso3) {
+            $country_name .= get_country_name($display_params, $country_list, $region_list, $iso3);
+            if (($idx    < count($iso3_list)) & count($iso3_list)!=2) { $country_name .= ","; }
+            if (++$idx == count($iso3_list))                          { $country_name .= " and"; }
+            $country_name .= " ";
+        }
         if ($country_name != '') {
             $table_name = sprintf(_('%1$s for %2$s'), $table_name, $country_name);
         }
