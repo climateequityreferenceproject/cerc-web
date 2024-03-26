@@ -6,3 +6,4 @@ nbproject/
 .htaccess
 composer.phar
 .DS_Store
+.vscode/

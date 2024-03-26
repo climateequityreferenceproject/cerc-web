@@ -77,8 +77,11 @@ $(function() {
 
     $('#display_yr').change(submit);
     $('#display_ctry').change(submit);
+    $('#display_ctry_2').change(submit);
+    $('#display_ctry_3').change(submit);
+    $('#display_ctry_4').change(submit);
     $('#reference_yr').change(submit);
-    $('#chart_range').change(submit);
+    $('#graph_range').change(submit);
     $('#display_gases').change(submit);
     $('#decimal_pl').change(submit);
     $('#emergency_path').change(submit);
@@ -445,17 +448,19 @@ function set_display() {
     timeseries_set = {gdrs_RCI: 1, gdrs_alloc: 1, gdrs_alloc_pc: 1};
     if ($('#table_view').val() in country_set) {
         $('#display_ctry').parent().show();
+        $('#country_report_advanced').parent().show();
         $('#reference_yr').parent().show();
-        $('#chart_range').parent().show();
+        $('#graph_range').parent().show();
         $('#display_gases').parent().show();
-        $('#chart_settings').parent().show();
+        $('#ch_settings').parent().show();
         $('#decimal_pl').parent().hide();
     } else {
         $('#display_ctry').parent().hide();
+        $('#country_report_advanced').parent().hide();
         $('#reference_yr').parent().hide();
-        $('#chart_range').parent().hide();
+        $('#graph_range').parent().hide();
         $('#display_gases').parent().hide();
-        $('#chart_settings').parent().hide();
+        $('#ch_settings').parent().hide();
         $('#decimal_pl').parent().show();
     }
     if ($('#table_view').val() in timeseries_set) {
@@ -463,7 +468,6 @@ function set_display() {
     } else {
         $('#display_yr').parent().show();
     }
-
 }
 
 function uniqid() {

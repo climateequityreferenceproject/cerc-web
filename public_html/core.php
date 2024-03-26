@@ -20,7 +20,7 @@
 
     // Generic cookie array
     $cookie_info=array();
-    $cookie_info['time'] = time()+60*60*24*28;
+    $cookie_info['time'] = time()+60*60*24*28;  // 4 weeks
     $cookie_info['server'] = preg_replace("/^\.|www\./","",$_SERVER['HTTP_HOST']);
 
     // Always using GDRs framework now
@@ -182,7 +182,7 @@
                                 'step'=>1,
                                 'list'=>NULL
                             ),
-                             'chart_range' => array(
+                             'graph_range' => array(
                                 'value'=>'1990-2030',
                                 'advanced'=>false,
                                 'min'=>NULL,
@@ -200,6 +200,30 @@
                                 )
                             ),
                              'display_ctry' => array(
+                                'value'=>NULL,
+                                'advanced'=>false,
+                                'min'=>NULL,
+                                'max'=>NULL,
+                                'step'=>NULL,
+                                'list'=>NULL
+                            ),
+                            'display_ctry_2' => array(
+                                'value'=>NULL,
+                                'advanced'=>false,
+                                'min'=>NULL,
+                                'max'=>NULL,
+                                'step'=>NULL,
+                                'list'=>NULL
+                            ),
+                            'display_ctry_3' => array(
+                                'value'=>NULL,
+                                'advanced'=>false,
+                                'min'=>NULL,
+                                'max'=>NULL,
+                                'step'=>NULL,
+                                'list'=>NULL
+                            ),
+                            'display_ctry_4' => array(
                                 'value'=>NULL,
                                 'advanced'=>false,
                                 'min'=>NULL,
@@ -245,13 +269,24 @@
         if (isset($_COOKIE['display_params']) && $up_to_date) {
             $display_params = unserialize(stripslashes($_COOKIE['display_params']));
         }
-        // Correct for legacy settings, where the cookie may have the 'basic' flag set
+        // correct for legacy display_params settings, where cookies may have values set from previous cerc-web versions
+        // this code can be removed roughly 4 weeks after bringing the new version life
+        // TODO: in the future, we can use the new display_params_settime cookie and just
+        // delete the display_params when its set before the last update to the cerc-web code
+        $display_params_cookie_settime = unserialize(stripslashes($_COOKIE['display_params_settime']));
         $display_params['basic_adv']['value'] = 'adv';
+        if (isset($display_params['chart_range']) & (!(isset($display_params['graph_range'])))) { $display_params['graph_range'] = $display_params['chart_range']; }
+        unset($display_params['chart_range']);
+        if (!(isset($display_params['display_ctry_2']))) { $display_params['display_ctry_2'] = array('value'=>NULL, 'advanced'=>false, 'min'=>NULL, 'max'=>NULL, 'step'=>NULL, 'list'=>NULL); }
+        if (!(isset($display_params['display_ctry_3']))) { $display_params['display_ctry_3'] = array('value'=>NULL, 'advanced'=>false, 'min'=>NULL, 'max'=>NULL, 'step'=>NULL, 'list'=>NULL); }
+        if (!(isset($display_params['display_ctry_4']))) { $display_params['display_ctry_4'] = array('value'=>NULL, 'advanced'=>false, 'min'=>NULL, 'max'=>NULL, 'step'=>NULL, 'list'=>NULL); }
+        // END legacy corrections.
         if (!isset($_POST['equity_cancel']) && !isset($_POST['equity_cancel_top'])) {
             get_usr_vals($display_params);
         }
     }
     setcookie('display_params',serialize($display_params),$cookie_info['time'],"",$cookie_info['server']);
+    setcookie('display_params_settime',serialize(time()),$cookie_info['time'],"",$cookie_info['server']);
 
     // Redundant but convenient to have both
     $table_views = $fw->get_table_views();
@@ -261,6 +296,7 @@
         $tmp = array_keys($table_views);
         $display_params['table_view']['value'] = $tmp[0];
         setcookie('display_params',serialize($display_params),$cookie_info['time'],"",$cookie_info['server']);
+        setcookie('display_params_settime',serialize(time()),$cookie_info['time'],"",$cookie_info['server']);
     }
 
     if (!isset($_POST['reset']) && !isset($_POST['equity_cancel']) && !isset($_POST['equity_cancel_top'])) {

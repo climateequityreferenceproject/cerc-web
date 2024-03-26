@@ -14,6 +14,36 @@ function microtime_float() {
     return ((float)$usec + (float)$sec);
 }
 
+function display_ctry_dropdown($display_params, $region_list, $country_list, $param_name, $title, $label, $allow_empty_option = FALSE) {
+    $retval['html']  = '<label for="' . $param_name . '" class="select" title="' . $title . '">' . $label . '</label>';
+    $retval['html'] .= '<select name="' . $param_name . '" id="' . $param_name . '" action="index.php">';
+    $retval['valid_countryregion'] = false;
+    $optionslist = "";
+    foreach ($region_list as $item) {
+        $selected = '';
+        if ($item['region_code'] === $display_params[$param_name]['value']) {
+            $selected = ' selected="selected"';
+            $retval['valid_countryregion'] = true;
+        }
+        $optionslist .= '<option value="' . $item['region_code'] .  '"' . $selected . '>' . $item['name'] . '</option>';
+    }
+    foreach ($country_list as $item) {
+        $selected = '';
+        if ($item['iso3'] === $display_params[$param_name]['value']) {
+            $selected = ' selected="selected"';
+            $retval['valid_countryregion'] = true;
+        }
+        $optionslist .= '<option value="' . $item['iso3'] .  '"' . $selected . '>' . $item['name'] . '</option>';
+    }
+    if ((!$retval['valid_countryregion']) & ($allow_empty_option)) {
+        $retval['html'] .= '<option value="" selected="selected"></option>';
+    }
+    $retval['html'] .= $optionslist;
+    $retval['html'] .= '</select>';
+
+    return $retval;
+}
+
 include("core.php");
 include("form_functions.php");
 $table_view_default = $display_params['table_view']['value'];
@@ -79,7 +109,7 @@ if (is_file('inc/popup_notice.php')) {
     <!--<script type="text/javascript" src="js/jquery-1.6.4.min.js"></script>-->
     <!--<script type="text/javascript" src="js/jquery-ui-1.8.9.custom.min.js?v=1.0"></script>-->
     <script type="text/javascript" src="js/jquery.tablesorter.js?v=1.0"></script>
-    <script type="text/javascript" src="js/calc.js?v=1.1"></script>
+    <script type="text/javascript" src="js/calc.js?v=1.3c"></script>
     <script type="text/javascript" src="graphs/graph_interactivity.js?v=1.0"></script>
     <?php include("inc/googleanalytics.php"); ?>
     </head>
@@ -133,28 +163,10 @@ if (is_file('inc/popup_notice.php')) {
                         <li>
                             <?php
                                 // Choose country or region to display for country report
-                                echo '<label for="display_ctry" class="select" title="' . _("Country or region to display for country report") . '">' . _("Country or region to display:") . '</label>';
-                                echo '<select name="display_ctry" id="display_ctry" action="index.php">';
-                                $valid_countryregion = false;
-                                foreach ($region_list as $item) {
-                                    $selected = '';
-                                    if ($item['region_code'] === $display_params['display_ctry']['value']) {
-                                        $selected = ' selected="selected"';
-                                        $valid_countryregion = true;
-                                    }
-                                    echo '<option value="' . $item['region_code'] .  '"' . $selected . '>' . $item['name'] . '</option>';
-                                }
-                                foreach ($country_list as $item) {
-                                    $selected = '';
-                                    if ($item['iso3'] === $display_params['display_ctry']['value']) {
-                                        $selected = ' selected="selected"';
-                                        $valid_countryregion = true;
-                                    }
-                                    echo '<option value="' . $item['iso3'] .  '"' . $selected . '>' . $item['name'] . '</option>';
-                                }
-                                echo '</select>';
+                                $val = display_ctry_dropdown($display_params, $region_list, $country_list, "display_ctry", _("Country or region to display for country report"), _("Country or region to display:"));
+                                echo $val['html'];
                                 // Simply ignore any invalid country or region code
-                                if (!$valid_countryregion) {
+                                if (!$val['valid_countryregion']) {
                                     $display_params['display_ctry']['value'] = null;
                                     $display_params['table_view']['value'] = $table_view_default;
                                 }
@@ -166,10 +178,25 @@ if (is_file('inc/popup_notice.php')) {
                         <li>
                             <?php echo select_num('reference_yr', $display_params, _("Base Year for table:")); ?>
                         </li>
-                        <li>
-                            <?php
-                            echo select_options_list('chart_range', $display_params, _("Year range for chart:"));
-                            ?>
+                        <li class="advanced">
+                            <fieldset class="country_report_advanced" id="country_report_advanced">
+                            <legend class="closed"><span>&nbsp;</span>Advanced Display Settings</legend>
+                            <ul class="group">
+                                <li>
+                                    <?php
+                                    echo select_options_list('graph_range', $display_params, _("Year range for chart:"));
+                                    ?>
+                                </li>
+                                <li>
+                                    <?php echo display_ctry_dropdown($display_params, $region_list, $country_list, "display_ctry_2", "Comparison country/region 1", "Comparison country/region 1", TRUE)['html']; ?>
+                                </li>
+                                <li>
+                                    <?php echo display_ctry_dropdown($display_params, $region_list, $country_list, "display_ctry_3", "Comparison country/region 2", "Comparison country/region 2", TRUE)['html']; ?>
+                                </li>
+                                <li>
+                                    <?php echo display_ctry_dropdown($display_params, $region_list, $country_list, "display_ctry_4", "Comparison country/region 3", "Comparison country/region 3", TRUE)['html']; ?>
+                                </li>
+                            </ul>
                         </li>
                         <?php // for now, we only want LULUCF selection for country report in the _dev version
                         if (Framework::is_dev()) { ?>

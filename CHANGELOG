@@ -1,3 +1,6 @@
+rev 607 (2024-03-26) (krueschan)
+- now allowing users to compare up to four countries/regions directly => extensive changes to country report output and its dependencies 
+
 rev 606 (2024-03-22) (krueschan)
 - change calc.js version number to force browsers to re-load it
 

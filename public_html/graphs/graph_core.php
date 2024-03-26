@@ -604,6 +604,9 @@
             }
             $svg .= "</defs>\n";
 
+            $center = (($has_second_yaxis) ? $this->dim['width'] + 50 : $this->dim['width'])/2;
+            $svg .= '<text class="chart-title" x="'  . $center . '" y="15">' . $params['graph_title'] . '</text>\n';
+
             $svg .= $this->svg_hrule('hrule',array('labels_match_scale' => $params['labels_match_scale']['y1']));
             
             $svg .= $this->svg_xaxis(array('ticks'=>false, 'line'=>true, 'labels_match_scale' => $params['labels_match_scale']['x']));
@@ -681,8 +684,8 @@
                         if(!in_array($id, $params['ignore_for_tooltips'])) {
                             $value = $current_series[$years[$year_idx]];
                             $value = number_format($value, max(0, 1 - floor(log10(abs($value)))));
-                            $tooltips .= '<circle id="marker' . $marker_id . '" class="linemarker" cx="' . $x . '" cy="' . ($this->dim['height'] - $y) . '" r="4" />';
-                            $tooltips .= '<circle id="target' . $marker_id . '" class="tooltiptarget" cx="' . $x . '" cy="' . ($this->dim['height'] - $y) . '" r="8" ';
+                            $tooltips .= '<circle id="marker' . $params['tooltip_marker_prefix'] . $marker_id . '" class="linemarker" cx="' . $x . '" cy="' . ($this->dim['height'] - $y) . '" r="4" />';
+                            $tooltips .= '<circle id="target' . $params['tooltip_marker_prefix'] . $marker_id . '" class="tooltiptarget' . $params['tooltip_marker_prefix'] . '" cx="' . $x . '" cy="' . ($this->dim['height'] - $y) . '" r="8" ';
                             $tooltips .= 'data="' . $years[$year_idx] . ": " . $value . ' Mt" />';
                             $marker_id ++;
                             $year_idx ++;
@@ -711,25 +714,25 @@
                 if ($params['show_data_tooltips']) {
                     $value = $glyph['original_values']['y'];
                     $value = number_format($value, max(0, 1 - floor(log10(abs($value)))));
-                    $tooltips .= '<circle id="target' . $marker_id . '" class="tooltiptarget" cx="' . $glyph['xtrans'] . '" cy="' . $glyph['ytrans'] . '" r="8" ';
+                    $tooltips .= '<circle id="target' . $params['tooltip_marker_prefix'] . $marker_id . '" class="tooltiptarget' . $params['tooltip_marker_prefix'] . '" cx="' . $glyph['xtrans'] . '" cy="' . $glyph['ytrans'] . '" r="8" ';
                     $tooltips .= 'data="' . $glyph['original_values']['x'] . ": " . $value . ' Mt" />';
                     $marker_id ++;
                 }
             }
             
             
-            $tooltips .= '<g id="tooltipgroup" style="display:none;"><rect class="tooltipbgrd" y="-12" x="-40" width="80" height="15" />';
-            $tooltips .= '<text id="tooltiptext" class="tooltiptext">' . $glyph['original_values']['x'] . ": " . $value . ' Mt</text></g>';
+            $tooltips .= '<g id="tooltipgroup' . $params['tooltip_marker_prefix'] . '" style="display:none;"><rect class="tooltipbgrd" y="-12" x="-40" width="80" height="15" />';
+            $tooltips .= '<text id="tooltiptext' . $params['tooltip_marker_prefix'] . '" class="tooltiptext">' . $glyph['original_values']['x'] . ": " . $value . ' Mt</text></g>';
             $tooltipscript = '<script>$(document).ready(function() {
-                                $(".tooltiptarget").mouseenter( function(){
-                                    $("#tooltipgroup").attr("style","display:block;");
-                                    $("#tooltipgroup").attr("transform","translate(" + $(this).attr("cx") + "," + ($(this).attr("cy") - 10) + ")");
-                                    $("#tooltiptext").text( $(this).attr("data") );
+                                $(".tooltiptarget' . $params['tooltip_marker_prefix'] . '").mouseenter( function(){
+                                    $("#tooltipgroup' . $params['tooltip_marker_prefix'] . '").attr("style","display:block;");
+                                    $("#tooltipgroup' . $params['tooltip_marker_prefix'] . '").attr("transform","translate(" + $(this).attr("cx") + "," + ($(this).attr("cy") - 10) + ")");
+                                    $("#tooltiptext' . $params['tooltip_marker_prefix'] . '").text( $(this).attr("data") );
                                     $("#marker" + $(this).attr("id").substr(6)).attr("style","display:block;");
                                 });
-                                $(".tooltiptarget").mouseleave( function(){
-                                    $("#tooltiptext").text( "" );
-                                    $("#tooltipgroup").attr("style","display:none;");
+                                $(".tooltiptarget' . $params['tooltip_marker_prefix'] . '").mouseleave( function(){
+                                    $("#tooltiptext' . $params['tooltip_marker_prefix'] . '").text( "" );
+                                    $("#tooltipgroup' . $params['tooltip_marker_prefix'] . '").attr("style","display:none;");
                                     $("#marker" + $(this).attr("id").substr(6)).attr("style","display:none;");
                                 });
                               });</script>';

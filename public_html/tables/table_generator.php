@@ -5,18 +5,19 @@
         return "<td><strong>" . $label . "</strong>" . $val . "</td>\n";
     }
     
-    function get_country_name($display_params, $country_list, $region_list) {
+    function get_country_name($display_params, $country_list, $region_list, $code = NULL) {
         $world_code = Framework::get_world_code();
+        if (!(isset($code))) { $code = $display_params['display_ctry']['value']; }
         if ($display_params["table_view"]['value'] === 'gdrs_country_report') {
             $found_it = false;
-            if ($display_params['display_ctry']['value'] === $world_code) {
+            if ($code === $world_code) {
                 $found_it = true;
                 $country_name = _("World");
             }
             if (!$found_it) {
                 foreach ($country_list as $item) {
                     $selected = '';
-                    if ($item['iso3'] === $display_params['display_ctry']['value']) {
+                    if ($item['iso3'] === $code) {
                         $country_name = $item['name'];
                         $found_it = true;
                         break;
@@ -26,7 +27,7 @@
             if (!$found_it) {
                 foreach ($region_list as $item) {
                     $selected = '';
-                    if ($item['region_code'] === $display_params['display_ctry']['value']) {
+                    if ($item['region_code'] === $code) {
                         $country_name = $item['name'];
                         break;
                     }
@@ -139,7 +140,6 @@
         $version .= "<br>\n";
         $version .= 'Calculator version: ' . (New EmptyFramework)->get_calc_ver() . " (engine); " . Framework::get_webcalc_ver() . " (cerc-web)";
         $version .= "</p>\n";
-        
         switch ($display_params["framework"]['value']) {
             case 'gdrs':
                 switch ($display_params["table_view"]['value']) {
@@ -165,7 +165,7 @@
                         break;
                     case 'gdrs_country_report':
                         include("tables/gdrs_country_report.php");
-                        return gdrs_country_report($user_db, $country_name, $shared_params, $display_params, $disp_year) . $version;
+                        return gdrs_country_report($user_db, $country_name, $shared_params, $display_params, $disp_year, $country_list, $region_list) . $version;
                         break;
                 }
                 break;
