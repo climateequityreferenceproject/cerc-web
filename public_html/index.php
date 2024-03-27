@@ -48,7 +48,10 @@ include("core.php");
 include("form_functions.php");
 $table_view_default = $display_params['table_view']['value'];
 if (isset($_GET['iso3'])) {
-    $display_params['display_ctry']['value'] = $_GET['iso3'];
+    $display_params['display_ctry']['value']   = explode(",", $_GET['iso3'])[0];
+    $display_params['display_ctry_2']['value'] = explode(",", $_GET['iso3'])[1];
+    $display_params['display_ctry_3']['value'] = explode(",", $_GET['iso3'])[2];
+    $display_params['display_ctry_4']['value'] = explode(",", $_GET['iso3'])[3];
     $display_params['table_view']['value'] = 'gdrs_country_report';
 } else {
     $display_params['display_ctry']['value'] = Framework::get_world_code();

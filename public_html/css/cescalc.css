@@ -458,6 +458,8 @@ select, input, select.short { font-size:95%; }
 #data td.cj, #data th.cj { text-align:center; }
 
 /*** table ****************************************************/
+#data thead { font-size:100%; }
+
 td.level2 { padding-left: 2em; }
 table caption {
     text-align: left;

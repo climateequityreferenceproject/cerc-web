@@ -82,8 +82,8 @@ function gdrs_country_report($dbfile, $country_name, $shared_params, $display_pa
     if (strlen($display_params['display_ctry_4']['value'])>0) { $iso3_list[] = $display_params['display_ctry_4']['value']; }
     $single_country = (count($iso3_list)==1);
 
-    $graph_start_yr = intval(substr($display_params['graph_range']['value'], 0,4));
-    $graph_end_yr   = intval(substr($display_params['graph_range']['value'],-4,4));
+    $graph_start_yr = intval(explode("-",$display_params['graph_range']['value'])[0]);
+    $graph_end_yr = intval(explode("-",$display_params['graph_range']['value'])[1]);
     $year_list[] = intval($year);
     $year_list[] = 1990;
     $year_list[] = intval($display_params['reference_yr']['value']);
@@ -451,8 +451,8 @@ function gdrs_country_report($dbfile, $country_name, $shared_params, $display_pa
     $retval .= '<caption>' . $caption . '</caption>';
     if (!($single_country)) { 
         $retval .= '<thead><tr><th colspan="2"></th>';
-        foreach ($iso3_list as $header) {
-            $retval .= '<th><strong>' . get_country_name($display_params, $country_list, $region_list, $header) . '</strong></th>';
+        foreach ($iso3_list as $header) { 
+            $retval .= '<th style="vertical-align:bottom"><strong>' . wordwrap(get_country_name($display_params, $country_list, $region_list, $header), 15, "<br />\n") . '</strong></th>';
         }
         $retval .= '</tr></thead>';
     }
@@ -785,17 +785,17 @@ function gdrs_country_report($dbfile, $country_name, $shared_params, $display_pa
             EOHTML;
             foreach ($db->query("SELECT seq_no, label, value, ppp FROM tax_levels ORDER BY seq_no;") as $record) {
                 $retval .= '<tr>';
-                if (!$record['value']) {
-                    $description = '(' . $record['label'] . ')';
-                } else {
-                    $description = '';
-                }
+                $description = (strlen($record['label'])>0) ? '(' . $record['label'] . ')' : '';
+                // Income level (2010 MER)
                 $val = $ctry_val[$year][$iso3]['tax_income_mer_dens_' . $record['seq_no']]/$ctry_val[$year][$iso3]['tax_pop_dens_' . $record['seq_no']];
                 $income_tmp = $val;
                 $retval .= '<td>' . nice_number('', $val, '') . '</td>';
+                // Income level (2005 PPP)
                 $val = $ctry_val[$year][$iso3]['tax_income_ppp_dens_' . $record['seq_no']]/$ctry_val[$year][$iso3]['tax_pop_dens_' . $record['seq_no']];
                 $retval .= '<td>' . nice_number('', $val, '') . '</td>';
+                // Tax Level Descriptor
                 $retval .= '<td class="lj">' . $description . '</td>';
+                // Tax Rate
                 if ($record['ppp']) {
                     $val = 100 * $ctry_val[$year][$iso3]['tax_revenue_ppp_dens_' . $record['seq_no']]/$ctry_val[$year][$iso3]['tax_income_ppp_dens_' . $record['seq_no']];
                 } else {
@@ -803,16 +803,19 @@ function gdrs_country_report($dbfile, $country_name, $shared_params, $display_pa
                 }
                 $per_cap_tax = 0.01 * $val * $income_tmp;
                 $retval .= "<td>" . nice_number('', $val, '') . "</td>";
+                // Population above threshold
                 $val = 100 * (1 - $ctry_val[$year][$iso3]['tax_pop_mln_below_' . $record['seq_no']]/$ctry_val[$year][$iso3]['pop_mln']);
                 $retval .= "<td>" . nice_number('', $val, '') . "</td>";
-                $retval .= '<td style="border: none;">&nbsp;</th>';
+                // Vertical Space
+                $retval .= '<td style="border: none;">&nbsp;</td>';
+                // Annual per-capita fair share - as 2010 MER/cap
                 // This was calculated above as tax (% income) * income
                 $retval .= "<td>" . nice_number('', $per_cap_tax, '') . "</td>";
+                // Annual per-capita fair share - tCO2/cap
                 $val = 0.001 * (1/$cost_of_mitigation) * $ctry_val[$year][$iso3]['tax_revenue_mer_dens_' . $record['seq_no']]/$ctry_val[$year][$iso3]['tax_pop_dens_' . $record['seq_no']];
                 $retval .= "<td>" . nice_number('', $val, '') . "</td>";
                 $retval .= '</tr>';
             }
-
             $retval .= <<< EOHTML
                 </tbody>
             </table>
@@ -821,28 +824,5 @@ function gdrs_country_report($dbfile, $country_name, $shared_params, $display_pa
     }
     // Tax table ENDS
 
-    /*
-     * Pledge table
-     */
-//    foreach ($dom_pledges[$iso3]['conditional'] as $pledge_year => $pledge_info) {
-//        $common_str = 'Conditional pledged domestic action to ';
-//        $common_str .= $pledge_info['description'];
-//        $common_str .= ' by ' . $pledge_year;
-//        $retval .= '<tr><td class="lj" colspan="2">' . $common_str . '</td></tr>';
-//        // Total
-//        $retval .= "<tr>";
-//        $retval .= "<td class=\"lj level2\">As tons</td>";
-//        $val = $pledge_info['pledge'];
-//        $retval .= "<td>" . nice_number('', $val, '')  . ' Mt' . $gases . "</td>";
-//        $retval .= "</tr>";
-//        // Percent
-//        $retval .= "<tr>";
-//        $retval .= "<td class=\"lj level2\">As share of " . $pledge_year . " mitigation fair share</td>";
-//        $val = 100 * $pledge_info['pledge']/($bau[$pledge_year] - $ctry_val[$pledge_year]["gdrs_alloc_MtCO2"]);
-//        $retval .= "<td>" . nice_number('', $val, '%') . "</td>";
-//        $retval .= "</tr>";
-//    }
-
-    // Close the table
-return $retval;
+    return $retval;
 }
