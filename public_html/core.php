@@ -36,14 +36,14 @@
         $destination = $user_db_store . "/" . $activate_db;
         if (file_exists($origin)) {
             if (!copy($origin, $destination)) {
-                // fail quiety for now 
+                // fail quiety for now
         } else {
             $_REQUEST['db'] = $activate_db; // i know this is clunky but it's also fast
             $_GET['db']     = $activate_db; // i know this is clunky but it's also fast
             $_POST['db']    = $activate_db; // i know this is clunky but it's also fast
         }
         }
-    }    
+    }
 
     $user_db = $fw->get_good_db();
     if (isset($_POST['reset'])) {
@@ -167,7 +167,7 @@
                                 )
                             ),
                              'display_yr' => array(
-                                'value'=>2030,
+                                'value'=>2035,
                                 'advanced'=>false,
                                 'min'=>1990,
                                 'max'=>2035,
@@ -183,7 +183,7 @@
                                 'list'=>NULL
                             ),
                              'graph_range' => array(
-                                'value'=>'1990-2030',
+                                'value'=>'1990-2035',
                                 'advanced'=>false,
                                 'min'=>NULL,
                                 'max'=>NULL,

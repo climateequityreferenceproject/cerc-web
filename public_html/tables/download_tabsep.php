@@ -2,7 +2,7 @@
 // undocumented URL parameter switches for downloading xls tables:
 // - dl_wide = if 1 download data in "wide format" where meta data (settings) are each in their own variable (column) repeated for each record (intended to facilitate automatic retrieval by statistical software)
 // - dl_start_year = independent of responsibility start date, xls file will only contain data from that year onward
-// - dl_end_year = independent of responsibility start date, xls file will only contain data up until that year 
+// - dl_end_year = independent of responsibility start date, xls file will only contain data up until that year
 // - dl_years = a list (separated by , or for legacy reasons | ) of individual years to download, can also include ranges with -; e.g. 1990,2010-2030 overrides dl_start_year and dl_end_year, if also specified
 // - filename = the name of the xls file to be sent to the browser
 // - tax_tables = if tax_tables=1 the tax tables and tax data will be included, otherwise it won't
@@ -16,7 +16,7 @@
 // - country = alias for countries
 
 if (isset($_REQUEST['debug']) && $_REQUEST['debug'] == 'yes') {
-    ini_set('display_errors',1); 
+    ini_set('display_errors',1);
     error_reporting(E_ALL);
 }
 require_once("../frameworks/frameworks.php");
@@ -138,7 +138,6 @@ $viewquery = <<< EOSQL
         AS combined WHERE country.iso3 = combined.iso3 $all_years_condition_string $dl_year_condition_string $dl_country_condition_string;
 EOSQL;
 $last_modified = Framework::get_db_time_string($user_db);
-//var_dump($dl_country_condition_string,$viewquery);die();
 
 $database = 'sqlite:'.$db_file;
 
@@ -211,7 +210,7 @@ if ($record = $query->fetch(PDO::FETCH_ASSOC)) {
     $table_header = implode("\t", array_keys($record));
     if (!$keep_gdrs_headers) {
         foreach ($excel_download_header_rename as $old=>$new) {
-            $table_header = str_replace($old, $new, $table_header); 
+            $table_header = str_replace($old, $new, $table_header);
 	}
     }
     fwrite($fp, $table_header . "\t" . $params_wide_header . "\n");
@@ -235,9 +234,9 @@ $region_sql .= "flags.value = 1 AND flags.flag = ? GROUP BY year;";
 // Global
 $row_start = "WORLD\tWorld\t";
 foreach ($db->query($global_sql, PDO::FETCH_NUM) as $record) {
-    // if countries are specified, world and regions will only include the figures of those countries, which is wrong; until the queries are fixed to 
+    // if countries are specified, world and regions will only include the figures of those countries, which is wrong; until the queries are fixed to
     // account for that, we suppress world and regions output in this case
-    if (!(isset($_REQUEST['countries']))) {  
+    if (!(isset($_REQUEST['countries']))) {
         fwrite($fp, $row_start . implode("\t", $record) . "\t" . $params_wide . "\n");
     }
 }
@@ -250,9 +249,9 @@ foreach ($db->query('SELECT * FROM flag_names') as $flags) {
     $row_start = strtoupper($shortname) . "\t$longname\t";
     $region_query->execute(array($flags["flag"]));
     foreach ($region_query->fetchAll(PDO::FETCH_NUM) as $record) {
-        // if countries are specified, world and regions will only include the figures of those countries, which is wrong; until the queries are fixed to 
+        // if countries are specified, world and regions will only include the figures of those countries, which is wrong; until the queries are fixed to
         // account for that, we suppress world and regions output in this case
-        if (!(isset($_REQUEST['countries']))) {  
+        if (!(isset($_REQUEST['countries']))) {
             fwrite($fp, $row_start . implode("\t", $record) . "\t" . $params_wide . "\n");
         }
     }
@@ -265,7 +264,7 @@ fclose($fp);
 header("Cache-Control: no-cache, must-revalidate");
 header("Pragma: no-cache");
 header("Content-type: text/tab-separated-values");
-header("Content-Length: " . filesize($tsfile)); 
+header("Content-Length: " . filesize($tsfile));
 header("Content-Disposition: attachment; filename=\"" . $dlfile . "\"" );
 header("Content-Description: PHP/INTERBASE Generated Data" );
 readfile($tsfile);

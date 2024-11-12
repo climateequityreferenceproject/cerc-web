@@ -169,7 +169,6 @@ if (isset($_COOKIE['db'])) {
                     <select name="r_wt" id="r_wt_dropdown">
                         <?php
                             for ($i = 0; $i <= 10; $i++) {
-                                var_dump($r_wt, $i);
                                 echo "<option value=\"" . ($i/10) . "\"" . (($fw_params['r_wt']['value'] == ($i/10)) ? " selected=\"selected\">" : ">") . ($i * 10) . "%</option>";
                             }
                         ?>
