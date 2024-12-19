@@ -111,8 +111,7 @@ function get_pledge_years($code, $conditional=null) {
     } else {
         $ctryrgn_str = 'region="' . $code . '"';
     }
-    // Todo: replace 2030 with an extracted value
-    $sql = 'SELECT by_year FROM pledge WHERE ' . $conditional_string . $ctryrgn_str . ' AND by_year<=2030;';
+    $sql = 'SELECT by_year FROM pledge WHERE ' . $conditional_string . $ctryrgn_str . ';';
     $result = pledge_query_db($sql);
     $years = array();
     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {

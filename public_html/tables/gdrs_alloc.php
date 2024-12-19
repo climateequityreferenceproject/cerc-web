@@ -29,10 +29,10 @@ $retval = <<< EOHTML
         <tr>
             <th class="lj">Country or Group</th>
             <th>2010</th>
-            <th>2015</th>
             <th>2020</th>
             <th>2025</th>
             <th>2030</th>
+            <th>2035</th>
         </tr>
     </thead>
     <tbody>
@@ -43,8 +43,8 @@ EOHTML;
 
 $worldquery = <<< EOSQL
 SELECT year, SUM(gdrs_alloc_MtCO2) AS gdrs_alloc, SUM(pop_mln) AS pop
-    FROM disp_temp WHERE year = 2010 OR year = 2015 OR
-    year = 2020 OR year = 2025 OR year = 2030 GROUP BY year ORDER BY year;
+    FROM disp_temp WHERE year = 2010 OR year = 2020 OR
+    year = 2025 OR year = 2030 OR year = 2035 GROUP BY year ORDER BY year;
 EOSQL;
 
     $retval .= "<tr>";
@@ -73,8 +73,8 @@ $regionquery = <<< EOSQL
 SELECT year, SUM(gdrs_alloc_MtCO2) AS gdrs_alloc, SUM(pop_mln) AS pop
     FROM disp_temp, flags WHERE flags.iso3 = disp_temp.iso3 AND
         flags.value = 1 AND flags.flag = '$flagname' AND
-        (year = 2010 OR year = 2015 OR year = 2020
-        OR year = 2025 OR year = 2030) GROUP BY year ORDER BY year;
+        (year = 2010 OR year = 2020 OR year = 2025
+        OR year = 2030 OR year = 2035) GROUP BY year ORDER BY year;
 EOSQL;
                 
         $retval .= "<tr>";
@@ -100,12 +100,11 @@ EOSQL;
 $countryquery = <<< EOSQL
 SELECT country, year, gdrs_alloc_MtCO2 as gdrs_alloc, pop_mln AS pop
     FROM disp_temp WHERE
-    year = 2010 OR year = 2015 OR year = 2020
-    OR year = 2025 OR year = 2030 ORDER BY country, year;
+    year = 2010 OR year = 2020 OR year = 2025
+    OR year = 2030 OR year = 2035 ORDER BY country, year;
 EOSQL;
-    $year = 2010;
     foreach ($db->query($countryquery) as $record) {
-        if ($year == 2010) {
+        if ($record[year] == 2010) {
             $retval .= "<tr>";
             $retval .= '<td class="lj cr_item">' . $record["country"] . "</td>";
         }
@@ -121,10 +120,8 @@ EOSQL;
                 $val = -9999;
         }
         $retval .= "<td>" . number_format($val, $dec) . "</td>";
-        $year += 5;
-        if ($year > 2030) {
+        if ($record[year] > 2035) {
             $retval .= "</tr>";
-            $year = 2010;
         }
     }
 $retval .= <<< EOHTML

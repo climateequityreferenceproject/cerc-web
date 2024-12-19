@@ -13,7 +13,7 @@ $retval = <<< EOHTML
     <thead>
         <tr>
             <th> </th>
-            <th colspan="5">percent of global total</th>
+            <th colspan="6">percent of global total</th>
         </tr>        <tr>
             <th class="lj">Country or Group</th>
             <th>2010</th>
@@ -21,6 +21,7 @@ $retval = <<< EOHTML
             <th>2020</th>
             <th>2025</th>
             <th>2030</th>
+            <th>2035</th>
         </tr>
     </thead>
     <tbody>
@@ -32,7 +33,7 @@ EOHTML;
 $worldquery = <<< EOSQL
 SELECT year, SUM(gdrs_rci) AS rci
     FROM disp_temp WHERE year = 2010 OR year = 2015 OR
-    year = 2020 OR year = 2025 OR year = 2030 GROUP BY year ORDER BY year;
+    year = 2020 OR year = 2025 OR year = 2030 OR year = 2035 GROUP BY year ORDER BY year;
 EOSQL;
 
     # Out to be 100% in all years for world, but check...
@@ -52,7 +53,7 @@ SELECT year, SUM(gdrs_rci) AS rci
     FROM disp_temp, flags WHERE flags.iso3 = disp_temp.iso3 AND
         flags.value = 1 AND flags.flag = '$flagname' AND
         (year = 2010 OR year = 2015 OR year = 2020
-        OR year = 2025 OR year = 2030) GROUP BY year ORDER BY year;
+        OR year = 2025 OR year = 2030 OR year = 2035) GROUP BY year ORDER BY year;
 EOSQL;
                 
         $retval .= "<tr>";
@@ -68,19 +69,16 @@ $countryquery = <<< EOSQL
 SELECT country, year, gdrs_rci
     FROM disp_temp WHERE
     year = 2010 OR year = 2015 OR year = 2020
-    OR year = 2025 OR year = 2030 ORDER BY country, year;
+    OR year = 2025 OR year = 2030 OR year = 2035 ORDER BY country, year;
 EOSQL;
-    $year = 2010;
     foreach ($db->query($countryquery) as $record) {
-        if ($year == 2010) {
+        if ($record[year] == 2010) {
             $retval .= "<tr>";
             $retval .= '<td class="lj cr_item">' . $record["country"] . "</td>";
         }
         $retval .= "<td>" . number_format(100.00 * $record["gdrs_rci"], $dec) . "</td>";
-        $year += 5;
-        if ($year > 2030) {
+        if ($record[year] > 2035) {
             $retval .= "</tr>";
-            $year = 2010;
         }
     }
 $retval .= <<< EOHTML
