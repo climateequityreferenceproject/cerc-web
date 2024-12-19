@@ -1,3 +1,6 @@
+rev 614 (2024-12-19) (krueschan)
+- small bug fix in graph module
+
 rev 613 (2024-12-19) (krueschan)
 - edits to display 2035 results in pledges and time series tables
 

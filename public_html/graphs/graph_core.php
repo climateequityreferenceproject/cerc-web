@@ -357,7 +357,7 @@
                 $retval .= "</text>\n";
                 $xval += $scale['step'];
             }
-            $retval .= '<rect id="neg_area" class="neg_area" x="'.$margin['left'].'" y="'.$ypos.'" height="'.($ybottom - $ypos).'" width="'.($x - $margin['left']).'" />';
+            $retval .= '<rect id="neg_area" class="neg_area" x="'.$margin['left'].'" y="'.$ypos.'" height="'.($ybottom - $ypos).'" width="'. $canvas_len .'" />';
             $x = $margin['left'] + round(0.5 * $canvas_len);
             $y = $ypos + 35;
             
